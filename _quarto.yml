@@ -1,18 +1,39 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - "*.qmd"
+    - "notebooks/*.ipynb"
+    - "assignments/*.ipynb"
 
 website:
-  title: "understanding-uncertainty"
+  title: "Understanding Uncertainty"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - href: about.qmd
+        text: About
+      - href: assignments.qmd
+        text: Assignments
+    right:
+      - icon: github
+        href: https://github.com/jrudoler-teaching/understanding-uncertainty
+  sidebar:
+      style: "floating"
+      search: true
+      contents:
+        - text: "Introduction"
+          # href: introduction.qmd
+        - section: "Basics"
+          # href: basics-summary.qmd
+          contents:
+            - index.qmd
+  page-navigation: true
 
 format:
   html:
-    theme: cosmo
+    theme: darkly
     css: styles.css
     toc: true
 
