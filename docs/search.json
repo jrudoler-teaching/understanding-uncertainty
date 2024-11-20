@@ -11,7 +11,7 @@
     "href": "index.html",
     "title": "understanding-uncertainty",
     "section": "",
-    "text": "This website contains course materials for the Understanding Uncertainty course at The Wharton School of the University of Pennsylvania.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "This website contains course materials for the Understanding Uncertainty course at The Wharton School of the University of Pennsylvania.\nSyllabus:\n\nUpdated Course Syllabus\nCourse Title: Introduction to Statistics through Data Generating Processes and Computational Simulations\nCourse Schedule: 10 Weeks, 2 sessions per week, 1.5 hours per session\n\n\n\n\n\n\n\n\n\nWeek\nSession\nTopics Covered\nActivities/Assignments\n\n\n\n\n1\nSession 1\n- Course Introduction- Understanding Data Generating Processes (DGPs)- Introduction to Python and Jupyter Notebooks\n- Install Python and Jupyter- Assignment: Write a simple Python program\n\n\n\nSession 2\n- Basic Python Syntax and Data Types- Variables, Expressions, and Statements- Generating Random Numbers\n- In-class coding exercises- Assignment: Simulate a simple DGP\n\n\n2\nSession 3\n- Data Structures in Python (Lists, Tuples, Dictionaries)- Importing and Exporting Data\n- Load and explore datasets- Assignment: Data manipulation tasks\n\n\n\nSession 4\n- Descriptive Statistics- Measures of Central Tendency and Variability- Data Visualization with Matplotlib and Seaborn\n- Plot histograms and boxplots- Assignment: Analyze summary statistics of a dataset\n\n\n3\nSession 5\n- Probability Concepts- Discrete and Continuous Distributions- Simulating Random Events\n- Simulate coin tosses and dice rolls- Assignment: Probability simulations\n\n\n\nSession 6\n- Exploring Different Distributions- Normal, Binomial, Poisson, Exponential Distributions- Applications of Each Distribution\n- Visualize distributions- Assignment: Fit data to different distributions\n\n\n4\nSession 7\n- Central Limit Theorem (CLT)- Law of Large Numbers- Practical Implications of CLT\n- CLT demonstrations- Assignment: CLT simulation project\n\n\n\nSession 8\n- Understanding Uncertainty- Confidence Intervals- Margin of Error\n- Calculate confidence intervals- Assignment: Confidence interval analysis\n\n\n5\nSession 9\n- Introduction to Hypothesis Testing- Null and Alternative Hypotheses- p-values and Statistical Significance\n- Hypothesis testing examples- Assignment: Formulate and test hypotheses\n\n\n\nSession 10\n- Resampling Methods- Bootstrapping Concepts- Estimating Uncertainty with Bootstrapping\n- Bootstrap simulations- Assignment: Bootstrap confidence intervals\n\n\n6\nSession 11\n- Permutation Tests- Comparing Groups without Parametric Assumptions- Practical Applications\n- Conduct permutation tests- Assignment: Resampling project\n\n\n\nSession 12\n- Bias and Variance Trade-off- Introduction to Overfitting and Underfitting- Model Complexity and Generalization\n- Visualize bias-variance trade-off- Assignment: Experiment with model complexity\n\n\n7\nSession 13\n- Introduction to Machine Learning- Supervised vs. Unsupervised Learning- Training and Testing Sets\n- Split data into training/testing sets- Assignment: Build simple predictive models\n\n\n\nSession 14\n- Evaluation Metrics- Accuracy, Precision, Recall, F1 Score- ROC Curves and AUC\n- Evaluate model performance- Assignment: Model evaluation report\n\n\n8\nSession 15\n- Regularization Techniques- Ridge and Lasso Regression- Preventing Overfitting\n- Implement regularization- Assignment: Regularization project\n\n\n\nSession 16\n- Fairness in Machine Learning- Bias in Data and Algorithms- Measuring and Mitigating Bias\n- Analyze datasets for bias- Assignment: Fairness assessment\n\n\n9\nSession 17\n- Population Statistics and Representation- Sampling Methods and Sampling Bias- Impact on Statistical Inference and Fairness\n- Simulate sampling strategies- Assignment: Design a fair sampling plan\n\n\n\nSession 18\n- Ethical Considerations in Data Science- Data Privacy and Anonymization- Regulations (e.g., GDPR, CCPA)\n- Discuss privacy scenarios- Assignment: Propose ethical data practices\n\n\n10\nSession 19\n- Responsible Data Science- Ethical Decision-Making Frameworks- Case Studies on Ethical Dilemmas\n- Group discussions- Assignment: Reflective essay on ethics\n\n\n\nSession 20\n- Course Review and Future Directions- Student Project Presentations- Trends in Statistics and Data Science\n- Present final projects- Course Feedback Survey"
   },
   {
     "objectID": "assignments.html",
@@ -23,8 +23,15 @@
   {
     "objectID": "assignments/assignment-00.html",
     "href": "assignments/assignment-00.html",
-    "title": "Understanding Uncertainty",
+    "title": "Assignment 00",
     "section": "",
-    "text": "print(\"Hello, World!\")\n\n:"
+    "text": "print(\"Hello, World!\")\n\nHello, World!"
+  },
+  {
+    "objectID": "notebooks/lecture-00.html",
+    "href": "notebooks/lecture-00.html",
+    "title": "Lecture 00",
+    "section": "",
+    "text": "Take \\(X \\sim \\text{Uniform}(0, 1)\\)\n\nx = np.random.uniform(0, 1, 1000)\n\nplt.hist(x, bins=20, edgecolor=\"black\")\nplt.show()"
   }
 ]

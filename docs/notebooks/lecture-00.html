@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2024-11-20">
 
-<title>Understanding Uncertainty - understanding-uncertainty</title>
+<title>Understanding Uncertainty - Lecture 00</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,28 +21,62 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./notebooks/lecture-00.html" rel="prev">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../index.html" rel="next">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -63,8 +98,10 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-sidebar floating nav-fixed">
@@ -74,7 +111,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Understanding Uncertainty</span>
     </a>
   </div>
@@ -85,11 +122,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
+    <a class="nav-link active" href="../index.html" rel="" target="" aria-current="page">
  <span class="menu-text">Syllabus</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./assignments.html" rel="" target="">
+    <a class="nav-link" href="../assignments.html" rel="" target="">
  <span class="menu-text">Assignments</span></a>
   </li>  
 </ul>
@@ -111,7 +148,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Basics</a></li><li class="breadcrumb-item"><a href="./index.html">understanding-uncertainty</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/lecture-00.html">Introduction</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -133,7 +170,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./notebooks/lecture-00.html" class="sidebar-item-text sidebar-link">
+  <a href="../notebooks/lecture-00.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Introduction</span></a>
   </div>
 </li>
@@ -148,7 +185,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">understanding-uncertainty</span></a>
   </div>
 </li>
@@ -160,20 +197,14 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#updated-course-syllabus" id="toc-updated-course-syllabus" class="nav-link active" data-scroll-target="#updated-course-syllabus">Updated Course Syllabus</a></li>
-  </ul>
-</nav>
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">understanding-uncertainty</h1>
+<h1 class="title">Lecture 00</h1>
 </div>
 
 
@@ -181,6 +212,12 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 20, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -188,153 +225,18 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>This website contains course materials for the Understanding Uncertainty course at The Wharton School of the University of Pennsylvania.</p>
-<p>Syllabus:</p>
-<section id="updated-course-syllabus" class="level1">
-<h1>Updated Course Syllabus</h1>
-<p><strong>Course Title:</strong> Introduction to Statistics through Data Generating Processes and Computational Simulations<br>
-<strong>Course Schedule:</strong> 10 Weeks, 2 sessions per week, 1.5 hours per session</p>
-<table class="table">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 18%">
-<col style="width: 28%">
-<col style="width: 39%">
-</colgroup>
-<thead>
-<tr class="header">
-<th><strong>Week</strong></th>
-<th><strong>Session</strong></th>
-<th><strong>Topics Covered</strong></th>
-<th><strong>Activities/Assignments</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>1</strong></td>
-<td>Session 1</td>
-<td>- <strong>Course Introduction</strong><br>- Understanding Data Generating Processes (DGPs)<br>- Introduction to Python and Jupyter Notebooks</td>
-<td>- Install Python and Jupyter<br>- <strong>Assignment:</strong> Write a simple Python program</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Session 2</td>
-<td>- <strong>Basic Python Syntax and Data Types</strong><br>- Variables, Expressions, and Statements<br>- Generating Random Numbers</td>
-<td>- In-class coding exercises<br>- <strong>Assignment:</strong> Simulate a simple DGP</td>
-</tr>
-<tr class="odd">
-<td><strong>2</strong></td>
-<td>Session 3</td>
-<td>- <strong>Data Structures in Python</strong> (Lists, Tuples, Dictionaries)<br>- Importing and Exporting Data</td>
-<td>- Load and explore datasets<br>- <strong>Assignment:</strong> Data manipulation tasks</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Session 4</td>
-<td>- <strong>Descriptive Statistics</strong><br>- Measures of Central Tendency and Variability<br>- Data Visualization with Matplotlib and Seaborn</td>
-<td>- Plot histograms and boxplots<br>- <strong>Assignment:</strong> Analyze summary statistics of a dataset</td>
-</tr>
-<tr class="odd">
-<td><strong>3</strong></td>
-<td>Session 5</td>
-<td>- <strong>Probability Concepts</strong><br>- Discrete and Continuous Distributions<br>- Simulating Random Events</td>
-<td>- Simulate coin tosses and dice rolls<br>- <strong>Assignment:</strong> Probability simulations</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Session 6</td>
-<td>- <strong>Exploring Different Distributions</strong><br>- Normal, Binomial, Poisson, Exponential Distributions<br>- Applications of Each Distribution</td>
-<td>- Visualize distributions<br>- <strong>Assignment:</strong> Fit data to different distributions</td>
-</tr>
-<tr class="odd">
-<td><strong>4</strong></td>
-<td>Session 7</td>
-<td>- <strong>Central Limit Theorem (CLT)</strong><br>- Law of Large Numbers<br>- Practical Implications of CLT</td>
-<td>- CLT demonstrations<br>- <strong>Assignment:</strong> CLT simulation project</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Session 8</td>
-<td>- <strong>Understanding Uncertainty</strong><br>- Confidence Intervals<br>- Margin of Error</td>
-<td>- Calculate confidence intervals<br>- <strong>Assignment:</strong> Confidence interval analysis</td>
-</tr>
-<tr class="odd">
-<td><strong>5</strong></td>
-<td>Session 9</td>
-<td>- <strong>Introduction to Hypothesis Testing</strong><br>- Null and Alternative Hypotheses<br>- p-values and Statistical Significance</td>
-<td>- Hypothesis testing examples<br>- <strong>Assignment:</strong> Formulate and test hypotheses</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Session 10</td>
-<td>- <strong>Resampling Methods</strong><br>- Bootstrapping Concepts<br>- Estimating Uncertainty with Bootstrapping</td>
-<td>- Bootstrap simulations<br>- <strong>Assignment:</strong> Bootstrap confidence intervals</td>
-</tr>
-<tr class="odd">
-<td><strong>6</strong></td>
-<td>Session 11</td>
-<td>- <strong>Permutation Tests</strong><br>- Comparing Groups without Parametric Assumptions<br>- Practical Applications</td>
-<td>- Conduct permutation tests<br>- <strong>Assignment:</strong> Resampling project</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Session 12</td>
-<td>- <strong>Bias and Variance Trade-off</strong><br>- Introduction to Overfitting and Underfitting<br>- Model Complexity and Generalization</td>
-<td>- Visualize bias-variance trade-off<br>- <strong>Assignment:</strong> Experiment with model complexity</td>
-</tr>
-<tr class="odd">
-<td><strong>7</strong></td>
-<td>Session 13</td>
-<td>- <strong>Introduction to Machine Learning</strong><br>- Supervised vs.&nbsp;Unsupervised Learning<br>- Training and Testing Sets</td>
-<td>- Split data into training/testing sets<br>- <strong>Assignment:</strong> Build simple predictive models</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Session 14</td>
-<td>- <strong>Evaluation Metrics</strong><br>- Accuracy, Precision, Recall, F1 Score<br>- ROC Curves and AUC</td>
-<td>- Evaluate model performance<br>- <strong>Assignment:</strong> Model evaluation report</td>
-</tr>
-<tr class="odd">
-<td><strong>8</strong></td>
-<td>Session 15</td>
-<td>- <strong>Regularization Techniques</strong><br>- Ridge and Lasso Regression<br>- Preventing Overfitting</td>
-<td>- Implement regularization<br>- <strong>Assignment:</strong> Regularization project</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Session 16</td>
-<td>- <strong>Fairness in Machine Learning</strong><br>- Bias in Data and Algorithms<br>- Measuring and Mitigating Bias</td>
-<td>- Analyze datasets for bias<br>- <strong>Assignment:</strong> Fairness assessment</td>
-</tr>
-<tr class="odd">
-<td><strong>9</strong></td>
-<td>Session 17</td>
-<td>- <strong>Population Statistics and Representation</strong><br>- Sampling Methods and Sampling Bias<br>- Impact on Statistical Inference and Fairness</td>
-<td>- Simulate sampling strategies<br>- <strong>Assignment:</strong> Design a fair sampling plan</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Session 18</td>
-<td>- <strong>Ethical Considerations in Data Science</strong><br>- Data Privacy and Anonymization<br>- Regulations (e.g., GDPR, CCPA)</td>
-<td>- Discuss privacy scenarios<br>- <strong>Assignment:</strong> Propose ethical data practices</td>
-</tr>
-<tr class="odd">
-<td><strong>10</strong></td>
-<td>Session 19</td>
-<td>- <strong>Responsible Data Science</strong><br>- Ethical Decision-Making Frameworks<br>- Case Studies on Ethical Dilemmas</td>
-<td>- Group discussions<br>- <strong>Assignment:</strong> Reflective essay on ethics</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Session 20</td>
-<td>- <strong>Course Review and Future Directions</strong><br>- Student Project Presentations<br>- Trends in Statistics and Data Science</td>
-<td>- Present final projects<br>- <strong>Course Feedback Survey</strong></td>
-</tr>
-</tbody>
-</table>
+<p>Take <span class="math inline">\(X \sim \text{Uniform}(0, 1)\)</span></p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.random.uniform(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1000</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>plt.hist(x, bins<span class="op">=</span><span class="dv">20</span>, edgecolor<span class="op">=</span><span class="st">"black"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="lecture-00_files/figure-html/cell-3-output-1.png" class="img-fluid"></p>
+</div>
+</div>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -687,11 +589,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./notebooks/lecture-00.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Introduction</span>
-      </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../index.html" class="pagination-link">
+        <span class="nav-page-text">understanding-uncertainty</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

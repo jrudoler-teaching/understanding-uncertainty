@@ -4,4 +4,32 @@ title: "understanding-uncertainty"
 
 This website contains course materials for the Understanding Uncertainty course at The Wharton School of the University of Pennsylvania.
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+Syllabus:
+
+# Updated Course Syllabus
+
+**Course Title:** Introduction to Statistics through Data Generating Processes and Computational Simulations  
+**Course Schedule:** 10 Weeks, 2 sessions per week, 1.5 hours per session  
+
+| **Week** | **Session** | **Topics Covered** | **Activities/Assignments** |
+|----------|-------------|--------------------|----------------------------|
+| **1**    | Session 1   | - **Course Introduction**<br>- Understanding Data Generating Processes (DGPs)<br>- Introduction to Python and Jupyter Notebooks | - Install Python and Jupyter<br>- **Assignment:** Write a simple Python program |
+|          | Session 2   | - **Basic Python Syntax and Data Types**<br>- Variables, Expressions, and Statements<br>- Generating Random Numbers | - In-class coding exercises<br>- **Assignment:** Simulate a simple DGP |
+| **2**    | Session 3   | - **Data Structures in Python** (Lists, Tuples, Dictionaries)<br>- Importing and Exporting Data | - Load and explore datasets<br>- **Assignment:** Data manipulation tasks |
+|          | Session 4   | - **Descriptive Statistics**<br>- Measures of Central Tendency and Variability<br>- Data Visualization with Matplotlib and Seaborn | - Plot histograms and boxplots<br>- **Assignment:** Analyze summary statistics of a dataset |
+| **3**    | Session 5   | - **Probability Concepts**<br>- Discrete and Continuous Distributions<br>- Simulating Random Events | - Simulate coin tosses and dice rolls<br>- **Assignment:** Probability simulations |
+|          | Session 6   | - **Exploring Different Distributions**<br>- Normal, Binomial, Poisson, Exponential Distributions<br>- Applications of Each Distribution | - Visualize distributions<br>- **Assignment:** Fit data to different distributions |
+| **4**    | Session 7   | - **Central Limit Theorem (CLT)**<br>- Law of Large Numbers<br>- Practical Implications of CLT | - CLT demonstrations<br>- **Assignment:** CLT simulation project |
+|          | Session 8   | - **Understanding Uncertainty**<br>- Confidence Intervals<br>- Margin of Error | - Calculate confidence intervals<br>- **Assignment:** Confidence interval analysis |
+| **5**    | Session 9   | - **Introduction to Hypothesis Testing**<br>- Null and Alternative Hypotheses<br>- p-values and Statistical Significance | - Hypothesis testing examples<br>- **Assignment:** Formulate and test hypotheses |
+|          | Session 10  | - **Resampling Methods**<br>- Bootstrapping Concepts<br>- Estimating Uncertainty with Bootstrapping | - Bootstrap simulations<br>- **Assignment:** Bootstrap confidence intervals |
+| **6**    | Session 11  | - **Permutation Tests**<br>- Comparing Groups without Parametric Assumptions<br>- Practical Applications | - Conduct permutation tests<br>- **Assignment:** Resampling project |
+|          | Session 12  | - **Bias and Variance Trade-off**<br>- Introduction to Overfitting and Underfitting<br>- Model Complexity and Generalization | - Visualize bias-variance trade-off<br>- **Assignment:** Experiment with model complexity |
+| **7**    | Session 13  | - **Introduction to Machine Learning**<br>- Supervised vs. Unsupervised Learning<br>- Training and Testing Sets | - Split data into training/testing sets<br>- **Assignment:** Build simple predictive models |
+|          | Session 14  | - **Evaluation Metrics**<br>- Accuracy, Precision, Recall, F1 Score<br>- ROC Curves and AUC | - Evaluate model performance<br>- **Assignment:** Model evaluation report |
+| **8**    | Session 15  | - **Regularization Techniques**<br>- Ridge and Lasso Regression<br>- Preventing Overfitting | - Implement regularization<br>- **Assignment:** Regularization project |
+|          | Session 16  | - **Fairness in Machine Learning**<br>- Bias in Data and Algorithms<br>- Measuring and Mitigating Bias | - Analyze datasets for bias<br>- **Assignment:** Fairness assessment |
+| **9**    | Session 17  | - **Population Statistics and Representation**<br>- Sampling Methods and Sampling Bias<br>- Impact on Statistical Inference and Fairness | - Simulate sampling strategies<br>- **Assignment:** Design a fair sampling plan |
+|          | Session 18  | - **Ethical Considerations in Data Science**<br>- Data Privacy and Anonymization<br>- Regulations (e.g., GDPR, CCPA) | - Discuss privacy scenarios<br>- **Assignment:** Propose ethical data practices |
+| **10**   | Session 19  | - **Responsible Data Science**<br>- Ethical Decision-Making Frameworks<br>- Case Studies on Ethical Dilemmas | - Group discussions<br>- **Assignment:** Reflective essay on ethics |
+|          | Session 20  | - **Course Review and Future Directions**<br>- Student Project Presentations<br>- Trends in Statistics and Data Science | - Present final projects<br>- **Course Feedback Survey** |

@@ -11,9 +11,7 @@ website:
   navbar:
     left:
       - href: index.qmd
-        text: Home
-      - href: about.qmd
-        text: About
+        text: Syllabus
       - href: assignments.qmd
         text: Assignments
     right:
@@ -24,7 +22,7 @@ website:
       search: true
       contents:
         - text: "Introduction"
-          # href: introduction.qmd
+          href: notebooks/lecture-00.ipynb
         - section: "Basics"
           # href: basics-summary.qmd
           contents:
@@ -33,7 +31,9 @@ website:
 
 format:
   html:
-    theme: darkly
+    theme: 
+      dark: darkly
+      light: flatly
     css: styles.css
     toc: true
 

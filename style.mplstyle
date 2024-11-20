@@ -1,0 +1,18 @@
+# style.mplstyle
+
+# Font
+font.family: sans-serif
+font.size: 12
+
+# Axes
+axes.linewidth: 1.5
+axes.grid: false
+axes.spines.right: false
+axes.spines.top: false
+grid.linestyle: --
+
+# Lines
+lines.linewidth: 2
+
+# Legend
+legend.fontsize: 10
