@@ -11,6 +11,8 @@ website:
   navbar:
     left:
       - href: index.qmd
+        text: Home
+      - href: syllabus.qmd
         text: Syllabus
       - href: assignments.qmd
         text: Assignments
