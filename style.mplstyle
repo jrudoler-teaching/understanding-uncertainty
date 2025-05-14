@@ -14,5 +14,8 @@ grid.linestyle: --
 # Lines
 lines.linewidth: 2
 
+# Patches (histogram)
+patch.edgecolor: black
+
 # Legend
 legend.fontsize: 10
