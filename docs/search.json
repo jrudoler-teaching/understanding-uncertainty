@@ -1,0 +1,107 @@
+[
+  {
+    "objectID": "assignments/assignment-00.html",
+    "href": "assignments/assignment-00.html",
+    "title": "Assignment 00",
+    "section": "",
+    "text": "print(\"Hello, World!\")\n\nHello, World!"
+  },
+  {
+    "objectID": "notebooks/lecture-00.html",
+    "href": "notebooks/lecture-00.html",
+    "title": "Lecture 00",
+    "section": "",
+    "text": "So begins “Understanding Uncertainty”, a course in statistical thinking and data science.\nThis is lecture 0. See the syllabus for an overview of the course.\nOur basic goals for the course are:\n\nto build a strong intuition about data, where it comes from, and what questions it can answer.\nto learn the basic computational skills needed to manipulate and analyze data. Working with data also helps with (1)!",
+    "crumbs": [
+      "Home",
+      "Lecture 00"
+    ]
+  },
+  {
+    "objectID": "notebooks/lecture-00.html#welcome",
+    "href": "notebooks/lecture-00.html#welcome",
+    "title": "Lecture 00",
+    "section": "",
+    "text": "So begins “Understanding Uncertainty”, a course in statistical thinking and data science.\nThis is lecture 0. See the syllabus for an overview of the course.\nOur basic goals for the course are:\n\nto build a strong intuition about data, where it comes from, and what questions it can answer.\nto learn the basic computational skills needed to manipulate and analyze data. Working with data also helps with (1)!",
+    "crumbs": [
+      "Home",
+      "Lecture 00"
+    ]
+  },
+  {
+    "objectID": "notebooks/lecture-00.html#why-statistics",
+    "href": "notebooks/lecture-00.html#why-statistics",
+    "title": "Lecture 00",
+    "section": "Why statistics?",
+    "text": "Why statistics?\nStatistics is, essentially, the study of data and how to use it. People argue about the purpose of statistics, but basically you can do 3 things with data: (1) description, (2) inference, and (3) prediction.",
+    "crumbs": [
+      "Home",
+      "Lecture 00"
+    ]
+  },
+  {
+    "objectID": "notebooks/lecture-00.html#description",
+    "href": "notebooks/lecture-00.html#description",
+    "title": "Lecture 00",
+    "section": "Description",
+    "text": "Description\nDescriptive statistics is the process of summarizing data. This can be done with numbers (e.g., mean, median, standard deviation) or with visualizations (e.g., histograms, boxplots). Descriptive statistics, importantly, are completely limited to the sample of data at hand.\nLet’s load in some data and take a look at it.\nThe dataset contains Airbnb listings in New York City, including prices, locations, and other features.\n\n\nCode\n# from https://www.kaggle.com/datasets/arianazmoudeh/airbnbopendata\n# import the data on Airbnb listings in the New York City\nairbnb = pd.read_csv(\"../data/airbnb.csv\")\n# data cleaning\nairbnb = airbnb.rename(columns={\"neighbourhood group\": \"borough\"})\nairbnb = airbnb.dropna(subset=[\"borough\", \"price\", \"long\", \"lat\"])\nairbnb[\"borough\"] = airbnb[\"borough\"].str.lower()\nairbnb[\"borough\"] = airbnb[\"borough\"].str.replace(\"manhatan\", \"manhattan\")\nairbnb[\"borough\"] = airbnb[\"borough\"].str.replace(\"brookln\", \"brooklyn\")\n# print column names\nprint(airbnb.columns.values)\n\n\n['id' 'NAME' 'host id' 'host_identity_verified' 'host name' 'borough'\n 'neighbourhood' 'lat' 'long' 'country' 'country code' 'instant_bookable'\n 'cancellation_policy' 'room type' 'Construction year' 'price'\n 'service fee' 'minimum nights' 'number of reviews' 'last review'\n 'reviews per month' 'review rate number' 'calculated host listings count'\n 'availability 365' 'house_rules' 'license']\n\n\n\n\nCode\n# print the first 5 rows\nairbnb[:5]\n\n\n\n\n\n\n\n\n\nid\nNAME\nhost id\nhost_identity_verified\nhost name\nborough\nneighbourhood\nlat\nlong\ncountry\n...\nservice fee\nminimum nights\nnumber of reviews\nlast review\nreviews per month\nreview rate number\ncalculated host listings count\navailability 365\nhouse_rules\nlicense\n\n\n\n\n0\n1001254\nClean & quiet apt home by the park\n80014485718\nunconfirmed\nMadaline\nbrooklyn\nKensington\n40.64749\n-73.97237\nUnited States\n...\n$193\n10.0\n9.0\n10/19/2021\n0.21\n4.0\n6.0\n286.0\nClean up and treat the home the way you'd like...\nNaN\n\n\n1\n1002102\nSkylit Midtown Castle\n52335172823\nverified\nJenna\nmanhattan\nMidtown\n40.75362\n-73.98377\nUnited States\n...\n$28\n30.0\n45.0\n5/21/2022\n0.38\n4.0\n2.0\n228.0\nPet friendly but please confirm with me if the...\nNaN\n\n\n2\n1002403\nTHE VILLAGE OF HARLEM....NEW YORK !\n78829239556\nNaN\nElise\nmanhattan\nHarlem\n40.80902\n-73.94190\nUnited States\n...\n$124\n3.0\n0.0\nNaN\nNaN\n5.0\n1.0\n352.0\nI encourage you to use my kitchen, cooking and...\nNaN\n\n\n3\n1002755\nNaN\n85098326012\nunconfirmed\nGarry\nbrooklyn\nClinton Hill\n40.68514\n-73.95976\nUnited States\n...\n$74\n30.0\n270.0\n7/5/2019\n4.64\n4.0\n1.0\n322.0\nNaN\nNaN\n\n\n4\n1003689\nEntire Apt: Spacious Studio/Loft by central park\n92037596077\nverified\nLyndon\nmanhattan\nEast Harlem\n40.79851\n-73.94399\nUnited States\n...\n$41\n10.0\n9.0\n11/19/2018\n0.10\n3.0\n1.0\n289.0\nPlease no smoking in the house, porch or on th...\nNaN\n\n\n\n\n5 rows × 26 columns\n\n\n\nNow there’s a lot you can do, but let’s start with a simple histogram of the price of listings.\n\n\nCode\n# format the price column\nairbnb['price'] = airbnb['price'].replace({'\\\\$': '', ',': ''}, regex=True).astype(float)\n# plot a histogram of the price column\nplt.figure(figsize=(10, 5))\nplt.hist(airbnb['price'], bins=50)\nplt.title('Price Distribution of Airbnb Listings in NYC')\nplt.xlabel('Price')\nplt.ylabel('Frequency')\n\n\nText(0, 0.5, 'Frequency')\n\n\n\n\n\n\n\n\n\nComputing statistics like the mean, standard deviation, and quartiles is easy.\n\n\nCode\nairbnb[\"price\"].describe()\n\n\ncount    102316.000000\nmean        625.291665\nstd         331.677344\nmin          50.000000\n25%         340.000000\n50%         624.000000\n75%         913.000000\nmax        1200.000000\nName: price, dtype: float64\n\n\nWe can even use specialized libraries to make use of the geographic information in the data. For example, we can use the geopandas library to plot the locations of listings on a map of New York City.\n\n\nCode\nimport geopandas as gpd\nfrom geodatasets import get_path\n# load the shapefile of NYC neighborhoods\nnyc_neighborhoods = gpd.read_file(get_path('nybb'))\nnyc_neighborhoods = nyc_neighborhoods.to_crs(epsg=4326)  # convert to WGS84\n# plot the neighborhoods with airbnb listings\nnyc_neighborhoods.plot(figsize=(8, 8), color='white', edgecolor='black')\n# plot the airbnb listings on top of the neighborhoods\n# use the 'long' and 'lat' columns to create a GeoDataFrame\nairbnb_gdf = gpd.GeoDataFrame(airbnb, geometry=gpd.points_from_xy(airbnb['long'], airbnb['lat']), crs='EPSG:4326')\n# set the coordinate reference system to WGS84\nairbnb_gdf.plot(ax=plt.gca(), column=\"price\", markersize=3, alpha=0.05, legend=True, cmap='viridis', legend_kwds={'shrink': 0.5, 'label': 'Price ($)'})\nplt.title('Airbnb Listings in NYC')\nplt.xlabel('Longitude')\nplt.ylabel('Latitude')\nplt.show()\n\n\n\n\n\n\n\n\n\nThere is a lot of information in the data, and we can summarize it in many different ways. But descriptive statistics only describe the data.\nWhy is this limiting? After all, we like data – it tells us things about the world and it’s objective and quantifiable.\nThe problem is that data is not always complete. In fact, it almost never is. And incomplete data can lead to misleading conclusions.\nLet’s look at our Airbnb data again. What if instead of looking at the entire dataset, we only looked at a small “sample” or subset of the data?\n\n\nCode\n# separately plot 3 samples of airbnb listings\nfig, ax = plt.subplots(2, 2, figsize=(10, 10), sharex=True, sharey=True)\nax = ax.flatten()\nfor i in range(4):\n    # sample 1000 listings\n    sample = airbnb.sample(100, random_state=i)\n    # plot the neighborhoods with airbnb listings\n    nyc_neighborhoods.plot(ax=ax[i], color='white', edgecolor='black')\n    # plot the airbnb listings on top of the neighborhoods\n    # use the 'long' and 'lat' columns to create a GeoDataFrame\n    airbnb_gdf_sample = gpd.GeoDataFrame(sample, geometry=gpd.points_from_xy(sample['long'], sample['lat']), crs='EPSG:4326')\n    # set the coordinate reference system to WGS84\n    airbnb_gdf_sample.plot(ax=ax[i], column=\"price\", markersize=3, alpha=0.8, legend=True, cmap='viridis', legend_kwds={'shrink': 0.5, 'label': 'Price ($)'})\n    ax[i].set_title(f'Airbnb Listings in NYC (Sample {i+1})\\n Average Price: ${sample[\"price\"].mean():.2f}')\n    ax[i].set_xlabel('Longitude')\n    ax[i].set_ylabel('Latitude')\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\n\nNotice how the samples differ from one another. They have different geography and different prices. This means you can’t just look at the descriptive statistics of a single sample and draw conclusions about the entire population.\n\n\n\n\n\n\nSample vs. Population\n\n\n\n\n\nA population is the entire set of data that you are interested in. A sample is a subset of a population. For example, if you are interested in the average price of all Airbnb listings in New York City, then the population is all of those listings. A sample would be a smaller subset of those listings, which may or may not be representative of the entire population.\nNote that this definition is flexible. For example, if you are interested in the average price of all short-term rentals in New York City, then the population is all rentals. Even an exhaustive list of Airbnb listings would just be a sample from that population.\nOften, the population is actually more abstract or theoretical. For example, if you are interested in the average price of all possible Airbnb listings in New York City, then the population includes all potential listings, not just the ones that currently exist.\n\n\n\nDescriptive statistics are useful for understanding the data at hand, but they don’t necessarily tell us much about the world outside of the data. For that, we need to do something more.",
+    "crumbs": [
+      "Home",
+      "Lecture 00"
+    ]
+  },
+  {
+    "objectID": "notebooks/lecture-00.html#inference",
+    "href": "notebooks/lecture-00.html#inference",
+    "title": "Lecture 00",
+    "section": "Inference",
+    "text": "Inference\nSo what if we want to answer questions about a population based on a sample? This is where inference comes in. Specifically, we want to use the given sample to infer something about the population.\nHow do we do this if we can’t ever see the entire population? The answer is that we need a link which connects the sample to the population – specifically, we can explicitly treat the sample as the outcome of a data-generating process (DGP).\n\n\n\n\n\n\nThere is always a DGP\n\n\n\n\n\nA data-generating process (DGP) is a theoretical construct that describes how data is generated in a population. It encompasses all the factors that influence the data, including the underlying mechanisms and relationships between variables.\nThere has to be a DGP, even if we don’t know what it is. The DGP is the process that generates the data we observe.\nThe full, true DGP is usually unknown. However, we can make assumptions about it and use those assumptions to draw inferences about the population (in the case that our assumptions are correct).\n\n\n\nOf course, we don’t necessarily know what the DGP is. If we we knew everything about how the data was generated, we probably would not have any questions to ask in the first place!\nThis is where the model comes in. A model is a simplified mathematical representation of the DGP that allows us to make inferences about the population based on the sample. At the end of the day, a model is sort of a guess – a guess about where your data come from.\n\n\n\n\n\n\nAll models are wrong\n\n\n\n\n\nThere is a very famous and oft-cited quote by George Box, a statistician, that goes:\n\n“All models are wrong, but some are useful.”\n\nThis means that all mathematical models are simplifications of reality, and they will never perfectly capture the true DGP. However, some models can still be useful for making predictions or drawing inferences about the population. We will talk more about this and see examples throughout the course.\n\n\n\n\nA simple model\nWe’ll talk about probability distributions in more detail later in the course, but for now let’s just say that a probability distribution is a mathematical function that describes the likelihood of different outcomes in a random process.\nThe most basic example is a coin flip. If we flip a fair coin, there are two possible outcomes: heads or tails. The probability of each outcome is 0.5, so we can represent this with a simple probability distribution.\n\\[\\begin{equation}\nP(X) = \\begin{cases}\n0.5 & \\text{if } X = \\text{heads} \\\\\n0.5 & \\text{if } X = \\text{tails} \\\\\n0 & \\text{otherwise}\n\\end{cases}\n\\end{equation}\\]\n\n\nCode\n# average price per borough\nborough_price = airbnb.groupby('borough')['price'].count().reset_index()\n# plot the average price per borough\nplt.figure(figsize=(10, 5))\nplt.bar(borough_price['borough'], borough_price['price'])\nplt.title('Number of Airbnb Listings per Borough')\nplt.xlabel('Borough')\nplt.ylabel('Count')\nplt.xticks(rotation=45)\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\n\n\n\nCode\nairbnb_gdf.plot(column=\"neighbourhood group\")\nplt.title('Airbnb Listings in NYC by borough')\n\n\nText(0.5, 1.0, 'Airbnb Listings in NYC by borough')",
+    "crumbs": [
+      "Home",
+      "Lecture 00"
+    ]
+  },
+  {
+    "objectID": "notebooks/lecture-00.html#prediction",
+    "href": "notebooks/lecture-00.html#prediction",
+    "title": "Lecture 00",
+    "section": "Prediction",
+    "text": "Prediction\nPrediction is the process of using a model to make predictions about unseen (or future) data.\nTake \\(X \\sim \\text{Uniform}(0, 1)\\)\n\n\nCode\nx = np.random.uniform(0, 1, 1000)\n\nplt.hist(x, bins=20, edgecolor=\"black\")\nplt.show()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nQuick exercise",
+    "crumbs": [
+      "Home",
+      "Lecture 00"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "understanding-uncertainty",
+    "section": "",
+    "text": "This website contains course materials for the Understanding Uncertainty course at The Wharton School of the University of Pennsylvania.\n\n\n\nSomething from DALL-E’s imagination"
+  },
+  {
+    "objectID": "assignments.html",
+    "href": "assignments.html",
+    "title": "Assignments",
+    "section": "",
+    "text": "Assignment\nDescription\nDue Date\n\n\n\n\nAssignment 1"
+  },
+  {
+    "objectID": "syllabus.html",
+    "href": "syllabus.html",
+    "title": "Syllabus",
+    "section": "",
+    "text": "Course Title: Understanding Uncertainty: An Introduction to Statistics through Data Generating Processes and Computational Simulations\nCourse Schedule: 4 Weeks, 3 sessions per week, 1.5 hours per session\n\n\n\n\n\n\n\n\n\nWeek\nSession\nTopics Covered\nActivities/Assignments\n\n\n\n\n1\nSession 1\n- Course Introduction- Understanding Data Generating Processes (DGPs)- Basic Python Syntax and Data Types\n- Install Python and Jupyter- Assignment: Write a simple Python program\n\n\n\nSession 2\n- Data Structures in Python (Lists, Tuples, Dictionaries)- Importing and Exporting Data- Generating Random Numbers\n- Load and explore datasets- Assignment: Simulate a simple DGP\n\n\n\nSession 3\n- Descriptive Statistics- Measures of Central Tendency and Variability- Data Visualization with Matplotlib and Seaborn\n- Plot histograms and boxplots- Assignment: Analyze summary statistics of a dataset\n\n\n2\nSession 4\n- Probability Concepts- Discrete and Continuous Distributions- Simulating Random Events\n- Simulate coin tosses and dice rolls- Assignment: Probability simulations\n\n\n\nSession 5\n- Exploring Different Distributions- Normal, Binomial, Poisson, Exponential Distributions- Central Limit Theorem (CLT)\n- Visualize distributions and CLT demonstrations- Assignment: CLT simulation project\n\n\n\nSession 6\n- Understanding Uncertainty- Confidence Intervals- Margin of Error- Introduction to Hypothesis Testing\n- Calculate confidence intervals- Assignment: Formulate and test hypotheses\n\n\n3\nSession 7\n- Resampling Methods- Bootstrapping and Permutation Tests- Practical Applications\n- Conduct bootstrap and permutation tests- Assignment: Resampling project\n\n\n\nSession 8\n- Bias and Variance Trade-off- Overfitting and Underfitting- Model Complexity and Generalization\n- Visualize bias-variance trade-off- Assignment: Experiment with model complexity\n\n\n\nSession 9\n- Introduction to Machine Learning- Supervised vs. Unsupervised Learning- Training and Testing Sets- Evaluation Metrics\n- Split data and evaluate models- Assignment: Build and evaluate predictive models\n\n\n4\nSession 10\n- Regularization Techniques- Ridge and Lasso Regression- Fairness in Machine Learning\n- Implement regularization- Assignment: Regularization and fairness assessment\n\n\n\nSession 11\n- Population Statistics and Representation- Sampling Methods and Sampling Bias- Ethical Considerations in Data Science\n- Simulate sampling strategies- Assignment: Design a fair sampling plan\n\n\n\nSession 12\n- Course Review and Future Directions- Student Project Presentations- Trends in Statistics and Data Science\n- Present final projects- Course Feedback Survey"
+  },
+  {
+    "objectID": "notebooks/lecture-10.html",
+    "href": "notebooks/lecture-10.html",
+    "title": "Lecture 00: ANOVA",
+    "section": "",
+    "text": "We want to emphasize that nearly any statistical method with a closed-form solution can be replicated with a simulation.\nTake ANOVA, or analysis of variance, for example. The ANOVA test is used to determine whether there are any statistically significant differences between the means of two or more groups. It is a parametric test that assumes the data is normally distributed and that the variances of the groups are equal.\nThe exact test we compute is the F-test, which compares the variance between groups to the variance within groups. The null hypothesis is that all group means are equal, while the alternative hypothesis is that at least one group mean is different. The F-test relies on the fact that the ratio of two independent chi-squared variables (i.e. a normal variable, squared) follows an F-distribution.\nHere we will simulate the F-test by generating random data from a normal distribution and computing the F-statistic for different group means. We will see that under the null hypothesis (group means are equal), the F-statistic follows an F-distribution with degrees of freedom equal to the number of groups minus one and the total number of observations minus the number of groups.\nIn the next lecture we will compare the F-test to a non-parametric permutation test, which does not make any assumptions about the distribution of the data.",
+    "crumbs": [
+      "Home",
+      "Lecture 10"
+    ]
+  }
+]

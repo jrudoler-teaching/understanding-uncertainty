@@ -651,6 +651,17 @@ docs = ["myst-parser", "pydata-sphinx-theme", "sphinx-autodoc-typehints", "sphin
 test = ["ipykernel", "pre-commit", "pytest (<8)", "pytest-cov", "pytest-timeout"]
 
 [[package]]
+name = "jupyterquiz"
+version = "2.9.6.2"
+description = "Interactive quizzes for Jupyter and Jupyter Book"
+optional = false
+python-versions = "*"
+files = [
+    {file = "jupyterquiz-2.9.6.2-py2.py3-none-any.whl", hash = "sha256:f60f358c809d06a38c423c804740c1113c8840e130227aef50694a9201474bef"},
+    {file = "jupyterquiz-2.9.6.2.tar.gz", hash = "sha256:c91b00a4a697dcce0b73e144c62068539ebddb565380e06cdcdfc94920941a31"},
+]
+
+[[package]]
 name = "kiwisolver"
 version = "1.4.7"
 description = "A fast implementation of the Cassowary constraint solver"
@@ -1823,4 +1834,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "bf434d81e47adfdaad0e241c6dbeab51c8267dbaead26af05c90e3de37ed2e12"
+content-hash = "d4759724b663dca74201d226c0686e13e6db98cfcfc3298be9acde152b7dec3c"
