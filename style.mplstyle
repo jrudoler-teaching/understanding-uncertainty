@@ -9,6 +9,7 @@ axes.linewidth: 1.5
 axes.grid: false
 axes.spines.right: false
 axes.spines.top: false
+axes.prop_cycle: cycler('color', ['56B4E9', '009E73', 'F0E442', '0072B2', 'D55E00', 'E69F00', 'CC79A7'])
 grid.linestyle: --
 
 # Lines
@@ -16,6 +17,8 @@ lines.linewidth: 2
 
 # Patches (histogram)
 patch.edgecolor: black
+patch.force_edgecolor: true
+patch.facecolor: lightblue
 
 # Legend
 legend.fontsize: 10

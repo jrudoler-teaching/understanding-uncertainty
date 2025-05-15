@@ -4,6 +4,7 @@ project:
   render:
     - "*.qmd"
     - "notebooks/*.ipynb"
+    - "notebooks/*-slides.qmd"
     - "assignments/*.ipynb"
 
 website:
@@ -23,12 +24,10 @@ website:
       style: "floating"
       search: true
       contents:
-        - text: "Introduction"
+        - text: "Lecture 00 Notes"
           href: notebooks/lecture-00.ipynb
-        - section: "Basics"
-          # href: basics-summary.qmd
-          contents:
-            - index.qmd
+        - text: "Lecture 00 Slides"
+          href: notebooks/lecture-00-slides.qmd
   page-navigation: true
 
 format:
