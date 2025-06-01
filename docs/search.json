@@ -7,6 +7,126 @@
     "text": "print(\"Hello, World!\")\n\nHello, World!"
   },
   {
+    "objectID": "notebooks/lecture-01.html",
+    "href": "notebooks/lecture-01.html",
+    "title": "Lecture 01: Programming Basics, Data Structures, and Data Manipulation",
+    "section": "",
+    "text": "This lecture will be, intentionally, a bit of a whirlwind. That’s because with the advent of large language models (LLMs) like ChatGPT, Claude, Gemini, etc. knowing how to program in specific languages like Python is becoming less important. You don’t need that much practice or to focus on the syntax of a specific language.\nInstead, the important thing is to understand the core concepts involved in programming, which are largely universal across languages. This high-level understanding will allow you to use LLMs effectively to write code in any language, including Python. If you don’t understand the concepts, you won’t be able to identify when the LLM is making mistakes or producing suboptimal code.",
+    "crumbs": [
+      "Home",
+      "Lecture 01: Programming Basics"
+    ]
+  },
+  {
+    "objectID": "notebooks/lecture-01.html#variables-and-types",
+    "href": "notebooks/lecture-01.html#variables-and-types",
+    "title": "Lecture 01: Programming Basics, Data Structures, and Data Manipulation",
+    "section": "Variables and types",
+    "text": "Variables and types\nVariables are used to store data in a program. They can hold different types of data, such as numbers, strings (text), lists, and more.\n\n\n\n\n\n\nFunctions act on variables\n\n\n\nFunctions in programming are designed to operate on variables. They take input (variables), perform some operations, and return output. Understanding how variables work is crucial for effectively using functions.\nWe’ll explore functions in more detail later (Functions), but for now, remember that functions are named blocks of code that manipulate variables to achieve specific tasks.\nSome functions are built-in, meaning they are provided by the programming language itself, while others can be defined by the user. Built-in functions in Python include print() for displaying output, as well as type() for checking the type of a variable.\n\n\nIt is both useful and pretty accurate to think of programmatic variables in the same way you think of algebraic variables in math. You can assign or change the value of a variable, and you can use it in calculations or operations.\nYou can create a variable by assigning it a value using the equals sign (=).\nFor example, if you create a variable x that holds the value 5, you can use it in calculations like this:\nx = 5\ny = x + 3\nprint(y)  # Output: 8\nThe following table describes some common variable types:\n\n\n\n\n\n\n\nVariable Type\nDescription\n\n\n\n\nInteger\nWhole numbers, e.g., 5, -3, 42\n\n\nFloat\nDecimal numbers, e.g., 3.14, -0.001, 2.0\n\n\nString\nTextual data, e.g., \"Hello, world!\", 'Python'\n\n\nList\nOrdered collection of items, e.g., [1, 2, 3], ['a', 'b', 'c']\n\n\nDictionary\nKey-value pairs, e.g., {'name': 'Alice', 'age': 30}\n\n\nBoolean\nTrue or False values, e.g., True, False\n\n\n\nLet’s discuss a few important ones in more detail\n\n\n\n\n\n\nEverything is an object\n\n\n\nIn Python, everything is an object. This means that even basic data types like integers and strings are treated as objects with methods and properties. For example, you can call methods on a string object to manipulate it, like my_string.upper() to convert it to uppercase.\nSee the later section on Object-Oriented Programming for more details.",
+    "crumbs": [
+      "Home",
+      "Lecture 01: Programming Basics"
+    ]
+  },
+  {
+    "objectID": "notebooks/lecture-01.html#lists",
+    "href": "notebooks/lecture-01.html#lists",
+    "title": "Lecture 01: Programming Basics, Data Structures, and Data Manipulation",
+    "section": "Lists",
+    "text": "Lists\nWe often need to store multiple values together. The most basic way to achieve this is with a list. A list is an ordered collection of items that can be of any type, including other lists. “Ordered” means that the items have a specific sequence, and you can access them by their position (index) in the list.\nIn Python, you can create a list using square brackets []. For example:\n\nmy_list = [1, 2, 3, 'apple', 'banana']\nprint(my_list[0])  # Output: 1\n\n1\n\n\nYou can access items in a list using their index (a number specifying their position). In Python, indexing starts at 0, so my_list[0] refers to the first item in the list.\nYou can also modify lists by adding or removing items. For example:\n\nmy_list.append('orange')  # Adds 'orange' to the end of the list\nprint(my_list)  # Output: [1, 2, 3, 'apple', 'banana', 'orange']\n\n[1, 2, 3, 'apple', 'banana', 'orange']",
+    "crumbs": [
+      "Home",
+      "Lecture 01: Programming Basics"
+    ]
+  },
+  {
+    "objectID": "notebooks/lecture-01.html#arrays-numpy",
+    "href": "notebooks/lecture-01.html#arrays-numpy",
+    "title": "Lecture 01: Programming Basics, Data Structures, and Data Manipulation",
+    "section": "Arrays (NumPy)",
+    "text": "Arrays (NumPy)\nWhile lists are flexible, they can be inefficient and unreliable for many numerical operations. Arrays, provided by the core library numpy, enforce a single data type and are optimized for numerical computations. They also have lots of built-in functionality for mathematical operations.\nYou can create a NumPy array using the numpy.array() function. For example:\nimport numpy as np\nmy_array = np.array([1, 2, 3, 4, 5])\nprint(my_array)  # Output: [1 2 3 4 5]\nYou can perform mathematical operations on NumPy arrays, and they will be applied element-wise. For example:\nmy_array = np.array([1, 2, 3, 4, 5])\nmy_array_squared = my_array ** 2\nprint(my_array_squared)  # Output: [ 1  4  9 16 25]\nYou can’t have mixed data types in a NumPy array, so if you try to create an array with both numbers and strings, it will convert everything to strings:\nmixed_array = np.array([1, 'two', 3.0])\nprint(mixed_array)  # Output: ['1' 'two' '3.0']",
+    "crumbs": [
+      "Home",
+      "Lecture 01: Programming Basics"
+    ]
+  },
+  {
+    "objectID": "notebooks/lecture-01.html#dictionaries",
+    "href": "notebooks/lecture-01.html#dictionaries",
+    "title": "Lecture 01: Programming Basics, Data Structures, and Data Manipulation",
+    "section": "Dictionaries",
+    "text": "Dictionaries\nSometimes a list or array is not enough. You may want to store data in a way that allows you to access it by a keyword rather than by an index. For example, I might have a list of people and their ages, but I want to be able to look up a person’s age by their name. In this case, I can use a dictionary.\nWe can create a dictionary using curly braces {} and separating keys and values with a colon :. Here’s an example:\n\nname_age_dict = {\n    \"Alice\": 30,\n    \"Bob\": 25,\n    \"Charlie\": 35\n}\n\nIn order to access a value in a dictionary, we use the key in square brackets []. Here’s how you can do that:\n\nname_age_dict[\"Bob\"] # this will print Bob's age\n\n25\n\n\nThe “value” in a dictionary can be of any type, including another dictionary or a list. This allows for building up complex data structures that contain named entities and their associated data.\nFor example, you might have a dictionary that contains different types of data about a person.\n\nname_age_list_dict = {\n    'Name': ['Alice', 'Bob', 'Charlie'],\n    'Age': [25, 30, 35],\n}",
+    "crumbs": [
+      "Home",
+      "Lecture 01: Programming Basics"
+    ]
+  },
+  {
+    "objectID": "notebooks/lecture-01.html#dataframes",
+    "href": "notebooks/lecture-01.html#dataframes",
+    "title": "Lecture 01: Programming Basics, Data Structures, and Data Manipulation",
+    "section": "Dataframes",
+    "text": "Dataframes\nMost of the time, data scientists work with tabular data (data organized in tables with rows and columns). Think of the data you typically see in spreadsheets – rows represent individual records, and columns represent attributes of those records.\nIn Python, the most common way to work with tabular data is through the pandas library, which provides a powerful data structure called a DataFrame.\n\n\nCode\nimport pandas as pd\n# Create a DataFrame with sample data\ndf = pd.DataFrame({\n    'Name': ['Alice', 'Bob', 'Charlie'],\n    'Age': [25, 30, 35],\n    'Height (cm)': [165, 180, 175],\n    'Weight (kg)': [55.1, 80.5, 70.2],\n    'City': ['New York', 'Los Angeles', 'Chicago']\n})\ndf\n\n\n\n\n\n\n\n\n\nName\nAge\nHeight (cm)\nWeight (kg)\nCity\n\n\n\n\n0\nAlice\n25\n165\n55.1\nNew York\n\n\n1\nBob\n30\n180\n80.5\nLos Angeles\n\n\n2\nCharlie\n35\n175\n70.2\nChicago\n\n\n\n\n\n\n\nOne import thing to realize about DataFrames that each column can have a different data type. For example, one column might contain integers, another might contain strings, and yet another might contain floating-point numbers.\nHowever, all the values in a single column should be of the same type. Intuitively: since columns represent attributes, every value in a column should represent the same kind of information. It wouldn’t make sense if the “city” column of a DataFrame contained both “New York” (a string) and 42 (an integer).\nNote that this rule isn’t necessarily enforced by the DataFrame structure itself, but it’s a good practice to follow. Otherwise, you might run into issues when performing operations on the DataFrame.\n\n\nCode\nbad_df = pd.DataFrame({\n    'Name': ['Alice', 'Bob', 'Charlie'],\n    'Age': [25, 30, 'Thirty-Five'],  # Mixed types in the 'Age' column\n})\n\nbad_df[\"Age\"] * 3\n\n\n0                                   75\n1                                   90\n2    Thirty-FiveThirty-FiveThirty-Five\nName: Age, dtype: object",
+    "crumbs": [
+      "Home",
+      "Lecture 01: Programming Basics"
+    ]
+  },
+  {
+    "objectID": "notebooks/lecture-01.html#functions-and-functional-programming",
+    "href": "notebooks/lecture-01.html#functions-and-functional-programming",
+    "title": "Lecture 01: Programming Basics, Data Structures, and Data Manipulation",
+    "section": "Functions and functional programming",
+    "text": "Functions and functional programming\nFunctions are reusable blocks of code that perform a specific task. They allow you to organize your code into logical sections, making it easier to read, maintain, and reuse.\nThey work like functions in math: you can pass inputs (arguments) to a function, and it will return an output (result). You can define a function in Python using the def keyword, followed by the function name and parentheses containing any parameters. Here’s an example:\ndef add_numbers(a, b):\n    \"\"\"Adds two numbers and returns the result.\"\"\"\n    return a + b\nresult = add_numbers(3, 5)\nprint(result)  # Output: 8\nFunctions can also have default values for parameters, which allows you to call them with fewer arguments than defined. For example:\ndef greet(name=\"World\"):\n    \"\"\"Greets the specified name or 'World' by default.\"\"\"\n    return f\"Hello, {name}!\"\nprint(greet())          # Output: Hello, World!\nprint(greet(\"Alice\"))  # Output: Hello, Alice!\nFunctional programming is a style of programming that treats computer programs as the evaluation of mathematical functions. It is alternatively called value-oriented programming1 because the output of a program is just the value(s) it produces as a function of its inputs.\nProbably the core principle of functional programming is to avoid changing state and mutable data. This means that once a value is created, it should not be changed. Instead, you create new values based on existing ones.\nThat means means that functions should not have side effects – they use data passed to them and return a new value without modifying the input data. This makes it easier to reason about code, as you can understand what a function does just by looking at its inputs and outputs.\nFor example, consider the following two functions for squaring a number:\n\n\nCode\nimport numpy as np\n\ndef square_functional(input):\n    \"\"\"Returns the square of an array\"\"\"\n    return input ** 2\n\ndef square_side_effect(input):\n    \"\"\"Returns the square of an array with a side effect\"\"\"\n    input[0] = -1\n    return input ** 2  # This is a side effect, modifying the first element of input\n\na = np.array([1, 3, 5])\nb = square_functional(a)  # b will be 25, a remains 5\nprint(f\"Functional: a = {a}, b = {b}\")\nc = square_side_effect(a)  # c will be 25, a will still be 5\nprint(f\"Side Effect: a = {a}, c = {c}\")\n\n\nFunctional: a = [1 3 5], b = [ 1  9 25]\nSide Effect: a = [-1  3  5], c = [ 1  9 25]\n\n\nThere are somewhat complicated rules about what objects can be modified in place and what cannot (sometimes Python allows it, sometimes it doesn’t), but the general rule is that you should avoid modifying objects in place unless you have a good reason to do so. The main reason is that you might inadvertently change the value of an object that is being used elsewhere in your code, leading to bugs that are hard to track down. Instead, create new objects based on existing ones.",
+    "crumbs": [
+      "Home",
+      "Lecture 01: Programming Basics"
+    ]
+  },
+  {
+    "objectID": "notebooks/lecture-01.html#object-oriented-programming",
+    "href": "notebooks/lecture-01.html#object-oriented-programming",
+    "title": "Lecture 01: Programming Basics, Data Structures, and Data Manipulation",
+    "section": "Object-Oriented Programming",
+    "text": "Object-Oriented Programming\nWhile you can write programs in Python using just functions, the language is really designed for object-oriented programming (OOP). OOP is a style of programming built around the concept of “objects”, which are specific instances of classes.\nA class is like a template for creating new objects. It defines the properties (attributes) and \\ behaviors (methods) that the objects created from the class will have.\nTo define a class in Python, you use the class keyword followed by the class name. Every class should have an __init__ method, which is a special method that initializes the object when it is created.\nHere’s a simple example of a class:\n\n\nCode\nclass Date():\n    \"\"\"A simple class to represent a date\"\"\"\n\n    # This is the constructor method, called when an instance is created like Date(2025, 5, 6)\n    def __init__(self, year, month, day):\n        self.year = year\n        self.month = month\n        self.day = day\n\n    def __str__(self):\n        # defined what print() should do\n        # formats the date as YYYY-MM-DD\n        return f\"{self.year:04d}-{self.month:02d}-{self.day:02d}\"\n    \n    # here is a method that checks if the date is in summer\n    def is_summer(self):\n        \"\"\"Check if the date is in summer (June, July, August)\"\"\"\n        return self.month in [6, 7, 8]\n\n# Create an instance of the Date class\ndate_instance = Date(2025, 5, 6)\n\nprint(date_instance)  # Output: 2025-05-06\nprint(date_instance.is_summer())  # Output: False\n\n\n2025-05-06\nFalse",
+    "crumbs": [
+      "Home",
+      "Lecture 01: Programming Basics"
+    ]
+  },
+  {
+    "objectID": "notebooks/lecture-01.html#footnotes",
+    "href": "notebooks/lecture-01.html#footnotes",
+    "title": "Lecture 01: Programming Basics, Data Structures, and Data Manipulation",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nTechnically there is a difference between functional programming and value-oriented programming that programming-language nerds care about, but for our purposes, they are the same thing.↩︎",
+    "crumbs": [
+      "Home",
+      "Lecture 01: Programming Basics"
+    ]
+  },
+  {
+    "objectID": "syllabus.html",
+    "href": "syllabus.html",
+    "title": "Syllabus",
+    "section": "",
+    "text": "Course Title: Understanding Uncertainty: An Introduction to Statistics through Data Generating Processes and Computational Simulations\nCourse Schedule: 4 Weeks, 3 sessions per week, 1.5 hours per session\n\n\n\n\n\n\n\n\n\nWeek\nSession\nTopics Covered\nActivities/Assignments\n\n\n\n\n1\nSession 1\n- Course Introduction- Understanding Data Generating Processes (DGPs)- Basic Python Syntax and Data Types\n- Install Python and Jupyter- Assignment: Write a simple Python program\n\n\n\nSession 2\n- Data Structures in Python (Lists, Tuples, Dictionaries)- Importing and Exporting Data- Generating Random Numbers\n- Load and explore datasets- Assignment: Simulate a simple DGP\n\n\n\nSession 3\n- Descriptive Statistics- Measures of Central Tendency and Variability- Data Visualization with Matplotlib and Seaborn\n- Plot histograms and boxplots- Assignment: Analyze summary statistics of a dataset\n\n\n2\nSession 4\n- Probability Concepts- Discrete and Continuous Distributions- Simulating Random Events\n- Simulate coin tosses and dice rolls- Assignment: Probability simulations\n\n\n\nSession 5\n- Exploring Different Distributions- Normal, Binomial, Poisson, Exponential Distributions- Central Limit Theorem (CLT)\n- Visualize distributions and CLT demonstrations- Assignment: CLT simulation project\n\n\n\nSession 6\n- Understanding Uncertainty- Confidence Intervals- Margin of Error- Introduction to Hypothesis Testing\n- Calculate confidence intervals- Assignment: Formulate and test hypotheses\n\n\n3\nSession 7\n- Resampling Methods- Bootstrapping and Permutation Tests- Practical Applications\n- Conduct bootstrap and permutation tests- Assignment: Resampling project\n\n\n\nSession 8\n- Bias and Variance Trade-off- Overfitting and Underfitting- Model Complexity and Generalization\n- Visualize bias-variance trade-off- Assignment: Experiment with model complexity\n\n\n\nSession 9\n- Introduction to Machine Learning- Supervised vs. Unsupervised Learning- Training and Testing Sets- Evaluation Metrics\n- Split data and evaluate models- Assignment: Build and evaluate predictive models\n\n\n4\nSession 10\n- Regularization Techniques- Ridge and Lasso Regression- Fairness in Machine Learning\n- Implement regularization- Assignment: Regularization and fairness assessment\n\n\n\nSession 11\n- Population Statistics and Representation- Sampling Methods and Sampling Bias- Ethical Considerations in Data Science\n- Simulate sampling strategies- Assignment: Design a fair sampling plan\n\n\n\nSession 12\n- Course Review and Future Directions- Student Project Presentations- Trends in Statistics and Data Science\n- Present final projects- Course Feedback Survey"
+  },
+  {
+    "objectID": "assignments.html",
+    "href": "assignments.html",
+    "title": "Assignments",
+    "section": "",
+    "text": "Assignment\nDescription\nDue Date\n\n\n\n\nAssignment 1"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "understanding-uncertainty",
+    "section": "",
+    "text": "This website contains course materials for the Understanding Uncertainty course at The Wharton School of the University of Pennsylvania.\n\n\n\nSomething from DALL-E’s imagination"
+  },
+  {
     "objectID": "notebooks/lecture-00.html",
     "href": "notebooks/lecture-00.html",
     "title": "Lecture 00",
@@ -14,7 +134,7 @@
     "text": "So begins “Understanding Uncertainty”, a course in statistical thinking and data science.\nThis is lecture 0. See the syllabus for an overview of the course.\nOur basic goals for the course are:\n\nto build a strong intuition about data, where it comes from, and what questions it can answer.\nto learn the basic computational skills needed to manipulate and analyze data. Working with data also helps with (1)!",
     "crumbs": [
       "Home",
-      "Lecture 00"
+      "Lecture 00: Why Statistics?"
     ]
   },
   {
@@ -25,7 +145,7 @@
     "text": "So begins “Understanding Uncertainty”, a course in statistical thinking and data science.\nThis is lecture 0. See the syllabus for an overview of the course.\nOur basic goals for the course are:\n\nto build a strong intuition about data, where it comes from, and what questions it can answer.\nto learn the basic computational skills needed to manipulate and analyze data. Working with data also helps with (1)!",
     "crumbs": [
       "Home",
-      "Lecture 00"
+      "Lecture 00: Why Statistics?"
     ]
   },
   {
@@ -36,7 +156,7 @@
     "text": "Why statistics?\nStatistics is, essentially, the study of data and how to use it. People argue about the purpose of statistics, but basically you can do 3 things with data: (1) description, (2) inference, and (3) prediction.",
     "crumbs": [
       "Home",
-      "Lecture 00"
+      "Lecture 00: Why Statistics?"
     ]
   },
   {
@@ -47,7 +167,7 @@
     "text": "Description\nDescriptive statistics is the process of summarizing data. This can be done with numbers (e.g., mean, median, standard deviation) or with visualizations (e.g., histograms, boxplots). Descriptive statistics, importantly, are completely limited to the sample of data at hand.\nLet’s load in some data and take a look at it.\nThe dataset contains Airbnb listings in New York City, including prices, locations, and other features.\n\n\nCode\n# from https://www.kaggle.com/datasets/arianazmoudeh/airbnbopendata\n# import the data on Airbnb listings in the New York City\nairbnb = pd.read_csv(\"../data/airbnb.csv\")\n# data cleaning\nairbnb = airbnb.rename(columns={\"neighbourhood group\": \"borough\"})\nairbnb = airbnb.dropna(subset=[\"borough\", \"price\", \"long\", \"lat\"])\nairbnb[\"borough\"] = airbnb[\"borough\"].str.lower()\nairbnb[\"borough\"] = airbnb[\"borough\"].str.replace(\"manhatan\", \"manhattan\")\nairbnb[\"borough\"] = airbnb[\"borough\"].str.replace(\"brookln\", \"brooklyn\")\n# print column names\nprint(airbnb.columns.values)\n\n\n['id' 'NAME' 'host id' 'host_identity_verified' 'host name' 'borough'\n 'neighbourhood' 'lat' 'long' 'country' 'country code' 'instant_bookable'\n 'cancellation_policy' 'room type' 'Construction year' 'price'\n 'service fee' 'minimum nights' 'number of reviews' 'last review'\n 'reviews per month' 'review rate number' 'calculated host listings count'\n 'availability 365' 'house_rules' 'license']\n\n\n\n\nCode\n# print the first 5 rows\nairbnb[:5]\n\n\n\n\n\n\n\n\n\nid\nNAME\nhost id\nhost_identity_verified\nhost name\nborough\nneighbourhood\nlat\nlong\ncountry\n...\nservice fee\nminimum nights\nnumber of reviews\nlast review\nreviews per month\nreview rate number\ncalculated host listings count\navailability 365\nhouse_rules\nlicense\n\n\n\n\n0\n1001254\nClean & quiet apt home by the park\n80014485718\nunconfirmed\nMadaline\nbrooklyn\nKensington\n40.64749\n-73.97237\nUnited States\n...\n$193\n10.0\n9.0\n10/19/2021\n0.21\n4.0\n6.0\n286.0\nClean up and treat the home the way you'd like...\nNaN\n\n\n1\n1002102\nSkylit Midtown Castle\n52335172823\nverified\nJenna\nmanhattan\nMidtown\n40.75362\n-73.98377\nUnited States\n...\n$28\n30.0\n45.0\n5/21/2022\n0.38\n4.0\n2.0\n228.0\nPet friendly but please confirm with me if the...\nNaN\n\n\n2\n1002403\nTHE VILLAGE OF HARLEM....NEW YORK !\n78829239556\nNaN\nElise\nmanhattan\nHarlem\n40.80902\n-73.94190\nUnited States\n...\n$124\n3.0\n0.0\nNaN\nNaN\n5.0\n1.0\n352.0\nI encourage you to use my kitchen, cooking and...\nNaN\n\n\n3\n1002755\nNaN\n85098326012\nunconfirmed\nGarry\nbrooklyn\nClinton Hill\n40.68514\n-73.95976\nUnited States\n...\n$74\n30.0\n270.0\n7/5/2019\n4.64\n4.0\n1.0\n322.0\nNaN\nNaN\n\n\n4\n1003689\nEntire Apt: Spacious Studio/Loft by central park\n92037596077\nverified\nLyndon\nmanhattan\nEast Harlem\n40.79851\n-73.94399\nUnited States\n...\n$41\n10.0\n9.0\n11/19/2018\n0.10\n3.0\n1.0\n289.0\nPlease no smoking in the house, porch or on th...\nNaN\n\n\n\n\n5 rows × 26 columns\n\n\n\nNow there’s a lot you can do, but let’s start with a simple histogram of the price of listings.\n\n\nCode\n# format the price column\nairbnb['price'] = airbnb['price'].replace({'\\\\$': '', ',': ''}, regex=True).astype(float)\n# plot a histogram of the price column\nplt.figure(figsize=(10, 5))\nplt.hist(airbnb['price'], bins=50)\nplt.title('Price Distribution of Airbnb Listings in NYC')\nplt.xlabel('Price')\nplt.ylabel('Frequency')\n\n\nText(0, 0.5, 'Frequency')\n\n\n\n\n\n\n\n\n\nComputing statistics like the mean, standard deviation, and quartiles is easy.\n\n\nCode\nairbnb[\"price\"].describe()\n\n\ncount    102316.000000\nmean        625.291665\nstd         331.677344\nmin          50.000000\n25%         340.000000\n50%         624.000000\n75%         913.000000\nmax        1200.000000\nName: price, dtype: float64\n\n\nWe can even use specialized libraries to make use of the geographic information in the data. For example, we can use the geopandas library to plot the locations of listings on a map of New York City.\n\n\nCode\nimport geopandas as gpd\nfrom geodatasets import get_path\n# load the shapefile of NYC neighborhoods\nnyc_neighborhoods = gpd.read_file(get_path('nybb'))\nnyc_neighborhoods = nyc_neighborhoods.to_crs(epsg=4326)  # convert to WGS84\n# plot the neighborhoods with airbnb listings\nnyc_neighborhoods.plot(figsize=(8, 8), color='white', edgecolor='black')\n# plot the airbnb listings on top of the neighborhoods\n# use the 'long' and 'lat' columns to create a GeoDataFrame\nairbnb_gdf = gpd.GeoDataFrame(airbnb, geometry=gpd.points_from_xy(airbnb['long'], airbnb['lat']), crs='EPSG:4326')\n# set the coordinate reference system to WGS84\nairbnb_gdf.plot(ax=plt.gca(), column=\"price\", markersize=3, alpha=0.05, legend=True, cmap='viridis', legend_kwds={'shrink': 0.5, 'label': 'Price ($)'})\nplt.title('Airbnb Listings in NYC')\nplt.xlabel('Longitude')\nplt.ylabel('Latitude')\nplt.show()\n\n\n\n\n\n\n\n\n\nThere is a lot of information in the data, and we can summarize it in many different ways. But descriptive statistics only describe the data.\nWhy is this limiting? After all, we like data – it tells us things about the world and it’s objective and quantifiable.\nThe problem is that data is not always complete. In fact, it almost never is. And incomplete data can lead to misleading conclusions.\nLet’s look at our Airbnb data again. What if instead of looking at the entire dataset, we only looked at a small “sample” or subset of the data?\n\n\nCode\n# separately plot 3 samples of airbnb listings\nfig, ax = plt.subplots(2, 2, figsize=(10, 10), sharex=True, sharey=True)\nax = ax.flatten()\nfor i in range(4):\n    # sample 1000 listings\n    sample = airbnb.sample(100, random_state=i)\n    # plot the neighborhoods with airbnb listings\n    nyc_neighborhoods.plot(ax=ax[i], color='white', edgecolor='black')\n    # plot the airbnb listings on top of the neighborhoods\n    # use the 'long' and 'lat' columns to create a GeoDataFrame\n    airbnb_gdf_sample = gpd.GeoDataFrame(sample, geometry=gpd.points_from_xy(sample['long'], sample['lat']), crs='EPSG:4326')\n    # set the coordinate reference system to WGS84\n    airbnb_gdf_sample.plot(ax=ax[i], column=\"price\", markersize=3, alpha=0.8, legend=True, cmap='viridis', legend_kwds={'shrink': 0.5, 'label': 'Price ($)'})\n    ax[i].set_title(f'Airbnb Listings in NYC (Sample {i+1})\\n Average Price: ${sample[\"price\"].mean():.2f}')\n    ax[i].set_xlabel('Longitude')\n    ax[i].set_ylabel('Latitude')\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\n\nNotice how the samples differ from one another. They have different geography and different prices. This means you can’t just look at the descriptive statistics of a single sample and draw conclusions about the entire population.\n\n\n\n\n\n\nSample vs. Population\n\n\n\n\n\nA population is the entire set of data that you are interested in. A sample is a subset of a population. For example, if you are interested in the average price of all Airbnb listings in New York City, then the population is all of those listings. A sample would be a smaller subset of those listings, which may or may not be representative of the entire population.\nNote that this definition is flexible. For example, if you are interested in the average price of all short-term rentals in New York City, then the population is all rentals. Even an exhaustive list of Airbnb listings would just be a sample from that population.\nOften, the population is actually more abstract or theoretical. For example, if you are interested in the average price of all possible Airbnb listings in New York City, then the population includes all potential listings, not just the ones that currently exist.\n\n\n\nDescriptive statistics are useful for understanding the data at hand, but they don’t necessarily tell us much about the world outside of the data. For that, we need to do something more.",
     "crumbs": [
       "Home",
-      "Lecture 00"
+      "Lecture 00: Why Statistics?"
     ]
   },
   {
@@ -58,7 +178,7 @@
     "text": "Inference\nSo what if we want to answer questions about a population based on a sample? This is where inference comes in. Specifically, we want to use the given sample to infer something about the population.\nHow do we do this if we can’t ever see the entire population? The answer is that we need a link which connects the sample to the population – specifically, we can explicitly treat the sample as the outcome of a data-generating process (DGP).\n\n\n\n\n\n\nThere is always a DGP\n\n\n\n\n\nA data-generating process (DGP) is a theoretical construct that describes how data is generated in a population. It encompasses all the factors that influence the data, including the underlying mechanisms and relationships between variables.\nThere has to be a DGP, even if we don’t know what it is. The DGP is the process that generates the data we observe.\nThe full, true DGP is usually unknown. However, we can make assumptions about it and use those assumptions to draw inferences about the population (in the case that our assumptions are correct).\n\n\n\nOf course, we don’t necessarily know what the DGP is. If we we knew everything about how the data was generated, we probably would not have any questions to ask in the first place!\nThis is where the model comes in. A model is a simplified mathematical representation of the DGP that allows us to make inferences about the population based on the sample. At the end of the day, a model is sort of a guess – a guess about where your data come from.\n\n\n\n\n\n\nAll models are wrong\n\n\n\n\n\nThere is a very famous and oft-cited quote by George Box, a statistician, that goes:\n\n“All models are wrong, but some are useful.”\n\nThis means that all mathematical models are simplifications of reality, and they will never perfectly capture the true DGP. However, some models can still be useful for making predictions or drawing inferences about the population. We will talk more about this and see examples throughout the course.\n\n\n\n\nA simple model\nWe’ll talk about probability distributions in more detail later in the course, but for now let’s just say that a probability distribution is a mathematical function that describes the likelihood of different outcomes in a random process.\nThe most basic example is a coin flip. If we flip a fair coin, there are two possible outcomes: heads or tails. The probability of each outcome is 0.5, so we can represent this with a simple probability distribution.\n\\[\\begin{equation}\nP(X) = \\begin{cases}\n0.5 & \\text{if } X = \\text{heads} \\\\\n0.5 & \\text{if } X = \\text{tails} \\\\\n0 & \\text{otherwise}\n\\end{cases}\n\\end{equation}\\]\n\n\nCode\n# average price per borough\nborough_price = airbnb.groupby('borough')['price'].count().reset_index()\n# plot the average price per borough\nplt.figure(figsize=(10, 5))\nplt.bar(borough_price['borough'], borough_price['price'])\nplt.title('Number of Airbnb Listings per Borough')\nplt.xlabel('Borough')\nplt.ylabel('Count')\nplt.xticks(rotation=45)\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\n\n\n\nCode\nairbnb_gdf.plot(column=\"neighbourhood group\")\nplt.title('Airbnb Listings in NYC by borough')\n\n\nText(0.5, 1.0, 'Airbnb Listings in NYC by borough')",
     "crumbs": [
       "Home",
-      "Lecture 00"
+      "Lecture 00: Why Statistics?"
     ]
   },
   {
@@ -69,29 +189,8 @@
     "text": "Prediction\nPrediction is the process of using a model to make predictions about unseen (or future) data.\nTake \\(X \\sim \\text{Uniform}(0, 1)\\)\n\n\nCode\nx = np.random.uniform(0, 1, 1000)\n\nplt.hist(x, bins=20, edgecolor=\"black\")\nplt.show()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nQuick exercise",
     "crumbs": [
       "Home",
-      "Lecture 00"
+      "Lecture 00: Why Statistics?"
     ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "understanding-uncertainty",
-    "section": "",
-    "text": "This website contains course materials for the Understanding Uncertainty course at The Wharton School of the University of Pennsylvania.\n\n\n\nSomething from DALL-E’s imagination"
-  },
-  {
-    "objectID": "assignments.html",
-    "href": "assignments.html",
-    "title": "Assignments",
-    "section": "",
-    "text": "Assignment\nDescription\nDue Date\n\n\n\n\nAssignment 1"
-  },
-  {
-    "objectID": "syllabus.html",
-    "href": "syllabus.html",
-    "title": "Syllabus",
-    "section": "",
-    "text": "Course Title: Understanding Uncertainty: An Introduction to Statistics through Data Generating Processes and Computational Simulations\nCourse Schedule: 4 Weeks, 3 sessions per week, 1.5 hours per session\n\n\n\n\n\n\n\n\n\nWeek\nSession\nTopics Covered\nActivities/Assignments\n\n\n\n\n1\nSession 1\n- Course Introduction- Understanding Data Generating Processes (DGPs)- Basic Python Syntax and Data Types\n- Install Python and Jupyter- Assignment: Write a simple Python program\n\n\n\nSession 2\n- Data Structures in Python (Lists, Tuples, Dictionaries)- Importing and Exporting Data- Generating Random Numbers\n- Load and explore datasets- Assignment: Simulate a simple DGP\n\n\n\nSession 3\n- Descriptive Statistics- Measures of Central Tendency and Variability- Data Visualization with Matplotlib and Seaborn\n- Plot histograms and boxplots- Assignment: Analyze summary statistics of a dataset\n\n\n2\nSession 4\n- Probability Concepts- Discrete and Continuous Distributions- Simulating Random Events\n- Simulate coin tosses and dice rolls- Assignment: Probability simulations\n\n\n\nSession 5\n- Exploring Different Distributions- Normal, Binomial, Poisson, Exponential Distributions- Central Limit Theorem (CLT)\n- Visualize distributions and CLT demonstrations- Assignment: CLT simulation project\n\n\n\nSession 6\n- Understanding Uncertainty- Confidence Intervals- Margin of Error- Introduction to Hypothesis Testing\n- Calculate confidence intervals- Assignment: Formulate and test hypotheses\n\n\n3\nSession 7\n- Resampling Methods- Bootstrapping and Permutation Tests- Practical Applications\n- Conduct bootstrap and permutation tests- Assignment: Resampling project\n\n\n\nSession 8\n- Bias and Variance Trade-off- Overfitting and Underfitting- Model Complexity and Generalization\n- Visualize bias-variance trade-off- Assignment: Experiment with model complexity\n\n\n\nSession 9\n- Introduction to Machine Learning- Supervised vs. Unsupervised Learning- Training and Testing Sets- Evaluation Metrics\n- Split data and evaluate models- Assignment: Build and evaluate predictive models\n\n\n4\nSession 10\n- Regularization Techniques- Ridge and Lasso Regression- Fairness in Machine Learning\n- Implement regularization- Assignment: Regularization and fairness assessment\n\n\n\nSession 11\n- Population Statistics and Representation- Sampling Methods and Sampling Bias- Ethical Considerations in Data Science\n- Simulate sampling strategies- Assignment: Design a fair sampling plan\n\n\n\nSession 12\n- Course Review and Future Directions- Student Project Presentations- Trends in Statistics and Data Science\n- Present final projects- Course Feedback Survey"
   },
   {
     "objectID": "notebooks/lecture-10.html",
@@ -101,7 +200,7 @@
     "text": "We want to emphasize that nearly any statistical method with a closed-form solution can be replicated with a simulation.\nTake ANOVA, or analysis of variance, for example. The ANOVA test is used to determine whether there are any statistically significant differences between the means of two or more groups. It is a parametric test that assumes the data is normally distributed and that the variances of the groups are equal.\nThe exact test we compute is the F-test, which compares the variance between groups to the variance within groups. The null hypothesis is that all group means are equal, while the alternative hypothesis is that at least one group mean is different. The F-test relies on the fact that the ratio of two independent chi-squared variables (i.e. a normal variable, squared) follows an F-distribution.\nHere we will simulate the F-test by generating random data from a normal distribution and computing the F-statistic for different group means. We will see that under the null hypothesis (group means are equal), the F-statistic follows an F-distribution with degrees of freedom equal to the number of groups minus one and the total number of observations minus the number of groups.\nIn the next lecture we will compare the F-test to a non-parametric permutation test, which does not make any assumptions about the distribution of the data.",
     "crumbs": [
       "Home",
-      "Lecture 10"
+      "Lecture 10: Classification"
     ]
   }
 ]
