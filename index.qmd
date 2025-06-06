@@ -2,7 +2,7 @@
 title: "understanding-uncertainty"
 ---
 
-This website contains course materials for the Understanding Uncertainty course at The Wharton School of the University of Pennsylvania.
+This website contains course materials for the Understanding Uncertainty course, which is a part of the US-Israel Academic Bridge Fellowship hosted at the University of Pennsylvania.
 
 
 ![Something from DALL-E's imagination](images/course-image.webp)
