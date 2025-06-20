@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Joseph Rudoler">
-<meta name="dcterms.date" content="2025-06-06">
+<meta name="dcterms.date" content="2025-06-20">
 <meta name="description" content="Introduction to Probability and Random Variables">
 
 <title>Lecture 02: Probability and Random Variables – Understanding Uncertainty</title>
@@ -68,7 +68,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../notebooks/lecture-03.ipynb" rel="next">
+<link href="../notebooks/lecture-03.html" rel="next">
 <link href="../notebooks/lecture-01.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -191,7 +191,6 @@ window.Quarto = {
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -240,7 +239,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-03.ipynb" class="sidebar-item-text sidebar-link">
+  <a href="../notebooks/lecture-03.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lecture 03: Data Generating Processes</span></a>
   </div>
 </li>
@@ -317,6 +316,7 @@ window.Quarto = {
   <li><a href="#probability-functions" id="toc-probability-functions" class="nav-link" data-scroll-target="#probability-functions">Probability functions</a></li>
   <li><a href="#random-variables" id="toc-random-variables" class="nav-link" data-scroll-target="#random-variables">Random Variables</a></li>
   <li><a href="#probability-distributions-and-histograms" id="toc-probability-distributions-and-histograms" class="nav-link" data-scroll-target="#probability-distributions-and-histograms">Probability distributions and histograms</a></li>
+  <li><a href="#expectation" id="toc-expectation" class="nav-link" data-scroll-target="#expectation">Expectation</a></li>
   </ul>
 </nav>
     </div>
@@ -347,7 +347,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">June 6, 2025</p>
+      <p class="date">June 20, 2025</p>
     </div>
   </div>
   
@@ -460,10 +460,10 @@ Conditional probability
 </div>
 <p>The multiplication rule helps us calculate the probability of multiple events happening, as long as we know how one event affects the other (i.e., the conditional probability). An example will help clarify make this concrete.</p>
 <p>Consider a deck of cards (52 cards total, 13 of each suit). I might ask you, “What is the probability of drawing a club on the first draw and a club on the second draw? (Assuming you do not replace the first card.)”</p>
-<div id="6aef992a" class="cell" data-execution_count="22">
+<div id="6aef992a" class="cell" data-execution_count="29">
 <div class="cell-output cell-output-display">
-<div id="rAOhhVWcuOVb" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
-#rAOhhVWcuOVb {
+<div id="qjwLYsGyDHzw" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
+#qjwLYsGyDHzw {
    --jq-multiple-choice-bg: #6f78ffff;
    --jq-mc-button-bg: #fafafa;
    --jq-mc-button-border: #e0e0e0e0;
@@ -684,7 +684,7 @@ Conditional probability
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/javascript">
-var questionsrAOhhVWcuOVb=[{"question": "What is the conditional probability of drawing a club on the second draw given that the first card drawn was a club?", "type": "multiple_choice", "answers": [{"answer": "1/52", "correct": false}, {"answer": "1/4", "correct": false}, {"answer": "12/51", "correct": true}, {"answer": "13/52", "correct": false}]}, {"question": "What is the probability of drawing a club on the first draw and a club on the second draw? (Assuming you do not replace the first card.)", "type": "numeric", "precision": 4, "answers": [{"type": "value", "value": 0.0588, "correct": true, "feedback": "Correct! The probability is 13/52 * 12/51 = 1/4 * 12/51 = .0588"}, {"type": "range", "min": 0.055, "max": 0.062, "correct": true, "feedback": "Correct! The probability is 13/52 * 12/51 = 1/4 * 12/51 = .0588"}, {"type": "default", "feedback": "Incorrect. Consider the multiplication rule!"}]}];
+var questionsqjwLYsGyDHzw=[{"question": "What is the conditional probability of drawing a club on the second draw given that the first card drawn was a club?", "type": "multiple_choice", "answers": [{"answer": "1/52", "correct": false}, {"answer": "1/4", "correct": false}, {"answer": "12/51", "correct": true}, {"answer": "13/52", "correct": false}]}, {"question": "What is the probability of drawing a club on the first draw and a club on the second draw? (Assuming you do not replace the first card.)", "type": "numeric", "precision": 4, "answers": [{"type": "range", "range": [0.055, 0.062], "correct": true, "feedback": "Correct! The probability is 13/52 * 12/51 = 1/4 * 12/51 = .0588"}, {"type": "default", "feedback": "Incorrect. Consider the multiplication rule!"}]}];
 
 if (typeof Question === 'undefined') {
 // Make a random ID
@@ -1747,8 +1747,8 @@ function make_string(qa, outerqDiv, qDiv, aDiv, id) {
  * Ensures show_questions is called after the container div is in the DOM.
  */
 function try_show() {
-  if (document.getElementById("rAOhhVWcuOVb")) {
-    show_questions(questionsrAOhhVWcuOVb, rAOhhVWcuOVb);
+  if (document.getElementById("qjwLYsGyDHzw")) {
+    show_questions(questionsqjwLYsGyDHzw, qjwLYsGyDHzw);
   } else {
     setTimeout(try_show, 200);
   }
@@ -1900,7 +1900,7 @@ Uniform random variable
 <p>Distributions can be discrete or continuous, depending on the type of random variable. For discrete random variables, the probability distribution is often represented as a <strong>probability mass function (PMF)</strong>, which gives the probability of each possible value. For continuous random variables, the probability distribution is represented as a <strong>probability density function (PDF)</strong>, which gives the density of probability at each point.</p>
 <p>Let’s say we have a random variable <span class="math inline">\(X\)</span>, but we don’t know the exact probability function. Instead, we have a set of observed data points <span class="math inline">\(\{x_1, x_2, \ldots, x_n\}\)</span> that we believe are individual realizations of <span class="math inline">\(X\)</span>. In other words, we have a sample of data that we think is representative of the underlying random variable.</p>
 <p>How can we visualize this data to understand the distribution of <span class="math inline">\(X\)</span>? The simplest solution is to just plot how many times each value occurs in the data. This is called a <strong>histogram</strong>.</p>
-<div id="a44145c5" class="cell" data-execution_count="25">
+<div id="a44145c5" class="cell" data-execution_count="28">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -1908,22 +1908,142 @@ Uniform random variable
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.array([<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>])</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>plt.hist(x, bins<span class="op">=</span><span class="dv">2</span>, density<span class="op">=</span><span class="va">False</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, color<span class="op">=</span><span class="st">'blue'</span>, ec<span class="op">=</span><span class="st">'k'</span>, label<span class="op">=</span><span class="st">'Data'</span>)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Value'</span>)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Frequency'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>plt.hist(x, bins<span class="op">=</span>np.arange(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">2.5</span>, <span class="dv">1</span>), density<span class="op">=</span><span class="va">False</span>, align<span class="op">=</span><span class="st">"mid"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>plt.xticks([<span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Value'</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Frequency'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="25">
+<div class="cell-output cell-output-display" data-execution_count="28">
 <pre><code>Text(0, 0.5, 'Frequency')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lecture-02_files/figure-html/cell-5-output-2.png" class="img-fluid figure-img"></p>
+<p><img src="lecture-02_files/figure-html/cell-4-output-2.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>The <strong>histogram</strong> is a graphical representation that summarizes the</p>
+<p>The <strong>histogram</strong> is a graphical representation that summarizes the distribution of a dataset. It divides the data into discrete, equally-sized intervals (or “bins”) along the x-axis and counts how many data points fall into each bin. The height of each bar represents the either the total count of data points in that bin or the proportion of data points in that bin. If the height of the bar is the proportion, then the area of the bar represents the probability of the random variable falling within that bin.</p>
+<p>Consider a bunch of dice rolls. If we roll a die 100 times, we would expect to see each number appear roughly a similar number of times. If we plot the histogram of the data, we would see a discrete uniform distribution, where each number from 1 to 6 has approximately the same height in the histogram. Let’s check it out:</p>
+<div id="9cb54ef4" class="cell" data-execution_count="18">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load in the dice rolls data</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dice_rolls_df <span class="op">=</span> pd.read_csv(<span class="st">"../data/dice_rolls.csv"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Total number of dice rolls:"</span>, <span class="bu">len</span>(dice_rolls_df))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>dice_rolls_df.head(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Total number of dice rolls: 1000</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">rolls</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="12164adf" class="cell" data-execution_count="20">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>plt.hist(dice_rolls_df[<span class="st">'rolls'</span>], bins<span class="op">=</span>np.arange(<span class="fl">0.5</span>, <span class="fl">7.5</span>, <span class="dv">1</span>), density<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Histogram of Dice Rolls'</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Dice Value'</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Probability'</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>plt.xticks(np.arange(<span class="dv">1</span>, <span class="dv">7</span>))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>plt.grid(axis<span class="op">=</span><span class="st">'y'</span>, alpha<span class="op">=</span><span class="fl">0.75</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-02_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="expectation" class="level2">
+<h2 class="anchored" data-anchor-id="expectation">Expectation</h2>
+<p>We are often interested in the <strong>average</strong> value of a random variable. For example, if we play roulette, we might want to know the average amount of money we can expect to win or lose per game.</p>
+<p>Why do we need an average? Since a random variable can take on many different values, a single sample does not give you a lot of information. You might win hundreds of dollars on one game, but this does not mean you will win that much every time you play.</p>
+<p>Instead, think about what would happen if we repeated the random process many times and took the average. Values that occur more frequently will tend to have a larger impact on the average, while values that occur less frequently will have a smaller impact. For example, at a casino roulette table perhaps you place a bet that has a 10% chance of winning. You might bet $10 and win $100 ($90 net profit) on one game, but if you lose $10 on the next 9 games you’re not making money in the long run. Even though $90 profit sounds great, the fact that it happens so infrequently (and you lose $10 90% of the time) means that your average profit is actually zero.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Gambling warning">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Gambling warning
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Actually, at real casinos, the games are designed so that “the house always wins” in the long run. So they would not let you bet $10 to win $100 ($90 profit) with a 10% chance – they would give you worse odds, like a 9% chance of winning $100 for a $10 bet.</p>
+<p>In the short term this is hardly noticeable – you’re actually quite likely to win a few times! But in the long term, the house edge means that you will lose money if you keep playing. This is why casinos are profitable businesses.</p>
+</div>
+</div>
+</div>
+<p>We can formalize this idea that the average gives more weight to values that occur more frequently.</p>
+<p>The <strong>expectation</strong> (or expected value) of a random variable <span class="math inline">\(X\)</span> is gives the average value of <span class="math inline">\(X\)</span> over many instances. It is denoted as <span class="math inline">\(\E[X]\)</span> or <span class="math inline">\(\mu_X\)</span>. The expectation is calculated as follows: <span class="math display">\[
+\E[X] = \sum_{x} x \cdot f(x)
+\]</span> where <span class="math inline">\(f(x)\)</span> is the probability function of <span class="math inline">\(X\)</span>. For continuous random variables, the sum is replaced with an integral: <span class="math display">\[
+\E[X] = \int_{-\infty}^{\infty} x \cdot f(x) \, dx
+\]</span></p>
+<p>The way to think about this is that the expectation is a weighted average of all possible values of <span class="math inline">\(X\)</span>, where the weights are the probabilities of each value.</p>
 
 
 <script type="pyodide-data">
@@ -2414,7 +2534,7 @@ window._ojs.runtime.interpretFromScriptTags();
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../notebooks/lecture-03.ipynb" class="pagination-link" aria-label="Lecture 03: Data Generating Processes">
+      <a href="../notebooks/lecture-03.html" class="pagination-link" aria-label="Lecture 03: Data Generating Processes">
         <span class="nav-page-text">Lecture 03: Data Generating Processes</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
