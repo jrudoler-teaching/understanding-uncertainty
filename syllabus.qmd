@@ -8,7 +8,7 @@ title: "Syllabus"
 
 | **Week** | **Session** | **Topics Covered** | **Activities/Assignments** |
 |----------|-------------|--------------------|----------------------------|
-| **1**    | Session 1   | - **Course Introduction**<br>- Understanding Data Generating Processes (DGPs)<br>- Basic Python Syntax and Data Types | - Install Python and Jupyter<br>- **Assignment:** Write a simple Python program |
+| **1**    | Session 1   | - **Course Introduction**<br>- Understanding Data Generating Processes (DGPs)<br>- Basic Python Syntax and Data Types | - Install Python and Jupyter<br>- **Assignment:** Write a simple Python program [link](./assignments/assignment-00.ipynb) |
 |          | Session 2   | - **Data Structures in Python** (Lists, Tuples, Dictionaries)<br>- Importing and Exporting Data<br>- Generating Random Numbers | - Load and explore datasets<br>- **Assignment:** Simulate a simple DGP |
 |          | Session 3   | - **Descriptive Statistics**<br>- Measures of Central Tendency and Variability<br>- Data Visualization with Matplotlib and Seaborn | - Plot histograms and boxplots<br>- **Assignment:** Analyze summary statistics of a dataset |
 | **2**    | Session 4   | - **Probability Concepts**<br>- Discrete and Continuous Distributions<br>- Simulating Random Events | - Simulate coin tosses and dice rolls<br>- **Assignment:** Probability simulations |

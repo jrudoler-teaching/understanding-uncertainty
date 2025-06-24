@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-06-20">
+<meta name="dcterms.date" content="2025-06-24">
 
 <title>Lecture 03: Sampling and Simulation – Understanding Uncertainty</title>
 <style>
@@ -66,7 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../notebooks/lecture-04.ipynb" rel="next">
+<link href="../notebooks/lecture-04.html" rel="next">
 <link href="../notebooks/lecture-02.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -168,7 +168,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/lecture-03.html">Lecture 03: Data Generating Processes</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/lecture-03.html">Lecture 03: Sampling and Simulation</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -209,13 +209,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../notebooks/lecture-03.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Lecture 03: Data Generating Processes</span></a>
+ <span class="menu-text">Lecture 03: Sampling and Simulation</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-04.ipynb" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture 04: Sampling and Simulation</span></a>
+  <a href="../notebooks/lecture-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 04: Data Generating Processes</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -304,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">June 20, 2025</p>
+      <p class="date">June 24, 2025</p>
     </div>
   </div>
   
@@ -1805,7 +1805,7 @@ Normal distribution
 <h3 class="anchored" data-anchor-id="simulating-more-complex-processes">Simulating more complex processes</h3>
 <p>Sometimes real-world processes are complex, and the samples we take are not independent. The simplest version of non-independence is sampling without replacement.</p>
 <p>Consider dealing poker hands from a standard deck of cards. When you deal a hand, you draw cards one at a time, and each card drawn affects the next card that can be drawn (because you do not put the card back into the deck).</p>
-<div id="18743e5c" class="cell" data-execution_count="30">
+<div id="18743e5c" class="cell" data-execution_count="43">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a deck of cards (Ace is 1, King is 13)</span></span>
@@ -1832,19 +1832,19 @@ Normal distribution
   7  7  7  7  8  8  8  8  9  9  9  9 10 10 10 10 11 11 11 11 12 12 12 12
  13 13 13 13]
 Deck of cards after shuffling:
- [ 2 12 11  7  4  4  8  2  1  9  6 12  4  3  4 10 13  5  7  3 13 11 11  9
- 11  3  6  9 10  1  1  9 10 13  8  8  2  7  6  2 13  5 10  5 12  5  6  7
-  1 12  3  8]
+ [12  3  3  1  5 13  3  6 13  4  8  5 11  7  8  3  7 12  2 11  1 10  9 13
+  9 11  7  5  6  8  1 10 10 11  4  2  4  8  6 13  6 10 12  9  2  7  4 12
+  2  1  5  9]
 Hands dealt to players:
- [[12  4]
- [ 8  3]
- [ 5  1]
- [11  7]]
+ [[ 1  5]
+ [ 2  7]
+ [12  8]
+ [ 9  2]]
 Remaining cards in the deck:
- [ 2 12 11  7  4  8  2  1  9  6 12  4  4 10 13  3 13 11  9 11  3  6  9 10
-  1  9 10 13  8  2  7  6  2 13  5 10  5 12  5  6  7  1  3  8]
+ [12  3  3  1 13  3  6 13  4  8  5 11  8  3  7 11  1 10 13  9 11  7  5  6
+  1 10 10 11  4  4  8  6 13  6 10 12  9  2  7  4 12  2  5  9]
 Community cards on the board:
- [ 7  4  5 13  5]</code></pre>
+ [ 5  4  1  3 13]</code></pre>
 </div>
 </div>
 <p>But it can get even more complex than that. In many real-world scenarios, the process of generating data involves multiple steps or conditions that affect the outcome.</p>
@@ -1864,7 +1864,7 @@ Poisson distribution
 <p>The Poisson distribution is commonly used to model the number of events that occur in a fixed interval of time or space, given a known average rate of occurrence. It assumes that the events occur independently and at a constant average rate. In our example, we can use the Poisson distribution to model the number of passersby in a given time period (e.g., one hour of busking).</p>
 </div>
 </div>
-<div id="f958f240" class="cell">
+<div id="f958f240" class="cell" data-execution_count="44">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="interpolate-1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="interpolate-1-1"><a href="#interpolate-1-1" aria-hidden="true" tabindex="-1"></a>n_days <span class="op">=</span> <span class="dv">5</span></span>
@@ -1929,26 +1929,76 @@ Total earnings over 5 days: $477</code></pre>
 
 </div>
 <script type="pyodide-2-contents">
-eyJhdHRyIjp7ImNhcHRpb24iOiJTaW11bGF0ZSB0aGUgZXhwZWN0ZWQgZWFybmluZyBvZiBhIGJ1c2tlciBpbiBSaXR0ZW5ob3VzZSBTcXVhcmUgb3ZlciB0aGUgY291cnNlIG9mIGEgd2Vlay4iLCJlY2hvIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImF2ZXJhZ2Utd2Vla2x5LWJ1c2tpbmcifSwiY29kZSI6IlxuaW1wb3J0IG51bXB5IGFzIG5wXG5kZWYgYnVza19vbmVfd2VlaygpOlxuICAgICMgVE9ETzogXG5cbm5fc2ltdWxhdGlvbnMgPSAxMDAwXG5yYW5kb21fc2VlZCA9IDMzXG5cbiMgVE9ETzogVXNlIHRoZSBhYm92ZSBmdW5jdGlvbiB0byBzaW11bGF0ZSB0aGUgZXhwZWN0ZWQgZWFybmluZ3Mgb2YgYSBidXNrZXIgaW4gUml0dGVuaG91c2UgU3F1YXJlIG92ZXIgdGhlIGNvdXJzZSBvZiBhIHdlZWsuIFJ1biB0aGUgc2ltdWxhdGlvbiAxMDAwIHRpbWVzIGFuZCBjYWxjdWxhdGUgdGhlIGF2ZXJhZ2UgZWFybmluZ3Mgb3ZlciAxMDAwIHNpbXVsYXRpb25zLiBIaW50OiBmb3IgbG9vcHMgYXJlIHlvdXIgZnJpZW5kIGhlcmUhXG5cbmF2ZXJhZ2VfZWFybmluZ3MgPSAuLi5cbmF2ZXJhZ2VfZWFybmluZ3MifQ==
+eyJhdHRyIjp7ImNhcHRpb24iOiJTaW11bGF0ZSB0aGUgZXhwZWN0ZWQgZWFybmluZyBvZiBhIGJ1c2tlciBpbiBSaXR0ZW5ob3VzZSBTcXVhcmUgb3ZlciB0aGUgY291cnNlIG9mIGEgd2Vlay4iLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImF2ZXJhZ2Utd2Vla2x5LWJ1c2tpbmcifSwiY29kZSI6IlxuaW1wb3J0IG51bXB5IGFzIG5wXG5kZWYgYnVza19vbmVfd2VlayhybmcsIG5fZGF5cz03KTpcbiAgICBcIlwiXCJTaW11bGF0ZSB0aGUgZWFybmluZ3Mgb2YgYSBidXNrZXIgaW4gUml0dGVuaG91c2UgU3F1YXJlIG92ZXIgdGhlIGNvdXJzZSBvZiBhIHdlZWsuXG4gICAgQXJnczpcbiAgICAgICAgcm5nOiBBIE51bVB5IHJhbmRvbSBudW1iZXIgZ2VuZXJhdG9yLlxuICAgICAgICBuX2RheXM6IFRoZSBudW1iZXIgb2YgZGF5cyB0byBzaW11bGF0ZSAoZGVmYXVsdCBpcyA3KS5cbiAgICBSZXR1cm5zOlxuICAgICAgICB0b3RhbF9lYXJuaW5nczogVGhlIHRvdGFsIGVhcm5pbmdzIG92ZXIgdGhlIHdlZWsuXG4gICAgXCJcIlwiXG4gICAgIyBUT0RPOiBcblxubl9zaW11bGF0aW9ucyA9IDEwMDBcbnJhbmRvbV9zZWVkID0gMzNcblxuIyBUT0RPOiBVc2UgdGhlIGFib3ZlIGZ1bmN0aW9uIHRvIHNpbXVsYXRlIHRoZSBleHBlY3RlZCBlYXJuaW5ncyBvZiBhIGJ1c2tlciBpbiBSaXR0ZW5ob3VzZSBTcXVhcmUgb3ZlciB0aGUgY291cnNlIG9mIGEgd2Vlay4gUnVuIHRoZSBzaW11bGF0aW9uIDEwMDAgdGltZXMgYW5kIGNhbGN1bGF0ZSB0aGUgYXZlcmFnZSBlYXJuaW5ncyBvdmVyIDEwMDAgc2ltdWxhdGlvbnMuIEhpbnQ6IGZvciBsb29wcyBhcmUgeW91ciBmcmllbmQgaGVyZSFcblxuYXZlcmFnZV9lYXJuaW5ncyA9IC4uLlxuYXZlcmFnZV9lYXJuaW5ncyJ9
 </script>
 </div>
-<script type="exercise-check-uniform-pdf-contents">
-eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6InVuaWZvcm0tcGRmIn0sImNvZGUiOiJcbiMgSW5pdGlhbGl6ZSBmZWVkYmFja1xuZmVlZGJhY2sgPSB7XCJjb3JyZWN0XCI6IFRydWUsIFwibWVzc2FnZVwiOiBcIkdyZWF0IGpvYiFcIn0ifQ==
-</script>
-<div class="pyodide-ojs-exercise exercise-solution d-none" data-exercise="uniform-pdf">
-<code id="interpolate-5" class="solution-code d-none"></code>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="interpolate-6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="webr-ojs-exercise exercise-solution d-none" data-exercise="average-weekly-busking">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>The key here is to re-use the logic of the weekly busking simulation in a loop that runs 1000 times. Each time we run the simulation, we get a different weekly outcome based on the random number generator. By averaging these outcomes, we can get a good estimate of the expected earnings over a week of busking.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> busk_one_week(rng, n_days<span class="op">=</span><span class="dv">7</span>):</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Simulate the earnings of a busker in Rittenhouse Square over the course of a week.</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">        rng: A NumPy random number generator.</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">        n_days: The number of days to simulate (default is 7).</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">        total_earnings: The total earnings over the week.</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    rain_probabilities <span class="op">=</span> rng.uniform(<span class="fl">0.</span>, <span class="fl">0.7</span>, size<span class="op">=</span>n_days)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    total_earnings <span class="op">=</span> <span class="dv">0</span> <span class="co"># initialize a variable to keep track of total earnings</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> day <span class="kw">in</span> <span class="bu">range</span>(n_days):</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># For each day, decide if it rains based on the probability</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        did_it_rain <span class="op">=</span> rng.binomial(n<span class="op">=</span><span class="dv">1</span>, p<span class="op">=</span>rain_probabilities[day])</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Based on the outcome, the number of passersby changes</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> did_it_rain:</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>            passersby <span class="op">=</span> rng.poisson(lam<span class="op">=</span><span class="dv">50</span>)  <span class="co"># fewer passersby when it rains</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>            passersby <span class="op">=</span> rng.poisson(lam<span class="op">=</span><span class="dv">200</span>) <span class="co"># more passersby when it doesn't rain</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Simulate the number who stop to listen to the busker</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        listeners <span class="op">=</span> rng.binomial(n<span class="op">=</span>passersby, p<span class="op">=</span><span class="fl">0.2</span>)  <span class="co"># 20% of passersby stop</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compute the busker's daily earnings</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>        earnings <span class="op">=</span> <span class="dv">3</span> <span class="op">*</span> listeners  <span class="co"># $3 per listener</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>        total_earnings <span class="op">+=</span> earnings</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> total_earnings</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>n_simulations <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>random_seed <span class="op">=</span> <span class="dv">33</span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span>random_seed)</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the above function to simulate the expected earnings of a busker in Rittenhouse Square over the course of a week.</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the simulation 1000 times and calculate the average earnings over 1000 simulations.</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>earnings_by_week <span class="op">=</span> [busk_one_week(rng) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_simulations)]</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>average_earnings <span class="op">=</span> np.mean(earnings_by_week)</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>average_earnings</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<script type="exercise-check-average-weekly-busking-contents">
+eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImF2ZXJhZ2Utd2Vla2x5LWJ1c2tpbmcifSwiY29kZSI6IlxuIyBJbml0aWFsaXplIGZlZWRiYWNrXG5mZWVkYmFjayA9IHtcImNvcnJlY3RcIjogVHJ1ZSwgXCJtZXNzYWdlXCI6IFwiR3JlYXQgam9iIVwifVxuIyBDaGVjayBpZiB0aGUgYXZlcmFnZSBlYXJuaW5ncyBhcmUgd2l0aGluIGEgcmVhc29uYWJsZSByYW5nZVxuaWYgbm90IHJhbmRvbV9zZWVkID09IDMzOlxuICAgIGZlZWRiYWNrW1wiY29ycmVjdFwiXSA9IEZhbHNlXG4gICAgZmVlZGJhY2tbXCJtZXNzYWdlXCJdID0gXCJNYWtlIHN1cmUgdG8gdXNlIHRoZSBjb3JyZWN0IHJhbmRvbSBzZWVkIGZvciByZXByb2R1Y2liaWxpdHkuXCJcbmVsaWYgbm90IChhdmVyYWdlX2Vhcm5pbmdzICE9IDg5LjMwNyk6XG4gICAgZmVlZGJhY2tbXCJjb3JyZWN0XCJdID0gRmFsc2VcbiAgICBmZWVkYmFja1tcIm1lc3NhZ2VcIl0gPSBcIlRoZSBhdmVyYWdlIGVhcm5pbmdzIHNlZW0gb2ZmLiBDaGVjayB5b3VyIHNpbXVsYXRpb24gbG9naWMuXCIifQ==
+</script>
 
 
 <script type="pyodide-data">
 eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIiwibWF0cGxvdGxpYiIsIm51bXB5Il19fQ==
 </script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBleGVyY2lzZSBjb25maWd1cmF0aW9uXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKFxuICAgIHtcbiAgICAgIGlkOiBcInB5b2RpZGUtMi1jb250ZW50c1wiLFxuICAgICAgZW52aXI6IGBleGVyY2lzZS1lbnYtJHtibG9jay5hdHRyLmV4ZXJjaXNlfWAsXG4gICAgICBlcnJvcjogZmFsc2UsXG4gICAgICBjYXB0aW9uOiAnRXhlcmNpc2UnLFxuICAgIH0sXG4gICAgYmxvY2suYXR0clxuICApO1xuXG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IocHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxudmlld29mIF9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbl9weW9kaWRlX2ZlZWRiYWNrXzIgPSB7XG4gIGNvbnN0IHsgUHlvZGlkZUdyYWRlciB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcbiAgY29uc3QgZW1wdHlGZWVkYmFjayA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2RpdicpO1xuXG4gIGNvbnN0IGdyYWRlciA9IG5ldyBQeW9kaWRlR3JhZGVyKF9weW9kaWRlX3ZhbHVlXzIuZXZhbHVhdG9yKTtcbiAgY29uc3QgZmVlZGJhY2sgPSBhd2FpdCBncmFkZXIuZ3JhZGVFeGVyY2lzZSgpO1xuICBpZiAoIWZlZWRiYWNrKSByZXR1cm4gZW1wdHlGZWVkYmFjaztcbiAgcmV0dXJuIGZlZWRiYWNrO1xufVxuIn0seyJjZWxsTmFtZSI6ImludGVycG9sYXRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ7XG4gIGNvbnN0IHsgaW50ZXJwb2xhdGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IGJsb2NrX2lkID0gXCIxXCI7XG4gIGNvbnN0IGxhbmd1YWdlID0gXCJweXRob25cIjtcbiAgY29uc3QgZGVmX21hcCA9IHtcbmVhcm5pbmdzLFxudG90YWxfZWFybmluZ3MsXG59O1xuICBjb25zdCBlbGVtID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoYGludGVycG9sYXRlLSR7YmxvY2tfaWR9YCk7XG5cbiAgLy8gU3RvcmUgb3JpZ2luYWwgdGVtcGxhdGVkIEhUTUwgZm9yIHJlZmVyZW5jZSBpbiBmdXR1cmUgcmVhY3RpdmUgdXBkYXRlc1xuICBpZiAoIWVsZW0ub3JpZ0hUTUwpIGVsZW0ub3JpZ0hUTUwgPSBlbGVtLmlubmVySFRNTDtcblxuICAvLyBJbnRlcnBvbGF0ZSByZWFjdGl2ZSBPSlMgdmFyaWFibGVzIGludG8gZXN0YWJsaXNoZWQgSFRNTCBlbGVtZW50XG4gIGVsZW0uaW5uZXJIVE1MID0gZWxlbS5vcmlnSFRNTDtcbiAgT2JqZWN0LmtleXMoZGVmX21hcCkuZm9yRWFjaCgoZGVmKSA9PlxuICAgIGludGVycG9sYXRlKGVsZW0sIFwiJHtcIiArIGRlZiArIFwifVwiLCBkZWZfbWFwW2RlZl0sIGxhbmd1YWdlKVxuICApO1xufVxuIn0seyJjZWxsTmFtZSI6ImludGVycG9sYXRlLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ7XG4gIGNvbnN0IHsgaW50ZXJwb2xhdGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IGJsb2NrX2lkID0gXCI1XCI7XG4gIGNvbnN0IGxhbmd1YWdlID0gXCJub25lXCI7XG4gIGNvbnN0IGRlZl9tYXAgPSB7XG59O1xuICBjb25zdCBlbGVtID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoYGludGVycG9sYXRlLSR7YmxvY2tfaWR9YCk7XG5cbiAgLy8gU3RvcmUgb3JpZ2luYWwgdGVtcGxhdGVkIEhUTUwgZm9yIHJlZmVyZW5jZSBpbiBmdXR1cmUgcmVhY3RpdmUgdXBkYXRlc1xuICBpZiAoIWVsZW0ub3JpZ0hUTUwpIGVsZW0ub3JpZ0hUTUwgPSBlbGVtLmlubmVySFRNTDtcblxuICAvLyBJbnRlcnBvbGF0ZSByZWFjdGl2ZSBPSlMgdmFyaWFibGVzIGludG8gZXN0YWJsaXNoZWQgSFRNTCBlbGVtZW50XG4gIGVsZW0uaW5uZXJIVE1MID0gZWxlbS5vcmlnSFRNTDtcbiAgT2JqZWN0LmtleXMoZGVmX21hcCkuZm9yRWFjaCgoZGVmKSA9PlxuICAgIGludGVycG9sYXRlKGVsZW0sIFwiJHtcIiArIGRlZiArIFwifVwiLCBkZWZfbWFwW2RlZl0sIGxhbmd1YWdlKVxuICApO1xufVxuIn0seyJjZWxsTmFtZSI6ImludGVycG9sYXRlLTYiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ7XG4gIGNvbnN0IHsgaW50ZXJwb2xhdGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IGJsb2NrX2lkID0gXCI2XCI7XG4gIGNvbnN0IGxhbmd1YWdlID0gXCJweXRob25cIjtcbiAgY29uc3QgZGVmX21hcCA9IHtcbn07XG4gIGNvbnN0IGVsZW0gPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChgaW50ZXJwb2xhdGUtJHtibG9ja19pZH1gKTtcblxuICAvLyBTdG9yZSBvcmlnaW5hbCB0ZW1wbGF0ZWQgSFRNTCBmb3IgcmVmZXJlbmNlIGluIGZ1dHVyZSByZWFjdGl2ZSB1cGRhdGVzXG4gIGlmICghZWxlbS5vcmlnSFRNTCkgZWxlbS5vcmlnSFRNTCA9IGVsZW0uaW5uZXJIVE1MO1xuXG4gIC8vIEludGVycG9sYXRlIHJlYWN0aXZlIE9KUyB2YXJpYWJsZXMgaW50byBlc3RhYmxpc2hlZCBIVE1MIGVsZW1lbnRcbiAgZWxlbS5pbm5lckhUTUwgPSBlbGVtLm9yaWdIVE1MO1xuICBPYmplY3Qua2V5cyhkZWZfbWFwKS5mb3JFYWNoKChkZWYpID0+XG4gICAgaW50ZXJwb2xhdGUoZWxlbSwgXCIke1wiICsgZGVmICsgXCJ9XCIsIGRlZl9tYXBbZGVmXSwgbGFuZ3VhZ2UpXG4gICk7XG59XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS1wcmVsdWRlIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoicHlvZGlkZU9qcyA9IHtcbiAgY29uc3Qge1xuICAgIFB5b2RpZGVFdmFsdWF0b3IsXG4gICAgUHlvZGlkZUVudmlyb25tZW50TWFuYWdlcixcbiAgICBzZXR1cFB5dGhvbixcbiAgICBzdGFydFB5b2RpZGVXb3JrZXIsXG4gICAgYjY0RGVjb2RlLFxuICAgIGNvbGxhcHNlUGF0aCxcbiAgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc3RhdHVzQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLXN0YXR1c1wiKTtcbiAgY29uc3QgaW5kaWNhdG9yQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaW5kaWNhdG9yQ29udGFpbmVyLmNsYXNzTGlzdC5yZW1vdmUoXCJkLW5vbmVcIik7XG5cbiAgbGV0IHN0YXR1c1RleHQgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpXG4gIHN0YXR1c1RleHQuY2xhc3NMaXN0ID0gXCJleGVyY2lzZS1sb2FkaW5nLWRldGFpbHNcIjtcbiAgc3RhdHVzVGV4dCA9IHN0YXR1c0NvbnRhaW5lci5hcHBlbmRDaGlsZChzdGF0dXNUZXh0KTtcbiAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBJbml0aWFsaXNlYDtcblxuICAvLyBIb2lzdCBpbmRpY2F0b3Igb3V0IGZyb20gZmluYWwgc2xpZGUgd2hlbiBydW5uaW5nIHVuZGVyIHJldmVhbFxuICBjb25zdCByZXZlYWxTdGF0dXMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCAuZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGlmIChyZXZlYWxTdGF0dXMpIHtcbiAgICByZXZlYWxTdGF0dXMucmVtb3ZlKCk7XG4gICAgZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgPiAuc2xpZGVzXCIpLmFwcGVuZENoaWxkKHJldmVhbFN0YXR1cyk7XG4gIH1cblxuICAvLyBNYWtlIGFueSByZXZlYWwgc2xpZGVzIHdpdGggbGl2ZSBjZWxscyBzY3JvbGxhYmxlXG4gIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoXCIucmV2ZWFsIC5leGVyY2lzZS1jZWxsXCIpLmZvckVhY2goKGVsKSA9PiB7XG4gICAgZWwuY2xvc2VzdCgnc2VjdGlvbi5zbGlkZScpLmNsYXNzTGlzdC5hZGQoXCJzY3JvbGxhYmxlXCIpO1xuICB9KVxuXG4gIC8vIFB5b2RpZGUgc3VwcGxlbWVudGFsIGRhdGEgYW5kIG9wdGlvbnNcbiAgY29uc3QgZGF0YUNvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS1kYXRhXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZGF0YSA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGRhdGFDb250ZW50KSk7XG5cbiAgLy8gR3JhYiBsaXN0IG9mIHJlc291cmNlcyB0byBiZSBkb3dubG9hZGVkXG4gIGNvbnN0IGZpbGVzQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ2ZnMtZmlsZVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGZpbGVzID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZmlsZXNDb250ZW50KSk7XG5cbiAgbGV0IHB5b2RpZGVQcm9taXNlID0gKGFzeW5jICgpID0+IHtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIFB5b2RpZGVgO1xuICAgIGNvbnN0IHB5b2RpZGUgPSBhd2FpdCBzdGFydFB5b2RpZGVXb3JrZXIoZGF0YS5vcHRpb25zKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcGFja2FnZTogbWljcm9waXBgO1xuICAgIGF3YWl0IHB5b2RpZGUubG9hZFBhY2thZ2UoXCJtaWNyb3BpcFwiKTtcbiAgICBjb25zdCBtaWNyb3BpcCA9IGF3YWl0IHB5b2RpZGUucHlpbXBvcnQoXCJtaWNyb3BpcFwiKTtcbiAgICBhd2FpdCBkYXRhLnBhY2thZ2VzLnBrZ3MubWFwKChwa2cpID0+ICgpID0+IHtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcGFja2FnZTogJHtwa2d9YDtcbiAgICAgIHJldHVybiBtaWNyb3BpcC5pbnN0YWxsKHBrZyk7XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG4gICAgYXdhaXQgbWljcm9waXAuZGVzdHJveSgpO1xuXG4gICAgLy8gRG93bmxvYWQgYW5kIGluc3RhbGwgcmVzb3VyY2VzXG4gICAgYXdhaXQgZmlsZXMubWFwKChmaWxlKSA9PiBhc3luYyAoKSA9PiB7XG4gICAgICBjb25zdCBuYW1lID0gZmlsZS5zdWJzdHJpbmcoZmlsZS5sYXN0SW5kZXhPZignLycpICsgMSk7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHJlc291cmNlOiAke25hbWV9YDtcbiAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goZmlsZSk7XG4gICAgICBpZiAoIXJlc3BvbnNlLm9rKSB7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgQ2FuJ3QgZG93bmxvYWQgXFxgJHtmaWxlfVxcYC4gRXJyb3IgJHtyZXNwb25zZS5zdGF0dXN9OiBcIiR7cmVzcG9uc2Uuc3RhdHVzVGV4dH1cIi5gKTtcbiAgICAgIH1cbiAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5hcnJheUJ1ZmZlcigpO1xuXG4gICAgICAvLyBTdG9yZSBVUkxzIGluIHRoZSBjd2Qgd2l0aG91dCBhbnkgc3ViZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgaWYgKGZpbGUuaW5jbHVkZXMoXCI6Ly9cIikpIHtcbiAgICAgICAgZmlsZSA9IG5hbWU7XG4gICAgICB9XG5cbiAgICAgIC8vIENvbGxhcHNlIGhpZ2hlciBkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBmaWxlID0gY29sbGFwc2VQYXRoKGZpbGUpO1xuXG4gICAgICAvLyBDcmVhdGUgZGlyZWN0b3J5IHRyZWUsIGlnbm9yaW5nIFwiZGlyZWN0b3J5IGV4aXN0c1wiIFZGUyBlcnJvcnNcbiAgICAgIGNvbnN0IHBhcnRzID0gZmlsZS5zcGxpdCgnLycpLnNsaWNlKDAsIC0xKTtcbiAgICAgIGxldCBwYXRoID0gJyc7XG4gICAgICB3aGlsZSAocGFydHMubGVuZ3RoID4gMCkge1xuICAgICAgICBwYXRoICs9IHBhcnRzLnNoaWZ0KCkgKyAnLyc7XG4gICAgICAgIHRyeSB7XG4gICAgICAgICAgYXdhaXQgcHlvZGlkZS5GUy5ta2RpcihwYXRoKTtcbiAgICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICAgIGlmIChlLmVycm5vICE9PSAyMCkge1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0UHRyID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLl9zdHJlcnJvcihlLmVycm5vKTtcbiAgICAgICAgICAgIGNvbnN0IGVycm9yVGV4dCA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5VVEY4VG9TdHJpbmcoZXJyb3JUZXh0UHRyKTtcbiAgICAgICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICAgICAgfVxuICAgICAgICB9XG4gICAgICB9XG5cbiAgICAgIC8vIFdyaXRlIHRoaXMgZmlsZSB0byB0aGUgVkZTXG4gICAgICB0cnkge1xuICAgICAgICByZXR1cm4gYXdhaXQgcHlvZGlkZS5GUy53cml0ZUZpbGUoZmlsZSwgbmV3IFVpbnQ4QXJyYXkoZGF0YSkpO1xuICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICBpZiAoZS5uYW1lICE9PSBcIkVycm5vRXJyb3JcIikgdGhyb3cgZTtcbiAgICAgICAgY29uc3QgZXJyb3JUZXh0UHRyID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLl9zdHJlcnJvcihlLmVycm5vKTtcbiAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYEZpbGVzeXN0ZW0gRXJyb3IgJHtlLmVycm5vfSBcIiR7ZXJyb3JUZXh0fVwiLmApO1xuICAgICAgfVxuICAgIH0pLnJlZHVjZSgoY3VyLCBuZXh0KSA9PiBjdXIudGhlbihuZXh0KSwgUHJvbWlzZS5yZXNvbHZlKCkpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBQeW9kaWRlIGVudmlyb25tZW50IHNldHVwYDtcbiAgICBhd2FpdCBzZXR1cFB5dGhvbihweW9kaWRlKTtcblxuICAgIHN0YXR1c1RleHQucmVtb3ZlKCk7XG4gICAgaWYgKHN0YXR1c0NvbnRhaW5lci5jaGlsZHJlbi5sZW5ndGggPT0gMCkge1xuICAgICAgc3RhdHVzQ29udGFpbmVyLnBhcmVudE5vZGUucmVtb3ZlKCk7XG4gICAgfVxuICAgIHJldHVybiBweW9kaWRlO1xuICB9KSgpLmNhdGNoKChlcnIpID0+IHtcbiAgICBzdGF0dXNUZXh0LnN0eWxlLmNvbG9yID0gXCJ2YXIoLS1leGVyY2lzZS1lZGl0b3ItaGwtZXIsICNBRDAwMDApXCI7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGVyci5tZXNzYWdlO1xuICAgIC8vaW5kaWNhdG9yQ29udGFpbmVyLnF1ZXJ5U2VsZWN0b3IoXCIuc3Bpbm5lci1ncm93XCIpLmNsYXNzTGlzdC5hZGQoXCJkLW5vbmVcIik7XG4gICAgdGhyb3cgZXJyO1xuICB9KTtcblxuICAvLyBLZWVwIHRyYWNrIG9mIGluaXRpYWwgT0pTIGJsb2NrIHJlbmRlclxuICBjb25zdCByZW5kZXJlZE9qcyA9IHt9O1xuXG4gIGNvbnN0IHByb2Nlc3MgPSBhc3luYyAoY29udGV4dCwgaW5wdXRzKSA9PiB7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHB5b2RpZGVQcm9taXNlO1xuICAgIGNvbnN0IGV2YWx1YXRvciA9IG5ldyBQeW9kaWRlRXZhbHVhdG9yKHB5b2RpZGUsIGNvbnRleHQpO1xuICAgIGF3YWl0IGV2YWx1YXRvci5wcm9jZXNzKGlucHV0cyk7XG4gICAgcmV0dXJuIGV2YWx1YXRvci5jb250YWluZXI7XG4gIH1cblxuICByZXR1cm4ge1xuICAgIHB5b2RpZGVQcm9taXNlLFxuICAgIHJlbmRlcmVkT2pzLFxuICAgIHByb2Nlc3MsXG4gIH07XG59XG4ifV19
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBleGVyY2lzZSBjb25maWd1cmF0aW9uXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKFxuICAgIHtcbiAgICAgIGlkOiBcInB5b2RpZGUtMi1jb250ZW50c1wiLFxuICAgICAgZW52aXI6IGBleGVyY2lzZS1lbnYtJHtibG9jay5hdHRyLmV4ZXJjaXNlfWAsXG4gICAgICBlcnJvcjogZmFsc2UsXG4gICAgICBjYXB0aW9uOiAnRXhlcmNpc2UnLFxuICAgIH0sXG4gICAgYmxvY2suYXR0clxuICApO1xuXG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IocHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxudmlld29mIF9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbl9weW9kaWRlX2ZlZWRiYWNrXzIgPSB7XG4gIGNvbnN0IHsgUHlvZGlkZUdyYWRlciB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcbiAgY29uc3QgZW1wdHlGZWVkYmFjayA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2RpdicpO1xuXG4gIGNvbnN0IGdyYWRlciA9IG5ldyBQeW9kaWRlR3JhZGVyKF9weW9kaWRlX3ZhbHVlXzIuZXZhbHVhdG9yKTtcbiAgY29uc3QgZmVlZGJhY2sgPSBhd2FpdCBncmFkZXIuZ3JhZGVFeGVyY2lzZSgpO1xuICBpZiAoIWZlZWRiYWNrKSByZXR1cm4gZW1wdHlGZWVkYmFjaztcbiAgcmV0dXJuIGZlZWRiYWNrO1xufVxuIn0seyJjZWxsTmFtZSI6ImludGVycG9sYXRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ7XG4gIGNvbnN0IHsgaW50ZXJwb2xhdGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IGJsb2NrX2lkID0gXCIxXCI7XG4gIGNvbnN0IGxhbmd1YWdlID0gXCJweXRob25cIjtcbiAgY29uc3QgZGVmX21hcCA9IHtcbmVhcm5pbmdzLFxudG90YWxfZWFybmluZ3MsXG59O1xuICBjb25zdCBlbGVtID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoYGludGVycG9sYXRlLSR7YmxvY2tfaWR9YCk7XG5cbiAgLy8gU3RvcmUgb3JpZ2luYWwgdGVtcGxhdGVkIEhUTUwgZm9yIHJlZmVyZW5jZSBpbiBmdXR1cmUgcmVhY3RpdmUgdXBkYXRlc1xuICBpZiAoIWVsZW0ub3JpZ0hUTUwpIGVsZW0ub3JpZ0hUTUwgPSBlbGVtLmlubmVySFRNTDtcblxuICAvLyBJbnRlcnBvbGF0ZSByZWFjdGl2ZSBPSlMgdmFyaWFibGVzIGludG8gZXN0YWJsaXNoZWQgSFRNTCBlbGVtZW50XG4gIGVsZW0uaW5uZXJIVE1MID0gZWxlbS5vcmlnSFRNTDtcbiAgT2JqZWN0LmtleXMoZGVmX21hcCkuZm9yRWFjaCgoZGVmKSA9PlxuICAgIGludGVycG9sYXRlKGVsZW0sIFwiJHtcIiArIGRlZiArIFwifVwiLCBkZWZfbWFwW2RlZl0sIGxhbmd1YWdlKVxuICApO1xufVxuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtcHJlbHVkZSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InB5b2RpZGVPanMgPSB7XG4gIGNvbnN0IHtcbiAgICBQeW9kaWRlRXZhbHVhdG9yLFxuICAgIFB5b2RpZGVFbnZpcm9ubWVudE1hbmFnZXIsXG4gICAgc2V0dXBQeXRob24sXG4gICAgc3RhcnRQeW9kaWRlV29ya2VyLFxuICAgIGI2NERlY29kZSxcbiAgICBjb2xsYXBzZVBhdGgsXG4gIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHN0YXR1c0NvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1zdGF0dXNcIik7XG4gIGNvbnN0IGluZGljYXRvckNvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGluZGljYXRvckNvbnRhaW5lci5jbGFzc0xpc3QucmVtb3ZlKFwiZC1ub25lXCIpO1xuXG4gIGxldCBzdGF0dXNUZXh0ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKVxuICBzdGF0dXNUZXh0LmNsYXNzTGlzdCA9IFwiZXhlcmNpc2UtbG9hZGluZy1kZXRhaWxzXCI7XG4gIHN0YXR1c1RleHQgPSBzdGF0dXNDb250YWluZXIuYXBwZW5kQ2hpbGQoc3RhdHVzVGV4dCk7XG4gIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgSW5pdGlhbGlzZWA7XG5cbiAgLy8gSG9pc3QgaW5kaWNhdG9yIG91dCBmcm9tIGZpbmFsIHNsaWRlIHdoZW4gcnVubmluZyB1bmRlciByZXZlYWxcbiAgY29uc3QgcmV2ZWFsU3RhdHVzID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgLmV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpZiAocmV2ZWFsU3RhdHVzKSB7XG4gICAgcmV2ZWFsU3RhdHVzLnJlbW92ZSgpO1xuICAgIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsID4gLnNsaWRlc1wiKS5hcHBlbmRDaGlsZChyZXZlYWxTdGF0dXMpO1xuICB9XG5cbiAgLy8gTWFrZSBhbnkgcmV2ZWFsIHNsaWRlcyB3aXRoIGxpdmUgY2VsbHMgc2Nyb2xsYWJsZVxuICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKFwiLnJldmVhbCAuZXhlcmNpc2UtY2VsbFwiKS5mb3JFYWNoKChlbCkgPT4ge1xuICAgIGVsLmNsb3Nlc3QoJ3NlY3Rpb24uc2xpZGUnKS5jbGFzc0xpc3QuYWRkKFwic2Nyb2xsYWJsZVwiKTtcbiAgfSlcblxuICAvLyBQeW9kaWRlIHN1cHBsZW1lbnRhbCBkYXRhIGFuZCBvcHRpb25zXG4gIGNvbnN0IGRhdGFDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtZGF0YVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGRhdGEgPSBKU09OLnBhcnNlKGI2NERlY29kZShkYXRhQ29udGVudCkpO1xuXG4gIC8vIEdyYWIgbGlzdCBvZiByZXNvdXJjZXMgdG8gYmUgZG93bmxvYWRlZFxuICBjb25zdCBmaWxlc0NvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwidmZzLWZpbGVcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBmaWxlcyA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGZpbGVzQ29udGVudCkpO1xuXG4gIGxldCBweW9kaWRlUHJvbWlzZSA9IChhc3luYyAoKSA9PiB7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBQeW9kaWRlYDtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgc3RhcnRQeW9kaWRlV29ya2VyKGRhdGEub3B0aW9ucyk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6IG1pY3JvcGlwYDtcbiAgICBhd2FpdCBweW9kaWRlLmxvYWRQYWNrYWdlKFwibWljcm9waXBcIik7XG4gICAgY29uc3QgbWljcm9waXAgPSBhd2FpdCBweW9kaWRlLnB5aW1wb3J0KFwibWljcm9waXBcIik7XG4gICAgYXdhaXQgZGF0YS5wYWNrYWdlcy5wa2dzLm1hcCgocGtnKSA9PiAoKSA9PiB7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6ICR7cGtnfWA7XG4gICAgICByZXR1cm4gbWljcm9waXAuaW5zdGFsbChwa2cpO1xuICAgIH0pLnJlZHVjZSgoY3VyLCBuZXh0KSA9PiBjdXIudGhlbihuZXh0KSwgUHJvbWlzZS5yZXNvbHZlKCkpO1xuICAgIGF3YWl0IG1pY3JvcGlwLmRlc3Ryb3koKTtcblxuICAgIC8vIERvd25sb2FkIGFuZCBpbnN0YWxsIHJlc291cmNlc1xuICAgIGF3YWl0IGZpbGVzLm1hcCgoZmlsZSkgPT4gYXN5bmMgKCkgPT4ge1xuICAgICAgY29uc3QgbmFtZSA9IGZpbGUuc3Vic3RyaW5nKGZpbGUubGFzdEluZGV4T2YoJy8nKSArIDEpO1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyByZXNvdXJjZTogJHtuYW1lfWA7XG4gICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGZpbGUpO1xuICAgICAgaWYgKCFyZXNwb25zZS5vaykge1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYENhbid0IGRvd25sb2FkIFxcYCR7ZmlsZX1cXGAuIEVycm9yICR7cmVzcG9uc2Uuc3RhdHVzfTogXCIke3Jlc3BvbnNlLnN0YXR1c1RleHR9XCIuYCk7XG4gICAgICB9XG4gICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuYXJyYXlCdWZmZXIoKTtcblxuICAgICAgLy8gU3RvcmUgVVJMcyBpbiB0aGUgY3dkIHdpdGhvdXQgYW55IHN1YmRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGlmIChmaWxlLmluY2x1ZGVzKFwiOi8vXCIpKSB7XG4gICAgICAgIGZpbGUgPSBuYW1lO1xuICAgICAgfVxuXG4gICAgICAvLyBDb2xsYXBzZSBoaWdoZXIgZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgZmlsZSA9IGNvbGxhcHNlUGF0aChmaWxlKTtcblxuICAgICAgLy8gQ3JlYXRlIGRpcmVjdG9yeSB0cmVlLCBpZ25vcmluZyBcImRpcmVjdG9yeSBleGlzdHNcIiBWRlMgZXJyb3JzXG4gICAgICBjb25zdCBwYXJ0cyA9IGZpbGUuc3BsaXQoJy8nKS5zbGljZSgwLCAtMSk7XG4gICAgICBsZXQgcGF0aCA9ICcnO1xuICAgICAgd2hpbGUgKHBhcnRzLmxlbmd0aCA+IDApIHtcbiAgICAgICAgcGF0aCArPSBwYXJ0cy5zaGlmdCgpICsgJy8nO1xuICAgICAgICB0cnkge1xuICAgICAgICAgIGF3YWl0IHB5b2RpZGUuRlMubWtkaXIocGF0aCk7XG4gICAgICAgIH0gY2F0Y2ggKGUpIHtcbiAgICAgICAgICBpZiAoZS5uYW1lICE9PSBcIkVycm5vRXJyb3JcIikgdGhyb3cgZTtcbiAgICAgICAgICBpZiAoZS5lcnJubyAhPT0gMjApIHtcbiAgICAgICAgICAgIGNvbnN0IGVycm9yVGV4dFB0ciA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5fc3RyZXJyb3IoZS5lcnJubyk7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYEZpbGVzeXN0ZW0gRXJyb3IgJHtlLmVycm5vfSBcIiR7ZXJyb3JUZXh0fVwiLmApO1xuICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgICAgfVxuXG4gICAgICAvLyBXcml0ZSB0aGlzIGZpbGUgdG8gdGhlIFZGU1xuICAgICAgdHJ5IHtcbiAgICAgICAgcmV0dXJuIGF3YWl0IHB5b2RpZGUuRlMud3JpdGVGaWxlKGZpbGUsIG5ldyBVaW50OEFycmF5KGRhdGEpKTtcbiAgICAgIH0gY2F0Y2ggKGUpIHtcbiAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgIGNvbnN0IGVycm9yVGV4dFB0ciA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5fc3RyZXJyb3IoZS5lcnJubyk7XG4gICAgICAgIGNvbnN0IGVycm9yVGV4dCA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5VVEY4VG9TdHJpbmcoZXJyb3JUZXh0UHRyKTtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgIH1cbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgUHlvZGlkZSBlbnZpcm9ubWVudCBzZXR1cGA7XG4gICAgYXdhaXQgc2V0dXBQeXRob24ocHlvZGlkZSk7XG5cbiAgICBzdGF0dXNUZXh0LnJlbW92ZSgpO1xuICAgIGlmIChzdGF0dXNDb250YWluZXIuY2hpbGRyZW4ubGVuZ3RoID09IDApIHtcbiAgICAgIHN0YXR1c0NvbnRhaW5lci5wYXJlbnROb2RlLnJlbW92ZSgpO1xuICAgIH1cbiAgICByZXR1cm4gcHlvZGlkZTtcbiAgfSkoKS5jYXRjaCgoZXJyKSA9PiB7XG4gICAgc3RhdHVzVGV4dC5zdHlsZS5jb2xvciA9IFwidmFyKC0tZXhlcmNpc2UtZWRpdG9yLWhsLWVyLCAjQUQwMDAwKVwiO1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBlcnIubWVzc2FnZTtcbiAgICAvL2luZGljYXRvckNvbnRhaW5lci5xdWVyeVNlbGVjdG9yKFwiLnNwaW5uZXItZ3Jvd1wiKS5jbGFzc0xpc3QuYWRkKFwiZC1ub25lXCIpO1xuICAgIHRocm93IGVycjtcbiAgfSk7XG5cbiAgLy8gS2VlcCB0cmFjayBvZiBpbml0aWFsIE9KUyBibG9jayByZW5kZXJcbiAgY29uc3QgcmVuZGVyZWRPanMgPSB7fTtcblxuICBjb25zdCBwcm9jZXNzID0gYXN5bmMgKGNvbnRleHQsIGlucHV0cykgPT4ge1xuICAgIGNvbnN0IHB5b2RpZGUgPSBhd2FpdCBweW9kaWRlUHJvbWlzZTtcbiAgICBjb25zdCBldmFsdWF0b3IgPSBuZXcgUHlvZGlkZUV2YWx1YXRvcihweW9kaWRlLCBjb250ZXh0KTtcbiAgICBhd2FpdCBldmFsdWF0b3IucHJvY2VzcyhpbnB1dHMpO1xuICAgIHJldHVybiBldmFsdWF0b3IuY29udGFpbmVyO1xuICB9XG5cbiAgcmV0dXJuIHtcbiAgICBweW9kaWRlUHJvbWlzZSxcbiAgICByZW5kZXJlZE9qcyxcbiAgICBwcm9jZXNzLFxuICB9O1xufVxuIn1dfQ==
 </script>
 <div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
 <div id="exercise-loading-status" class="d-flex gap-2">
@@ -2433,8 +2483,8 @@ window._ojs.runtime.interpretFromScriptTags();
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../notebooks/lecture-04.ipynb" class="pagination-link" aria-label="Lecture 04: Sampling and Simulation">
-        <span class="nav-page-text">Lecture 04: Sampling and Simulation</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../notebooks/lecture-04.html" class="pagination-link" aria-label="Lecture 04: Data Generating Processes">
+        <span class="nav-page-text">Lecture 04: Data Generating Processes</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
