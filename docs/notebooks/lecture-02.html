@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Joseph Rudoler">
-<meta name="dcterms.date" content="2025-06-25">
+<meta name="dcterms.date" content="2025-06-27">
 <meta name="description" content="Introduction to Probability and Random Variables">
 
 <title>Lecture 02: Probability and Random Variables – Understanding Uncertainty</title>
@@ -317,6 +317,8 @@ window.Quarto = {
   <li><a href="#random-variables" id="toc-random-variables" class="nav-link" data-scroll-target="#random-variables">Random Variables</a></li>
   <li><a href="#probability-distributions-and-histograms" id="toc-probability-distributions-and-histograms" class="nav-link" data-scroll-target="#probability-distributions-and-histograms">Probability distributions and histograms</a></li>
   <li><a href="#expectation" id="toc-expectation" class="nav-link" data-scroll-target="#expectation">Expectation</a></li>
+  <li><a href="#variance-and-standard-deviation" id="toc-variance-and-standard-deviation" class="nav-link" data-scroll-target="#variance-and-standard-deviation">Variance and standard deviation</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul>
 </nav>
     </div>
@@ -347,7 +349,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">June 25, 2025</p>
+      <p class="date">June 27, 2025</p>
     </div>
   </div>
   
@@ -2019,14 +2021,14 @@ Uniform random variable
 <h2 class="anchored" data-anchor-id="expectation">Expectation</h2>
 <p>We are often interested in the <strong>average</strong> value of a random variable. For example, if we play roulette, we might want to know the average amount of money we can expect to win or lose per game.</p>
 <p>Why do we need an average? Since a random variable can take on many different values, a single sample does not give you a lot of information. You might win hundreds of dollars on one game, but this does not mean you will win that much every time you play.</p>
-<p>Instead, think about what would happen if we repeated the random process many times and took the average. Values that occur more frequently will tend to have a larger impact on the average, while values that occur less frequently will have a smaller impact. For example, at a casino roulette table perhaps you place a bet that has a 10% chance of winning. You might bet $10 and win $100 ($90 net profit) on one game, but if you lose $10 on the next 9 games you’re not making money in the long run. Even though $90 profit sounds great, the fact that it happens so infrequently (and you lose $10 90% of the time) means that your average profit is actually zero.</p>
-<div class="callout callout-style-default callout-warning callout-titled" title="Gambling warning">
+<p>Instead, think about what would happen if we repeated the random process many times and took the average. Values that occur more frequently will tend to have a larger impact on the average, while values that occur less frequently will have a smaller impact. For example, at a casino roulette table perhaps you place a bet that has a 10% chance of winning. You might bet $1 and win $10 ($9 net profit) on one game, but if you lose $1 on the next 9 games you’re not making money in the long run. Even though $9 profit sounds great, the fact that it happens so infrequently (and you lose $1 90% of the time) means that your average profit is actually zero.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Gambling warning: the house always wins">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Gambling warning
+Gambling warning: the house always wins
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -2038,12 +2040,120 @@ Gambling warning
 </div>
 </div>
 <p>We can formalize this idea that the average gives more weight to values that occur more frequently.</p>
-<p>The <strong>expectation</strong> (or expected value) of a random variable <span class="math inline">\(X\)</span> is gives the average value of <span class="math inline">\(X\)</span> over many instances. It is denoted as <span class="math inline">\(\E[X]\)</span> or <span class="math inline">\(\mu_X\)</span>. The expectation is calculated as follows: <span class="math display">\[
-\E[X] = \sum_{x} x \cdot f(x)
+<p>The <strong>expectation</strong> (or expected value) of a random variable <span class="math inline">\(X\)</span> is gives the average value of <span class="math inline">\(X\)</span> over many instances. It is denoted as <span class="math inline">\(\mathbb{E}[X]\)</span> or <span class="math inline">\(\mu_X\)</span>. The expectation is calculated as follows: <span class="math display">\[
+\mathbb{E}[X] = \sum_{x} x \cdot f(x)
 \]</span> where <span class="math inline">\(f(x)\)</span> is the probability function of <span class="math inline">\(X\)</span>. For continuous random variables, the sum is replaced with an integral: <span class="math display">\[
-\E[X] = \int_{-\infty}^{\infty} x \cdot f(x) \, dx
+\mathbb{E}[X] = \int_{-\infty}^{\infty} x \cdot f(x) \, dx
 \]</span></p>
 <p>The way to think about this is that the expectation is a weighted average of all possible values of <span class="math inline">\(X\)</span>, where the weights are the probabilities of each value.</p>
+<p>So in our roulette example, you can either lose $1 (with 90% probability) or win $9 (with 10% probability). The expectation would be: <span class="math display">\[
+\begin{align*}
+\mathbb{E}[X] &amp;= \sum_{x \in \{-1, 10\}} x \cdot f(x) \\
+&amp;= (-1) \cdot 0.9 + (10-1) \cdot 0.1 \\
+&amp;= -0.9 + 0.9 \\
+&amp;= 0
+\end{align*}
+\]</span></p>
+<p>This is also the same as what you get if you just take the average of the outcomes. Say we play roulette 10 times, and we win $10 on one game and lose $1 on the other 9 games. The average outcome is: <span class="math display">\[
+\begin{align*}
+\frac{1}{10} \left( -1 \cdot 9 + 9 \cdot 1 \right) &amp;= -1 \cdot 0.9 + 9 \cdot 0.1 \\
+&amp;= -0.9 + 0.9 \\
+&amp;= 0
+\end{align*}
+\]</span></p>
+<p>So for a finite dataset, or set of outcomes, we can estimate the expected value by taking the average of the outcomes. This is often written as <span class="math inline">\(\bar{X}\)</span>, and referred to as the sample mean. <span class="math display">\[
+\mathbb{E}[X] \approx \bar{X} = \frac{1}{n} \sum_{i=1}^{n} x_i
+\]</span></p>
+<p>This approximation becomes more accurate as the number of samples <span class="math inline">\(n\)</span> increases. We will talk about this more in a future lecture.</p>
+</section>
+<section id="variance-and-standard-deviation" class="level2">
+<h2 class="anchored" data-anchor-id="variance-and-standard-deviation">Variance and standard deviation</h2>
+<p>The average is a useful summary of a random variable’s central tendency, but it does not tell us anything about how spread out the values are.</p>
+<p>Consider the roulette example again. If we play roulette many times, it does not matter how much we bet on each game – the <strong>average</strong> amount we can expect to win or lose is always zero. You can bet $1 or $10,000 on each game, but the average outcome is still zero.</p>
+<p>Of course, the outcome of each game is not zero. Sometimes you win, sometimes you lose, and the amount you win or lose changes drastically depending on how much you bet.</p>
+<div id="69ab7544" class="cell" data-execution_count="39">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-02_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>How can we quantify this spread? Meaning, we want to capture that even though the average outcome is zero, winning $90 and losing $10 is very different from winning $9 and losing $1. Maybe you want to pay for dinner with your winnings, so a $90 payout is much more useful than a $9 payout. Or maybe you only have $10 in your pocket, so you can’t afford to lose all of it on a single game.</p>
+<p>We need a statistic that captures the typical <em>distance</em> between the values of the random variable and the average value.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Why distance from the average?">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Why distance from the average?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let’s imagine for a moment that there was a casino (a very poorly run casino) that let you place bets that win no matter what – the only question is how much you win. Let’s take an example where the payouts still differ by $10: you get $5 if you “lose” and $15 if you “win”.</p>
+<p>In this case, the expected value is: <span class="math display">\[
+\mathbb{E}[X] = \sum_{x} x \cdot f(x) = 5 \cdot 0.9 + 15 \cdot 0.1 = 4.5 + 1.5 = 6
+\]</span> So you can expect to win $6 per game on average.</p>
+<p>The amount that the winnings vary, though is exactly the same as the original roulette game. How can we replicate this notion mathematically?</p>
+<p>The answer is simple: we subtract the average from each value of <span class="math inline">\(X\)</span>: <span class="math display">\[X' = X - \mathbb{E}[X]\]</span> This gives us a new random variable <span class="math inline">\(X'\)</span> that represents the distance from the average. Notice that this new random variable has an average of zero, just like the original roulette game.</p>
+<p><span class="math display">\[\mathbb{E}[X'] = \sum_{x} (x - \mathbb{E}[X]) \cdot f(x) = ((5-6) \cdot 0.9 + (15-6) \cdot 0.1 = (-1) \cdot 0.9 + (9) \cdot 0.1 = -0.9 + 0.9 = 0\]</span></p>
+<p>or more generally: <span class="math display">\[\mathbb{E}[X'] = \mathbb{E}[X - \mathbb{E}[X]] = \mathbb{E}[X] - \mathbb{E}[X] = 0\]</span></p>
+</div>
+</div>
+</div>
+<p>So let’s compute exactly that - the distance from the average. The formula for distance between two vectors <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> is: <span class="math display">\[
+d^2 = \sum_{i} (x_i - y_i)^2
+\]</span> where <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> are the elements of the two vectors. This is like the Pythagorean Theorem for computing the length of athe hypotenuse of a triange (<span class="math inline">\(a^2 + b^2 = c^2\)</span>).</p>
+<p>In our case, we want to compute the distance between the values of the random variable <span class="math inline">\(X\)</span> and the average value <span class="math inline">\(\mathbb{E}[X]\)</span>. <span class="math display">\[
+d^2 = \sqrt{\sum_x (x - \mathbb{E}[X])^2}
+\]</span></p>
+<p>Now we’re getting somewhere! However, this is adding up all of the squared distances – that means that the more values we have, the larger the distance will be. This is not quite right – instead we want to compute the average distance from the mean in order to get a sense of how spread out the values <em>typically</em> are.</p>
+<p>So we need to divide by the number of values: <span class="math display">\[
+d^2_\text{avg} = \frac{1}{n} \sum_x (x - \mathbb{E}[X])^2
+\]</span></p>
+<p>Something should feel familiar about this expression. Recall that the average is related to the expectation. If we replace the average with the expectation, we get the formula for the <strong>variance</strong> of a random variable <span class="math inline">\(X\)</span>: <span class="math display">\[
+\text{Var}(X) = \sigma^2(X) = \mathbb{E}[(X - \mathbb{E}[X])^2] = \sum_x (x - \mathbb{E}[X])^2 \cdot f(x)
+\]</span></p>
+<p>The variance tells us how spread out the values of a random variable are around the average. A larger variance means that the values are more spread out, while a smaller variance means that the values are closer to the average.</p>
+<p>The variance is a useful statistic, but it is not in the same units as the original random variable. For example, if <span class="math inline">\(X\)</span> represents the amount of money you win or lose in dollars, then the variance is in dollars squared. This can make it difficult to interpret. So we often take the square root of the variance to get the <strong>standard deviation</strong>:</p>
+<p><span class="math display">\[
+\text{SD}(X) = \sigma(X) = \sqrt{\text{Var}(X)} = \sqrt{\mathbb{E}[(X - \mathbb{E}[X])^2]}
+\]</span></p>
+<p>Like with expected value, we can replace the expectation with the sample mean to get an estimate of the standard deviation (or variance) from a finite dataset: <span class="math display">\[
+\hat{\sigma}(X) = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (x_i - \bar{X})^2}
+\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled" title="Sample variance vs. population variance">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Sample variance vs.&nbsp;population variance
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Technically, the formula above is an imperfect estimate of the population standard deviation. It’s in general a little bit too small, because the sample mean <span class="math inline">\(\bar{X}\)</span> does not perfectly represent the population mean <span class="math inline">\(\mathbb{E}[X]\)</span>. We can correct for this by dividing by <span class="math inline">\(n-1\)</span> instead of <span class="math inline">\(n\)</span>: <span class="math display">\[
+\hat{\sigma}(X) = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{X})^2}
+\]</span> This is called the <strong>sample standard deviation</strong>.</p>
+<p>Why is the initial estimate too small? In a small dataset, the sample mean “overfits” the data, meaning it is closer to the individual data points than the true population mean. Let’s think about this in terms of coin flips. If we flip a coin once, the sample mean is either <span class="math inline">\(\hat{X}=0\)</span> or 1, depending on whether we got heads or tails. But the true population mean is <span class="math inline">\(\mathbb{E}[X]=\frac{1}{2}\)</span>. If we compute the standard deviation using the original formula, the distance from the sample mean is exactly 0! So the standard deviation is also 0 (either <span class="math inline">\((1-1)^2\)</span> or <span class="math inline">\((0-0)^2\)</span>).</p>
+<p>By contrast, the true (population) standard deviation is <span class="math inline">\(\sigma(X) = \sqrt{\mathbb{E}[(X - \mathbb{E}[X])^2]} = \sqrt{\frac{1}{4}} = \frac{1}{2}\)</span>, which is larger than the estimate using the sample mean.</p>
+<p>This <strong>bias</strong> in computing the standard deviation gets smaller as the sample size <span class="math inline">\(n\)</span> increases, so for large datasets the difference is negligible. In smaller datasets, though, it is important to use the <span class="math inline">\(n-1\)</span> correction to get a more accurate estimate of the population standard deviation.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>This lecture introduced many important concepts from probability theory that will be useful throughout the course. Probability gives us a mathematical language and toolkit for reasoning about uncertainty and randomness in data, by thinking about possible outcomes and their likelihoods.</p>
+<p>In particular, we covered: - The basic definition of probability and how to compute it for simple events. - The addition and multiplication rules for calculating probabilities of multiple events. - The concept of independence and how it affects probabilities. - Random variables and their probability distributions - The expectation (or expected value) of a random variable - Variance and standard deviation</p>
+<p>Going forward, these concepts will be foundational for statistical modeling and designing good simulations and statistical tests.</p>
+<p>Assignment 2 will give you a chance to work through some of these concepts in more detail, so be sure to check it out!</p>
 
 
 <script type="pyodide-data">
