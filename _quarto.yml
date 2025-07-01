@@ -1,0 +1,65 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - "*.qmd"
+    - "notebooks/*.ipynb"
+    - "assignments/*.ipynb"
+
+website:
+  title: "Understanding Uncertainty"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: syllabus.qmd
+        text: Syllabus
+      - href: assignments.qmd
+        text: Assignments
+    right:
+      - icon: github
+        href: https://github.com/jrudoler-teaching/understanding-uncertainty
+      - icon: twitter
+        href: https://twitter.com/jrudoler
+  sidebar:
+      style: "floating"
+      search: true
+      contents:
+        - text: "Lecture 00: Why Statistics?"
+          href: notebooks/lecture-00.ipynb
+        - text: "Lecture 01: Programming Basics"
+          href: notebooks/lecture-01.ipynb
+        - text: "Lecture 02: Probability and Random Variables"
+          href: notebooks/lecture-02.ipynb
+        - text: "Lecture 03: Sampling and Simulation"
+          href: notebooks/lecture-03.ipynb
+        - text: "Lecture 04: Data Generating Processes"
+          href: notebooks/lecture-04.ipynb
+        - text: "Lecture 05: Hypothesis Testing"
+          href: notebooks/lecture-05.ipynb
+        - text: "Lecture 06: Bootstrapping"
+          href: notebooks/lecture-06.ipynb
+        - text: "Lecture 07: Permutation Tests"  
+          href: notebooks/lecture-07.ipynb
+        - text: "Lecture 08: Regression Basics"
+          href: notebooks/lecture-08.ipynb
+        - text: "Lecture 09: Interpreting Regression"
+          href: notebooks/lecture-09.ipynb
+        - text: "Lecture 10: Classification"
+          href: notebooks/lecture-10.ipynb
+        - text: "Lecture 11: Model Evaluation"
+          href: notebooks/lecture-11.ipynb
+        - text: "Lecture 12: Advanced Topics"
+          href: notebooks/lecture-12.ipynb
+  page-navigation: true
+
+format:
+  html:
+    theme: 
+      dark: darkly
+      light: minty
+    css: styles.css
+    toc: true
+
+
+

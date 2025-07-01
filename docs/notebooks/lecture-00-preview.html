@@ -1,0 +1,2876 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="generator" content="quarto-1.7.31">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <meta name="dcterms.date" content="2025-07-01">
+
+    <title>Lecture 00 – Understanding Uncertainty</title>
+    <style>
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      div.columns{display: flex; gap: min(4vw, 1.5em);}
+      div.column{flex: auto; overflow-x: auto;}
+      div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+      ul.task-list{list-style: none;}
+      ul.task-list li input[type="checkbox"] {
+        width: 0.8em;
+        margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+        vertical-align: middle;
+      }
+      /* CSS for syntax highlighting */
+      html { -webkit-text-size-adjust: 100%; }
+      pre > code.sourceCode { white-space: pre; position: relative; }
+      pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+      pre > code.sourceCode > span:empty { height: 1.2em; }
+      .sourceCode { overflow: visible; }
+      code.sourceCode > span { color: inherit; text-decoration: inherit; }
+      div.sourceCode { margin: 1em 0; }
+      pre.sourceCode { margin: 0; }
+      @media screen {
+      div.sourceCode { overflow: auto; }
+      }
+      @media print {
+      pre > code.sourceCode { white-space: pre-wrap; }
+      pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+      }
+      pre.numberSource code
+        { counter-reset: source-line 0; }
+      pre.numberSource code > span
+        { position: relative; left: -4em; counter-increment: source-line; }
+      pre.numberSource code > span > a:first-child::before
+        { content: counter(source-line);
+          position: relative; left: -1em; text-align: right; vertical-align: baseline;
+          border: none; display: inline-block;
+          -webkit-touch-callout: none; -webkit-user-select: none;
+          -khtml-user-select: none; -moz-user-select: none;
+          -ms-user-select: none; user-select: none;
+          padding: 0 4px; width: 4em;
+        }
+      pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+      div.sourceCode
+        {   }
+      @media screen {
+      pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+      }
+    </style>
+
+    <style>
+      body.hypothesis-enabled #quarto-embed-header {
+        padding-right: 36px;
+      }
+
+      #quarto-embed-header {
+        height: 3em;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: solid 1px;
+      }
+
+      #quarto-embed-header h6 {
+        font-size: 1.1em;
+        padding-top: 0.6em;
+        margin-left: 1em;
+        margin-right: 1em;
+        font-weight: 400;
+      }
+
+      #quarto-embed-header a.quarto-back-link,
+      #quarto-embed-header a.quarto-download-embed {
+        font-size: 0.8em;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        margin-left: 1em;
+        margin-right: 1em;
+      }
+
+      .quarto-back-container {
+        padding-left: 0.5em;
+        display: flex;
+      }
+
+      .headroom {
+          will-change: transform;
+          transition: transform 200ms linear;
+      }
+
+      .headroom--pinned {
+          transform: translateY(0%);
+      }
+
+      .headroom--unpinned {
+          transform: translateY(-100%);
+      }      
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script>
+    window.document.addEventListener("DOMContentLoaded", function () {
+
+      var header = window.document.querySelector("#quarto-embed-header");
+      const titleBannerEl = window.document.querySelector("body > #title-block-header");
+      if (titleBannerEl) {
+        titleBannerEl.style.paddingTop = header.clientHeight + "px";
+      }
+      const contentEl = window.document.getElementById('quarto-content');
+      for (const child of contentEl.children) {
+        child.style.paddingTop = header.clientHeight + "px";
+        child.style.marginTop = "1em";
+      }
+
+      // Use the article root if the `back` call doesn't work. This isn't perfect
+      // but should typically work
+      window.quartoBackToArticle = () => {
+        var currentUrl = window.location.href;
+        window.history.back();
+        setTimeout(() => {
+            // if location was not changed in 100 ms, then there is no history back
+            if(currentUrl === window.location.href){              
+                // redirect to site root
+                window.location.href = '/';
+            }
+        }, 100);
+      }
+
+      const headroom = new window.Headroom(header, {
+        tolerance: 5,
+        onPin: function () {
+        },
+        onUnpin: function () {
+        },
+      });
+      headroom.init();
+    });
+    </script>
+
+    
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../notebooks/lecture-01.html" rel="next">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-9d882aefbe6880e209bb4e231fcedeb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-ccd81253fefb92e9cd3f9eb5b5d87b54.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+     <script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>  
+        <link rel="stylesheet" href="../styles.css">
+      </head>
+
+  <body class="nav-sidebar floating nav-fixed quarto-notebook quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = true;
+    const darkModeDefault = authorPrefersDark;
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+    <div id="quarto-embed-header" class="headroom fixed-top bg-primary">
+      
+      <a onclick="window.quartoBackToArticle(); return false;" class="btn btn-primary quarto-back-link"><i class="bi bi-caret-left"></i> Back to Article</a>
+      <h6><i class="bi bi-journal-code"></i> Lecture 00 Notebook</h6>
+
+            <a href="../notebooks/lecture-00.ipynb" class="btn btn-primary quarto-download-embed" download="lecture-00.ipynb">Download Notebook</a>
+          </div>
+
+     <div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Understanding Uncertainty</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../syllabus.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../assignments.html"> 
+<span class="menu-text">Assignments</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jrudoler-teaching/understanding-uncertainty"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/jrudoler"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/lecture-00.html">Lecture 00: Why Statistics?</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-00.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Lecture 00: Why Statistics?</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 01: Programming Basics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 02: Probability and Random Variables</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 03: Sampling and Simulation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 04: Data Generating Processes</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 05: Hypothesis Testing</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-06.ipynb" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 06: Bootstrapping</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-07.ipynb" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 07: Permutation Tests</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-08.ipynb" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 08: Regression Basics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-09.ipynb" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 09: Interpreting Regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 10: Classification</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-11.ipynb" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 11: Model Evaluation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-12.ipynb" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 12: Advanced Topics</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description">Description</a></li>
+  <li><a href="#inference" id="toc-inference" class="nav-link" data-scroll-target="#inference">Inference</a></li>
+  <li><a href="#prediction" id="toc-prediction" class="nav-link" data-scroll-target="#prediction">Prediction</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">        <header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lecture 00</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 1, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>     <div id="cell-2" class="cell markdown">
+<section id="welcome" class="level2">
+<h2 class="anchored" data-anchor-id="welcome">Welcome!</h2>
+<p>So begins “Understanding Uncertainty”, a course in statistical thinking and data science.</p>
+<p>This is lecture 0. See the <a href="../syllabus.html">syllabus</a> for an overview of the course.</p>
+<p>Our basic goals for the course are:</p>
+<ol type="1">
+<li><p>to build a strong intuition about data, where it comes from, and what questions it can answer.</p></li>
+<li><p>to learn the basic computational skills needed to manipulate and analyze data. Working with data also helps with (1)!</p></li>
+</ol>
+</section>
+<section id="why-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="why-statistics">Why statistics?</h2>
+<p>Statistics is, essentially, the study of data and how to use it. People argue about the purpose of statistics, but basically you can do 3 things with data: (1) description, (2) inference, and (3) prediction.</p>
+</section>
+</div>
+<div id="cell-3" class="cell markdown">
+<section id="description" class="level2">
+<h2 class="anchored" data-anchor-id="description">Description</h2>
+<p>Descriptive statistics is the process of summarizing data. This can be done with numbers (e.g., mean, median, standard deviation) or with visualizations (e.g., histograms, boxplots). Descriptive statistics, importantly, are completely limited to the sample of data at hand.</p>
+<p>Let’s load in some data and take a look at it.</p>
+<p>The <a href="https://www.kaggle.com/datasets/arianazmoudeh/airbnbopendata">dataset</a> contains Airbnb listings in New York City, including prices, locations, and other features.</p>
+</section>
+</div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [158]:</pre></div><div id="cell-4" class="cell" data-execution_count="158">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># from https://www.kaggle.com/datasets/arianazmoudeh/airbnbopendata</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># import the data on Airbnb listings in the New York City</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>airbnb <span class="op">=</span> pd.read_csv(<span class="st">"../data/airbnb.csv"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># data cleaning</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>airbnb <span class="op">=</span> airbnb.rename(columns<span class="op">=</span>{<span class="st">"neighbourhood_group"</span>: <span class="st">"borough"</span>})</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>airbnb <span class="op">=</span> airbnb.dropna(subset<span class="op">=</span>[<span class="st">"borough"</span>, <span class="st">"price"</span>, <span class="st">"long"</span>, <span class="st">"lat"</span>])</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>airbnb[<span class="st">"borough"</span>] <span class="op">=</span> airbnb[<span class="st">"borough"</span>].<span class="bu">str</span>.lower()</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>airbnb[<span class="st">"borough"</span>] <span class="op">=</span> airbnb[<span class="st">"borough"</span>].<span class="bu">str</span>.replace(<span class="st">"manhatan"</span>, <span class="st">"manhattan"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>airbnb[<span class="st">"borough"</span>] <span class="op">=</span> airbnb[<span class="st">"borough"</span>].<span class="bu">str</span>.replace(<span class="st">"brookln"</span>, <span class="st">"brooklyn"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># format the price column</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>airbnb[<span class="st">'price'</span>] <span class="op">=</span> airbnb[<span class="st">'price'</span>].replace({<span class="st">'</span><span class="ch">\\</span><span class="st">$'</span>: <span class="st">''</span>, <span class="st">','</span>: <span class="st">''</span>}, regex<span class="op">=</span><span class="va">True</span>).astype(<span class="bu">float</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># print the first 5 rows</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>airbnb[:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/var/folders/7h/662tdm8d6sn0krrht717wzmm0000gq/T/ipykernel_4339/643981573.py:3: DtypeWarning: Columns (25) have mixed types. Specify dtype option on import or set low_memory=False.
+  airbnb = pd.read_csv("../data/airbnb.csv")</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="158">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">name</th>
+<th data-quarto-table-cell-role="th">host_id</th>
+<th data-quarto-table-cell-role="th">host_identity_verified</th>
+<th data-quarto-table-cell-role="th">host_name</th>
+<th data-quarto-table-cell-role="th">borough</th>
+<th data-quarto-table-cell-role="th">neighbourhood</th>
+<th data-quarto-table-cell-role="th">lat</th>
+<th data-quarto-table-cell-role="th">long</th>
+<th data-quarto-table-cell-role="th">country</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">service_fee</th>
+<th data-quarto-table-cell-role="th">minimum_nights</th>
+<th data-quarto-table-cell-role="th">number_of_reviews</th>
+<th data-quarto-table-cell-role="th">last_review</th>
+<th data-quarto-table-cell-role="th">reviews_per_month</th>
+<th data-quarto-table-cell-role="th">review_rate_number</th>
+<th data-quarto-table-cell-role="th">calculated_host_listings_count</th>
+<th data-quarto-table-cell-role="th">availability_365</th>
+<th data-quarto-table-cell-role="th">house_rules</th>
+<th data-quarto-table-cell-role="th">license</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>1001254</td>
+<td>Clean &amp; quiet apt home by the park</td>
+<td>80014485718</td>
+<td>unconfirmed</td>
+<td>Madaline</td>
+<td>brooklyn</td>
+<td>Kensington</td>
+<td>40.64749</td>
+<td>-73.97237</td>
+<td>United States</td>
+<td>...</td>
+<td>$193</td>
+<td>10.0</td>
+<td>9.0</td>
+<td>10/19/2021</td>
+<td>0.21</td>
+<td>4.0</td>
+<td>6.0</td>
+<td>286.0</td>
+<td>Clean up and treat the home the way you'd like...</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1002102</td>
+<td>Skylit Midtown Castle</td>
+<td>52335172823</td>
+<td>verified</td>
+<td>Jenna</td>
+<td>manhattan</td>
+<td>Midtown</td>
+<td>40.75362</td>
+<td>-73.98377</td>
+<td>United States</td>
+<td>...</td>
+<td>$28</td>
+<td>30.0</td>
+<td>45.0</td>
+<td>5/21/2022</td>
+<td>0.38</td>
+<td>4.0</td>
+<td>2.0</td>
+<td>228.0</td>
+<td>Pet friendly but please confirm with me if the...</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1002403</td>
+<td>THE VILLAGE OF HARLEM....NEW YORK !</td>
+<td>78829239556</td>
+<td>NaN</td>
+<td>Elise</td>
+<td>manhattan</td>
+<td>Harlem</td>
+<td>40.80902</td>
+<td>-73.94190</td>
+<td>United States</td>
+<td>...</td>
+<td>$124</td>
+<td>3.0</td>
+<td>0.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>5.0</td>
+<td>1.0</td>
+<td>352.0</td>
+<td>I encourage you to use my kitchen, cooking and...</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>1002755</td>
+<td>NaN</td>
+<td>85098326012</td>
+<td>unconfirmed</td>
+<td>Garry</td>
+<td>brooklyn</td>
+<td>Clinton Hill</td>
+<td>40.68514</td>
+<td>-73.95976</td>
+<td>United States</td>
+<td>...</td>
+<td>$74</td>
+<td>30.0</td>
+<td>270.0</td>
+<td>7/5/2019</td>
+<td>4.64</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>322.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>1003689</td>
+<td>Entire Apt: Spacious Studio/Loft by central park</td>
+<td>92037596077</td>
+<td>verified</td>
+<td>Lyndon</td>
+<td>manhattan</td>
+<td>East Harlem</td>
+<td>40.79851</td>
+<td>-73.94399</td>
+<td>United States</td>
+<td>...</td>
+<td>$41</td>
+<td>10.0</td>
+<td>9.0</td>
+<td>11/19/2018</td>
+<td>0.10</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>289.0</td>
+<td>Please no smoking in the house, porch or on th...</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 26 columns</p>
+</div>
+</div>
+</div></div>
+<div id="cell-5" class="cell markdown">
+<p>Now there’s a lot you can do, but let’s start by visualizing the prices of listings.</p>
+</div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div id="cell-6" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot a histogram of the price column</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>plt.hist(airbnb[<span class="st">'price'</span>], bins<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Prices of Airbnb Listings in NYC'</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Price'</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Frequency'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="29">
+<pre><code>Text(0, 0.5, 'Frequency')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div class="">
+<figure class="figure">
+<p class=""><img src="lecture-00_files/figure-html/cell-4-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<div id="cell-7" class="cell markdown">
+<p>Computing statistics like the mean (average), standard deviation (average distance from the mean), and quartiles (top 25% and bottom 25%) is easy.</p>
+</div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [30]:</pre></div><div id="cell-8" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>airbnb[<span class="st">"price"</span>].describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<pre><code>count    102316.000000
+mean        625.291665
+std         331.677344
+min          50.000000
+25%         340.000000
+50%         624.000000
+75%         913.000000
+max        1200.000000
+Name: price, dtype: float64</code></pre>
+</div>
+</div></div>
+<div id="cell-9" class="cell markdown">
+<p>We can even use specialized libraries to make use of the geographic information in the data. For example, we can use the <code>geopandas</code> library to plot the locations of listings on a map of New York City.</p>
+</div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [31]:</pre></div><div id="cell-10" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> geodatasets <span class="im">import</span> get_path</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load the shapefile of NYC neighborhoods</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>nyc_neighborhoods <span class="op">=</span> gpd.read_file(get_path(<span class="st">'nybb'</span>))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>nyc_neighborhoods <span class="op">=</span> nyc_neighborhoods.to_crs(epsg<span class="op">=</span><span class="dv">4326</span>)  <span class="co"># convert to WGS84</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the neighborhoods with airbnb listings</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>nyc_neighborhoods.plot(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>), color<span class="op">=</span><span class="st">'white'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the airbnb listings on top of the neighborhoods</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># use the 'long' and 'lat' columns to create a GeoDataFrame</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>airbnb_gdf <span class="op">=</span> gpd.GeoDataFrame(airbnb, geometry<span class="op">=</span>gpd.points_from_xy(airbnb[<span class="st">'long'</span>], airbnb[<span class="st">'lat'</span>]), crs<span class="op">=</span><span class="st">'EPSG:4326'</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># set the coordinate reference system to WGS84</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>airbnb_gdf.plot(ax<span class="op">=</span>plt.gca(), column<span class="op">=</span><span class="st">"price"</span>, markersize<span class="op">=</span><span class="dv">3</span>, alpha<span class="op">=</span><span class="fl">0.05</span>, legend<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'viridis'</span>, legend_kwds<span class="op">=</span>{<span class="st">'shrink'</span>: <span class="fl">0.5</span>, <span class="st">'label'</span>: <span class="st">'Price ($)'</span>})</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Airbnb Listings in NYC'</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Longitude'</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Latitude'</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div class="">
+<figure class="figure">
+<p class=""><img src="lecture-00_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<div id="cell-11" class="cell markdown">
+<p>There is a lot of information in the data, and we can summarize it in many different ways. But descriptive statistics <strong>only describe the data</strong>.</p>
+<p>Why is this limiting? After all, we like data – it tells us things about the world and it’s objective and quantifiable.</p>
+<p>The problem is that data is not always complete. In fact, it almost never is. And incomplete data can lead to misleading conclusions.</p>
+<p>Let’s look at our Airbnb data again. What if instead of looking at the entire dataset, we only looked at a small “sample” or subset of the data?</p>
+</div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [32]:</pre></div><div id="cell-12" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># separately plot 3 samples of airbnb listings</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>), sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> ax.flatten()</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># sample 1000 listings</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    sample <span class="op">=</span> airbnb.sample(<span class="dv">100</span>, random_state<span class="op">=</span>i)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># plot the neighborhoods with airbnb listings</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    nyc_neighborhoods.plot(ax<span class="op">=</span>ax[i], color<span class="op">=</span><span class="st">'white'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># plot the airbnb listings on top of the neighborhoods</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># use the 'long' and 'lat' columns to create a GeoDataFrame</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    airbnb_gdf_sample <span class="op">=</span> gpd.GeoDataFrame(sample, geometry<span class="op">=</span>gpd.points_from_xy(sample[<span class="st">'long'</span>], sample[<span class="st">'lat'</span>]), crs<span class="op">=</span><span class="st">'EPSG:4326'</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set the coordinate reference system to WGS84</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    airbnb_gdf_sample.plot(ax<span class="op">=</span>ax[i], column<span class="op">=</span><span class="st">"price"</span>, markersize<span class="op">=</span><span class="dv">3</span>, alpha<span class="op">=</span><span class="fl">0.8</span>, legend<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'viridis'</span>, legend_kwds<span class="op">=</span>{<span class="st">'shrink'</span>: <span class="fl">0.5</span>, <span class="st">'label'</span>: <span class="st">'Price ($)'</span>})</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    ax[i].set_title(<span class="ss">f'Airbnb Listings in NYC (Sample </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">)</span><span class="ch">\n</span><span class="ss"> Average Price: $</span><span class="sc">{</span>sample[<span class="st">"price"</span>]<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">'</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    ax[i].set_xlabel(<span class="st">'Longitude'</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    ax[i].set_ylabel(<span class="st">'Latitude'</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div class="">
+<figure class="figure">
+<p class=""><img src="lecture-00_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<div id="cell-13" class="cell markdown">
+<p>Notice how the samples differ from one another. They have different geography and different prices. This means you can’t just look at the descriptive statistics of a single sample and draw conclusions about the entire population.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Sample vs. Population">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Sample vs.&nbsp;Population
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A <strong>population</strong> is the entire set of data that you are interested in. A <strong>sample</strong> is a subset of a population. For example, if you are interested in the average price of all Airbnb listings in New York City, then the population is all of those listings. A sample would be a smaller subset of those listings, which may or may not be representative of the entire population.</p>
+<p>Note that this definition is flexible. For example, if you are interested in the average price of all short-term rentals in New York City, then the population is all rentals. Even an exhaustive list of Airbnb listings would just be a sample from that population.</p>
+<p>Often, the population is actually more abstract or theoretical. For example, if you are interested in the average price of all possible Airbnb listings in New York City, then the population includes all potential listings, not just the ones that currently exist.</p>
+</div>
+</div>
+</div>
+<p>Descriptive statistics are useful for understanding the data at hand, but they don’t necessarily tell us much about the world outside of the data. For that, we need to do something more.</p>
+</div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [33]:</pre></div><div id="cell-14" class="cell" data-execution_count="33">
+<div class="cell-output cell-output-display">
+<div id="UCTYQOQZtdui" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
+#UCTYQOQZtdui {
+   --jq-multiple-choice-bg: #6f78ffff;
+   --jq-mc-button-bg: #fafafa;
+   --jq-mc-button-border: #e0e0e0e0;
+   --jq-mc-button-inset-shadow: #555555;
+   --jq-many-choice-bg: #f75c03ff;
+   --jq-numeric-bg: #392061ff;
+   --jq-numeric-input-bg: #c0c0c0;
+   --jq-numeric-input-label: #101010;
+   --jq-numeric-input-shadow: #999999;
+   --jq-string-bg: #4c1a57;
+   --jq-incorrect-color: #c80202;
+   --jq-correct-color: #009113;
+   --jq-text-color: #fafafa;
+}
+
+.Quiz {
+    max-width: 600px;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
+/*    margin-bottom: 15px;*/
+/*    padding-bottom: 4px;*/
+    padding-top: 4px;
+    line-height: 1.1;
+    font-size: 16pt;
+    border-radius: inherit;
+}
+
+.QuizCode {
+    font-size: 14pt;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.QuizCode>pre {
+    padding: 4px;
+}
+
+.Quiz code {
+    background-color: lightgray;
+    color: black;
+}
+
+.Quiz .QuizCode code {
+    background-color: inherit;
+    color: inherit;
+}
+
+
+.Quiz .MCButton code {
+    background-color: inherit;
+    color: inherit;
+}
+
+.MCButton .QuizCode {
+    text-align: left;
+}
+
+
+
+
+.Answer {
+    border-radius: inherit;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    margin: 10px 0;
+}
+
+@media only screen and (max-width:480px) {
+    .Answer {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+.Feedback {
+    font-size: 16pt;
+    text-align: center;
+/*    min-height: 2em;*/
+}
+
+.Input {
+    align: left;
+    font-size: 20pt;
+}
+
+.Input-text {
+    display: block;
+    margin: 10px;
+    color: inherit;
+    width: unset;
+    min-width: 140px;
+    max-width: 93%;
+    field-sizing: content;
+    background-color: var(--jq-numeric-input-bg);
+    color: var(--jq-text-color);
+    padding: 5px;
+    padding-left: 10px;
+    font-family: inherit;
+    font-size: 20px;
+    font-weight: inherit;
+    line-height: 20pt;
+    border: none;
+    border-radius: 0.2rem;
+    transition: box-shadow 0.1s);
+}
+
+.Input-text:focus {
+    /*outline: none;*/
+    background-color: var(--jq-numeric-input-bg);
+    box-shadow: 0.6rem 0.8rem 1.4rem -0.5rem var(--jq-numeric-input-shadow);
+}
+
+.MCButton {
+    background: var(--jq-mc-button-bg);
+    border: 1px solid var(--jq-mc-button-border);
+    border-radius: inherit;
+    color: #333333;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.MCButton p {
+    color: inherit;
+}
+
+.MultipleChoiceQn {
+    padding: 10px;
+    background: var(--jq-multiple-choice-bg);
+    color: var(--jq-text-color);
+    border-radius: inherit;
+}
+
+.ManyChoiceQn {
+    padding: 10px;
+    background: var(--jq-many-choice-bg);
+    color: var(--jq-text-color);
+    border-radius: inherit;
+}
+
+.NumericQn {
+    background: var(--jq-numeric-bg);
+    border-radius: inherit;
+    color: var(--jq-text-color);
+    padding: 10px;
+}
+
+.NumericQn p {
+    color: inherit;
+}
+
+.StringQn {
+    background: var(--jq-string-bg);
+    border-radius: inherit;
+    color: var(--jq-text-color);
+    padding: 10px;
+}
+
+.StringQn p {
+    color: inherit;
+}
+
+
+.InpLabel {
+    color: var(--jq-numeric-input-label);
+    float: left;
+    font-size: 15pt;
+    line-height: 34px;
+    margin-right: 10px;
+}
+
+.incorrect {
+    color: var(--jq-incorrect-color);
+}
+
+.correct {
+    color: var(--jq-correct-color);
+}
+
+.correctButton {
+    /*
+    background: var(--jq-correct-color);
+   */
+    animation: correct-anim 0.6s ease;
+    animation-fill-mode: forwards;
+    box-shadow: inset 0 0 5px var(--jq-mc-button-inset-shadow);
+    color: var(--jq-text-color);
+    /*outline: none;*/
+}
+
+.incorrectButton {
+    animation: incorrect-anim 0.8s ease;
+    animation-fill-mode: forwards;
+    box-shadow: inset 0 0 5px var(--jq-mc-button-inset-shadow);
+    color: var(--jq-text-color);
+    /*outline: none;*/
+}
+
+@keyframes incorrect-anim {
+    100% {
+        background-color: var(--jq-incorrect-color);
+    }
+}
+
+@keyframes correct-anim {
+    100% {
+        background-color: var(--jq-correct-color);
+    }
+}
+</style>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/javascript">
+var questionsUCTYQOQZtdui=[{"question": "You are interested in finding the best restaurant in Philadelphia, so you survey 1000 people and ask them to rank their top 10 favorite restaurants in the city. What is the population corresponding to this sample?", "type": "many_choice", "answers": [{"answer": "All restaurants in Philadelphia", "correct": false}, {"answer": "The 1000 people surveyed", "correct": false}, {"answer": "The top 10 restaurants in Philadelphia", "correct": false}, {"answer": "All people in Philadelphia", "correct": true}]}];
+
+if (typeof Question === 'undefined') {
+// Make a random ID
+function makeid(length) {
+    var result = [];
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+        result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
+    }
+    return result.join('');
+}
+// Convert LaTeX delimiters and markdown links to HTML
+function jaxify(string) {
+    let mystring = string;
+    let count = 0, count2 = 0;
+    let loc = mystring.search(/([^\\]|^)(\$)/);
+    let loc2 = mystring.search(/([^\\]|^)(\$\$)/);
+    while (loc >= 0 || loc2 >= 0) {
+        if (loc2 >= 0) {
+            mystring = mystring.replace(/([^\\]|^)(\$\$)/, count2 % 2 ? '$1\\]' : '$1\\[');
+            count2++;
+        } else {
+            mystring = mystring.replace(/([^\\]|^)(\$)/, count % 2 ? '$1\\)' : '$1\\(');
+            count++;
+        }
+        loc = mystring.search(/([^\\]|^)(\$)/);
+        loc2 = mystring.search(/([^\\]|^)(\$\$)/);
+    }
+    // Replace markdown links
+    mystring = mystring.replace(/<http(.*?)>/g, '<a href="http$1" target="_blank" class="Link">http$1</a>');
+    mystring = mystring.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" class="Link">$1</a>');
+    return mystring;
+}
+
+// Base class for question types
+class Question {
+    static registry = {};
+    static register(type, cls) {
+        Question.registry[type] = cls;
+    }
+    static create(qa, id, index, options, rootDiv) {
+        const Cls = Question.registry[qa.type];
+        if (!Cls) {
+            console.error(`No question class registered for type "${qa.type}"`);
+            return;
+        }
+        const q = new Cls(qa, id, index, options, rootDiv);
+        q.render();
+    }
+
+    constructor(qa, id, index, options, rootDiv) {
+        this.qa = qa;
+        this.id = id;
+        this.index = index;
+        this.options = options;
+        this.rootDiv = rootDiv;
+        // wrapper
+        this.wrapper = document.createElement('div');
+        this.wrapper.id = `quizWrap${id}`;
+        this.wrapper.className = 'Quiz';
+        this.wrapper.dataset.qnum = index;
+        this.wrapper.style.maxWidth = `${options.maxWidth}px`;
+        rootDiv.appendChild(this.wrapper);
+        // question container
+        this.outerqDiv = document.createElement('div');
+        this.outerqDiv.id = `OuterquizQn${id}${index}`;
+        this.wrapper.appendChild(this.outerqDiv);
+        // question text
+        this.qDiv = document.createElement('div');
+        this.qDiv.id = `quizQn${id}${index}`;
+        if (qa.question) {
+            this.qDiv.innerHTML = jaxify(qa.question);
+            this.outerqDiv.appendChild(this.qDiv);
+        }
+        // code block
+        if (qa.code) {
+            const codeDiv = document.createElement('div');
+            codeDiv.id = `code${id}${index}`;
+            codeDiv.className = 'QuizCode';
+            const pre = document.createElement('pre');
+            const codeEl = document.createElement('code');
+            codeEl.innerHTML = qa.code;
+            pre.appendChild(codeEl);
+            codeDiv.appendChild(pre);
+            this.outerqDiv.appendChild(codeDiv);
+        }
+        // answer container
+        this.aDiv = document.createElement('div');
+        this.aDiv.id = `quizAns${id}${index}`;
+        this.aDiv.className = 'Answer';
+        this.wrapper.appendChild(this.aDiv);
+        // feedback container (append after answers)
+        this.fbDiv = document.createElement('div');
+        this.fbDiv.id = `fb${id}`;
+        this.fbDiv.className = 'Feedback';
+        this.fbDiv.dataset.answeredcorrect = 0;
+    }
+
+    render() {
+        throw new Error('render() not implemented');
+    }
+
+    preserveResponse(val) {
+        if (!this.options.preserveResponses) return;
+        const resp = document.getElementById(`responses${this.rootDiv.id}`);
+        if (!resp) return;
+        const arr = JSON.parse(resp.dataset.responses);
+        arr[this.index] = val;
+        resp.dataset.responses = JSON.stringify(arr);
+        printResponses(resp);
+    }
+
+    typeset(container) {
+        if (typeof MathJax !== 'undefined') {
+            const v = MathJax.version;
+            if (v[0] === '2') {
+                MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
+            } else {
+                MathJax.typeset([container]);
+            }
+        }
+    }
+}
+
+// Choose a random subset of an array. Can also be used to shuffle the array
+function getRandomSubarray(arr, size) {
+    var shuffled = arr.slice(0), i = arr.length, temp, index;
+    while (i--) {
+        index = Math.floor((i + 1) * Math.random());
+        temp = shuffled[index];
+        shuffled[index] = shuffled[i];
+        shuffled[i] = temp;
+    }
+    return shuffled.slice(0, size);
+}
+
+function printResponses(responsesContainer) {
+    var responses=JSON.parse(responsesContainer.dataset.responses);
+    var stringResponses='<B>IMPORTANT!</B>To preserve this answer sequence for submission, when you have finalized your answers: <ol> <li> Copy the text in this cell below "Answer String"</li> <li> Double click on the cell directly below the Answer String, labeled "Replace Me"</li> <li> Select the whole "Replace Me" text</li> <li> Paste in your answer string and press shift-Enter.</li><li>Save the notebook using the save icon or File->Save Notebook menu item</li></ul><br><br><br><b>Answer String:</b><br> ';
+    console.log(responses);
+    responses.forEach((response, index) => {
+        if (response) {
+            console.log(index + ': ' + response);
+            stringResponses+= index + ': ' + response +"<BR>";
+        }
+    });
+    responsesContainer.innerHTML=stringResponses;
+}
+/* Callback function to determine whether a selected multiple-choice
+   button corresponded to a correct answer and to provide feedback
+   based on the answer */
+function check_mc() {
+    var id = this.id.split('-')[0];
+    //var response = this.id.split('-')[1];
+    //console.log(response);
+    //console.log("In check_mc(), id="+id);
+    //console.log(event.srcElement.id)           
+    //console.log(event.srcElement.dataset.correct)   
+    //console.log(event.srcElement.dataset.feedback)
+
+    var label = event.srcElement;
+    //console.log(label, label.nodeName);
+    var depth = 0;
+    while ((label.nodeName != "LABEL") && (depth < 20)) {
+        label = label.parentElement;
+        console.log(depth, label);
+        depth++;
+    }
+
+
+
+    var answers = label.parentElement.children;
+    //console.log(answers);
+
+    // Split behavior based on multiple choice vs many choice:
+    var fb = document.getElementById("fb" + id);
+
+
+
+    /* Multiple choice (1 answer). Allow for 0 correct
+       answers as an edge case */
+    if (fb.dataset.numcorrect <= 1) {
+        // What follows is for the saved responses stuff
+        var outerContainer = fb.parentElement.parentElement;
+        var responsesContainer = document.getElementById("responses" + outerContainer.id);
+        if (responsesContainer) {
+            //console.log(responsesContainer);
+            var response = label.firstChild.innerText;
+            if (label.querySelector(".QuizCode")){
+                response+= label.querySelector(".QuizCode").firstChild.innerText;
+            }
+            console.log(response);
+            //console.log(document.getElementById("quizWrap"+id));
+            var qnum = document.getElementById("quizWrap"+id).dataset.qnum;
+            console.log("Question " + qnum);
+            //console.log(id, ", got numcorrect=",fb.dataset.numcorrect);
+            var responses=JSON.parse(responsesContainer.dataset.responses);
+            console.log(responses);
+            responses[qnum]= response;
+            responsesContainer.setAttribute('data-responses', JSON.stringify(responses));
+            printResponses(responsesContainer);
+        }
+        // End code to preserve responses
+
+        for (var i = 0; i < answers.length; i++) {
+            var child = answers[i];
+            //console.log(child);
+            child.className = "MCButton";
+        }
+
+
+
+        if (label.dataset.correct == "true") {
+            // console.log("Correct action");
+            if ("feedback" in label.dataset) {
+                fb.innerHTML = jaxify(label.dataset.feedback);
+            } else {
+                fb.innerHTML = "Correct!";
+            }
+            label.classList.add("correctButton");
+
+            fb.className = "Feedback";
+            fb.classList.add("correct");
+
+        } else {
+            if ("feedback" in label.dataset) {
+                fb.innerHTML = jaxify(label.dataset.feedback);
+            } else {
+                fb.innerHTML = "Incorrect -- try again.";
+            }
+            //console.log("Error action");
+            label.classList.add("incorrectButton");
+            fb.className = "Feedback";
+            fb.classList.add("incorrect");
+        }
+    }
+    else { /* Many choice (more than 1 correct answer) */
+        var reset = false;
+        var feedback;
+         if (label.dataset.correct == "true") {
+            if ("feedback" in label.dataset) {
+                feedback = jaxify(label.dataset.feedback);
+            } else {
+                feedback = "Correct!";
+            }
+            if (label.dataset.answered <= 0) {
+                if (fb.dataset.answeredcorrect < 0) {
+                    fb.dataset.answeredcorrect = 1;
+                    reset = true;
+                } else {
+                    fb.dataset.answeredcorrect++;
+                }
+                if (reset) {
+                    for (var i = 0; i < answers.length; i++) {
+                        var child = answers[i];
+                        child.className = "MCButton";
+                        child.dataset.answered = 0;
+                    }
+                }
+                label.classList.add("correctButton");
+                label.dataset.answered = 1;
+                fb.className = "Feedback";
+                fb.classList.add("correct");
+
+            }
+        } else {
+            if ("feedback" in label.dataset) {
+                feedback = jaxify(label.dataset.feedback);
+            } else {
+                feedback = "Incorrect -- try again.";
+            }
+            if (fb.dataset.answeredcorrect > 0) {
+                fb.dataset.answeredcorrect = -1;
+                reset = true;
+            } else {
+                fb.dataset.answeredcorrect--;
+            }
+
+            if (reset) {
+                for (var i = 0; i < answers.length; i++) {
+                    var child = answers[i];
+                    child.className = "MCButton";
+                    child.dataset.answered = 0;
+                }
+            }
+            label.classList.add("incorrectButton");
+            fb.className = "Feedback";
+            fb.classList.add("incorrect");
+        }
+        // What follows is for the saved responses stuff
+        var outerContainer = fb.parentElement.parentElement;
+        var responsesContainer = document.getElementById("responses" + outerContainer.id);
+        if (responsesContainer) {
+            //console.log(responsesContainer);
+            var response = label.firstChild.innerText;
+            if (label.querySelector(".QuizCode")){
+                response+= label.querySelector(".QuizCode").firstChild.innerText;
+            }
+            console.log(response);
+            //console.log(document.getElementById("quizWrap"+id));
+            var qnum = document.getElementById("quizWrap"+id).dataset.qnum;
+            console.log("Question " + qnum);
+            //console.log(id, ", got numcorrect=",fb.dataset.numcorrect);
+            var responses=JSON.parse(responsesContainer.dataset.responses);
+            if (label.dataset.correct == "true") {
+                if (typeof(responses[qnum]) == "object"){
+                    if (!responses[qnum].includes(response))
+                        responses[qnum].push(response);
+                } else{
+                    responses[qnum]= [ response ];
+                }
+            } else {
+                responses[qnum]= response;
+            }
+            console.log(responses);
+            responsesContainer.setAttribute('data-responses', JSON.stringify(responses));
+            printResponses(responsesContainer);
+        }
+        // End save responses stuff
+
+
+
+        var numcorrect = fb.dataset.numcorrect;
+        var answeredcorrect = fb.dataset.answeredcorrect;
+        if (answeredcorrect >= 0) {
+            fb.innerHTML = feedback + " [" + answeredcorrect + "/" + numcorrect + "]";
+        } else {
+            fb.innerHTML = feedback + " [" + 0 + "/" + numcorrect + "]";
+        }
+
+
+    }
+
+    if (typeof MathJax != 'undefined') {
+        var version = MathJax.version;
+        console.log('MathJax version', version);
+        if (version[0] == "2") {
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+        } else if (version[0] == "3") {
+            MathJax.typeset([fb]);
+        }
+    } else {
+        console.log('MathJax not detected');
+    }
+
+}
+
+
+/* Function to produce the HTML buttons for a multiple choice/
+   many choice question  and to update the CSS tags based on
+   the question type */
+function make_mc(qa, shuffle_answers, outerqDiv, qDiv, aDiv, id) {
+
+    var shuffled;
+    if (shuffle_answers == true) {
+        //console.log(shuffle_answers+" read as true");
+        shuffled = getRandomSubarray(qa.answers, qa.answers.length);
+    } else {
+        //console.log(shuffle_answers+" read as false");
+        shuffled = qa.answers;
+    }
+
+
+    var num_correct = 0;
+
+    shuffled.forEach((item, index, ans_array) => {
+        //console.log(answer);
+
+        // Make input element
+        var inp = document.createElement("input");
+        inp.type = "radio";
+        inp.id = "quizo" + id + index;
+        inp.style = "display:none;";
+        aDiv.append(inp);
+
+        //Make label for input element
+        var lab = document.createElement("label");
+        lab.className = "MCButton";
+        lab.id = id + '-' + index;
+        lab.onclick = check_mc;
+        var aSpan = document.createElement('span');
+        aSpan.classsName = "";
+        //qDiv.id="quizQn"+id+index;
+        if ("answer" in item) {
+            aSpan.innerHTML = jaxify(item.answer);
+            //aSpan.innerHTML=item.answer;
+        }
+        lab.append(aSpan);
+
+        // Create div for code inside question
+        var codeSpan;
+        if ("code" in item) {
+            codeSpan = document.createElement('span');
+            codeSpan.id = "code" + id + index;
+            codeSpan.className = "QuizCode";
+            var codePre = document.createElement('pre');
+            codeSpan.append(codePre);
+            var codeCode = document.createElement('code');
+            codePre.append(codeCode);
+            codeCode.innerHTML = item.code;
+            lab.append(codeSpan);
+            //console.log(codeSpan);
+        }
+
+        //lab.textContent=item.answer;
+
+        // Set the data attributes for the answer
+        lab.setAttribute('data-correct', item.correct);
+        if (item.correct) {
+            num_correct++;
+        }
+        if ("feedback" in item) {
+            lab.setAttribute('data-feedback', item.feedback);
+        }
+        lab.setAttribute('data-answered', 0);
+
+        aDiv.append(lab);
+
+    });
+
+    if (num_correct > 1) {
+        outerqDiv.className = "ManyChoiceQn";
+    } else {
+        outerqDiv.className = "MultipleChoiceQn";
+    }
+
+    return num_correct;
+
+}
+// Object-oriented wrapper for MC/MANY choice
+class MCQuestion extends Question {
+    constructor(qa, id, idx, opts, rootDiv) { super(qa, id, idx, opts, rootDiv); }
+    render() {
+        //console.log("options.shuffleAnswers " + this.options.shuffleAnswers);
+        const numCorrect = make_mc(
+            this.qa,
+            this.options.shuffleAnswers,
+            this.outerqDiv,
+            this.qDiv,
+            this.aDiv,
+            this.id
+        );
+        if ('answer_cols' in this.qa) {
+            this.aDiv.style.gridTemplateColumns =
+                'repeat(' + this.qa.answer_cols + ', 1fr)';
+        }
+        this.fbDiv.dataset.numcorrect = numCorrect;
+        this.wrapper.appendChild(this.fbDiv);
+    }
+}
+Question.register('multiple_choice', MCQuestion);
+Question.register('many_choice', MCQuestion);
+function check_numeric(ths, event) {
+
+    if (event.keyCode === 13) {
+        ths.blur();
+
+        var id = ths.id.split('-')[0];
+
+        var submission = ths.value;
+        if (submission.indexOf('/') != -1) {
+            var sub_parts = submission.split('/');
+            //console.log(sub_parts);
+            submission = sub_parts[0] / sub_parts[1];
+        }
+        //console.log("Reader entered", submission);
+
+        if ("precision" in ths.dataset) {
+            var precision = ths.dataset.precision;
+            submission = Number(Number(submission).toPrecision(precision));
+        }
+
+
+        //console.log("In check_numeric(), id="+id);
+        //console.log(event.srcElement.id)           
+        //console.log(event.srcElement.dataset.feedback)
+
+        var fb = document.getElementById("fb" + id);
+        fb.style.display = "none";
+        fb.innerHTML = "Incorrect -- try again.";
+
+        var answers = JSON.parse(ths.dataset.answers);
+        //console.log(answers);
+
+        var defaultFB = "Incorrect. Try again.";
+        var correct;
+        var done = false;
+        answers.every(answer => {
+            //console.log(answer.type);
+
+            correct = false;
+            // if (answer.type=="value"){
+            if ('value' in answer) {
+                var value;
+                if ("precision" in ths.dataset) {
+                    value = answer.value.toPrecision(ths.dataset.precision);
+                } else {
+                    value = answer.value;
+                }
+                if (submission == value) {
+                    if ("feedback" in answer) {
+                        fb.innerHTML = jaxify(answer.feedback);
+                    } else {
+                        fb.innerHTML = jaxify("Correct");
+                    }
+                    correct = answer.correct;
+                    //console.log(answer.correct);
+                    done = true;
+                }
+
+                // } else if (answer.type=="range") {
+            } else if ('range' in answer) {
+                console.log(answer.range);
+                console.log(submission, submission >=answer.range[0], submission < answer.range[1])
+                if ((submission >= answer.range[0]) && (submission < answer.range[1])) {
+                    fb.innerHTML = jaxify(answer.feedback);
+                    correct = answer.correct;
+                    console.log(answer.correct);
+                    done = true;
+                }
+            } else if (answer.type == "default") {
+                if ("feedback" in answer) {
+                    defaultFB = answer.feedback;
+                } 
+            }
+            if (done) {
+                return false; // Break out of loop if this has been marked correct
+            } else {
+                return true; // Keep looking for case that includes this as a correct answer
+            }
+        });
+        console.log("done:", done);
+
+        if ((!done) && (defaultFB != "")) {
+            fb.innerHTML = jaxify(defaultFB);
+            //console.log("Default feedback", defaultFB);
+        }
+
+        fb.style.display = "block";
+        if (correct) {
+            ths.className = "Input-text";
+            ths.classList.add("correctButton");
+            fb.className = "Feedback";
+            fb.classList.add("correct");
+        } else {
+            ths.className = "Input-text";
+            ths.classList.add("incorrectButton");
+            fb.className = "Feedback";
+            fb.classList.add("incorrect");
+        }
+
+        // What follows is for the saved responses stuff
+        var outerContainer = fb.parentElement.parentElement;
+        var responsesContainer = document.getElementById("responses" + outerContainer.id);
+        if (responsesContainer) {
+            console.log(submission);
+            var qnum = document.getElementById("quizWrap"+id).dataset.qnum;
+            //console.log("Question " + qnum);
+            //console.log(id, ", got numcorrect=",fb.dataset.numcorrect);
+            var responses=JSON.parse(responsesContainer.dataset.responses);
+            console.log(responses);
+            if (submission == ths.value){
+                responses[qnum]= submission;
+            } else {
+                responses[qnum]= ths.value + "(" + submission +")";
+            }
+            responsesContainer.setAttribute('data-responses', JSON.stringify(responses));
+            printResponses(responsesContainer);
+        }
+        // End code to preserve responses
+
+        if (typeof MathJax != 'undefined') {
+            var version = MathJax.version;
+            console.log('MathJax version', version);
+            if (version[0] == "2") {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            } else if (version[0] == "3") {
+                MathJax.typeset([fb]);
+            }
+        } else {
+            console.log('MathJax not detected');
+        }
+        // After correct answer, if next JupyterQuiz question exists and has a text input, scroll by current question height
+        if (correct) {
+            // find the current question wrapper
+            var wrapper = ths.closest('.Quiz');
+            if (wrapper) {
+                var nextWrapper = wrapper.nextElementSibling;
+                if (nextWrapper && nextWrapper.classList.contains('Quiz')) {
+                    var nextInput = nextWrapper.querySelector('input.Input-text');
+                    if (nextInput) {
+                        var height = wrapper.getBoundingClientRect().height;
+                        console.log(height);
+                        nextInput.focus();
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+}
+// Object-oriented wrapper for numeric questions
+class NumericQuestion extends Question {
+    constructor(qa, id, idx, opts, rootDiv) {
+        super(qa, id, idx, opts, rootDiv);
+    }
+    render() {
+        make_numeric(this.qa, this.outerqDiv, this.qDiv, this.aDiv, this.id);
+        this.wrapper.appendChild(this.fbDiv);
+    }
+}
+Question.register('numeric', NumericQuestion);
+
+function isValid(el, charC) {
+    //console.log("Input char: ", charC);
+    if (charC == 46) {
+        if (el.value.indexOf('.') === -1) {
+            return true;
+        } else if (el.value.indexOf('/') != -1) {
+            var parts = el.value.split('/');
+            if (parts[1].indexOf('.') === -1) {
+                return true;
+            }
+        }
+        else {
+            return false;
+        }
+    } else if (charC == 47) {
+        if (el.value.indexOf('/') === -1) {
+            if ((el.value != "") && (el.value != ".")) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else if (charC == 45) {
+        var edex = el.value.indexOf('e');
+        if (edex == -1) {
+            edex = el.value.indexOf('E');
+        }
+
+        if (el.value == "") {
+            return true;
+        } else if (edex == (el.value.length - 1)) { // If just after e or E
+            return true;
+        } else {
+            return false;
+        }
+    } else if (charC == 101) { // "e"
+        if ((el.value.indexOf('e') === -1) && (el.value.indexOf('E') === -1) && (el.value.indexOf('/') == -1)) {
+            // Prev symbol must be digit or decimal point:
+            if (el.value.slice(-1).search(/\d/) >= 0) {
+                return true;
+            } else if (el.value.slice(-1).search(/\./) >= 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        if (charC > 31 && (charC < 48 || charC > 57))
+            return false;
+    }
+    return true;
+}
+
+function numeric_keypress(evnt) {
+    var charC = (evnt.which) ? evnt.which : evnt.keyCode;
+
+    if (charC == 13) {
+        check_numeric(this, evnt);
+    } else {
+        return isValid(this, charC);
+    }
+}
+
+
+
+
+
+function make_numeric(qa, outerqDiv, qDiv, aDiv, id) {
+
+
+
+    //console.log(answer);
+
+
+    outerqDiv.className = "NumericQn";
+    aDiv.style.display = 'block';
+
+    var lab = document.createElement("label");
+    lab.className = "InpLabel";
+    lab.innerHTML = "Type numeric answer here:";
+    aDiv.append(lab);
+
+    var inp = document.createElement("input");
+    inp.type = "text";
+    //inp.id="input-"+id;
+    inp.id = id + "-0";
+    inp.className = "Input-text";
+    inp.setAttribute('data-answers', JSON.stringify(qa.answers));
+    if ("precision" in qa) {
+        inp.setAttribute('data-precision', qa.precision);
+    }
+    aDiv.append(inp);
+    //console.log(inp);
+
+    //inp.addEventListener("keypress", check_numeric);
+    //inp.addEventListener("keypress", numeric_keypress);
+    /*
+    inp.addEventListener("keypress", function(event) {
+        return numeric_keypress(this, event);
+    }
+                        );
+                        */
+    //inp.onkeypress="return numeric_keypress(this, event)";
+    inp.onkeypress = numeric_keypress;
+    inp.onpaste = event => false;
+
+    inp.addEventListener("focus", function (event) {
+        this.value = "";
+        return false;
+    }
+    );
+
+
+}
+// Override show_questions to use object-oriented Question API
+function show_questions(json, container) {
+    // Accept container element or element ID
+    if (typeof container === 'string') {
+        container = document.getElementById(container);
+    }
+    if (!container) {
+        console.error('show_questions: invalid container', container);
+        return;
+    }
+
+    const shuffleQuestions = container.dataset.shufflequestions === 'True';
+    const shuffleAnswers = container.dataset.shuffleanswers === 'True';
+    const preserveResponses = container.dataset.preserveresponses === 'true';
+    const maxWidth = parseInt(container.dataset.maxwidth, 10) || 0;
+    let numQuestions = parseInt(container.dataset.numquestions, 10) || json.length;
+    if (numQuestions > json.length) numQuestions = json.length;
+
+    let questions = json;
+    if (shuffleQuestions || numQuestions < json.length) {
+        questions = getRandomSubarray(json, numQuestions);
+    }
+
+    questions.forEach((qa, index) => {
+        const id = makeid(8);
+        const options = {
+            shuffleAnswers: shuffleAnswers,
+            preserveResponses: preserveResponses,
+            maxWidth: maxWidth
+        };
+        Question.create(qa, id, index, options, container);
+    });
+
+    if (preserveResponses) {
+        const respDiv = document.createElement('div');
+        respDiv.id = 'responses' + container.id;
+        respDiv.className = 'JCResponses';
+        respDiv.dataset.responses = JSON.stringify([]);
+        respDiv.innerHTML = '<b>Select your answers and then follow the directions that will appear here.</b>';
+        container.appendChild(respDiv);
+    }
+
+    // Trigger MathJax typesetting if available
+    if (typeof MathJax != 'undefined') {
+        console.log("MathJax version", MathJax.version);
+        var version = MathJax.version;
+        setTimeout(function(){
+            var version = MathJax.version;
+            console.log('After sleep, MathJax version', version);
+            if (version[0] == "2") {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            } else if (version[0] == "3") {
+                if (MathJax.hasOwnProperty('typeset') ) {
+                    MathJax.typeset([container]);
+                } else {
+                    console.log('WARNING: Trying to force load MathJax 3');
+                    window.MathJax = {
+                        tex: {
+                            inlineMath: [['$', '$'], ['\\(', '\\)']]
+                        },
+                        svg: {
+                            fontCache: 'global'
+                        }
+                    };
+
+                    (function () {
+                        var script = document.createElement('script');
+                        script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js';
+                        script.async = true;
+                        document.head.appendChild(script);
+                    })();
+                }
+            }
+        }, 500);
+if (typeof version == 'undefined') {
+        } else
+        {
+            if (version[0] == "2") {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            } else if (version[0] == "3") {
+                if (MathJax.hasOwnProperty('typeset') ) {
+                    MathJax.typeset([container]);
+                } else {
+                    console.log('WARNING: Trying to force load MathJax 3');
+                    window.MathJax = {
+                        tex: {
+                            inlineMath: [['$', '$'], ['\\(', '\\)']]
+                        },
+                        svg: {
+                            fontCache: 'global'
+                        }
+                    };
+
+                    (function () {
+                        var script = document.createElement('script');
+                        script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js';
+                        script.async = true;
+                        document.head.appendChild(script);
+                    })();
+                }
+            } else {
+                console.log("MathJax not found");
+            }
+        }
+    }
+    // if (typeof MathJax !== 'undefined') {
+    //     const v = MathJax.version;
+    //     if (v[0] === '2') {
+    //         MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
+    //     } else if (v[0] === '3') {
+    //         MathJax.typeset([container]);
+    //     }
+    // }
+
+    // Prevent link clicks from bubbling up
+    Array.from(container.getElementsByClassName('Link')).forEach(link => {
+        link.addEventListener('click', e => e.stopPropagation());
+    });
+}
+function levenshteinDistance(a, b) {
+    if (a.length === 0) return b.length;
+    if (b.length === 0) return a.length;
+
+    const matrix = Array(b.length + 1).fill(null).map(() => Array(a.length + 1).fill(null));
+
+    for (let i = 0; i <= a.length; i++) {
+        matrix[0][i] = i;
+    }
+
+    for (let j = 0; j <= b.length; j++) {
+        matrix[j][0] = j;
+    }
+
+    for (let j = 1; j <= b.length; j++) {
+        for (let i = 1; i <= a.length; i++) {
+            const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+            matrix[j][i] = Math.min(
+                matrix[j - 1][i] + 1, // Deletion
+                matrix[j][i - 1] + 1, // Insertion
+                matrix[j - 1][i - 1] + cost // Substitution
+            );
+        }
+    }
+    return matrix[b.length][a.length];
+}
+// Object-oriented wrapper for string input questions
+class StringQuestion extends Question {
+    constructor(qa, id, idx, opts, rootDiv) {
+        super(qa, id, idx, opts, rootDiv);
+    }
+    render() {
+        make_string(this.qa, this.outerqDiv, this.qDiv, this.aDiv, this.id);
+        this.wrapper.appendChild(this.fbDiv);
+    }
+}
+Question.register('string', StringQuestion);
+
+function check_string(ths, event) {
+    if (event.keyCode === 13) {
+        ths.blur();
+
+        var id = ths.id.split('-')[0];
+        var submission = ths.value.trim();
+        var fb = document.getElementById("fb" + id);
+        fb.style.display = "none";
+        fb.innerHTML = "Incorrect -- try again.";
+
+        var answers = JSON.parse(ths.dataset.answers);
+        var defaultFB = "Incorrect. Try again.";
+        var correct;
+        var done = false;
+
+        // Handle default answer pattern: filter out and capture default feedback
+        var filteredAnswers = [];
+        answers.forEach(answer => {
+            if (answer.type === "default") {
+                defaultFB = answer.feedback;
+            } else {
+                filteredAnswers.push(answer);
+            }
+        });
+        answers = filteredAnswers;
+
+        answers.every(answer => {
+            correct = false;
+
+            let match = false;
+            if (answer.match_case) {
+                match = submission === answer.answer;
+            } else {
+                match = submission.toLowerCase() === answer.answer.toLowerCase();
+            }
+            console.log(submission);
+            console.log(answer.answer);
+            console.log(match);
+
+            if (match) {
+                if ("feedback" in answer) {
+                    fb.innerHTML = jaxify(answer.feedback);
+                } else {
+                    fb.innerHTML = jaxify("Correct");
+                }
+                correct = answer.correct;
+                done = true;
+            } else if (answer.fuzzy_threshold) {
+                var max_length = Math.max(submission.length, answer.answer.length);
+                var ratio;
+                if (answer.match_case) {
+                    ratio = 1- (levenshteinDistance(submission, answer.answer) / max_length);
+                } else {
+                    ratio = 1- (levenshteinDistance(submission.toLowerCase(),
+                                                    answer.answer.toLowerCase()) / max_length);
+                }
+                if (ratio >= answer.fuzzy_threshold) {
+                    if ("feedback" in answer) {
+                        fb.innerHTML = jaxify("(Fuzzy) " + answer.feedback);
+                    } else {
+                        fb.innerHTML = jaxify("Correct");
+                    }
+                    correct = answer.correct;
+                    done = true;
+                }
+
+            }
+
+            if (done) {
+                return false;
+            } else {
+                return true;
+            }
+        });
+
+        if ((!done) && (defaultFB != "")) {
+            fb.innerHTML = jaxify(defaultFB);
+        }
+
+        fb.style.display = "block";
+        if (correct) {
+            ths.className = "Input-text";
+            ths.classList.add("correctButton");
+            fb.className = "Feedback";
+            fb.classList.add("correct");
+        } else {
+            ths.className = "Input-text";
+            ths.classList.add("incorrectButton");
+            fb.className = "Feedback";
+            fb.classList.add("incorrect");
+        }
+
+        var outerContainer = fb.parentElement.parentElement;
+        var responsesContainer = document.getElementById("responses" + outerContainer.id);
+        if (responsesContainer) {
+            var qnum = document.getElementById("quizWrap" + id).dataset.qnum;
+            var responses = JSON.parse(responsesContainer.dataset.responses);
+            responses[qnum] = submission;
+            responsesContainer.setAttribute('data-responses', JSON.stringify(responses));
+            printResponses(responsesContainer);
+        }
+
+        if (typeof MathJax != 'undefined') {
+            var version = MathJax.version;
+            if (version[0] == "2") {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            } else if (version[0] == "3") {
+                MathJax.typeset([fb]);
+            }
+        } else {
+            console.log('MathJax not detected');
+        }
+        // After correct answer, if next JupyterQuiz question exists and has a text input, scroll by current question height
+        if (correct) {
+            var wrapper = ths.closest('.Quiz');
+            if (wrapper) {
+                var nextWrapper = wrapper.nextElementSibling;
+                if (nextWrapper && nextWrapper.classList.contains('Quiz')) {
+                    var nextInput = nextWrapper.querySelector('input.Input-text');
+                    if (nextInput) {
+                        var height = wrapper.getBoundingClientRect().height;
+                        nextInput.focus();
+                    }
+                }
+            }
+        }
+        return false;
+    }
+}
+
+function string_keypress(evnt) {
+    var charC = (evnt.which) ? evnt.which : evnt.keyCode;
+
+    if (charC == 13) {
+        check_string(this, evnt);
+    } 
+}
+
+
+function make_string(qa, outerqDiv, qDiv, aDiv, id) {
+    outerqDiv.className = "StringQn";
+    aDiv.style.display = 'block';
+
+    var lab = document.createElement("label");
+    lab.className = "InpLabel";
+    lab.innerHTML = "Type your answer here:";
+    aDiv.append(lab);
+
+    var inp = document.createElement("input");
+    inp.type = "text";
+    inp.id = id + "-0";
+    inp.className = "Input-text";
+    inp.setAttribute('data-answers', JSON.stringify(qa.answers));
+    // Apply optional input width (approx. number of characters, in em units)
+    if (qa.input_width != null) {
+        inp.style['min-width'] = qa.input_width + 'em';
+    }
+    aDiv.append(inp);
+
+    inp.onkeypress = string_keypress;
+    inp.onpaste = event => false;
+
+    inp.addEventListener("focus", function (event) {
+        this.value = "";
+        return false;
+    });
+}
+/*
+ * Handle asynchrony issues when re-running quizzes in Jupyter notebooks.
+ * Ensures show_questions is called after the container div is in the DOM.
+ */
+function try_show() {
+  if (document.getElementById("UCTYQOQZtdui")) {
+    show_questions(questionsUCTYQOQZtdui, UCTYQOQZtdui);
+  } else {
+    setTimeout(try_show, 200);
+  }
+};
+// Invoke immediately
+{
+  try_show();
+}
+}
+
+</script>
+</div>
+</div>
+<div id="cell-15" class="cell markdown">
+<section id="inference" class="level2">
+<h2 class="anchored" data-anchor-id="inference">Inference</h2>
+</section>
+</div>
+<div id="cell-16" class="cell markdown">
+<p>So what if we want to answer questions about a population <em>based</em> on a sample? This is where <strong>inference</strong> comes in. Specifically, we want to use the given sample to <strong>infer</strong> something about the population.</p>
+<p>How do we do this if we can’t ever see the entire population? The answer is that we need a link which connects the sample to the population – specifically, we can explicitly treat the sample as the outcome of a <strong>data-generating process</strong> (DGP).</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="There is always a DGP">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+There is always a DGP
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A <strong>data-generating process</strong> (DGP) is a theoretical construct that describes how data is generated in a population. It encompasses all the factors that influence the data, including the underlying mechanisms and relationships between variables.</p>
+<p>There <em>has</em> to be a DGP, even if we don’t know what it is. The DGP is the process that generates the data we observe.</p>
+<p>The full, true DGP is usually unknown. However, we can make assumptions about it and use those assumptions to draw inferences about the population (in the case that our assumptions are correct).</p>
+</div>
+</div>
+</div>
+<p>Of course, we don’t necessarily know what the DGP is. If we we knew everything about how the data was generated, we probably would not have any questions to ask in the first place!</p>
+<p>This is where the <strong>model</strong> comes in. A model is a simplified mathematical representation of the DGP that allows us to make inferences about the population based on the sample. At the end of the day, a model is sort of a guess – a guess about where your data come from.</p>
+<p>For example, we might assume that the all Airbnb listings in New York City are equally likely to be in any one of the five boroughs. (So the probability of a listing being in Manhattan is 1/5, the probability of it being in Brooklyn is 1/5, etc.)</p>
+<p>Then we can look at the actual sample of listings and see if it matches our assumption:</p>
+</div>
+<div id="cell-17" class="cell markdown">
+<!-- ### A simple model
+
+We'll talk about probability distributions in more detail later in the course, but for now let's just say that a probability distribution is a mathematical function that describes the likelihood of different outcomes in a random process. -->
+<!-- The most basic example is a coin flip. If we flip a fair coin, there are two possible outcomes: heads or tails. The probability of each outcome is 0.5, so we can represent this with a simple probability distribution.
+
+\begin{equation}
+P(X) = \begin{cases}
+0.5 & \text{if } X = \text{heads} \\
+0.5 & \text{if } X = \text{tails} \\
+0 & \text{otherwise}
+\end{cases}
+\end{equation} -->
+</div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [34]:</pre></div><div id="cell-18" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># number of listings per borough</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>borough_counts <span class="op">=</span> airbnb[<span class="st">'borough'</span>].value_counts().rename_axis(<span class="st">'borough'</span>).reset_index(name<span class="op">=</span><span class="st">'count'</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>borough_counts[<span class="st">'borough'</span>] <span class="op">=</span> borough_counts[<span class="st">'borough'</span>].<span class="bu">str</span>.title()  <span class="co"># capitalize</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># normalize the counts to proportions</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>borough_counts[<span class="st">'proportion'</span>] <span class="op">=</span> borough_counts[<span class="st">'count'</span>] <span class="op">/</span> borough_counts[<span class="st">'count'</span>].<span class="bu">sum</span>()</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>plt.bar(borough_counts[<span class="st">'borough'</span>], borough_counts[<span class="st">'proportion'</span>])</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>plt.axhline(y<span class="op">=</span><span class="dv">1</span><span class="op">/</span><span class="dv">5</span>, color<span class="op">=</span><span class="st">'r'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'Equal Proportion (20%)'</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Proportion of Airbnb Listings per Borough'</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Borough'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Proportion'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-00_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<div id="cell-19" class="cell markdown">
+<p>The inference question we want to ask is roughly:</p>
+<p>“If we assume that all boroughs are equally likely to produce each listing, how likely is it that we would see the distribution of listings that we actually observe?”</p>
+<p>Notice that this is a question about the probability of the sample, given a certain model of the DGP. In our Airbnb example above, it intuitively seems unlikely that we would see so many more listings in Manhattan and Brooklyn than in the other boroughs if all boroughs were equally likely to produce listings.</p>
+<p>What should we do now? Now that we realize our sample is very unlikely under our model, then perhaps we should reconsider our model. After all, the model is just a “guess” about the DGP, while the sample is real data that we have observed.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Unlikely data or unlikely model?">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Unlikely data or unlikely model?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>There are two main culprits when we see a sample that is unlikely under our model:</p>
+<ol type="1">
+<li>The sample! Think of this as “luck of the draw”. This is only really a risk if your sample is small or systematically biased in some way. Usually if you collect enough data, the sample will start to look more like the population. If you flip a coin 5 times, you might get all tails (there’s actually a 3% chance of this happening); if you flip a coin 100 times, there’s virtually no chance that you’ll get all tails (less than 10<sup>-30</sup> chance).</li>
+<li>The model! This means that our assumptions about the DGP are incorrect or incomplete. This is a more serious problem, and it won’t go away just by collecting more data.</li>
+</ol>
+</div>
+</div>
+</div>
+<p>Statistical inference is basically just a bunch of mathematical machinery and techniques that help us to quantify this guesswork precisely and make it rigorous.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Don't try this at home!">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Don’t try this at home!
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>We just said that statistical inference makes guesswork rigorous, but this is not the whole story.</p>
+<p>We will always do a much better job of inference if was have a good understanding of the DGP and the context of the data. This requires <em>domain knowledge</em> and <em>subject matter expertise</em>. In the Airbnb example, you would want to know something about the five boroughs of New York City before starting your analysis. Assuming that all boroughs are equally likely to produce listings is a pretty bad assumption (Manhattan sees vastly more tourism than the other boroughs, and Brooklyn and Queens have by far the most residents according to recent census data).</p>
+<p>Statistical inference is a powerful tool, but it is not a substitute for understanding the data and the context in which it was collected. Modeling might be guesswork, but it is best if it is <em>informed</em> guesswork.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="cell-20" class="cell markdown">
+<section id="prediction" class="level2">
+<h2 class="anchored" data-anchor-id="prediction">Prediction</h2>
+<p>Prediction is the process of using a model to make predictions about unseen (or future) data.</p>
+<p>Back to the Airbnb data, we might want to <strong>predict</strong> which borough a new listing belongs to based on its features (e.g., listing type, review ratings, price, etc.).</p>
+<p>To that end we will <em>fit</em> a predictive model to the data. We won’t go into the details of the model we use here, but the basic idea is that we assume the features of the listing (e.g., price) is related to the probability of it being in a certain borough (perhaps more expensive listings are more likely to be in Manhattan, for example).</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Fitting a model">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Fitting a model
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Models generally have <em>parameters</em>, which are adjustable values that affect the model’s behavior. Think of them like “knobs” you can turn to tune the model to do what you want, like adjusting the volume or the bass/treble on a speaker.</p>
+<p>The model for a coin flip, for example, has a single parameter: the probability of landing on heads. If you turn the knob to 0.5, you get a fair coin; if you turn it to 1.0, you get a coin that always lands on heads; if you turn it to 0.0, you get a coin that always lands on tails.</p>
+<p>Fitting a model means adjusting the parameters of the model so that it best matches the data. This is usually done by <em>minimizing</em> some kind of error function, which provides a measure of how well the model fits the data.</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [150]:</pre></div><div id="cell-21" class="cell" data-execution_count="150">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression, LogisticRegression</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> multilabel_confusion_matrix</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare the data for linear regression</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>feature_columns <span class="op">=</span> [<span class="st">"price"</span>, <span class="st">"room_type"</span>, <span class="st">"minimum_nights"</span>, <span class="st">"number_of_reviews"</span>, <span class="st">"reviews_per_month"</span>, <span class="st">"review_rate_number"</span>]</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>airbnb_clean <span class="op">=</span> airbnb.dropna(subset<span class="op">=</span>feature_columns <span class="op">+</span> [<span class="st">"borough"</span>])</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> airbnb_clean[feature_columns]</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># convert categorical variables to lowercase</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>X.loc[:, <span class="st">"room_type"</span>] <span class="op">=</span> X[<span class="st">"room_type"</span>].<span class="bu">str</span>.lower()</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> airbnb_clean[<span class="st">"borough"</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co"># convert categorical variables to dummy variables</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> pd.get_dummies(X, columns<span class="op">=</span>[<span class="st">"room_type"</span>], drop_first<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>X[<span class="st">"rating_interaction"</span>] <span class="op">=</span> X[<span class="st">"reviews_per_month"</span>] <span class="op">*</span> X[<span class="st">"review_rate_number"</span>]</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co"># split the data into training and test sets</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">56</span>)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co"># fit the logistic regression model</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>, solver<span class="op">=</span><span class="st">"newton-cholesky"</span>)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>model.fit(X_train, y_train)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co"># make predictions on the test set</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict(X_test)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the prediction accuracy</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> np.mean(y_pred <span class="op">==</span> y_test)</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="dv">40</span><span class="op">*</span><span class="st">'='</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Prediction Accuracy: </span><span class="sc">{</span>accuracy<span class="sc">:.2%}</span><span class="ss">'</span>)</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="dv">40</span><span class="op">*</span><span class="st">'='</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the confusion matrix</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>confusion_matrix <span class="op">=</span> multilabel_confusion_matrix(y_test, y_pred, labels<span class="op">=</span>airbnb[<span class="st">'borough'</span>].unique())</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="co"># confusion_matrix = [confusion_matrix[i].T for i in range(len(confusion_matrix))] </span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> ax.flatten()</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>ax[<span class="op">-</span><span class="dv">1</span>].axis(<span class="st">'off'</span>)  <span class="co"># turn off the last subplot since we have only 5 boroughs</span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the confusion matrix for each borough</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, borough <span class="kw">in</span> <span class="bu">enumerate</span>(airbnb[<span class="st">'borough'</span>].unique()):</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    sns.heatmap(confusion_matrix[i], annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Blues'</span>, ax<span class="op">=</span>ax[i], cbar<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>    ax[i].set_xlabel(<span class="st">'Predicted'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>    ax[i].set_ylabel(<span class="st">'Actual'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>    ax[i].set_xticklabels([<span class="st">'Not '</span> <span class="op">+</span> borough, borough], rotation<span class="op">=</span><span class="dv">30</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    ax[i].set_yticklabels([<span class="st">'Not '</span> <span class="op">+</span> borough, borough], rotation<span class="op">=</span><span class="dv">30</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>_ <span class="op">=</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>========================================
+Prediction Accuracy: 45.38%
+========================================</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-00_files/figure-html/cell-10-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<div id="cell-22" class="cell markdown">
+<p>Ok, so the model is around 45% accurate at predicting the borough of a listing.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="What is a &quot;good&quot; prediction rate?">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What is a “good” prediction rate?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>For discussion / reflection: What is a “good” prediction rate or accuracy? Is 45% good? What about 60%? 80%? How would you tell?</p>
+<p>Later in the course, we will talk about how to evaluate models and prediction accuracy more rigorously. For now, just keep in mind that there is no one-size-fits-all answer to this question. It depends on factors like what you want to do with the model or how good simple alternatives might be. For example, you want self-driving cars to be nearly 100% accurate because the cost of a mistake is so high. Perhaps a general manager drafting prospective players for a sports team would be satisfied with 60% accuracy, since they only need to be right about some players to make a big difference in the team’s performance.</p>
+</div>
+</div>
+</div>
+<p>Now let’s take a look at the distribution of the model’s predictions.</p>
+</div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [155]:</pre></div><div id="cell-23" class="cell" data-execution_count="155">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the counts of predicted listings per borough side by side with the actual counts</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>plot_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'predicted'</span>: pd.Series(y_pred.flatten()),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'actual'</span>: pd.Series(y_test.flatten())</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>plot_df <span class="op">=</span> plot_df.melt(var_name<span class="op">=</span><span class="st">'type'</span>, value_name<span class="op">=</span><span class="st">'borough'</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> sns.catplot(x<span class="op">=</span><span class="st">'borough'</span>, hue<span class="op">=</span><span class="st">'type'</span>, data<span class="op">=</span>plot_df, kind<span class="op">=</span><span class="st">'count'</span>, height<span class="op">=</span><span class="dv">5</span>, aspect<span class="op">=</span><span class="fl">1.2</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>sns.move_legend(ax, loc<span class="op">=</span><span class="st">"center right"</span>, title<span class="op">=</span><span class="va">None</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Predicted vs Actual Airbnb Listings per Borough'</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Borough'</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Count'</span>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-00_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<div id="cell-24" class="cell markdown">
+<p>It looks like the model is a bit crude (it predicts no listings in the Bronx or Staten Island), but it does at least capture the general trend that listings are more likely to be in Manhattan and Brooklyn than in the other boroughs.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Prediction and inference can interact">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Prediction and inference can interact
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Prediction and inference are closely related, and they can often be done simultaneously.</p>
+<p>The guiding logic is that a model that makes good predictions is probably doing a good job of capturing the underlying DGP.</p>
+</div>
+</div>
+</div>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>In this introductory lecture we talked about the 3 objectives of data analysis: description, inference, and prediction. Hopefully you now have a better understanding of <strong>what</strong> statistics is supposed to help you do with data. Of course, we haven’t actually gone into any of the details of <strong>how</strong> to do anything. Don’t worry, we’ll get there!</p>
+<p>Next up, we’ll cover some of the basic programming concepts that are important for data science. After that we will learn some foundational concepts in probability that will help us think about data and models more rigorously. From there, the sky is the limit! We’ll cover a wide range of topics, including statistical inference, uncertainty quantification, machine learning, and more.</p>
+<p>Since we haven’t learning any programming or statistics yet, we won’t have any real exercises for this lecture. There’s just a quick <a href="../assignments/assignment-00.html">Assignment 0</a> to make sure you are set up to run Python code for future assignments.</p>
+<!-- {{< embed ../assignments/assignment-00.ipynb#hello-world >}} -->
+</section>
+</div>
+
+
+     </div></div></main> <!-- /main -->  <script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>  <nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../notebooks/lecture-01.html" class="pagination-link" aria-label="Lecture 01: Programming Basics">
+        <span class="nav-page-text">Lecture 01: Programming Basics</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content --> 
+  
+</body></html>

@@ -1,0 +1,2449 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.31">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-07-01">
+
+<title>Lecture 04: Data Generating Processes and Statistical Models – Understanding Uncertainty</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../notebooks/lecture-05.html" rel="next">
+<link href="../notebooks/lecture-03.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-a14e3238c51140e99ccc48519b6ed9ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Understanding Uncertainty</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../syllabus.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../assignments.html"> 
+<span class="menu-text">Assignments</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jrudoler-teaching/understanding-uncertainty"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/jrudoler"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/lecture-04.html">Lecture 04: Data Generating Processes</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-00.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 00: Why Statistics?</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 01: Programming Basics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 02: Probability and Random Variables</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 03: Sampling and Simulation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-04.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Lecture 04: Data Generating Processes</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 05: Hypothesis Testing</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-06.ipynb" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 06: Bootstrapping</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-07.ipynb" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 07: Permutation Tests</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-08.ipynb" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 08: Regression Basics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-09.ipynb" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 09: Interpreting Regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 10: Classification</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-11.ipynb" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 11: Model Evaluation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-12.ipynb" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 12: Advanced Topics</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-generating-processes" id="toc-data-generating-processes" class="nav-link active" data-scroll-target="#data-generating-processes">Data Generating Processes</a></li>
+  <li><a href="#statistical-models" id="toc-statistical-models" class="nav-link" data-scroll-target="#statistical-models">Statistical Models</a>
+  <ul class="collapse">
+  <li><a href="#challenges-with-finite-samples" id="toc-challenges-with-finite-samples" class="nav-link" data-scroll-target="#challenges-with-finite-samples">Challenges with finite samples</a></li>
+  </ul></li>
+  <li><a href="#convergence-for-large-sample-sizes" id="toc-convergence-for-large-sample-sizes" class="nav-link" data-scroll-target="#convergence-for-large-sample-sizes">Convergence for large sample sizes</a>
+  <ul class="collapse">
+  <li><a href="#law-of-large-numbers" id="toc-law-of-large-numbers" class="nav-link" data-scroll-target="#law-of-large-numbers">Law of Large Numbers</a></li>
+  <li><a href="#central-limit-theorem" id="toc-central-limit-theorem" class="nav-link" data-scroll-target="#central-limit-theorem">Central Limit Theorem</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Lecture 04: Data Generating Processes and Statistical Models</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 1, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="data-generating-processes" class="level2">
+<h2 class="anchored" data-anchor-id="data-generating-processes">Data Generating Processes</h2>
+<p>In the previous lecture we saw examples of running simulations to generate data, whether by simply drawing samples from a probability distribution (i.e.&nbsp;flipping coins / rolling dice) or by simulating a complex process explicitly (the busking musician example).</p>
+<p>This leads us to a useful way of thinking about data: <strong>all data is generated by some underlying process</strong>. The process can be simple or complex, deterministic or stochastic, observed or unobserved, but it is always there. If that sounds obvious, it is because it is! “Some process” is a bit of a catch-all: of course the data doesn’t just appear out of nowhere. However, it is also important to keep in mind because, as we will see, thinking about <strong>data generating processes</strong> (DGPs) is the key to analyzing data.</p>
+</section>
+<section id="statistical-models" class="level2">
+<h2 class="anchored" data-anchor-id="statistical-models">Statistical Models</h2>
+<p>A <strong>statistical model</strong> is a formal mathematical representation of a data generating process. Specifically, it describes the probability distribution of the data. Based on the model, we can make precise statements about the data generated by the process. For example, we can say how likely it is to observe a certain value or set of values. We can tell what the average (or expected) value is, what the most likely value is, and so on.</p>
+<p>Let’s return to coin flips once again. The data generating process is the flipping of a coin, which has two possible outcomes: heads or tails. The statistical model for this process is a <strong>Bernoulli distribution</strong>, which describes the probability of each outcome. Specifically,</p>
+<p><span class="math display">\[P(X) = \begin{cases}
+p &amp; \text{if } X = 1 ~\text{heads} \\
+1 - p &amp; \text{if } X = 0 ~\text{tails}
+\end{cases}\]</span></p>
+<p>where (X) is the outcome of the coin flip, (p) is the probability of heads, and (1 - p) is the probability of tails. If we assume a fair coin, then (p = 0.5).</p>
+<p>Now clearly, this model does not capture the complexity of a real-world coin flip, which is of course influenced by many factors such as the weight of the coin, the force of the flip, air resistance, etc. Statistical models are always reductive in this sense. But the important thing is that a Bernoulli distribution really does do a good job of describing the <strong>outcomes</strong> of a coin flip. As long as that is the case, we can use the model to make predictions about the data generated by the process.</p>
+<p>To see this, consider the following process: you roll a fair die 100 times. For each roll, you record whether the number you rolled was even or odd. Since there are three even numbers (2, 4, 6) and three odd numbers (1, 3, 5), and each number has an equal probability of being rolled, the probability of rolling an even number is 0.5 and the probability of rolling an odd number is also 0.5. This is statistically identical to flipping a fair coin! So we can use the same Bernoulli distribution to model the outcomes of this process, even though it completely ignore the details of the die rolling process itself. We lose information about the specific numbers rolled, but as long as we accurately capture the probability of the outcomes we care about, it doesn’t matter.</p>
+<!-- Think back to Lecture 00, where we analyzed a dataset of Airbnb listings.  -->
+<div id="9f43c66f" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dice_even_odd(n<span class="op">=</span><span class="dv">1000</span>):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Simulate rolling a die n times and return the results.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters:</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    n (int): Number of rolls to simulate.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">    pd.DataFrame: DataFrame with columns 'roll' and 'even_odd'.</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    rolls <span class="op">=</span> np.random.randint(<span class="dv">1</span>, <span class="dv">7</span>, size<span class="op">=</span>n)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    is_even <span class="op">=</span> rolls <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame({<span class="st">"roll"</span>: rolls, <span class="st">"is_even"</span>: is_even, <span class="st">"even_odd"</span>: np.where(is_even, <span class="st">"even"</span>, <span class="st">"odd"</span>)})</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>dice_rolls <span class="op">=</span> dice_even_odd(<span class="dv">1000</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>sns.histplot(dice_rolls[<span class="st">"roll"</span>], bins<span class="op">=</span>np.arange(<span class="dv">1</span>, <span class="dv">8</span>) <span class="op">-</span> <span class="fl">0.5</span>, discrete<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>ax[<span class="dv">0</span>])</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xlabel(<span class="st">"Die Roll"</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylabel(<span class="st">"Frequency"</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_title(<span class="st">"Distribution of Die Rolls"</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xticks(np.arange(<span class="dv">1</span>, <span class="dv">7</span>))</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].grid(axis<span class="op">=</span><span class="st">'y'</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>sns.histplot(dice_rolls[<span class="st">"even_odd"</span>], discrete<span class="op">=</span><span class="va">True</span>, shrink<span class="op">=</span><span class="fl">0.8</span>, ax<span class="op">=</span>ax[<span class="dv">1</span>])</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xlabel(<span class="st">"Even or Odd"</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylabel(<span class="st">"Frequency"</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_title(<span class="st">"Distribution of Even and Odd Rolls"</span>)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].grid(axis<span class="op">=</span><span class="st">'y'</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-04_files/figure-html/cell-3-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Statistical modeling generally uses this kind of trick. We attempt to find a simple model that captures the essential features of the data generating process.</p>
+<p>We don’t always know as much about the data generating process as we do for a coin flip or a die roll. In fact, often we don’t know anything about it at all! In these cases, the approach is a little more “guess and check”. We start with a simple model, and see how well it describes the data. If it doesn’t work, we try a more complex model or a different model altogether.</p>
+<section id="challenges-with-finite-samples" class="level3">
+<h3 class="anchored" data-anchor-id="challenges-with-finite-samples">Challenges with finite samples</h3>
+<p>It can be hard to tell if you have a good model or not. With any finite dataset, it is quite likely that the data will not perfectly match the model. This is because the model describes probabilistic <em>tendencies</em> of the data. But in any small sample we will likely see deviations from the idealized outcomes described by the model.</p>
+<p>Think about this in the extreme: if you flip a coin only once, you will either get heads or tails. So your observed proportion of heads will be either 0 or 1, which is very different from the expected proportion of 0.5. In fact it is impossible to observe the expected proportion of heads in a single flip! This is true for a single observation of basically any random variable that takes on more than one value – it is close to impossible to learn anything about the variable’s tendencies from just one observation.</p>
+<p>Even with a small number of observations, it is quite difficult to tell if a model is a good fit for the data.</p>
+<p>Let’s say you and your roommate are always arguing about who should take out the trash. You decide to flip a coin to decide who takes it out (you are notorious for always choosing tails, because you think it’s good luck). You decide to do a best-of-ten series, so you flip the coin 10 times and record the number of heads. It turns out that you get 3 heads and 7 tails. Your roommate is <em>furious</em>: “That’s not fair! You always get tails! I bet you rigged the coin!”</p>
+<p>Is your roommate justified in being suspicious? What is the probability of getting 3 heads in 10 flips of a fair coin? What is the probability of getting 3 heads in 10 flips of a biased coin that has a 25% chance of landing on heads?</p>
+<div id="3355b461" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div id="wucpMvipRpYh" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
+#wucpMvipRpYh {
+   --jq-multiple-choice-bg: #6f78ffff;
+   --jq-mc-button-bg: #fafafa;
+   --jq-mc-button-border: #e0e0e0e0;
+   --jq-mc-button-inset-shadow: #555555;
+   --jq-many-choice-bg: #f75c03ff;
+   --jq-numeric-bg: #392061ff;
+   --jq-numeric-input-bg: #c0c0c0;
+   --jq-numeric-input-label: #101010;
+   --jq-numeric-input-shadow: #999999;
+   --jq-string-bg: #4c1a57;
+   --jq-incorrect-color: #c80202;
+   --jq-correct-color: #009113;
+   --jq-text-color: #fafafa;
+}
+
+.Quiz {
+    max-width: 600px;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
+/*    margin-bottom: 15px;*/
+/*    padding-bottom: 4px;*/
+    padding-top: 4px;
+    line-height: 1.1;
+    font-size: 16pt;
+    border-radius: inherit;
+}
+
+.QuizCode {
+    font-size: 14pt;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.QuizCode>pre {
+    padding: 4px;
+}
+
+.Quiz code {
+    background-color: lightgray;
+    color: black;
+}
+
+.Quiz .QuizCode code {
+    background-color: inherit;
+    color: inherit;
+}
+
+
+.Quiz .MCButton code {
+    background-color: inherit;
+    color: inherit;
+}
+
+.MCButton .QuizCode {
+    text-align: left;
+}
+
+
+
+
+.Answer {
+    border-radius: inherit;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    margin: 10px 0;
+}
+
+@media only screen and (max-width:480px) {
+    .Answer {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+.Feedback {
+    font-size: 16pt;
+    text-align: center;
+/*    min-height: 2em;*/
+}
+
+.Input {
+    align: left;
+    font-size: 20pt;
+}
+
+.Input-text {
+    display: block;
+    margin: 10px;
+    color: inherit;
+    width: unset;
+    min-width: 140px;
+    max-width: 93%;
+    field-sizing: content;
+    background-color: var(--jq-numeric-input-bg);
+    color: var(--jq-text-color);
+    padding: 5px;
+    padding-left: 10px;
+    font-family: inherit;
+    font-size: 20px;
+    font-weight: inherit;
+    line-height: 20pt;
+    border: none;
+    border-radius: 0.2rem;
+    transition: box-shadow 0.1s);
+}
+
+.Input-text:focus {
+    /*outline: none;*/
+    background-color: var(--jq-numeric-input-bg);
+    box-shadow: 0.6rem 0.8rem 1.4rem -0.5rem var(--jq-numeric-input-shadow);
+}
+
+.MCButton {
+    background: var(--jq-mc-button-bg);
+    border: 1px solid var(--jq-mc-button-border);
+    border-radius: inherit;
+    color: #333333;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.MCButton p {
+    color: inherit;
+}
+
+.MultipleChoiceQn {
+    padding: 10px;
+    background: var(--jq-multiple-choice-bg);
+    color: var(--jq-text-color);
+    border-radius: inherit;
+}
+
+.ManyChoiceQn {
+    padding: 10px;
+    background: var(--jq-many-choice-bg);
+    color: var(--jq-text-color);
+    border-radius: inherit;
+}
+
+.NumericQn {
+    background: var(--jq-numeric-bg);
+    border-radius: inherit;
+    color: var(--jq-text-color);
+    padding: 10px;
+}
+
+.NumericQn p {
+    color: inherit;
+}
+
+.StringQn {
+    background: var(--jq-string-bg);
+    border-radius: inherit;
+    color: var(--jq-text-color);
+    padding: 10px;
+}
+
+.StringQn p {
+    color: inherit;
+}
+
+
+.InpLabel {
+    color: var(--jq-numeric-input-label);
+    float: left;
+    font-size: 15pt;
+    line-height: 34px;
+    margin-right: 10px;
+}
+
+.incorrect {
+    color: var(--jq-incorrect-color);
+}
+
+.correct {
+    color: var(--jq-correct-color);
+}
+
+.correctButton {
+    /*
+    background: var(--jq-correct-color);
+   */
+    animation: correct-anim 0.6s ease;
+    animation-fill-mode: forwards;
+    box-shadow: inset 0 0 5px var(--jq-mc-button-inset-shadow);
+    color: var(--jq-text-color);
+    /*outline: none;*/
+}
+
+.incorrectButton {
+    animation: incorrect-anim 0.8s ease;
+    animation-fill-mode: forwards;
+    box-shadow: inset 0 0 5px var(--jq-mc-button-inset-shadow);
+    color: var(--jq-text-color);
+    /*outline: none;*/
+}
+
+@keyframes incorrect-anim {
+    100% {
+        background-color: var(--jq-incorrect-color);
+    }
+}
+
+@keyframes correct-anim {
+    100% {
+        background-color: var(--jq-correct-color);
+    }
+}
+</style>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/javascript">
+var questionswucpMvipRpYh=[{"question": "What is the probability of getting 3 heads in 10 flips of a fair coin?", "type": "numeric", "precision": 4, "answers": [{"type": "range", "range": [0.116, 0.118], "correct": true, "feedback": "Correct! The probability is (0.5)^3 * (1-0.5)^7 * 120 = 0.1172"}, {"type": "default", "feedback": "Incorrect."}]}, {"question": "What is the probability of getting 3 heads in 10 flips of a biased coin? (25% chance of heads)", "type": "numeric", "precision": 4, "answers": [{"type": "range", "range": [0.24, 0.26], "correct": true, "feedback": "Correct! The probability is $(0.25)^3 \\cdot (1-0.25)^7 \\cdot 120 = 0.2503$"}, {"type": "default", "feedback": "Incorrect."}]}, {"question": "What is the probability of getting 30 heads in 100 flips of a fair coin?", "type": "numeric", "precision": 4, "answers": [{"type": "range", "range": [2e-05, 3e-05], "correct": true, "feedback": "Correct! The probability is $(0.5)^{30} * (1-0.5)^{70} * {100 \\choose 30} =2.317 \\times 10^{-5}$"}, {"type": "default", "feedback": "Incorrect."}]}, {"question": "What is the probability of getting 30 heads in 100 flips of a biased coin? (25% chance of heads)", "type": "numeric", "precision": 4, "answers": [{"type": "range", "range": [0.04, 0.05], "correct": true, "feedback": "Correct! The probability is $(0.25)^{30} \\cdot (1-0.25)^{70} \\cdot {100 \\choose 30} = 0.0458$"}, {"type": "default", "feedback": "Incorrect."}]}];
+
+if (typeof Question === 'undefined') {
+// Make a random ID
+function makeid(length) {
+    var result = [];
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+        result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
+    }
+    return result.join('');
+}
+// Convert LaTeX delimiters and markdown links to HTML
+function jaxify(string) {
+    let mystring = string;
+    let count = 0, count2 = 0;
+    let loc = mystring.search(/([^\\]|^)(\$)/);
+    let loc2 = mystring.search(/([^\\]|^)(\$\$)/);
+    while (loc >= 0 || loc2 >= 0) {
+        if (loc2 >= 0) {
+            mystring = mystring.replace(/([^\\]|^)(\$\$)/, count2 % 2 ? '$1\\]' : '$1\\[');
+            count2++;
+        } else {
+            mystring = mystring.replace(/([^\\]|^)(\$)/, count % 2 ? '$1\\)' : '$1\\(');
+            count++;
+        }
+        loc = mystring.search(/([^\\]|^)(\$)/);
+        loc2 = mystring.search(/([^\\]|^)(\$\$)/);
+    }
+    // Replace markdown links
+    mystring = mystring.replace(/<http(.*?)>/g, '<a href="http$1" target="_blank" class="Link">http$1</a>');
+    mystring = mystring.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" class="Link">$1</a>');
+    return mystring;
+}
+
+// Base class for question types
+class Question {
+    static registry = {};
+    static register(type, cls) {
+        Question.registry[type] = cls;
+    }
+    static create(qa, id, index, options, rootDiv) {
+        const Cls = Question.registry[qa.type];
+        if (!Cls) {
+            console.error(`No question class registered for type "${qa.type}"`);
+            return;
+        }
+        const q = new Cls(qa, id, index, options, rootDiv);
+        q.render();
+    }
+
+    constructor(qa, id, index, options, rootDiv) {
+        this.qa = qa;
+        this.id = id;
+        this.index = index;
+        this.options = options;
+        this.rootDiv = rootDiv;
+        // wrapper
+        this.wrapper = document.createElement('div');
+        this.wrapper.id = `quizWrap${id}`;
+        this.wrapper.className = 'Quiz';
+        this.wrapper.dataset.qnum = index;
+        this.wrapper.style.maxWidth = `${options.maxWidth}px`;
+        rootDiv.appendChild(this.wrapper);
+        // question container
+        this.outerqDiv = document.createElement('div');
+        this.outerqDiv.id = `OuterquizQn${id}${index}`;
+        this.wrapper.appendChild(this.outerqDiv);
+        // question text
+        this.qDiv = document.createElement('div');
+        this.qDiv.id = `quizQn${id}${index}`;
+        if (qa.question) {
+            this.qDiv.innerHTML = jaxify(qa.question);
+            this.outerqDiv.appendChild(this.qDiv);
+        }
+        // code block
+        if (qa.code) {
+            const codeDiv = document.createElement('div');
+            codeDiv.id = `code${id}${index}`;
+            codeDiv.className = 'QuizCode';
+            const pre = document.createElement('pre');
+            const codeEl = document.createElement('code');
+            codeEl.innerHTML = qa.code;
+            pre.appendChild(codeEl);
+            codeDiv.appendChild(pre);
+            this.outerqDiv.appendChild(codeDiv);
+        }
+        // answer container
+        this.aDiv = document.createElement('div');
+        this.aDiv.id = `quizAns${id}${index}`;
+        this.aDiv.className = 'Answer';
+        this.wrapper.appendChild(this.aDiv);
+        // feedback container (append after answers)
+        this.fbDiv = document.createElement('div');
+        this.fbDiv.id = `fb${id}`;
+        this.fbDiv.className = 'Feedback';
+        this.fbDiv.dataset.answeredcorrect = 0;
+    }
+
+    render() {
+        throw new Error('render() not implemented');
+    }
+
+    preserveResponse(val) {
+        if (!this.options.preserveResponses) return;
+        const resp = document.getElementById(`responses${this.rootDiv.id}`);
+        if (!resp) return;
+        const arr = JSON.parse(resp.dataset.responses);
+        arr[this.index] = val;
+        resp.dataset.responses = JSON.stringify(arr);
+        printResponses(resp);
+    }
+
+    typeset(container) {
+        if (typeof MathJax !== 'undefined') {
+            const v = MathJax.version;
+            if (v[0] === '2') {
+                MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
+            } else {
+                MathJax.typeset([container]);
+            }
+        }
+    }
+}
+
+// Choose a random subset of an array. Can also be used to shuffle the array
+function getRandomSubarray(arr, size) {
+    var shuffled = arr.slice(0), i = arr.length, temp, index;
+    while (i--) {
+        index = Math.floor((i + 1) * Math.random());
+        temp = shuffled[index];
+        shuffled[index] = shuffled[i];
+        shuffled[i] = temp;
+    }
+    return shuffled.slice(0, size);
+}
+
+function printResponses(responsesContainer) {
+    var responses=JSON.parse(responsesContainer.dataset.responses);
+    var stringResponses='<B>IMPORTANT!</B>To preserve this answer sequence for submission, when you have finalized your answers: <ol> <li> Copy the text in this cell below "Answer String"</li> <li> Double click on the cell directly below the Answer String, labeled "Replace Me"</li> <li> Select the whole "Replace Me" text</li> <li> Paste in your answer string and press shift-Enter.</li><li>Save the notebook using the save icon or File->Save Notebook menu item</li></ul><br><br><br><b>Answer String:</b><br> ';
+    console.log(responses);
+    responses.forEach((response, index) => {
+        if (response) {
+            console.log(index + ': ' + response);
+            stringResponses+= index + ': ' + response +"<BR>";
+        }
+    });
+    responsesContainer.innerHTML=stringResponses;
+}
+/* Callback function to determine whether a selected multiple-choice
+   button corresponded to a correct answer and to provide feedback
+   based on the answer */
+function check_mc() {
+    var id = this.id.split('-')[0];
+    //var response = this.id.split('-')[1];
+    //console.log(response);
+    //console.log("In check_mc(), id="+id);
+    //console.log(event.srcElement.id)           
+    //console.log(event.srcElement.dataset.correct)   
+    //console.log(event.srcElement.dataset.feedback)
+
+    var label = event.srcElement;
+    //console.log(label, label.nodeName);
+    var depth = 0;
+    while ((label.nodeName != "LABEL") && (depth < 20)) {
+        label = label.parentElement;
+        console.log(depth, label);
+        depth++;
+    }
+
+
+
+    var answers = label.parentElement.children;
+    //console.log(answers);
+
+    // Split behavior based on multiple choice vs many choice:
+    var fb = document.getElementById("fb" + id);
+
+
+
+    /* Multiple choice (1 answer). Allow for 0 correct
+       answers as an edge case */
+    if (fb.dataset.numcorrect <= 1) {
+        // What follows is for the saved responses stuff
+        var outerContainer = fb.parentElement.parentElement;
+        var responsesContainer = document.getElementById("responses" + outerContainer.id);
+        if (responsesContainer) {
+            //console.log(responsesContainer);
+            var response = label.firstChild.innerText;
+            if (label.querySelector(".QuizCode")){
+                response+= label.querySelector(".QuizCode").firstChild.innerText;
+            }
+            console.log(response);
+            //console.log(document.getElementById("quizWrap"+id));
+            var qnum = document.getElementById("quizWrap"+id).dataset.qnum;
+            console.log("Question " + qnum);
+            //console.log(id, ", got numcorrect=",fb.dataset.numcorrect);
+            var responses=JSON.parse(responsesContainer.dataset.responses);
+            console.log(responses);
+            responses[qnum]= response;
+            responsesContainer.setAttribute('data-responses', JSON.stringify(responses));
+            printResponses(responsesContainer);
+        }
+        // End code to preserve responses
+
+        for (var i = 0; i < answers.length; i++) {
+            var child = answers[i];
+            //console.log(child);
+            child.className = "MCButton";
+        }
+
+
+
+        if (label.dataset.correct == "true") {
+            // console.log("Correct action");
+            if ("feedback" in label.dataset) {
+                fb.innerHTML = jaxify(label.dataset.feedback);
+            } else {
+                fb.innerHTML = "Correct!";
+            }
+            label.classList.add("correctButton");
+
+            fb.className = "Feedback";
+            fb.classList.add("correct");
+
+        } else {
+            if ("feedback" in label.dataset) {
+                fb.innerHTML = jaxify(label.dataset.feedback);
+            } else {
+                fb.innerHTML = "Incorrect -- try again.";
+            }
+            //console.log("Error action");
+            label.classList.add("incorrectButton");
+            fb.className = "Feedback";
+            fb.classList.add("incorrect");
+        }
+    }
+    else { /* Many choice (more than 1 correct answer) */
+        var reset = false;
+        var feedback;
+         if (label.dataset.correct == "true") {
+            if ("feedback" in label.dataset) {
+                feedback = jaxify(label.dataset.feedback);
+            } else {
+                feedback = "Correct!";
+            }
+            if (label.dataset.answered <= 0) {
+                if (fb.dataset.answeredcorrect < 0) {
+                    fb.dataset.answeredcorrect = 1;
+                    reset = true;
+                } else {
+                    fb.dataset.answeredcorrect++;
+                }
+                if (reset) {
+                    for (var i = 0; i < answers.length; i++) {
+                        var child = answers[i];
+                        child.className = "MCButton";
+                        child.dataset.answered = 0;
+                    }
+                }
+                label.classList.add("correctButton");
+                label.dataset.answered = 1;
+                fb.className = "Feedback";
+                fb.classList.add("correct");
+
+            }
+        } else {
+            if ("feedback" in label.dataset) {
+                feedback = jaxify(label.dataset.feedback);
+            } else {
+                feedback = "Incorrect -- try again.";
+            }
+            if (fb.dataset.answeredcorrect > 0) {
+                fb.dataset.answeredcorrect = -1;
+                reset = true;
+            } else {
+                fb.dataset.answeredcorrect--;
+            }
+
+            if (reset) {
+                for (var i = 0; i < answers.length; i++) {
+                    var child = answers[i];
+                    child.className = "MCButton";
+                    child.dataset.answered = 0;
+                }
+            }
+            label.classList.add("incorrectButton");
+            fb.className = "Feedback";
+            fb.classList.add("incorrect");
+        }
+        // What follows is for the saved responses stuff
+        var outerContainer = fb.parentElement.parentElement;
+        var responsesContainer = document.getElementById("responses" + outerContainer.id);
+        if (responsesContainer) {
+            //console.log(responsesContainer);
+            var response = label.firstChild.innerText;
+            if (label.querySelector(".QuizCode")){
+                response+= label.querySelector(".QuizCode").firstChild.innerText;
+            }
+            console.log(response);
+            //console.log(document.getElementById("quizWrap"+id));
+            var qnum = document.getElementById("quizWrap"+id).dataset.qnum;
+            console.log("Question " + qnum);
+            //console.log(id, ", got numcorrect=",fb.dataset.numcorrect);
+            var responses=JSON.parse(responsesContainer.dataset.responses);
+            if (label.dataset.correct == "true") {
+                if (typeof(responses[qnum]) == "object"){
+                    if (!responses[qnum].includes(response))
+                        responses[qnum].push(response);
+                } else{
+                    responses[qnum]= [ response ];
+                }
+            } else {
+                responses[qnum]= response;
+            }
+            console.log(responses);
+            responsesContainer.setAttribute('data-responses', JSON.stringify(responses));
+            printResponses(responsesContainer);
+        }
+        // End save responses stuff
+
+
+
+        var numcorrect = fb.dataset.numcorrect;
+        var answeredcorrect = fb.dataset.answeredcorrect;
+        if (answeredcorrect >= 0) {
+            fb.innerHTML = feedback + " [" + answeredcorrect + "/" + numcorrect + "]";
+        } else {
+            fb.innerHTML = feedback + " [" + 0 + "/" + numcorrect + "]";
+        }
+
+
+    }
+
+    if (typeof MathJax != 'undefined') {
+        var version = MathJax.version;
+        console.log('MathJax version', version);
+        if (version[0] == "2") {
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+        } else if (version[0] == "3") {
+            MathJax.typeset([fb]);
+        }
+    } else {
+        console.log('MathJax not detected');
+    }
+
+}
+
+
+/* Function to produce the HTML buttons for a multiple choice/
+   many choice question  and to update the CSS tags based on
+   the question type */
+function make_mc(qa, shuffle_answers, outerqDiv, qDiv, aDiv, id) {
+
+    var shuffled;
+    if (shuffle_answers == true) {
+        //console.log(shuffle_answers+" read as true");
+        shuffled = getRandomSubarray(qa.answers, qa.answers.length);
+    } else {
+        //console.log(shuffle_answers+" read as false");
+        shuffled = qa.answers;
+    }
+
+
+    var num_correct = 0;
+
+    shuffled.forEach((item, index, ans_array) => {
+        //console.log(answer);
+
+        // Make input element
+        var inp = document.createElement("input");
+        inp.type = "radio";
+        inp.id = "quizo" + id + index;
+        inp.style = "display:none;";
+        aDiv.append(inp);
+
+        //Make label for input element
+        var lab = document.createElement("label");
+        lab.className = "MCButton";
+        lab.id = id + '-' + index;
+        lab.onclick = check_mc;
+        var aSpan = document.createElement('span');
+        aSpan.classsName = "";
+        //qDiv.id="quizQn"+id+index;
+        if ("answer" in item) {
+            aSpan.innerHTML = jaxify(item.answer);
+            //aSpan.innerHTML=item.answer;
+        }
+        lab.append(aSpan);
+
+        // Create div for code inside question
+        var codeSpan;
+        if ("code" in item) {
+            codeSpan = document.createElement('span');
+            codeSpan.id = "code" + id + index;
+            codeSpan.className = "QuizCode";
+            var codePre = document.createElement('pre');
+            codeSpan.append(codePre);
+            var codeCode = document.createElement('code');
+            codePre.append(codeCode);
+            codeCode.innerHTML = item.code;
+            lab.append(codeSpan);
+            //console.log(codeSpan);
+        }
+
+        //lab.textContent=item.answer;
+
+        // Set the data attributes for the answer
+        lab.setAttribute('data-correct', item.correct);
+        if (item.correct) {
+            num_correct++;
+        }
+        if ("feedback" in item) {
+            lab.setAttribute('data-feedback', item.feedback);
+        }
+        lab.setAttribute('data-answered', 0);
+
+        aDiv.append(lab);
+
+    });
+
+    if (num_correct > 1) {
+        outerqDiv.className = "ManyChoiceQn";
+    } else {
+        outerqDiv.className = "MultipleChoiceQn";
+    }
+
+    return num_correct;
+
+}
+// Object-oriented wrapper for MC/MANY choice
+class MCQuestion extends Question {
+    constructor(qa, id, idx, opts, rootDiv) { super(qa, id, idx, opts, rootDiv); }
+    render() {
+        //console.log("options.shuffleAnswers " + this.options.shuffleAnswers);
+        const numCorrect = make_mc(
+            this.qa,
+            this.options.shuffleAnswers,
+            this.outerqDiv,
+            this.qDiv,
+            this.aDiv,
+            this.id
+        );
+        if ('answer_cols' in this.qa) {
+            this.aDiv.style.gridTemplateColumns =
+                'repeat(' + this.qa.answer_cols + ', 1fr)';
+        }
+        this.fbDiv.dataset.numcorrect = numCorrect;
+        this.wrapper.appendChild(this.fbDiv);
+    }
+}
+Question.register('multiple_choice', MCQuestion);
+Question.register('many_choice', MCQuestion);
+function check_numeric(ths, event) {
+
+    if (event.keyCode === 13) {
+        ths.blur();
+
+        var id = ths.id.split('-')[0];
+
+        var submission = ths.value;
+        if (submission.indexOf('/') != -1) {
+            var sub_parts = submission.split('/');
+            //console.log(sub_parts);
+            submission = sub_parts[0] / sub_parts[1];
+        }
+        //console.log("Reader entered", submission);
+
+        if ("precision" in ths.dataset) {
+            var precision = ths.dataset.precision;
+            submission = Number(Number(submission).toPrecision(precision));
+        }
+
+
+        //console.log("In check_numeric(), id="+id);
+        //console.log(event.srcElement.id)           
+        //console.log(event.srcElement.dataset.feedback)
+
+        var fb = document.getElementById("fb" + id);
+        fb.style.display = "none";
+        fb.innerHTML = "Incorrect -- try again.";
+
+        var answers = JSON.parse(ths.dataset.answers);
+        //console.log(answers);
+
+        var defaultFB = "Incorrect. Try again.";
+        var correct;
+        var done = false;
+        answers.every(answer => {
+            //console.log(answer.type);
+
+            correct = false;
+            // if (answer.type=="value"){
+            if ('value' in answer) {
+                var value;
+                if ("precision" in ths.dataset) {
+                    value = answer.value.toPrecision(ths.dataset.precision);
+                } else {
+                    value = answer.value;
+                }
+                if (submission == value) {
+                    if ("feedback" in answer) {
+                        fb.innerHTML = jaxify(answer.feedback);
+                    } else {
+                        fb.innerHTML = jaxify("Correct");
+                    }
+                    correct = answer.correct;
+                    //console.log(answer.correct);
+                    done = true;
+                }
+
+                // } else if (answer.type=="range") {
+            } else if ('range' in answer) {
+                console.log(answer.range);
+                console.log(submission, submission >=answer.range[0], submission < answer.range[1])
+                if ((submission >= answer.range[0]) && (submission < answer.range[1])) {
+                    fb.innerHTML = jaxify(answer.feedback);
+                    correct = answer.correct;
+                    console.log(answer.correct);
+                    done = true;
+                }
+            } else if (answer.type == "default") {
+                if ("feedback" in answer) {
+                    defaultFB = answer.feedback;
+                } 
+            }
+            if (done) {
+                return false; // Break out of loop if this has been marked correct
+            } else {
+                return true; // Keep looking for case that includes this as a correct answer
+            }
+        });
+        console.log("done:", done);
+
+        if ((!done) && (defaultFB != "")) {
+            fb.innerHTML = jaxify(defaultFB);
+            //console.log("Default feedback", defaultFB);
+        }
+
+        fb.style.display = "block";
+        if (correct) {
+            ths.className = "Input-text";
+            ths.classList.add("correctButton");
+            fb.className = "Feedback";
+            fb.classList.add("correct");
+        } else {
+            ths.className = "Input-text";
+            ths.classList.add("incorrectButton");
+            fb.className = "Feedback";
+            fb.classList.add("incorrect");
+        }
+
+        // What follows is for the saved responses stuff
+        var outerContainer = fb.parentElement.parentElement;
+        var responsesContainer = document.getElementById("responses" + outerContainer.id);
+        if (responsesContainer) {
+            console.log(submission);
+            var qnum = document.getElementById("quizWrap"+id).dataset.qnum;
+            //console.log("Question " + qnum);
+            //console.log(id, ", got numcorrect=",fb.dataset.numcorrect);
+            var responses=JSON.parse(responsesContainer.dataset.responses);
+            console.log(responses);
+            if (submission == ths.value){
+                responses[qnum]= submission;
+            } else {
+                responses[qnum]= ths.value + "(" + submission +")";
+            }
+            responsesContainer.setAttribute('data-responses', JSON.stringify(responses));
+            printResponses(responsesContainer);
+        }
+        // End code to preserve responses
+
+        if (typeof MathJax != 'undefined') {
+            var version = MathJax.version;
+            console.log('MathJax version', version);
+            if (version[0] == "2") {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            } else if (version[0] == "3") {
+                MathJax.typeset([fb]);
+            }
+        } else {
+            console.log('MathJax not detected');
+        }
+        // After correct answer, if next JupyterQuiz question exists and has a text input, scroll by current question height
+        if (correct) {
+            // find the current question wrapper
+            var wrapper = ths.closest('.Quiz');
+            if (wrapper) {
+                var nextWrapper = wrapper.nextElementSibling;
+                if (nextWrapper && nextWrapper.classList.contains('Quiz')) {
+                    var nextInput = nextWrapper.querySelector('input.Input-text');
+                    if (nextInput) {
+                        var height = wrapper.getBoundingClientRect().height;
+                        console.log(height);
+                        nextInput.focus();
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+}
+// Object-oriented wrapper for numeric questions
+class NumericQuestion extends Question {
+    constructor(qa, id, idx, opts, rootDiv) {
+        super(qa, id, idx, opts, rootDiv);
+    }
+    render() {
+        make_numeric(this.qa, this.outerqDiv, this.qDiv, this.aDiv, this.id);
+        this.wrapper.appendChild(this.fbDiv);
+    }
+}
+Question.register('numeric', NumericQuestion);
+
+function isValid(el, charC) {
+    //console.log("Input char: ", charC);
+    if (charC == 46) {
+        if (el.value.indexOf('.') === -1) {
+            return true;
+        } else if (el.value.indexOf('/') != -1) {
+            var parts = el.value.split('/');
+            if (parts[1].indexOf('.') === -1) {
+                return true;
+            }
+        }
+        else {
+            return false;
+        }
+    } else if (charC == 47) {
+        if (el.value.indexOf('/') === -1) {
+            if ((el.value != "") && (el.value != ".")) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else if (charC == 45) {
+        var edex = el.value.indexOf('e');
+        if (edex == -1) {
+            edex = el.value.indexOf('E');
+        }
+
+        if (el.value == "") {
+            return true;
+        } else if (edex == (el.value.length - 1)) { // If just after e or E
+            return true;
+        } else {
+            return false;
+        }
+    } else if (charC == 101) { // "e"
+        if ((el.value.indexOf('e') === -1) && (el.value.indexOf('E') === -1) && (el.value.indexOf('/') == -1)) {
+            // Prev symbol must be digit or decimal point:
+            if (el.value.slice(-1).search(/\d/) >= 0) {
+                return true;
+            } else if (el.value.slice(-1).search(/\./) >= 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        if (charC > 31 && (charC < 48 || charC > 57))
+            return false;
+    }
+    return true;
+}
+
+function numeric_keypress(evnt) {
+    var charC = (evnt.which) ? evnt.which : evnt.keyCode;
+
+    if (charC == 13) {
+        check_numeric(this, evnt);
+    } else {
+        return isValid(this, charC);
+    }
+}
+
+
+
+
+
+function make_numeric(qa, outerqDiv, qDiv, aDiv, id) {
+
+
+
+    //console.log(answer);
+
+
+    outerqDiv.className = "NumericQn";
+    aDiv.style.display = 'block';
+
+    var lab = document.createElement("label");
+    lab.className = "InpLabel";
+    lab.innerHTML = "Type numeric answer here:";
+    aDiv.append(lab);
+
+    var inp = document.createElement("input");
+    inp.type = "text";
+    //inp.id="input-"+id;
+    inp.id = id + "-0";
+    inp.className = "Input-text";
+    inp.setAttribute('data-answers', JSON.stringify(qa.answers));
+    if ("precision" in qa) {
+        inp.setAttribute('data-precision', qa.precision);
+    }
+    aDiv.append(inp);
+    //console.log(inp);
+
+    //inp.addEventListener("keypress", check_numeric);
+    //inp.addEventListener("keypress", numeric_keypress);
+    /*
+    inp.addEventListener("keypress", function(event) {
+        return numeric_keypress(this, event);
+    }
+                        );
+                        */
+    //inp.onkeypress="return numeric_keypress(this, event)";
+    inp.onkeypress = numeric_keypress;
+    inp.onpaste = event => false;
+
+    inp.addEventListener("focus", function (event) {
+        this.value = "";
+        return false;
+    }
+    );
+
+
+}
+// Override show_questions to use object-oriented Question API
+function show_questions(json, container) {
+    // Accept container element or element ID
+    if (typeof container === 'string') {
+        container = document.getElementById(container);
+    }
+    if (!container) {
+        console.error('show_questions: invalid container', container);
+        return;
+    }
+
+    const shuffleQuestions = container.dataset.shufflequestions === 'True';
+    const shuffleAnswers = container.dataset.shuffleanswers === 'True';
+    const preserveResponses = container.dataset.preserveresponses === 'true';
+    const maxWidth = parseInt(container.dataset.maxwidth, 10) || 0;
+    let numQuestions = parseInt(container.dataset.numquestions, 10) || json.length;
+    if (numQuestions > json.length) numQuestions = json.length;
+
+    let questions = json;
+    if (shuffleQuestions || numQuestions < json.length) {
+        questions = getRandomSubarray(json, numQuestions);
+    }
+
+    questions.forEach((qa, index) => {
+        const id = makeid(8);
+        const options = {
+            shuffleAnswers: shuffleAnswers,
+            preserveResponses: preserveResponses,
+            maxWidth: maxWidth
+        };
+        Question.create(qa, id, index, options, container);
+    });
+
+    if (preserveResponses) {
+        const respDiv = document.createElement('div');
+        respDiv.id = 'responses' + container.id;
+        respDiv.className = 'JCResponses';
+        respDiv.dataset.responses = JSON.stringify([]);
+        respDiv.innerHTML = '<b>Select your answers and then follow the directions that will appear here.</b>';
+        container.appendChild(respDiv);
+    }
+
+    // Trigger MathJax typesetting if available
+    if (typeof MathJax != 'undefined') {
+        console.log("MathJax version", MathJax.version);
+        var version = MathJax.version;
+        setTimeout(function(){
+            var version = MathJax.version;
+            console.log('After sleep, MathJax version', version);
+            if (version[0] == "2") {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            } else if (version[0] == "3") {
+                if (MathJax.hasOwnProperty('typeset') ) {
+                    MathJax.typeset([container]);
+                } else {
+                    console.log('WARNING: Trying to force load MathJax 3');
+                    window.MathJax = {
+                        tex: {
+                            inlineMath: [['$', '$'], ['\\(', '\\)']]
+                        },
+                        svg: {
+                            fontCache: 'global'
+                        }
+                    };
+
+                    (function () {
+                        var script = document.createElement('script');
+                        script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js';
+                        script.async = true;
+                        document.head.appendChild(script);
+                    })();
+                }
+            }
+        }, 500);
+if (typeof version == 'undefined') {
+        } else
+        {
+            if (version[0] == "2") {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            } else if (version[0] == "3") {
+                if (MathJax.hasOwnProperty('typeset') ) {
+                    MathJax.typeset([container]);
+                } else {
+                    console.log('WARNING: Trying to force load MathJax 3');
+                    window.MathJax = {
+                        tex: {
+                            inlineMath: [['$', '$'], ['\\(', '\\)']]
+                        },
+                        svg: {
+                            fontCache: 'global'
+                        }
+                    };
+
+                    (function () {
+                        var script = document.createElement('script');
+                        script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js';
+                        script.async = true;
+                        document.head.appendChild(script);
+                    })();
+                }
+            } else {
+                console.log("MathJax not found");
+            }
+        }
+    }
+    // if (typeof MathJax !== 'undefined') {
+    //     const v = MathJax.version;
+    //     if (v[0] === '2') {
+    //         MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
+    //     } else if (v[0] === '3') {
+    //         MathJax.typeset([container]);
+    //     }
+    // }
+
+    // Prevent link clicks from bubbling up
+    Array.from(container.getElementsByClassName('Link')).forEach(link => {
+        link.addEventListener('click', e => e.stopPropagation());
+    });
+}
+function levenshteinDistance(a, b) {
+    if (a.length === 0) return b.length;
+    if (b.length === 0) return a.length;
+
+    const matrix = Array(b.length + 1).fill(null).map(() => Array(a.length + 1).fill(null));
+
+    for (let i = 0; i <= a.length; i++) {
+        matrix[0][i] = i;
+    }
+
+    for (let j = 0; j <= b.length; j++) {
+        matrix[j][0] = j;
+    }
+
+    for (let j = 1; j <= b.length; j++) {
+        for (let i = 1; i <= a.length; i++) {
+            const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+            matrix[j][i] = Math.min(
+                matrix[j - 1][i] + 1, // Deletion
+                matrix[j][i - 1] + 1, // Insertion
+                matrix[j - 1][i - 1] + cost // Substitution
+            );
+        }
+    }
+    return matrix[b.length][a.length];
+}
+// Object-oriented wrapper for string input questions
+class StringQuestion extends Question {
+    constructor(qa, id, idx, opts, rootDiv) {
+        super(qa, id, idx, opts, rootDiv);
+    }
+    render() {
+        make_string(this.qa, this.outerqDiv, this.qDiv, this.aDiv, this.id);
+        this.wrapper.appendChild(this.fbDiv);
+    }
+}
+Question.register('string', StringQuestion);
+
+function check_string(ths, event) {
+    if (event.keyCode === 13) {
+        ths.blur();
+
+        var id = ths.id.split('-')[0];
+        var submission = ths.value.trim();
+        var fb = document.getElementById("fb" + id);
+        fb.style.display = "none";
+        fb.innerHTML = "Incorrect -- try again.";
+
+        var answers = JSON.parse(ths.dataset.answers);
+        var defaultFB = "Incorrect. Try again.";
+        var correct;
+        var done = false;
+
+        // Handle default answer pattern: filter out and capture default feedback
+        var filteredAnswers = [];
+        answers.forEach(answer => {
+            if (answer.type === "default") {
+                defaultFB = answer.feedback;
+            } else {
+                filteredAnswers.push(answer);
+            }
+        });
+        answers = filteredAnswers;
+
+        answers.every(answer => {
+            correct = false;
+
+            let match = false;
+            if (answer.match_case) {
+                match = submission === answer.answer;
+            } else {
+                match = submission.toLowerCase() === answer.answer.toLowerCase();
+            }
+            console.log(submission);
+            console.log(answer.answer);
+            console.log(match);
+
+            if (match) {
+                if ("feedback" in answer) {
+                    fb.innerHTML = jaxify(answer.feedback);
+                } else {
+                    fb.innerHTML = jaxify("Correct");
+                }
+                correct = answer.correct;
+                done = true;
+            } else if (answer.fuzzy_threshold) {
+                var max_length = Math.max(submission.length, answer.answer.length);
+                var ratio;
+                if (answer.match_case) {
+                    ratio = 1- (levenshteinDistance(submission, answer.answer) / max_length);
+                } else {
+                    ratio = 1- (levenshteinDistance(submission.toLowerCase(),
+                                                    answer.answer.toLowerCase()) / max_length);
+                }
+                if (ratio >= answer.fuzzy_threshold) {
+                    if ("feedback" in answer) {
+                        fb.innerHTML = jaxify("(Fuzzy) " + answer.feedback);
+                    } else {
+                        fb.innerHTML = jaxify("Correct");
+                    }
+                    correct = answer.correct;
+                    done = true;
+                }
+
+            }
+
+            if (done) {
+                return false;
+            } else {
+                return true;
+            }
+        });
+
+        if ((!done) && (defaultFB != "")) {
+            fb.innerHTML = jaxify(defaultFB);
+        }
+
+        fb.style.display = "block";
+        if (correct) {
+            ths.className = "Input-text";
+            ths.classList.add("correctButton");
+            fb.className = "Feedback";
+            fb.classList.add("correct");
+        } else {
+            ths.className = "Input-text";
+            ths.classList.add("incorrectButton");
+            fb.className = "Feedback";
+            fb.classList.add("incorrect");
+        }
+
+        var outerContainer = fb.parentElement.parentElement;
+        var responsesContainer = document.getElementById("responses" + outerContainer.id);
+        if (responsesContainer) {
+            var qnum = document.getElementById("quizWrap" + id).dataset.qnum;
+            var responses = JSON.parse(responsesContainer.dataset.responses);
+            responses[qnum] = submission;
+            responsesContainer.setAttribute('data-responses', JSON.stringify(responses));
+            printResponses(responsesContainer);
+        }
+
+        if (typeof MathJax != 'undefined') {
+            var version = MathJax.version;
+            if (version[0] == "2") {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            } else if (version[0] == "3") {
+                MathJax.typeset([fb]);
+            }
+        } else {
+            console.log('MathJax not detected');
+        }
+        // After correct answer, if next JupyterQuiz question exists and has a text input, scroll by current question height
+        if (correct) {
+            var wrapper = ths.closest('.Quiz');
+            if (wrapper) {
+                var nextWrapper = wrapper.nextElementSibling;
+                if (nextWrapper && nextWrapper.classList.contains('Quiz')) {
+                    var nextInput = nextWrapper.querySelector('input.Input-text');
+                    if (nextInput) {
+                        var height = wrapper.getBoundingClientRect().height;
+                        nextInput.focus();
+                    }
+                }
+            }
+        }
+        return false;
+    }
+}
+
+function string_keypress(evnt) {
+    var charC = (evnt.which) ? evnt.which : evnt.keyCode;
+
+    if (charC == 13) {
+        check_string(this, evnt);
+    } 
+}
+
+
+function make_string(qa, outerqDiv, qDiv, aDiv, id) {
+    outerqDiv.className = "StringQn";
+    aDiv.style.display = 'block';
+
+    var lab = document.createElement("label");
+    lab.className = "InpLabel";
+    lab.innerHTML = "Type your answer here:";
+    aDiv.append(lab);
+
+    var inp = document.createElement("input");
+    inp.type = "text";
+    inp.id = id + "-0";
+    inp.className = "Input-text";
+    inp.setAttribute('data-answers', JSON.stringify(qa.answers));
+    // Apply optional input width (approx. number of characters, in em units)
+    if (qa.input_width != null) {
+        inp.style['min-width'] = qa.input_width + 'em';
+    }
+    aDiv.append(inp);
+
+    inp.onkeypress = string_keypress;
+    inp.onpaste = event => false;
+
+    inp.addEventListener("focus", function (event) {
+        this.value = "";
+        return false;
+    });
+}
+/*
+ * Handle asynchrony issues when re-running quizzes in Jupyter notebooks.
+ * Ensures show_questions is called after the container div is in the DOM.
+ */
+function try_show() {
+  if (document.getElementById("wucpMvipRpYh")) {
+    show_questions(questionswucpMvipRpYh, wucpMvipRpYh);
+  } else {
+    setTimeout(try_show, 200);
+  }
+};
+// Invoke immediately
+{
+  try_show();
+}
+}
+
+</script>
+</div>
+</div>
+<p>As this exercise shows, with a small number of observations you have <em>some</em> information that can help you distinguish between the two models, but it is not enough to be confident in your conclusion.</p>
+<p>With more data though, suddenly the evidence becomes much stronger. The probability of getting a badly imbalanced distribution of heads and tails becomes tiny as the number of flips increases.</p>
+<p>In general this is great news – the more data you have, the more confident you can be in your conclusions. It’s probably not worth flipping a coin 1000 times to decide who takes out the trash, but if you did, you would be able to tell with much more certainty whether the coin is fair or not.</p>
+</div></section>
+</section>
+<section id="convergence-for-large-sample-sizes" class="level2">
+<h2 class="anchored" data-anchor-id="convergence-for-large-sample-sizes">Convergence for large sample sizes</h2>
+<p>When the size of a dataset is large enough, we get some guarantees.</p>
+<section id="law-of-large-numbers" class="level3">
+<h3 class="anchored" data-anchor-id="law-of-large-numbers">Law of Large Numbers</h3>
+<p>The Law of Large Numbers (LLN) states that as the sample size increases, the sample mean will converge to the population mean. In other words, if we take enough samples, the average of those samples will be close to the true average of the population.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Law of Large Numbers">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Law of Large Numbers
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(X_1, X_2, \ldots, X_n\)</span> be independent and identically distributed random variables with expected value <span class="math inline">\(\mathbb{E}[X]\)</span>, then the sample mean <span class="math inline">\(\bar{X}_n = \frac{1}{n} \sum_{i=1}^{n} X_i\)</span> converges to <span class="math inline">\(\mathbb{E}[X]\)</span> as <span class="math inline">\(n\)</span> approaches infinity: <span class="math display">\[\mathbb{P} \left[\lim_{n \to \infty} \bar{X}_n = \mathbb{E}[X]\right] = 1\]</span></p>
+<p>Precisely, this states that the probability that the sample mean converges to the population mean is 1. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+</div>
+</div>
+</div>
+<p>You don’t just have to take this for granted – let’s see the LLN in action.</p>
+<p>We will simulate flipping a biased coin <span class="math inline">\(n\)</span> times, and plot the proportion of heads as we increase the number of flips. We will see that the proportion converges to 0.25 as the number of flips increases.</p>
+<div id="f3df4ce1" class="cell" data-execution_count="38">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set seed</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">56</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># flip a fair coin n times</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>samples_sizes <span class="op">=</span> [<span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">1000</span>, <span class="fl">1e4</span>, <span class="fl">1e5</span>, <span class="fl">1e6</span>]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>proportion_heads <span class="op">=</span> []</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> samples_sizes:</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Simulate flipping a fair coin n times</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    flips <span class="op">=</span> np.random.binomial(<span class="dv">1</span>, <span class="fl">0.25</span>, size<span class="op">=</span><span class="bu">int</span>(n))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    proportion_heads.append(np.mean(flips))</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x<span class="op">=</span>samples_sizes, y<span class="op">=</span>proportion_heads, marker<span class="op">=</span><span class="st">'o'</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>ax.set_xscale(<span class="st">'log'</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Number of Flips (log scale)"</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Proportion of Heads"</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Proportion of Heads in Coin Flips"</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-04_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>That’s just one experiment (flip <span class="math inline">\(n\)</span> coins a single time). But this is a random process, so we can simulate it many times and see how the proportion of heads changes.</p>
+<div id="cf39a181" class="cell" data-execution_count="41">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">56</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>samples_sizes <span class="op">=</span> [<span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">1000</span>, <span class="fl">1e4</span>, <span class="fl">1e5</span>]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>sim_results <span class="op">=</span> []</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> samples_sizes: <span class="co"># outer loop is over sample size</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):  <span class="co"># inner loop runs the simulation 1000 times, for each sample size</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># sample n flips from a fair coin</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        flips <span class="op">=</span> np.random.binomial(<span class="dv">1</span>, <span class="fl">0.25</span>, size<span class="op">=</span><span class="bu">int</span>(n))</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># calculate the proportion of heads</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        proportion_heads <span class="op">=</span> np.mean(flips)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># store the result</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        sim_results.append(pd.Series({<span class="st">"n"</span>: n, <span class="st">"proportion_heads"</span>: proportion_heads}))</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># gather all the results (a list of Series) into a DataFrame</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>sim_results <span class="op">=</span> pd.concat(sim_results, axis<span class="op">=</span><span class="dv">1</span>).T</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the proportion from individual simulations as points</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>sns.stripplot(data<span class="op">=</span>sim_results, </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>              x<span class="op">=</span><span class="st">"n"</span>, y<span class="op">=</span><span class="st">"proportion_heads"</span>, </span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>              jitter<span class="op">=</span><span class="va">False</span>, alpha<span class="op">=</span><span class="fl">0.3</span>, ax<span class="op">=</span>ax, native_scale<span class="op">=</span><span class="va">True</span>, marker<span class="op">=</span><span class="st">'o'</span>, size<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the mean proportion of heads across simulations</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>sns.lineplot(data<span class="op">=</span>sim_results, </span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>             x<span class="op">=</span><span class="st">"n"</span>, y<span class="op">=</span><span class="st">"proportion_heads"</span>, </span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>             errorbar<span class="op">=</span><span class="st">"sd"</span>, marker<span class="op">=</span><span class="st">'o'</span>, ax<span class="op">=</span>ax, </span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>             label<span class="op">=</span><span class="st">'Mean Proportion of Heads'</span>)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co"># make ticks nicer</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>ax.set_xticks([<span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">1000</span>, <span class="dv">10000</span>, <span class="dv">100000</span>])</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>ax.set_xscale(<span class="st">'log'</span>)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Number of Flips (log scale)"</span>)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Proportion of Heads"</span>)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-04_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="0db4ae25" class="cell" data-execution_count="55">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># histogram of the proportion of heads for each sample size</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>sns.FacetGrid(sim_results, col<span class="op">=</span><span class="st">"n"</span>, col_wrap<span class="op">=</span><span class="dv">2</span>, height<span class="op">=</span><span class="dv">4</span>, aspect<span class="op">=</span><span class="fl">1.2</span>, sharex<span class="op">=</span><span class="va">False</span>, sharey<span class="op">=</span><span class="va">False</span>) <span class="op">\</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">map</span>(sns.histplot, <span class="st">"proportion_heads"</span>, bins<span class="op">=</span>np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">41</span>)) <span class="op">\</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    .set_axis_labels(<span class="st">"Proportion of Heads"</span>, <span class="st">"Frequency"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-04_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="8031b8f5" class="cell" hidden="true" data-execution_count="35">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-04_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As you can see, the variability across simulations decreases as the number of flips increases. This is what we mean when we say that the sample mean converges to the population mean. It’s not just close to the true mean on average, it is also more consistent across different samples/simulations.</p>
+<p>We’re going to take advantage of this fact all the time. Basically any time you compare groups, or competing hypotheses, or evaluate predictive models, you end up taking the average of some quantity. The Law of Large Numbers tells us that as the sample size increases, the average will converge to the true value.</p>
+<p>Again, what does this mean for your argument with your roommate? As you gather more and more data (coin flips), the proportion of heads (which is itself a sample mean) will converge to the true proportion of heads (the population mean). With enough flips, it becomes very clear whether the coin is rigged or not.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Unbiased Estimators">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Unbiased Estimators
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Notice in the simulation above that even when the sample mean was highly variable in small samples, it was always still centered around the true population mean. This is a crucial property for any estimator: it is said to be <strong>unbiased</strong> if the expected value of the estimator is equal to the true value of the parameter being estimated. In other words, on average, the estimator will give you the correct answer.</p>
+<p>The LLN gives you a different guarantee: that as the sample size increases, the <em>variance</em> of the estimator decreases, so it becomes more and more likely that the estimator will be close to the true value.</p>
+</div>
+</div>
+</section>
+<section id="central-limit-theorem" class="level3">
+<h3 class="anchored" data-anchor-id="central-limit-theorem">Central Limit Theorem</h3>
+<p>The Central Limit Theorem states that the sample mean of <span class="math inline">\(n\)</span> independent and identically distributed random variables will converge to a normal distribution, regardless of the distribution of the individual variables. This means that even if a variable is not normally distributed, if you average a bunch of them together, the sample mean will be approximately normally distributed.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Central Limit Theorem">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Central Limit Theorem
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(X_1, X_2, \ldots, X_n\)</span> be independent and identically distributed random variables with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>. Then the sample mean <span class="math inline">\(\bar{X}_n = \frac{1}{n} \sum_{i=1}^{n} X_i\)</span> converges in distribution to a normal distribution with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\frac{\sigma^2}{n}\)</span> as <span class="math inline">\(n\)</span> approaches infinity: <span class="math display">\[\bar{X}_n \xrightarrow{d} N\left(\mu, \frac{\sigma^2}{n}\right)\]</span></p>
+</div>
+</div>
+</div>
+<p>Consider rolling a die – there is an equal chance (1/6) of getting each of the values between 1 and 6.</p>
+<p>Note that the expected value of each roll of the die is 3.5 – we can compute this as <span class="math display">\[E\left[X\right]=1\left(\frac{1}{6}\right)+2\left(\frac{1}{6}\right)+3\left(\frac{1}{6}\right)+4\left(\frac{1}{6}\right)+5\left(\frac{1}{6}\right)+6\left(\frac{1}{6}\right)=3.5\]</span></p>
+<p>So the mean of the distribution of dice values should be 3.5, but as you can see below it’s definitely not normal – values are distributed evenly from 1 to 6 rather than clustering closer to the mean.</p>
+<div id="bf91d77d" class="cell" data-execution_count="104">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot histogram of 100 rolls of a die</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)  <span class="co"># for reproducibility</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>rolls <span class="op">=</span> pd.DataFrame({<span class="st">'roll'</span>: np.random.randint(<span class="dv">1</span>, <span class="dv">7</span>, <span class="dv">100</span>)})</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>rolls, x<span class="op">=</span><span class="st">'roll'</span>, bins<span class="op">=</span><span class="dv">6</span>, discrete<span class="op">=</span><span class="va">True</span>, edgecolor<span class="op">=</span><span class="st">"black"</span>, stat<span class="op">=</span><span class="st">'proportion'</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span>rolls[<span class="st">'roll'</span>].mean(), color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'Mean'</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Histogram of 100 dice rolls"</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Roll"</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-04_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>But what happens if we average the values of the 100 dice rolls in our sample? We can simulate this process many times (roll a dice 100 times, take the average, repeat) to get a distribution of the average.</p>
+<div id="0a40f7e0" class="cell" data-execution_count="139">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)  <span class="co"># for reproducibility</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">12</span>), sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> ax.flatten()</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, n <span class="kw">in</span> <span class="bu">enumerate</span>([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">16</span>, <span class="dv">32</span>, <span class="dv">64</span>, <span class="dv">128</span>, <span class="dv">256</span>]):</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Simulate (5000 times) rolling a die n times and taking the average</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    sum_rolls_data <span class="op">=</span> (np.random.randint(<span class="dv">1</span>, <span class="dv">7</span>, size<span class="op">=</span>(<span class="dv">5000</span>, n)).mean(axis<span class="op">=</span><span class="dv">1</span>) <span class="op">-</span> <span class="fl">3.5</span>) <span class="op">*</span> np.sqrt(n)  <span class="co"># Centering around the mean (3.5) and scaling by sqrt(n)</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    sum_rolls <span class="op">=</span> pd.DataFrame({<span class="st">'sum_roll'</span>: sum_rolls_data})</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot the histogram</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    sns.histplot(data<span class="op">=</span>sum_rolls, x<span class="op">=</span><span class="st">'sum_roll'</span>, edgecolor<span class="op">=</span><span class="st">"black"</span>, stat<span class="op">=</span><span class="st">'proportion'</span>, ax<span class="op">=</span>ax[i])</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    ax[i].set_title(<span class="ss">f"$n=</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">$ rolls of a die"</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    ax[i].set_xlabel(<span class="vs">r"</span><span class="dv">$\b</span><span class="vs">ar{X} - </span><span class="dv">\m</span><span class="vs">athbb{E}</span><span class="pp">[X]</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    ax[i].set_ylabel(<span class="st">"Proportion"</span>)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-04_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As you can see the distribution of the sum is approximately normal! It has the mean we would expect (3.5) and clearly values are clustered symmetrically around the mean.</p>
+<p>For the purposes of the class it’s not necessary to understand why this happens, just that it happens. To give a bit of intuition though, we basically think that with more samples distributions will starts to cluster around their means.</p>
+<p>Why is this useful? Well, the normal distribution is a well studied distribution with many useful properties. It is symmetric, easy to work with mathematically, and is useful for approximating the distribution of many real-world processes. The normal distribution is decently good description of most data that clusters around its mean.</p>
+<p>The CLT tells us that even if we don’t know the distribution of the individual variables, if we average enough of them together, we magically know the distribution of the sample mean.</p>
+<p>Remember earlier in the lecture, we talked about how statistical models are useful as long as they are a faithful description of the outcome probabilities for a DGP? Well, the CLT gives us a guarantee that for a huge class of DGPs, we can use the normal distribution to model the sample mean.</p>
+
+
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p> This is technically the <em>Strong Law of Large Numbers</em>, stating that the sample mean converges almost surely to the population mean. There is also a <em>Weak Law of Large Numbers</em> which states that the sample mean converges in probability to the population mean, which is a weaker condition.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../notebooks";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../notebooks/lecture-03.html" class="pagination-link" aria-label="Lecture 03: Sampling and Simulation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Lecture 03: Sampling and Simulation</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../notebooks/lecture-05.html" class="pagination-link" aria-label="Lecture 05: Hypothesis Testing">
+        <span class="nav-page-text">Lecture 05: Hypothesis Testing</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

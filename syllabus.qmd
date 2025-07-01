@@ -1,0 +1,22 @@
+---
+title: "Syllabus"
+---
+
+
+# Course Title: Understanding Uncertainty: An Introduction to Statistics through Data Generating Processes and Computational Simulations  
+**Course Schedule:** 4 Weeks, 3 sessions per week, 1.5 hours per session  
+
+| **Week** | **Session** | **Topics Covered** | **Activities/Assignments** |
+|----------|-------------|--------------------|----------------------------|
+| **1**    | Session 1   | - **Course Introduction**<br>- Understanding Data Generating Processes (DGPs)<br>- Basic Python Syntax and Data Types | - Install Python and Jupyter<br>- **Assignment:** Write a simple Python program [link](./assignments/assignment-00.ipynb) |
+|          | Session 2   | - **Data Structures in Python** (Lists, Tuples, Dictionaries)<br>- Importing and Exporting Data<br>- Generating Random Numbers | - Load and explore datasets<br>- **Assignment:** Simulate a simple DGP |
+|          | Session 3   | - **Descriptive Statistics**<br>- Measures of Central Tendency and Variability<br>- Data Visualization with Matplotlib and Seaborn | - Plot histograms and boxplots<br>- **Assignment:** Analyze summary statistics of a dataset |
+| **2**    | Session 4   | - **Probability Concepts**<br>- Discrete and Continuous Distributions<br>- Simulating Random Events | - Simulate coin tosses and dice rolls<br>- **Assignment:** Probability simulations |
+|          | Session 5   | - **Exploring Different Distributions**<br>- Normal, Binomial, Poisson, Exponential Distributions<br>- Central Limit Theorem (CLT) | - Visualize distributions and CLT demonstrations<br>- **Assignment:** CLT simulation project |
+|          | Session 6   | - **Understanding Uncertainty**<br>- Confidence Intervals<br>- Margin of Error<br>- Introduction to Hypothesis Testing | - Calculate confidence intervals<br>- **Assignment:** Formulate and test hypotheses |
+| **3**    | Session 7   | - **Resampling Methods**<br>- Bootstrapping and Permutation Tests<br>- Practical Applications | - Conduct bootstrap and permutation tests<br>- **Assignment:** Resampling project |
+|          | Session 8   | - **Bias and Variance Trade-off**<br>- Overfitting and Underfitting<br>- Model Complexity and Generalization | - Visualize bias-variance trade-off<br>- **Assignment:** Experiment with model complexity |
+|          | Session 9   | - **Introduction to Machine Learning**<br>- Supervised vs. Unsupervised Learning<br>- Training and Testing Sets<br>- Evaluation Metrics | - Split data and evaluate models<br>- **Assignment:** Build and evaluate predictive models |
+| **4**    | Session 10  | - **Regularization Techniques**<br>- Ridge and Lasso Regression<br>- Fairness in Machine Learning | - Implement regularization<br>- **Assignment:** Regularization and fairness assessment |
+|          | Session 11  | - **Population Statistics and Representation**<br>- Sampling Methods and Sampling Bias<br>- Ethical Considerations in Data Science | - Simulate sampling strategies<br>- **Assignment:** Design a fair sampling plan |
+|          | Session 12  | - **Course Review and Future Directions**<br>- Student Project Presentations<br>- Trends in Statistics and Data Science | - Present final projects<br>- **Course Feedback Survey** |
