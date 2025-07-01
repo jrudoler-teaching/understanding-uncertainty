@@ -464,10 +464,10 @@ Conditional probability
 </div>
 <p>The multiplication rule helps us calculate the probability of multiple events happening, as long as we know how one event affects the other (i.e., the conditional probability). An example will help clarify make this concrete.</p>
 <p>Consider a deck of cards (52 cards total, 13 of each suit). I might ask you, “What is the probability of drawing a club on the first draw and a club on the second draw? (Assuming you do not replace the first card.)”</p>
-<div id="6aef992a" class="cell" data-execution_count="29">
+<div id="6aef992a" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
-<div id="qjwLYsGyDHzw" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
-#qjwLYsGyDHzw {
+<div id="gZSMlmYiUXOy" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
+#gZSMlmYiUXOy {
    --jq-multiple-choice-bg: #6f78ffff;
    --jq-mc-button-bg: #fafafa;
    --jq-mc-button-border: #e0e0e0e0;
@@ -688,7 +688,7 @@ Conditional probability
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/javascript">
-var questionsqjwLYsGyDHzw=[{"question": "What is the conditional probability of drawing a club on the second draw given that the first card drawn was a club?", "type": "multiple_choice", "answers": [{"answer": "1/52", "correct": false}, {"answer": "1/4", "correct": false}, {"answer": "12/51", "correct": true}, {"answer": "13/52", "correct": false}]}, {"question": "What is the probability of drawing a club on the first draw and a club on the second draw? (Assuming you do not replace the first card.)", "type": "numeric", "precision": 4, "answers": [{"type": "range", "range": [0.055, 0.062], "correct": true, "feedback": "Correct! The probability is 13/52 * 12/51 = 1/4 * 12/51 = .0588"}, {"type": "default", "feedback": "Incorrect. Consider the multiplication rule!"}]}];
+var questionsgZSMlmYiUXOy=[{"question": "What is the conditional probability of drawing a club on the second draw given that the first card drawn was a club?", "type": "multiple_choice", "answers": [{"answer": "1/52", "correct": false}, {"answer": "1/4", "correct": false}, {"answer": "12/51", "correct": true}, {"answer": "13/52", "correct": false}]}, {"question": "What is the probability of drawing a club on the first draw and a club on the second draw? (Assuming you do not replace the first card.)", "type": "numeric", "precision": 4, "answers": [{"type": "range", "range": [0.055, 0.062], "correct": true, "feedback": "Correct! The probability is 13/52 * 12/51 = 1/4 * 12/51 = .0588"}, {"type": "default", "feedback": "Incorrect. Consider the multiplication rule!"}]}];
 
 if (typeof Question === 'undefined') {
 // Make a random ID
@@ -1751,8 +1751,8 @@ function make_string(qa, outerqDiv, qDiv, aDiv, id) {
  * Ensures show_questions is called after the container div is in the DOM.
  */
 function try_show() {
-  if (document.getElementById("qjwLYsGyDHzw")) {
-    show_questions(questionsqjwLYsGyDHzw, qjwLYsGyDHzw);
+  if (document.getElementById("gZSMlmYiUXOy")) {
+    show_questions(questionsgZSMlmYiUXOy, gZSMlmYiUXOy);
   } else {
     setTimeout(try_show, 200);
   }
@@ -1955,7 +1955,7 @@ Uniform random variable
 <p>Distributions can be discrete or continuous, depending on the type of random variable. For discrete random variables, the probability distribution is often represented as a <strong>probability mass function (PMF)</strong>, which gives the probability of each possible value. For continuous random variables, the probability distribution is represented as a <strong>probability density function (PDF)</strong>, which gives the density of probability at each point.</p>
 <p>Let’s say we have a random variable <span class="math inline">\(X\)</span>, but we don’t know the exact probability function. Instead, we have a set of observed data points <span class="math inline">\(\{x_1, x_2, \ldots, x_n\}\)</span> that we believe are individual realizations of <span class="math inline">\(X\)</span>. In other words, we have a sample of data that we think is representative of the underlying random variable.</p>
 <p>How can we visualize this data to understand the distribution of <span class="math inline">\(X\)</span>? The simplest solution is to just plot how many times each value occurs in the data. This is called a <strong>histogram</strong>.</p>
-<div id="a44145c5" class="cell" data-execution_count="28">
+<div id="a44145c5" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -1963,12 +1963,13 @@ Uniform random variable
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.array([<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>])</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>plt.hist(x, bins<span class="op">=</span>np.arange(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">2.5</span>, <span class="dv">1</span>), density<span class="op">=</span><span class="va">False</span>, align<span class="op">=</span><span class="st">"mid"</span>)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>plt.xticks([<span class="dv">0</span>, <span class="dv">1</span>])</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Value'</span>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Frequency'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>plt.hist(x, bins<span class="op">=</span>np.arange(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">2.5</span>, <span class="dv">1</span>), density<span class="op">=</span><span class="va">False</span>, align<span class="op">=</span><span class="st">"mid"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>plt.xticks([<span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Value'</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Frequency'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="28">
+<div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>Text(0, 0.5, 'Frequency')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -1981,7 +1982,7 @@ Uniform random variable
 </div>
 <p>The <strong>histogram</strong> is a graphical representation that summarizes the distribution of a dataset. It divides the data into discrete, equally-sized intervals (or “bins”) along the x-axis and counts how many data points fall into each bin. The height of each bar represents the either the total count of data points in that bin or the proportion of data points in that bin. If the height of the bar is the proportion, then the area of the bar represents the probability of the random variable falling within that bin.</p>
 <p>Consider a bunch of dice rolls. If we roll a die 100 times, we would expect to see each number appear roughly a similar number of times. If we plot the histogram of the data, we would see a discrete uniform distribution, where each number from 1 to 6 has approximately the same height in the histogram. Let’s check it out:</p>
-<div id="9cb54ef4" class="cell" data-execution_count="18">
+<div id="9cb54ef4" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load in the dice rolls data</span></span>
@@ -1992,7 +1993,7 @@ Uniform random variable
 <div class="cell-output cell-output-stdout">
 <pre><code>Total number of dice rolls: 1000</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="18">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 
 
@@ -2050,16 +2051,17 @@ Uniform random variable
 </div>
 </div>
 </div>
-<div id="12164adf" class="cell" data-execution_count="20">
+<div id="12164adf" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>plt.hist(dice_rolls_df[<span class="st">'rolls'</span>], bins<span class="op">=</span>np.arange(<span class="fl">0.5</span>, <span class="fl">7.5</span>, <span class="dv">1</span>), density<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Histogram of Dice Rolls'</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Dice Value'</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Probability'</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>plt.xticks(np.arange(<span class="dv">1</span>, <span class="dv">7</span>))</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>plt.grid(axis<span class="op">=</span><span class="st">'y'</span>, alpha<span class="op">=</span><span class="fl">0.75</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>plt.hist(dice_rolls_df[<span class="st">'rolls'</span>], bins<span class="op">=</span>np.arange(<span class="fl">0.5</span>, <span class="fl">7.5</span>, <span class="dv">1</span>), density<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Histogram of Dice Rolls'</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Dice Value'</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Probability'</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>plt.xticks(np.arange(<span class="dv">1</span>, <span class="dv">7</span>))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>plt.grid(axis<span class="op">=</span><span class="st">'y'</span>, alpha<span class="op">=</span><span class="fl">0.75</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -2124,7 +2126,7 @@ Gambling warning: the house always wins
 <p>The average is a useful summary of a random variable’s central tendency, but it does not tell us anything about how spread out the values are.</p>
 <p>Consider the roulette example again. If we play roulette many times, it does not matter how much we bet on each game – the <strong>average</strong> amount we can expect to win or lose is always zero. You can bet $1 or $10,000 on each game, but the average outcome is still zero.</p>
 <p>Of course, the outcome of each game is not zero. Sometimes you win, sometimes you lose, and the amount you win or lose changes drastically depending on how much you bet.</p>
-<div id="69ab7544" class="cell" data-execution_count="39">
+<div id="69ab7544" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">

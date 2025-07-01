@@ -580,7 +580,7 @@
 <p>The <a href="https://www.kaggle.com/datasets/arianazmoudeh/airbnbopendata">dataset</a> contains Airbnb listings in New York City, including prices, locations, and other features.</p>
 </section>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [158]:</pre></div><div id="cell-4" class="cell" data-execution_count="158">
+<div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div id="cell-4" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># from https://www.kaggle.com/datasets/arianazmoudeh/airbnbopendata</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># import the data on Airbnb listings in the New York City</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>airbnb <span class="op">=</span> pd.read_csv(<span class="st">"../data/airbnb.csv"</span>)</span>
@@ -595,10 +595,10 @@
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># print the first 5 rows</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>airbnb[:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/var/folders/7h/662tdm8d6sn0krrht717wzmm0000gq/T/ipykernel_4339/643981573.py:3: DtypeWarning: Columns (25) have mixed types. Specify dtype option on import or set low_memory=False.
+<pre><code>/var/folders/7h/662tdm8d6sn0krrht717wzmm0000gq/T/ipykernel_28029/643981573.py:3: DtypeWarning: Columns (25) have mixed types. Specify dtype option on import or set low_memory=False.
   airbnb = pd.read_csv("../data/airbnb.csv")</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="158">
+<div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 
 
@@ -760,14 +760,14 @@
 <div id="cell-5" class="cell markdown">
 <p>Now there’s a lot you can do, but let’s start by visualizing the prices of listings.</p>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div id="cell-6" class="cell">
+<div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div id="cell-6" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot a histogram of the price column</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>plt.hist(airbnb[<span class="st">'price'</span>], bins<span class="op">=</span><span class="dv">50</span>)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Prices of Airbnb Listings in NYC'</span>)</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Price'</span>)</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Frequency'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="29">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>Text(0, 0.5, 'Frequency')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -781,9 +781,9 @@
 <div id="cell-7" class="cell markdown">
 <p>Computing statistics like the mean (average), standard deviation (average distance from the mean), and quartiles (top 25% and bottom 25%) is easy.</p>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [30]:</pre></div><div id="cell-8" class="cell" data-execution_count="30">
+<div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div id="cell-8" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>airbnb[<span class="st">"price"</span>].describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="30">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>count    102316.000000
 mean        625.291665
 std         331.677344
@@ -798,7 +798,7 @@ Name: price, dtype: float64</code></pre>
 <div id="cell-9" class="cell markdown">
 <p>We can even use specialized libraries to make use of the geographic information in the data. For example, we can use the <code>geopandas</code> library to plot the locations of listings on a map of New York City.</p>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [31]:</pre></div><div id="cell-10" class="cell" data-execution_count="31">
+<div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div id="cell-10" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> geodatasets <span class="im">import</span> get_path</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load the shapefile of NYC neighborhoods</span></span>
@@ -829,7 +829,7 @@ Name: price, dtype: float64</code></pre>
 <p>The problem is that data is not always complete. In fact, it almost never is. And incomplete data can lead to misleading conclusions.</p>
 <p>Let’s look at our Airbnb data again. What if instead of looking at the entire dataset, we only looked at a small “sample” or subset of the data?</p>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [32]:</pre></div><div id="cell-12" class="cell" data-execution_count="32">
+<div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div id="cell-12" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># separately plot 3 samples of airbnb listings</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>), sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> ax.flatten()</span>
@@ -878,10 +878,10 @@ Sample vs.&nbsp;Population
 </div>
 <p>Descriptive statistics are useful for understanding the data at hand, but they don’t necessarily tell us much about the world outside of the data. For that, we need to do something more.</p>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [33]:</pre></div><div id="cell-14" class="cell" data-execution_count="33">
+<div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div id="cell-14" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
-<div id="UCTYQOQZtdui" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
-#UCTYQOQZtdui {
+<div id="zyPUphrZAlln" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
+#zyPUphrZAlln {
    --jq-multiple-choice-bg: #6f78ffff;
    --jq-mc-button-bg: #fafafa;
    --jq-mc-button-border: #e0e0e0e0;
@@ -1102,7 +1102,7 @@ Sample vs.&nbsp;Population
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/javascript">
-var questionsUCTYQOQZtdui=[{"question": "You are interested in finding the best restaurant in Philadelphia, so you survey 1000 people and ask them to rank their top 10 favorite restaurants in the city. What is the population corresponding to this sample?", "type": "many_choice", "answers": [{"answer": "All restaurants in Philadelphia", "correct": false}, {"answer": "The 1000 people surveyed", "correct": false}, {"answer": "The top 10 restaurants in Philadelphia", "correct": false}, {"answer": "All people in Philadelphia", "correct": true}]}];
+var questionszyPUphrZAlln=[{"question": "You are interested in finding the best restaurant in Philadelphia, so you survey 1000 people and ask them to rank their top 10 favorite restaurants in the city. What is the population corresponding to this sample?", "type": "many_choice", "answers": [{"answer": "All restaurants in Philadelphia", "correct": false}, {"answer": "The 1000 people surveyed", "correct": false}, {"answer": "The top 10 restaurants in Philadelphia", "correct": false}, {"answer": "All people in Philadelphia", "correct": true}]}];
 
 if (typeof Question === 'undefined') {
 // Make a random ID
@@ -2165,8 +2165,8 @@ function make_string(qa, outerqDiv, qDiv, aDiv, id) {
  * Ensures show_questions is called after the container div is in the DOM.
  */
 function try_show() {
-  if (document.getElementById("UCTYQOQZtdui")) {
-    show_questions(questionsUCTYQOQZtdui, UCTYQOQZtdui);
+  if (document.getElementById("zyPUphrZAlln")) {
+    show_questions(questionszyPUphrZAlln, zyPUphrZAlln);
   } else {
     setTimeout(try_show, 200);
   }
@@ -2225,7 +2225,7 @@ P(X) = \begin{cases}
 \end{cases}
 \end{equation} -->
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [34]:</pre></div><div id="cell-18" class="cell" data-execution_count="34">
+<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="cell-18" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># number of listings per borough</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>borough_counts <span class="op">=</span> airbnb[<span class="st">'borough'</span>].value_counts().rename_axis(<span class="st">'borough'</span>).reset_index(name<span class="op">=</span><span class="st">'count'</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>borough_counts[<span class="st">'borough'</span>] <span class="op">=</span> borough_counts[<span class="st">'borough'</span>].<span class="bu">str</span>.title()  <span class="co"># capitalize</span></span>
@@ -2321,7 +2321,7 @@ Fitting a model
 </div>
 </section>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [150]:</pre></div><div id="cell-21" class="cell" data-execution_count="150">
+<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div id="cell-21" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression, LogisticRegression</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> multilabel_confusion_matrix</span>
@@ -2398,7 +2398,7 @@ What is a “good” prediction rate?
 </div>
 <p>Now let’s take a look at the distribution of the model’s predictions.</p>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [155]:</pre></div><div id="cell-23" class="cell" data-execution_count="155">
+<div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div id="cell-23" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the counts of predicted listings per borough side by side with the actual counts</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>plot_df <span class="op">=</span> pd.DataFrame({</span>
@@ -2406,18 +2406,30 @@ What is a “good” prediction rate?
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'actual'</span>: pd.Series(y_test.flatten())</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>})</span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>plot_df <span class="op">=</span> plot_df.melt(var_name<span class="op">=</span><span class="st">'type'</span>, value_name<span class="op">=</span><span class="st">'borough'</span>)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> sns.catplot(x<span class="op">=</span><span class="st">'borough'</span>, hue<span class="op">=</span><span class="st">'type'</span>, data<span class="op">=</span>plot_df, kind<span class="op">=</span><span class="st">'count'</span>, height<span class="op">=</span><span class="dv">5</span>, aspect<span class="op">=</span><span class="fl">1.2</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>sns.move_legend(ax, loc<span class="op">=</span><span class="st">"center right"</span>, title<span class="op">=</span><span class="va">None</span>)</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Predicted vs Actual Airbnb Listings per Borough'</span>)</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Borough'</span>)</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Count'</span>)</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> sns.catplot(x<span class="op">=</span><span class="st">'borough'</span>, hue<span class="op">=</span><span class="st">'type'</span>, data<span class="op">=</span>plot_df, kind<span class="op">=</span><span class="st">'count'</span>, height<span class="op">=</span><span class="dv">5</span>, aspect<span class="op">=</span><span class="fl">1.2</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>sns.move_legend(ax, loc<span class="op">=</span><span class="st">"center right"</span>, title<span class="op">=</span><span class="va">None</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Predicted vs Actual Airbnb Listings per Borough'</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Borough'</span>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Count'</span>)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/Users/jrudoler/Library/Caches/pypoetry/virtualenvs/understanding-uncertainty-vC6A7Gjf-py3.12/lib/python3.12/site-packages/seaborn/categorical.py:2761: UserWarning: catplot is a figure-level function and does not accept target axes. You may wish to try countplot
+  warnings.warn(msg, UserWarning)</code></pre>
+</div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lecture-00_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="lecture-00_files/figure-html/cell-11-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-00_files/figure-html/cell-11-output-3.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>

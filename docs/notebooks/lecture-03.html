@@ -337,10 +337,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><strong>Sampling with replacement</strong> means that after we draw a sample from the population, we put it back before drawing the next sample. This means that the same object / instance can be selected multiple times.</p></li>
 <li><p><strong>Sampling without replacement</strong> means that once we draw a sample, we do not put it back before drawing the next sample. This means that each individual can only be selected once. This can introduce dependencies between samples, as the population changes after each draw.</p></li>
 </ul>
-<div id="fb2bd7a6" class="cell" data-execution_count="25">
+<div id="fb2bd7a6" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
-<div id="PFTINJRlnMiA" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
-#PFTINJRlnMiA {
+<div id="NFpfRRhlrrtx" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
+#NFpfRRhlrrtx {
    --jq-multiple-choice-bg: #6f78ffff;
    --jq-mc-button-bg: #fafafa;
    --jq-mc-button-border: #e0e0e0e0;
@@ -561,7 +561,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/javascript">
-var questionsPFTINJRlnMiA=[{"question": "Is flipping a coin an example of sampling with, or without replacement?", "type": "multiple_choice", "answers": [{"answer": "With replacement", "correct": true}, {"answer": "Without replacement", "correct": false}]}, {"question": "Is dealing a hand in poker an example of sampling with, or without replacement?", "type": "multiple_choice", "answers": [{"answer": "With replacement", "correct": false}, {"answer": "Without replacement", "correct": true}]}];
+var questionsNFpfRRhlrrtx=[{"question": "Is flipping a coin an example of sampling with, or without replacement?", "type": "multiple_choice", "answers": [{"answer": "With replacement", "correct": true}, {"answer": "Without replacement", "correct": false}]}, {"question": "Is dealing a hand in poker an example of sampling with, or without replacement?", "type": "multiple_choice", "answers": [{"answer": "With replacement", "correct": false}, {"answer": "Without replacement", "correct": true}]}];
 
 if (typeof Question === 'undefined') {
 // Make a random ID
@@ -1624,8 +1624,8 @@ function make_string(qa, outerqDiv, qDiv, aDiv, id) {
  * Ensures show_questions is called after the container div is in the DOM.
  */
 function try_show() {
-  if (document.getElementById("PFTINJRlnMiA")) {
-    show_questions(questionsPFTINJRlnMiA, PFTINJRlnMiA);
+  if (document.getElementById("NFpfRRhlrrtx")) {
+    show_questions(questionsNFpfRRhlrrtx, NFpfRRhlrrtx);
   } else {
     setTimeout(try_show, 200);
   }
@@ -1673,14 +1673,15 @@ Normal distribution
 </div>
 </div>
 <p>For example, to sample 100 values from a normal distribution with mean 0 and standard deviation 1, you can use:</p>
-<div id="238df48c" class="cell" data-execution_count="4">
+<div id="238df48c" class="cell" data-execution_count="8">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="dv">42</span>)  <span class="co"># Create a random number generator with a fixed seed</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="op">=</span> rng.normal(loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="dv">1</span>, size<span class="op">=</span><span class="dv">100</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Samples:</span><span class="ch">\n</span><span class="st">"</span>, samples)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>plt.hist(samples, bins<span class="op">=</span><span class="dv">10</span>, density<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>plt.hist(samples, bins<span class="op">=</span><span class="dv">10</span>, density<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Samples:
@@ -1711,7 +1712,7 @@ Normal distribution
 </div>
 </div>
 <p>If you have a dataset and you want to sample from it, you can use the <code>numpy.random.choice</code> function to randomly select elements from the dataset (with or without replacement). If your dataset is in a pandas DataFrame, you can also use the <code>sample</code> method to randomly select rows from the DataFrame.</p>
-<div id="04efaa32" class="cell">
+<div id="04efaa32" class="cell" data-execution_count="4">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sampling without replacement</span></span>
@@ -1727,7 +1728,7 @@ Normal distribution
  [-1.32269961 -1.13328721 -0.01680116 -1.68286977  0.54315427 -1.68733443
   0.85797588 -0.85304393 -0.04992591 -0.36305385]</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <div>
 
 
@@ -1787,26 +1788,26 @@ Normal distribution
 </div>
 <p>If you want to sample from a custom distribution, you can also use the <code>numpy.random.choice</code> function to sample from a list of values with specified probabilities.</p>
 <p>Here’s an example of how to sample 100 dice rolls with a rigged die that has a 50% chance of rolling a 6, and a 10% chance of rolling each of the other numbers (1-5):</p>
-<div id="5a06edab" class="cell" data-execution_count="8">
+<div id="5a06edab" class="cell" data-execution_count="5">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>possible_rolls <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>probabilities <span class="op">=</span> [<span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>]</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>rng.choice(possible_rolls, p<span class="op">=</span>probabilities, size<span class="op">=</span><span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="8">
-<pre><code>array([1, 3, 4, 2, 4, 6, 1, 6, 6, 4, 2, 6, 2, 4, 6, 6, 6, 4, 6, 6, 4, 6,
-       1, 3, 6, 2, 2, 6, 6, 6, 6, 6, 2, 5, 4, 1, 6, 5, 5, 2, 2, 6, 1, 3,
-       3, 5, 6, 5, 1, 3, 6, 6, 6, 6, 6, 1, 4, 6, 4, 6, 5, 6, 6, 6, 6, 6,
-       6, 4, 5, 6, 2, 4, 6, 6, 2, 4, 2, 1, 6, 5, 4, 6, 1, 3, 6, 6, 6, 6,
-       5, 6, 6, 6, 6, 6, 6, 2, 6, 5, 6, 6])</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>array([4, 6, 6, 6, 5, 3, 6, 1, 6, 6, 6, 4, 6, 6, 6, 2, 5, 1, 2, 6, 6, 6,
+       4, 4, 5, 2, 2, 5, 3, 6, 5, 6, 6, 4, 6, 6, 4, 3, 6, 2, 2, 1, 6, 6,
+       6, 6, 5, 6, 2, 2, 6, 5, 6, 6, 6, 6, 6, 4, 1, 5, 3, 5, 6, 3, 1, 3,
+       3, 6, 6, 6, 6, 5, 6, 2, 1, 1, 6, 5, 2, 6, 2, 6, 5, 4, 4, 6, 4, 1,
+       2, 6, 6, 6, 3, 6, 6, 6, 5, 3, 1, 6])</code></pre>
 </div>
 </div>
 <section id="simulating-more-complex-processes" class="level3">
 <h3 class="anchored" data-anchor-id="simulating-more-complex-processes">Simulating more complex processes</h3>
 <p>Sometimes real-world processes are complex, and the samples we take are not independent. The simplest version of non-independence is sampling without replacement.</p>
 <p>Consider dealing poker hands from a standard deck of cards. When you deal a hand, you draw cards one at a time, and each card drawn affects the next card that can be drawn (because you do not put the card back into the deck).</p>
-<div id="18743e5c" class="cell" data-execution_count="43">
+<div id="18743e5c" class="cell" data-execution_count="6">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a deck of cards (Ace is 1, King is 13)</span></span>
@@ -1833,19 +1834,19 @@ Normal distribution
   7  7  7  7  8  8  8  8  9  9  9  9 10 10 10 10 11 11 11 11 12 12 12 12
  13 13 13 13]
 Deck of cards after shuffling:
- [12  3  3  1  5 13  3  6 13  4  8  5 11  7  8  3  7 12  2 11  1 10  9 13
-  9 11  7  5  6  8  1 10 10 11  4  2  4  8  6 13  6 10 12  9  2  7  4 12
-  2  1  5  9]
+ [ 3  7 11  8 13  9  1  6  1 12  3  6  9  5 10  9  9  2 10  7  2 11  4  8
+  4 12  6 10  2 12  7  6  3 13  8  4  5  2  3 13  4  1  5  5  8 11 13 11
+ 12 10  7  1]
 Hands dealt to players:
- [[ 1  5]
- [ 2  7]
- [12  8]
- [ 9  2]]
+ [[10 13]
+ [ 4  5]
+ [ 2 12]
+ [ 4 10]]
 Remaining cards in the deck:
- [12  3  3  1 13  3  6 13  4  8  5 11  8  3  7 11  1 10 13  9 11  7  5  6
-  1 10 10 11  4  4  8  6 13  6 10 12  9  2  7  4 12  2  5  9]
+ [ 3  7 11  8  9  1  6  1 12  3  6  9 10  9  9  7  2 11  8  4 12  6 10  2
+  7  6  3 13  8  5  2  3 13  4  1  5  5  8 11 13 11 12  7  1]
 Community cards on the board:
- [ 5  4  1  3 13]</code></pre>
+ [ 2  7 11  7  8]</code></pre>
 </div>
 </div>
 <p>But it can get even more complex than that. In many real-world scenarios, the process of generating data involves multiple steps or conditions that affect the outcome.</p>
@@ -1865,7 +1866,7 @@ Poisson distribution
 <p>The Poisson distribution is commonly used to model the number of events that occur in a fixed interval of time or space, given a known average rate of occurrence. It assumes that the events occur independently and at a constant average rate. In our example, we can use the Poisson distribution to model the number of passersby in a given time period (e.g., one hour of busking).</p>
 </div>
 </div>
-<div id="f958f240" class="cell" data-execution_count="44">
+<div id="f958f240" class="cell" data-execution_count="7">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="interpolate-1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="interpolate-1-1"><a href="#interpolate-1-1" aria-hidden="true" tabindex="-1"></a>n_days <span class="op">=</span> <span class="dv">5</span></span>
