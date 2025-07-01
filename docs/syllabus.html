@@ -38,10 +38,12 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-9d882aefbe6880e209bb4e231fcedeb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-6bdd2aebeb936dcddaa5f935a5de481c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/bootstrap/bootstrap-dark-ccd81253fefb92e9cd3f9eb5b5d87b54.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-6bdd2aebeb936dcddaa5f935a5de481c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -74,7 +76,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-sidebar floating nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -216,8 +218,10 @@ ul.task-list li input[type="checkbox"] {
         changeGiscusTheme();
       }
     };
-    const authorPrefersDark = true;
+    const authorPrefersDark = false;
     const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
     let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
     // Dark / light mode switch
     window.quartoToggleColorScheme = () => {
@@ -390,14 +394,8 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#course-title-understanding-uncertainty-an-introduction-to-statistics-through-data-generating-processes-and-computational-simulations" id="toc-course-title-understanding-uncertainty-an-introduction-to-statistics-through-data-generating-processes-and-computational-simulations" class="nav-link active" data-scroll-target="#course-title-understanding-uncertainty-an-introduction-to-statistics-through-data-generating-processes-and-computational-simulations">Course Title: Understanding Uncertainty: An Introduction to Statistics through Data Generating Processes and Computational Simulations</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -422,96 +420,139 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="course-title-understanding-uncertainty-an-introduction-to-statistics-through-data-generating-processes-and-computational-simulations" class="level1">
-<h1>Course Title: Understanding Uncertainty: An Introduction to Statistics through Data Generating Processes and Computational Simulations</h1>
-<p><strong>Course Schedule:</strong> 4 Weeks, 3 sessions per week, 1.5 hours per session</p>
+<p><strong>Course Title</strong>: Understanding Uncertainty: An Introduction to Statistics through Data Generating Processes and Computational Simulations</p>
+<p><strong>Instructor:</strong> Joey Rudoler</p>
+<p><strong>Classroom:</strong> Academic Research Building (ARB), Room 401</p>
+<p><strong>Course Schedule:</strong></p>
 <table class="caption-top table">
+<caption>Tentative schedule, subject to change.</caption>
 <thead>
 <tr class="header">
-<th><strong>Week</strong></th>
-<th><strong>Session</strong></th>
-<th><strong>Topics Covered</strong></th>
-<th><strong>Activities/Assignments</strong></th>
+<th style="text-align: left;">Date</th>
+<th style="text-align: left;">Topic</th>
+<th style="text-align: left;">Assignment</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>1</strong></td>
-<td>Session 1</td>
-<td>- <strong>Course Introduction</strong><br>- Understanding Data Generating Processes (DGPs)<br>- Basic Python Syntax and Data Types</td>
-<td>- Install Python and Jupyter<br>- <strong>Assignment:</strong> Write a simple Python program <a href="./assignments/assignment-00.html">link</a></td>
+<td style="text-align: left;">7/09</td>
+<td style="text-align: left;">Intro, <a href="../notebooks/lecture-00.ipynb">Why Statistics?</a></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td></td>
-<td>Session 2</td>
-<td>- <strong>Data Structures in Python</strong> (Lists, Tuples, Dictionaries)<br>- Importing and Exporting Data<br>- Generating Random Numbers</td>
-<td>- Load and explore datasets<br>- <strong>Assignment:</strong> Simulate a simple DGP</td>
+<td style="text-align: left;">7/10</td>
+<td style="text-align: left;"><a href="../notebooks/lecture-01.ipynb">Programming</a></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
-<td></td>
-<td>Session 3</td>
-<td>- <strong>Descriptive Statistics</strong><br>- Measures of Central Tendency and Variability<br>- Data Visualization with Matplotlib and Seaborn</td>
-<td>- Plot histograms and boxplots<br>- <strong>Assignment:</strong> Analyze summary statistics of a dataset</td>
+<td style="text-align: left;">7/11</td>
+<td style="text-align: left;">Programming cont.</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td><strong>2</strong></td>
-<td>Session 4</td>
-<td>- <strong>Probability Concepts</strong><br>- Discrete and Continuous Distributions<br>- Simulating Random Events</td>
-<td>- Simulate coin tosses and dice rolls<br>- <strong>Assignment:</strong> Probability simulations</td>
+<td style="text-align: left;">7/14</td>
+<td style="text-align: left;"><a href="../notebooks/lecture-02.ipynb">Probability</a></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
-<td></td>
-<td>Session 5</td>
-<td>- <strong>Exploring Different Distributions</strong><br>- Normal, Binomial, Poisson, Exponential Distributions<br>- Central Limit Theorem (CLT)</td>
-<td>- Visualize distributions and CLT demonstrations<br>- <strong>Assignment:</strong> CLT simulation project</td>
+<td style="text-align: left;">7/15</td>
+<td style="text-align: left;">Probability cont.</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td></td>
-<td>Session 6</td>
-<td>- <strong>Understanding Uncertainty</strong><br>- Confidence Intervals<br>- Margin of Error<br>- Introduction to Hypothesis Testing</td>
-<td>- Calculate confidence intervals<br>- <strong>Assignment:</strong> Formulate and test hypotheses</td>
+<td style="text-align: left;">7/16</td>
+<td style="text-align: left;"><a href="../notebooks/lecture-03.ipynb">Sampling and simulation</a></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
-<td><strong>3</strong></td>
-<td>Session 7</td>
-<td>- <strong>Resampling Methods</strong><br>- Bootstrapping and Permutation Tests<br>- Practical Applications</td>
-<td>- Conduct bootstrap and permutation tests<br>- <strong>Assignment:</strong> Resampling project</td>
+<td style="text-align: left;">7/17</td>
+<td style="text-align: left;"><a href="../notebooks/lecture-04.ipynb">Data Generating Processes and Statistical Models</a></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td></td>
-<td>Session 8</td>
-<td>- <strong>Bias and Variance Trade-off</strong><br>- Overfitting and Underfitting<br>- Model Complexity and Generalization</td>
-<td>- Visualize bias-variance trade-off<br>- <strong>Assignment:</strong> Experiment with model complexity</td>
+<td style="text-align: left;">7/18</td>
+<td style="text-align: left;"><a href="../notebooks/lecture-05.ipynb">Hypothesis Testing</a></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
-<td></td>
-<td>Session 9</td>
-<td>- <strong>Introduction to Machine Learning</strong><br>- Supervised vs.&nbsp;Unsupervised Learning<br>- Training and Testing Sets<br>- Evaluation Metrics</td>
-<td>- Split data and evaluate models<br>- <strong>Assignment:</strong> Build and evaluate predictive models</td>
+<td style="text-align: left;">7/21</td>
+<td style="text-align: left;">Hypothesis Testing cont.</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td><strong>4</strong></td>
-<td>Session 10</td>
-<td>- <strong>Regularization Techniques</strong><br>- Ridge and Lasso Regression<br>- Fairness in Machine Learning</td>
-<td>- Implement regularization<br>- <strong>Assignment:</strong> Regularization and fairness assessment</td>
+<td style="text-align: left;">7/22</td>
+<td style="text-align: left;">Confidence Intervals, bootstrapping</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
-<td></td>
-<td>Session 11</td>
-<td>- <strong>Population Statistics and Representation</strong><br>- Sampling Methods and Sampling Bias<br>- Ethical Considerations in Data Science</td>
-<td>- Simulate sampling strategies<br>- <strong>Assignment:</strong> Design a fair sampling plan</td>
+<td style="text-align: left;">7/23</td>
+<td style="text-align: left;">Permutation tests</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td></td>
-<td>Session 12</td>
-<td>- <strong>Course Review and Future Directions</strong><br>- Student Project Presentations<br>- Trends in Statistics and Data Science</td>
-<td>- Present final projects<br>- <strong>Course Feedback Survey</strong></td>
+<td style="text-align: left;">7/24</td>
+<td style="text-align: left;">Regression</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">7/25</td>
+<td style="text-align: left;">Regression cont.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">7/28</td>
+<td style="text-align: left;">Classification</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">7/29</td>
+<td style="text-align: left;">Crash course: Deep Learning and AI</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">7/30</td>
+<td style="text-align: left;">Advanced Data Visualization</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">7/31</td>
+<td style="text-align: left;">Paradoxes and Statistical Gotchas</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">8/01</td>
+<td style="text-align: left;">Guest Lecture / Final Projects</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">8/04</td>
+<td style="text-align: left;">Guest Lecture / Final Projects</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">8/05</td>
+<td style="text-align: left;">Guest Lecture / Final Projects</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">8/06</td>
+<td style="text-align: left;">Guest Lecture / Final Projects</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">8/07</td>
+<td style="text-align: left;">Final Project Presentations</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">8/08</td>
+<td style="text-align: left;">Wrap-up and course evaluation</td>
+<td style="text-align: left;"></td>
 </tr>
 </tbody>
 </table>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

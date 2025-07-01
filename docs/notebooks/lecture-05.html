@@ -110,6 +110,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -408,6 +437,24 @@ Beyond a reasonable doubt?
 <section id="formalizing-hypotheses" class="level3">
 <h3 class="anchored" data-anchor-id="formalizing-hypotheses">Formalizing hypotheses</h3>
 <p>One way to increase the transparency of empirical claims is to formalize them as hypotheses. A hypothesis is a specific, testable statement about observed variables. This helps us clarify exactly what the claim is, and design tests to evaluate it.</p>
+<p>In the U.S. legal system, a defendant is presumed innocent until proven guilty. In statistical hypothesis testing, we apply a similar principle: we start with a <strong>null hypothesis</strong> (denoted by <span class="math inline">\(H_0\)</span>) that represents the status quo or a baseline assumption. We call it a null hypothesis because it is often a statement of no effect or no difference.</p>
+<p>We also define an <strong>alternative hypothesis</strong> (denoted by <span class="math inline">\(H_1\)</span>) that represents the claim we want to test. If the data provides enough evidence against the null hypothesis, we can <span style="color:red"><strong>reject</strong></span> it in favor of the alternative hypothesis.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Choosing a null hypothesis">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Choosing a null hypothesis
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Choosing an appropriate null hypothesis is a crucial step in hypothesis testing. The best way to think about this is to consider the null hypothesis as the baseline you’re comparing your data against.</p>
+<p>For a rough claim like “Joey is good at soccer”, a possible null hypothesis could be “Joey’s soccer skills are no better than the average person.” This would be a pretty easy baseline to beat, since most people do not play soccer much. If Joey plays soccer regularly, he is likely to be better than the average person.</p>
+<p>Instead, you might want to compare Joey’s skills to a more relevant group, like other players in his league. In that case, the null hypothesis could be “Joey’s soccer skills are no better than the average player in his league.” This is a much more challenging baseline to beat, since the average player in the league is likely to be more skilled than the average person.</p>
+</div>
+</div>
+<!-- In academic research on everything from economics to medicine, the scientific method relies on proposing falsifiable hypotheses and testing them against data. Statistics plays a crucial role in this process by providing the tools to evaluate the strength of the evidence in support of these hypotheses. Perhaps you have heard the phrase "statistically significant" in the context of a research finding.  -->
 <div class="callout callout-style-default callout-tip callout-titled" title="The NBA's most valuable player (MVP)">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -422,7 +469,6 @@ The NBA’s most valuable player (MVP)
 <p>Let’s try to instead design a hypothesis that is more specific and testable. We can choose a specific metric to evaluate players, such as points per game (PPG). You can care about other metrics, like assists or rebounds, but let’s just focus on PPG for now.</p>
 </div>
 </div>
-<!-- In academic research on everything from economics to medicine, the scientific method relies on proposing falsifiable hypotheses and testing them against data. Statistics plays a crucial role in this process by providing the tools to evaluate the strength of the evidence in support of these hypotheses. Perhaps you have heard the phrase "statistically significant" in the context of a research finding.  -->
 
 
 <script type="ojs-module-contents">
