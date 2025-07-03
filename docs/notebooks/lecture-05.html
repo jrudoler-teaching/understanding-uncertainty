@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-07-01">
+<meta name="dcterms.date" content="2025-07-03">
 
 <title>Lecture 05: Hypothesis Testing – Understanding Uncertainty</title>
 <style>
@@ -66,7 +66,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../notebooks/lecture-06.ipynb" rel="next">
 <link href="../notebooks/lecture-04.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -74,10 +73,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-a14e3238c51140e99ccc48519b6ed9ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-6bdd2aebeb936dcddaa5f935a5de481c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-ccd81253fefb92e9cd3f9eb5b5d87b54.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-6bdd2aebeb936dcddaa5f935a5de481c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -142,7 +145,169 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-sidebar floating nav-fixed quarto-light">
+<body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -251,48 +416,6 @@ window.Quarto = {
  <span class="menu-text">Lecture 05: Hypothesis Testing</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-06.ipynb" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture 06: Bootstrapping</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-07.ipynb" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture 07: Permutation Tests</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-08.ipynb" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture 08: Regression Basics</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-09.ipynb" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture 09: Interpreting Regression</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture 10: Classification</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-11.ipynb" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture 11: Model Evaluation</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-12.ipynb" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture 12: Advanced Topics</span></a>
-  </div>
-</li>
     </ul>
     </div>
 </nav>
@@ -305,11 +428,15 @@ window.Quarto = {
   <ul>
   <li><a href="#the-burden-of-proof" id="toc-the-burden-of-proof" class="nav-link active" data-scroll-target="#the-burden-of-proof">The burden of proof</a></li>
   <li><a href="#formalizing-hypotheses" id="toc-formalizing-hypotheses" class="nav-link" data-scroll-target="#formalizing-hypotheses">Formalizing hypotheses</a></li>
+  <li><a href="#a-worked-example-the-rigged-coin" id="toc-a-worked-example-the-rigged-coin" class="nav-link" data-scroll-target="#a-worked-example-the-rigged-coin">A worked example: the rigged coin</a></li>
+  <li><a href="#a-worked-example-the-nbas-most-valuable-player-mvp" id="toc-a-worked-example-the-nbas-most-valuable-player-mvp" class="nav-link" data-scroll-target="#a-worked-example-the-nbas-most-valuable-player-mvp">A worked example: The NBA’s most valuable player (MVP)</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
+
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -324,7 +451,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 1, 2025</p>
+      <p class="date">July 3, 2025</p>
     </div>
   </div>
   
@@ -339,10 +466,10 @@ window.Quarto = {
 <p>In the introductory lecture, we talked about the role of inference: drawing more general conclusions (about a population) from specific observations (a sample). Now that we have covered the most important building blocks, we can start to actually talk about how to make statistical inferences.</p>
 <section id="the-burden-of-proof" class="level3">
 <h3 class="anchored" data-anchor-id="the-burden-of-proof">The burden of proof</h3>
-<p>How can we use statistics to “prove” something? In diverse domains ranging from politics to sports, people often cite data as evidence. They may cherry-pick data that appears to support their argument, often constructing charts that highlight the point they want to make. You might hear statements like “the unemployment rate is lower than it was 4 years ago” or “player X has the highest scoring average in the league”. These statistical facts can sound iron-clad, but they ignore the complexity of the underlying data and the uncertainty therein. They typically fail to acknowledge aspects of the data that do not support their argument, and they are rarely transparent about how the data was collected or analyzed.</p>
+<p>How can we use statistics to “prove” something? In diverse domains ranging from politics to sports, people often cite data as evidence. They may cherry-pick data that appears to support their argument, often constructing charts that highlight the point they want to make. You might hear data-grounded statements like “the unemployment rate is lower than it was 4 years ago” or “player X has the highest scoring average in the league”. These statistical facts can sound iron-clad, but they ignore the complexity of the underlying data and the uncertainty therein. They typically fail to acknowledge aspects of the data that do not support their argument, and they are rarely transparent about how the data was collected or analyzed.</p>
 <p>For example, a politician might claim that their policies have led to a reduction in unemployment. Their support for this claim might be primarily based on a single statistic: “the unemployment rate is lower than it was 4 years ago”. However, this statement does not provide any context or evidence that the politician’s policies are actually responsible for the change.</p>
 <p>Let’s look at unemployment data from the US Bureau of Labor Statistics (BLS) <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
-<div id="dee301ed" class="cell" data-execution_count="70">
+<div id="dee301ed" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime</span>
@@ -375,7 +502,7 @@ window.Quarto = {
 </div>
 <p>What do you think? Are you convinced by the data presented? There’s a pretty clear trend showing that unemployment decreased, as the politician claimed. It has basically leveled off in the last few years, but it is still lower than it was 4 years ago.</p>
 <p>To see one of the many things that the politician is not telling you, let’s look at the unemployment rate over a longer time period.</p>
-<div id="b9637928" class="cell" data-execution_count="71">
+<div id="b9637928" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the unemployment data</span></span>
@@ -437,38 +564,358 @@ Beyond a reasonable doubt?
 <section id="formalizing-hypotheses" class="level3">
 <h3 class="anchored" data-anchor-id="formalizing-hypotheses">Formalizing hypotheses</h3>
 <p>One way to increase the transparency of empirical claims is to formalize them as hypotheses. A hypothesis is a specific, testable statement about observed variables. This helps us clarify exactly what the claim is, and design tests to evaluate it.</p>
-<p>In the U.S. legal system, a defendant is presumed innocent until proven guilty. In statistical hypothesis testing, we apply a similar principle: we start with a <strong>null hypothesis</strong> (denoted by <span class="math inline">\(H_0\)</span>) that represents the status quo or a baseline assumption. We call it a null hypothesis because it is often a statement of no effect or no difference.</p>
-<p>We also define an <strong>alternative hypothesis</strong> (denoted by <span class="math inline">\(H_1\)</span>) that represents the claim we want to test. If the data provides enough evidence against the null hypothesis, we can <span style="color:red"><strong>reject</strong></span> it in favor of the alternative hypothesis.</p>
-<div class="callout callout-style-default callout-tip callout-titled" title="Choosing a null hypothesis">
-<div class="callout-header d-flex align-content-center">
+<p>In the U.S. legal system, a defendant is presumed innocent until proven guilty. In statistical hypothesis testing, we apply a similar principle:</p>
+<dl>
+<dt>Null hypothesis (<span class="math inline">\(H_0\)</span>)</dt>
+<dd>
+The null hypothesis that represents the status quo or a baseline assumption. We call it a “null” hypothesis because it is often a statement of no effect or no difference.
+</dd>
+<dt>Alternative hypothesis (denoted by <span class="math inline">\(H_1\)</span>)</dt>
+<dd>
+The alternative hypothesis represents the claim we want to test (in the legal analogy, these are the charges brought against the defendant). It is the so-called “alternative” because it is by definition the logical complement of the null hypothesis (meaning <span class="math inline">\(H_1\)</span> is true whenever <span class="math inline">\(H_0\)</span> is false). If the data provides enough evidence against the null hypothesis, we can <span style="color:red"><strong>reject</strong></span> it in favor of the alternative hypothesis.
+</dd>
+</dl>
+<p>The quantity of interest in hypothesis testing is the <strong><span class="math inline">\(p\)</span>-value</strong>.</p>
+<dl>
+<dt><span class="math inline">\(p\)</span>-value</dt>
+<dd>
+the probability of a random process producing a result at least as extreme as the observed data, assuming that the null hypothesis is true.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>
+</dd>
+</dl>
+<p>In other words, <em>p</em> is just the probability that the null is true and our observed data is a result of randomness / sampling variability. The logic of hypothesis testing is that if the <span class="math inline">\(p\)</span>-value is very small, it suggests that the data is unlikely to have occurred under the null hypothesis. In this case, we would <span style="color:red">reject</span> the null hypothesis in favor of the alternative hypothesis.</p>
+<p>To get an intuition for <span class="math inline">\(p\)</span>-values, we can visualize a simple example. Let’s say that we have a random variable <span class="math inline">\(X\)</span> that follows a normal distribution with unknown mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma = 1\)</span>. We want to test the hypothesis that <span class="math inline">\(\mu = 0\)</span> (the null hypothesis) against the alternative hypothesis that <span class="math inline">\(\mu \neq 0\)</span> (the alternative hypothesis). We take a sample of <span class="math inline">\(X\)</span> and observe that its value is <span class="math inline">\(X_1 = 2.1\)</span>. What is the <span class="math inline">\(p\)</span>-value?</p>
+<p>To get the <span class="math inline">\(p\)</span>-value, we need the probability distribution of <span class="math inline">\(X\)</span> under the null hypothesis. Since we assume that <span class="math inline">\(X\)</span> follows a normal distribution with mean <span class="math inline">\(\mu = 0\)</span> and standard deviation <span class="math inline">\(\sigma = 1\)</span>, we know that the probability density function (PDF) of <span class="math inline">\(X\)</span> is given by: <span class="math display">\[
+f(x) = \frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}}
+\]</span></p>
+<p>We can plot this function to visualize the null distribution. Then the question is: what is the probability of sampling a value at least as extreme as <span class="math inline">\(X_1 = 2.1\)</span>?</p>
+<p>The answer, it turns out, is exactly equal to the area under the curve of the null distribution where <span class="math inline">\(|X| \geq 2.1\)</span>. These regions are shaded in the figure below.</p>
+<div id="a814e086" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get pdf of a normal distribution</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">1000</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># observed value for the hypothesis test</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>observed <span class="op">=</span> <span class="fl">2.1</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>null_pdf <span class="op">=</span> stats.norm.pdf(x, loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>ax.plot(x, null_pdf, label<span class="op">=</span><span class="vs">r"Normal Distribution given </span><span class="dv">$</span><span class="vs">H_0:</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>ax.axvline(observed, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Observed Value: </span><span class="sc">{</span>observed<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="op">-</span>observed, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"-(Observed Value): </span><span class="sc">{</span><span class="op">-</span>observed<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># fill the area under the curve for the null hypothesis</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>ax.fill_between(x, null_pdf, where<span class="op">=</span>(x <span class="op">&gt;=</span> observed)<span class="op">|</span>(x <span class="op">&lt;=</span> <span class="op">-</span>observed), alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.fill_between(x, null_pdf, where=(x &lt;= -observed), alpha=0.4)</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Probability Density Function of a Normal Distribution"</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"x"</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Probability Density"</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-05_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Recall that the area under the curve of a PDF represents the probability of the random variable falling within a certain range. So the <span class="math inline">\(p\)</span>-value in many cases can be computed as the area under the PDF of the null distribution where the observed data is at least as extreme as the observed value.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Statistical significance">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Statistical significance
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The <span class="math inline">\(p\)</span>-value is often compared to a pre-specified threshold for “significance” (denoted by <span class="math inline">\(\alpha\)</span>). This number is essentially your risk tolerance: it represents the maximum probability of incorrectly rejecting the null hypothesis.</p>
+<p>If <span class="math inline">\(p &lt; \alpha\)</span>, we say that the result is statistically significant.</p>
+<p>If <span class="math inline">\(p \geq \alpha\)</span>, we say that the result is not statistically significant.</p>
+<p>Often in practice, <span class="math inline">\(\alpha\)</span> is set to 0.05, meaning that we are willing to accept a 5% chance of incorrectly rejecting the null hypothesis. In our legal analogy, this would mean that we are willing to convict the defendant if there is only a 5% chance that they are actually innocent.</p>
+<p>The threshold for significance is pretty arbitrary, and it is often set based on convention rather than a careful consideration of the specific context. It is typically better to report the <span class="math inline">\(p\)</span>-value itself, rather than just saying whether the result is significant or not. This way, you can see how strong the evidence is against the null hypothesis, rather than just a binary decision.</p>
+</div>
+</div>
+</div>
+<p>A few important notes:</p>
+<ul>
+<li><span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span> should be mutually exclusive: if one is true, the other must be false. Otherwise, you cannot make a clear decision about which hypothesis is supported by the data.</li>
+<li><span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span> should be exhaustive: one of them must be true (there are no other possibilities). Again, this helps us avoid a situation where <em>neither</em> hypothesis is supported by the data.</li>
+</ul>
+<p>Furthermore, hypothesis testing does not provide absolute certainty. Instead, it provides a framework for making decisions based on the evidence at hand.</p>
+<ul>
+<li>If we fail to <span style="color:red">reject</span> the null hypothesis, it does not necessarily mean that it is true or that we believe it to be true. It simply means that the data does not provide enough evidence to reject it, and accordingly we <em>act as if</em> it is true.</li>
+<li>If we <span style="color:red">reject</span> the null hypothesis, we cannot say that the alternative hypothesis is true with absolute certainty. We can only say that the data provides strong evidence against the null hypothesis, and therefore we <span style="color:blue">accept</span> the alternative hypothesis as a likely explanation for the data.</li>
+</ul>
+<p>For this reason, we encourage <strong>always reporting the <span class="math inline">\(p\)</span>-value</strong> when discussing hypothesis tests. The <span class="math inline">\(p\)</span>-value provides a sense of how much uncertainty you have in your conclusion.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Choosing a null hypothesis">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 Choosing a null hypothesis
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Choosing an appropriate null hypothesis is a crucial step in hypothesis testing. The best way to think about this is to consider the null hypothesis as the baseline you’re comparing your data against.</p>
 <p>For a rough claim like “Joey is good at soccer”, a possible null hypothesis could be “Joey’s soccer skills are no better than the average person.” This would be a pretty easy baseline to beat, since most people do not play soccer much. If Joey plays soccer regularly, he is likely to be better than the average person.</p>
 <p>Instead, you might want to compare Joey’s skills to a more relevant group, like other players in his league. In that case, the null hypothesis could be “Joey’s soccer skills are no better than the average player in his league.” This is a much more challenging baseline to beat, since the average player in the league is likely to be more skilled than the average person.</p>
+<p>The null hypothesis you choose has a big impact on how we should interpret the results of the hypothesis test.</p>
 </div>
 </div>
-<!-- In academic research on everything from economics to medicine, the scientific method relies on proposing falsifiable hypotheses and testing them against data. Statistics plays a crucial role in this process by providing the tools to evaluate the strength of the evidence in support of these hypotheses. Perhaps you have heard the phrase "statistically significant" in the context of a research finding.  -->
-<div class="callout callout-style-default callout-tip callout-titled" title="The NBA's most valuable player (MVP)">
-<div class="callout-header d-flex align-content-center">
+</div>
+</section>
+<section id="a-worked-example-the-rigged-coin" class="level3">
+<h3 class="anchored" data-anchor-id="a-worked-example-the-rigged-coin">A worked example: the rigged coin</h3>
+<p>Let’s return to the argument with your roommate from the last lecture. Your roommate has made an unproven claim that you are flipping a rigged coin in your favor. #### Define the null and alternative hypotheses We can formalize this as a hypothesis test:</p>
+<ul>
+<li><strong><span class="math inline">\(H_0\)</span></strong> (null): The coin is fair, at worst (i.e.&nbsp;the probability of heads is greater than or equal to 0.5).</li>
+<li><strong><span class="math inline">\(H_1\)</span></strong> (alternative): The coin is rigged (i.e.&nbsp;the probability of heads is <strong>less than</strong> 0.5).</li>
+</ul>
+<p>Note that <span class="math inline">\(H_1\)</span> and <span class="math inline">\(H_0\)</span> are mutually exclusive. If the coin is fair, it cannot be rigged, and vice versa. Moreover, the two hypotheses are exhaustive: either the coin is fair or it is rigged, it cannot be neither.</p>
+<p>Our default assumption (the null) is that the coin is fair (typical coins in circulation are not rigged), and we will only <span style="color:red">reject</span> this assumption if the data provides strong evidence that tails are favored over heads.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="One-sided vs two-sided tests">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The NBA’s most valuable player (MVP)
+One-sided vs two-sided tests
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>“<a href="https://en.wikipedia.org/wiki/Shai_Gilgeous-Alexander">Shai Gilgeous Alexander</a> is the best player in the NBA” is a very broad claim that is hard to test. What makes a player “the best”? Does stating that they scored the most points make them the best? That his team won the most games?</p>
+<p>Note that we are only interested in whether the coin is rigged in favor of tails, not whether it is rigged in favor of heads. This is because the claim your roommate wants to prove is that you are flipping a rigged coin in your favor, which implies that the probability of heads is less than 0.5. If this probability is greater than or equal to 0.5, then the coin is rigged in his favor – surely he wouldn’t complain about that!</p>
+<p>This is an example of a <strong>one-sided test</strong>. In a one-sided test, we only consider one direction of the alternative hypothesis (in this case, that the coin is rigged in favor of tails).</p>
+<p>In contrast, a <strong>two-sided test</strong> would consider both directions of the alternative hypothesis (i.e.&nbsp;that the coin is rigged in favor of heads or tails). In this case, we would have to reject the null hypothesis if the probability of heads is either less than 0.5 or greater than 0.5. We saw this in the example with the normal distribution above, where we were testing whether the mean was equal to 0 or not.</p>
+</div>
+</div>
+</div>
+<section id="simulate-the-null-distribution" class="level4">
+<h4 class="anchored" data-anchor-id="simulate-the-null-distribution">Simulate the null distribution</h4>
+<p>So how do we actually compute the <span class="math inline">\(p\)</span>-value? This is where the <strong>sampling and simulation</strong> come into play. We will simulate the process of flipping a fair coin many times, and then see how often we get a result at least as extreme as the one we observed (getting 3 heads out 10). This will give us a <strong>sampling distribution</strong> of the proportion of heads we would expect to see if the coin is fair.</p>
+<dl>
+<dt>Sampling distribution</dt>
+<dd>
+The distribution of a statistic (like the number of heads in 10 coin flips) computed from many repeated samples of the same size from the same population
+</dd>
+</dl>
+<p>We will use the sampling distribution as a proxy for the null distribution for our hypothesis test.</p>
+<div id="8b8250b7" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">56</span>)  <span class="co"># for reproducibility</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>n_sims <span class="op">=</span> <span class="dv">10000</span> <span class="co"># number of simulations</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>n_flips <span class="op">=</span> <span class="dv">10</span> <span class="co"># number of coin flips in each simulation</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>prob_heads <span class="op">=</span> <span class="fl">0.5</span> <span class="co"># probability of heads for a fair coin</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize a list to store the proportions of heads</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>proportions <span class="op">=</span> []</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_sims):</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Simulate flipping a fair coin 10 times</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    flips <span class="op">=</span> rng.binomial(n<span class="op">=</span>n_flips, p<span class="op">=</span>prob_heads)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store the proportion of heads</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    proportions.append(flips <span class="op">/</span> n_flips)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>proportions <span class="op">=</span> np.array(proportions) <span class="co"># convert to numpy array</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>greater_than_observed <span class="op">=</span> proportions <span class="op">&lt;=</span> <span class="fl">0.3</span> <span class="co"># boolean array </span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"First 10 values of greater_than_observed:</span><span class="ch">\n</span><span class="st">"</span>, greater_than_observed[:<span class="dv">10</span>]) <span class="co"># print first 10 values</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"First 10 values of greater_than_observed (as integers):</span><span class="ch">\n</span><span class="st">"</span>, greater_than_observed.astype(<span class="bu">int</span>)[:<span class="dv">10</span>]) <span class="co"># print first 10 values as integers (0 or 1)</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>p_value <span class="op">=</span> np.mean(greater_than_observed) <span class="co"># compute the p-value</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"p-value:"</span>, p_value)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the histogram of the proportions</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>sns.histplot(proportions, bins<span class="op">=</span><span class="dv">10</span>, stat<span class="op">=</span><span class="st">"proportion"</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co"># add a vertical line for the observed value</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="fl">0.3</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"Observed Proportion: 0.3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>First 10 values of greater_than_observed:
+ [False  True False False False False False False False False]
+First 10 values of greater_than_observed (as integers):
+ [0 1 0 0 0 0 0 0 0 0]
+p-value: 0.1702</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-05_files/figure-html/cell-7-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now we can see that the probability of getting 3 heads out of 10 flips of a fair coin is approximately 0.17! That’s not small at all, so your roommate does not have much evidence to support their claim.</p>
+</section>
+</section>
+<section id="a-worked-example-the-nbas-most-valuable-player-mvp" class="level2">
+<h2 class="anchored" data-anchor-id="a-worked-example-the-nbas-most-valuable-player-mvp">A worked example: The NBA’s most valuable player (MVP)</h2>
+<p>“<a href="https://en.wikipedia.org/wiki/Shai_Gilgeous-Alexander">Shai Gilgeous Alexander</a> (SGA) is the best player in the NBA” is a very broad claim that is hard to test. What makes a player “the best”? Does stating that they scored the most points make them the best? That his team won the most games?</p>
 <p>Let’s try to instead design a hypothesis that is more specific and testable. We can choose a specific metric to evaluate players, such as points per game (PPG). You can care about other metrics, like assists or rebounds, but let’s just focus on PPG for now.</p>
+<p>To make the claim more specific and testable, we’ll start off with some assumptions: - Every player’s scoring follows a distribution with some mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma\)</span>. Becuase PPG is an average over the points scored in each game, the CLT tells us that the distribution of average PPG is approximately normal (even if “points scored” is not). Specifically, PPG is a normal distribution with mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma / \sqrt{n}\)</span>, where <span class="math inline">\(n\)</span> is the number of games played. - The player with the highest <span class="math inline">\(\mu\)</span> is the best scorer in the league (i.e.&nbsp;assume that teammates, coaches, conferences, etc. are all negligible).</p>
+<p>To make the claim that SGA is a better scorer than his competitors, we need to show how unlikely it is that he has the highest scoring average if his skill level is not actually the highest in the league.</p>
+<p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_{\text{SGA}} \leq \mu_{\text{other}}\)</span></p>
+<p><span class="math inline">\(H_1\)</span>: <span class="math inline">\(\mu_{\text{SGA}} &gt; \mu_{\text{other}}\)</span></p>
+<p>All of a sudden, this is way more familiar, specific, and testable. We can now use data to compute the <span class="math inline">\(p\)</span>-value for this hypothesis test.</p>
+<p>Shai scored 32.7 PPG in 76 games the 2024-2025 season, which is the highest average in the league. The next-highest scorer was Giannis Antetokounmpo with 30.4 PPG in 72 games.</p>
+<p>We will use data from the 2024-2025 NBA season, courtesy of <a href="https://www.basketball-reference.com/">Basketball Reference</a>, to evaluate our hypothesis.</p>
+<div id="7b3afcec" class="cell" data-execution_count="31">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read the data for Shai Gilgeous-Alexander and Giannis Antetokounmpo</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>sga_df <span class="op">=</span> pd.read_csv(<span class="st">"../data/sga-stats-24-25.csv"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>giannis_df <span class="op">=</span> pd.read_csv(<span class="st">"../data/giannis-stats-24-25.csv"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># combine the dataframes and clean up the data</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>sga_df[<span class="st">"player"</span>] <span class="op">=</span> <span class="st">"Shai Gilgeous-Alexander"</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>giannis_df[<span class="st">"player"</span>] <span class="op">=</span> <span class="st">"Giannis Antetokounmpo"</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>compare_df <span class="op">=</span> pd.concat([sga_df, giannis_df], ignore_index<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># filter out rows where the player did not play or was inactive</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>compare_df <span class="op">=</span> compare_df.replace({<span class="st">"Did Not Dress"</span>: np.nan, <span class="st">"Inactive"</span>: np.nan, <span class="st">"Did Not Play"</span>: np.nan, <span class="st">""</span>: np.nan})</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>compare_df.dropna(subset<span class="op">=</span>[<span class="st">"PTS"</span>], inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># convert PTS to float/numeric and Date to datetime</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>compare_df[<span class="st">"PTS"</span>] <span class="op">=</span> compare_df[<span class="st">"PTS"</span>].astype(<span class="bu">float</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>compare_df[<span class="st">"Date"</span>] <span class="op">=</span> pd.to_datetime(compare_df[<span class="st">"Date"</span>])</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>shai_sample_mean <span class="op">=</span> compare_df.query(<span class="st">"player == 'Shai Gilgeous-Alexander'"</span>)[<span class="st">"PTS"</span>].mean()</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>shai_sample_std <span class="op">=</span> compare_df.query(<span class="st">"player == 'Shai Gilgeous-Alexander'"</span>)[<span class="st">"PTS"</span>].std()</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Shai's PPG is </span><span class="sc">{</span>shai_sample_mean<span class="sc">:.2f}</span><span class="ss"> with a standard deviation of </span><span class="sc">{</span>shai_sample_std<span class="sc">:.2f}</span><span class="ss">."</span>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>giannis_sample_mean <span class="op">=</span> compare_df.query(<span class="st">"player == 'Giannis Antetokounmpo'"</span>)[<span class="st">"PTS"</span>].mean()</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>giannis_sample_std <span class="op">=</span> compare_df.query(<span class="st">"player == 'Giannis Antetokounmpo'"</span>)[<span class="st">"PTS"</span>].std()</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Giannis's PPG is </span><span class="sc">{</span>giannis_sample_mean<span class="sc">:.2f}</span><span class="ss"> with a standard deviation of </span><span class="sc">{</span>giannis_sample_std<span class="sc">:.2f}</span><span class="ss">."</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the distribution of PPG for both players</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>compare_df, x<span class="op">=</span><span class="st">"PTS"</span>, hue<span class="op">=</span><span class="st">"player"</span>, stat<span class="op">=</span><span class="st">"density"</span>, common_norm<span class="op">=</span><span class="va">False</span>, bins<span class="op">=</span><span class="dv">20</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>ax.axvline(shai_sample_mean, color<span class="op">=</span><span class="st">"blue"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Shai's PPG: </span><span class="sc">{</span>shai_sample_mean<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>ax.axvline(giannis_sample_mean, color<span class="op">=</span><span class="st">"orange"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Giannis's PPG: </span><span class="sc">{</span>giannis_sample_mean<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Distribution of Points Per Game (PPG) for Shai and Giannis"</span>)</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Points Per Game (PPG)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Shai's PPG is 32.68 with a standard deviation of 7.54.
+Giannis's PPG is 30.39 with a standard deviation of 7.32.</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="31">
+<pre><code>Text(0.5, 0, 'Points Per Game (PPG)')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-05_files/figure-html/cell-8-output-3.png" class="img-fluid figure-img"></p>
+</figure>
 </div>
 </div>
+</div>
+<p>Now what is the null distribution? Our null hypothesis is that SGA’s scoring ability is not higher than his competitors’. So let’s say that under the null, SGA’s inherent scoring ability is equal to Giannis’s, and both are equal to Giannis’ observed PPG of 30.4. That’s the mean of our normal distribution given by CLT. For the standard error, we can use the sample standard deviation of Shai’s points scored and divide it by the square root of the number of games he played (76).</p>
+<p>Now the question is: what is the probability of SGA scoring at least 32.7 PPG if his true scoring ability is actually 30.4 PPG?</p>
+<p>We can just use the normal distribution to compute this probability!</p>
+<div class="callout callout-style-default callout-note callout-titled" title="The Cumulative Distribution Function (CDF)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The Cumulative Distribution Function (CDF)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The CDF of a normal distribution gives us the probability that a random variable is less than or equal to a certain value. In other words, it computes are under a probability density function (PDF) up to a certain point.</p>
+<p>To compute the probability of a random variable being greater than a certain value, we can just subtract the CDF from 1. <span class="math display">\[
+P(X &gt; x) = 1 - P(X \leq x) = 1 - \text{CDF}(x) = 1 - \int_{-\infty}^{x} f(t) dt
+\]</span></p>
+</div>
+</div>
+</div>
+<div id="b3008862" class="cell" data-execution_count="43">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">## PDF of normal</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>shai_n_games <span class="op">=</span> compare_df.query(<span class="st">"player == 'Shai Gilgeous-Alexander'"</span>)[<span class="st">"PTS"</span>].count()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>p_value_clt <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> stats.norm.cdf(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="fl">32.7</span>, </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    loc<span class="op">=</span><span class="fl">30.4</span>, <span class="co"># the mean of the null distribution (Giannis's PPG)</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    scale<span class="op">=</span>shai_sample_std<span class="op">/</span>np.sqrt(shai_n_games)) </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"p-value from CLT:"</span>, p_value_clt)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize the p-value</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">27</span>, <span class="dv">35</span>, <span class="dv">1000</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>null_pdf <span class="op">=</span> stats.norm.pdf(x, loc<span class="op">=</span><span class="fl">30.4</span>, scale<span class="op">=</span>shai_sample_std<span class="op">/</span>np.sqrt(shai_n_games))</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>ax.plot(x, null_pdf, label<span class="op">=</span><span class="vs">r"Normal Distribution given </span><span class="dv">$</span><span class="vs">H_0:</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="fl">32.7</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Observed PPG: 32.7"</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>ax.fill_between(x, null_pdf, where<span class="op">=</span>(x <span class="op">&gt;=</span> <span class="fl">32.7</span>), alpha<span class="op">=</span><span class="fl">0.4</span>, label<span class="op">=</span><span class="st">"Area for p-value"</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"PPG distribution under the Null Hypothesis"</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Points Per Game (PPG)"</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Probability Density"</span>)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>p-value from CLT: 0.00391019858958408</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-05_files/figure-html/cell-9-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This analysis tells us that if Shai’s true scoring ability is 30.4 PPG, the probability of him scoring at least 32.7 PPG over 76 games is very small.</p>
+<p>We can also try simulating the null distribution through individual game scores to see how likely it is that SGA would score at least 32.7 PPG if his true scoring ability is actually 30.4 PPG. That is, we’ll simulate 76 games of scoring, we each game is drawn from a distribution with mean 30.4 and standard deviation equal to the observed sample standard deviation of Shai’s points scored. We’ll repeat this simulation many times to get a distribution of PPG scores under the null hypothesis.</p>
+<div id="38a21791" class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)  <span class="co"># for reproducibility</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>n_sims <span class="op">=</span> <span class="dv">5000</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>shai_simulated_ppg <span class="op">=</span> []</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_sims):</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># simulate 76 games of scoring, each game is drawn from a distribution with </span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># mean 30.4 and standard deviation equal to the observed sample standard deviation of Shai's points scored</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Variance of continuous uniform distribution on [a, b] is (b-a)^2 / 12</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    low_minus_high <span class="op">=</span> np.sqrt(<span class="dv">12</span> <span class="op">*</span> shai_sample_std<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    simulated_scores <span class="op">=</span> rng.uniform(low<span class="op">=</span><span class="fl">30.4</span> <span class="op">-</span> low_minus_high<span class="op">/</span><span class="dv">2</span>, high<span class="op">=</span><span class="fl">30.4</span> <span class="op">+</span> low_minus_high<span class="op">/</span><span class="dv">2</span>, size<span class="op">=</span><span class="dv">76</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    simulated_ppg <span class="op">=</span> np.mean(simulated_scores)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    shai_simulated_ppg.append(simulated_ppg)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># compute the p-value from the simulated PPG scores</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>shai_simulated_ppg <span class="op">=</span> np.array(shai_simulated_ppg)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>p_value_simulated <span class="op">=</span> np.mean(shai_simulated_ppg <span class="op">&gt;=</span> <span class="fl">32.7</span>)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"p-value from simulation:"</span>, p_value_simulated)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the distribution of simulated PPG scores</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>sns.histplot(shai_simulated_ppg, bins<span class="op">=</span><span class="dv">30</span>, stat<span class="op">=</span><span class="st">"density"</span>, ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">"Simulated PPG under $H_0$"</span>)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="fl">32.7</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Observed PPG: </span><span class="sc">{</span><span class="fl">32.7</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Simulated PPG Distribution under the Null Hypothesis"</span>)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Points Per Game (PPG)"</span>)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Density"</span>)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>p-value from simulation: 0.004</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-05_files/figure-html/cell-10-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>For this second approach, we didn’t use the CLT at all! Instead, we relied on simulation to understand the distribution of Shai’s scoring under the null hypothesis. And yet, the results are almost identical to the ones we got using the normal approximation!</p>
+<p>Can you think of any limitations of the approach we took? What assumptions did we make that might not be right? Next lecture we’ll look at approaches that do not make any assumptions about the distribution of the data, and instead rely on resampling techniques to evaluate hypotheses.</p>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>In this lecture, we</p>
 
 
 <script type="ojs-module-contents">
@@ -493,6 +940,7 @@ W10=
 <ol>
 <li id="fn1"><p>from <a href="https://data.bls.gov/dataQuery/find?fq=survey:%5Bln%5D&amp;s=popularity:D">here</a>, accessed July 2025<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>They survey around 50,000 housing units each month. See the BLS’s <a href="https://www.bls.gov/opub/hom/cps/design.htm#sample-size">documentation</a> for more information on the sample size and design of the Current Population Survey, which is used to estimate the unemployment rate.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>This is often phrased as “under the assumption that the null hypothesis is true” or more succinctly “under the null”.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script type="ojs-module-contents">
@@ -508,6 +956,19 @@ window._ojs.runtime.interpretFromScriptTags();
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -963,9 +1424,6 @@ window._ojs.runtime.interpretFromScriptTags();
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../notebooks/lecture-06.ipynb" class="pagination-link" aria-label="Lecture 06: Bootstrapping">
-        <span class="nav-page-text">Lecture 06: Bootstrapping</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

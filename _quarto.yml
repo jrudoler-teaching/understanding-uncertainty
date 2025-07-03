@@ -37,11 +37,11 @@ website:
           href: notebooks/lecture-04.ipynb
         - text: "Lecture 05: Hypothesis Testing"
           href: notebooks/lecture-05.ipynb
-        - text: "Lecture 06: Bootstrapping"
-          href: notebooks/lecture-06.ipynb
-        - text: "Lecture 07: Permutation Tests"  
-          href: notebooks/lecture-07.ipynb
-        - text: "Lecture 08: Regression Basics"
+        # - text: "Lecture 06: Bootstrapping"
+        #   href: notebooks/lecture-06.ipynb
+        # - text: "Lecture 07: Permutation Tests"  
+        #   href: notebooks/lecture-07.ipynb
+        # - text: "Lecture 08: Regression Basics"
         #   href: notebooks/lecture-08.ipynb
         # - text: "Lecture 09: Interpreting Regression"
         #   href: notebooks/lecture-09.ipynb
@@ -54,12 +54,8 @@ website:
   page-navigation: true
 
 format:
-  html:
+  live-html:
     theme: 
       light: flatly
       dark: darkly
-    css: styles.css
     toc: true
-
-
-

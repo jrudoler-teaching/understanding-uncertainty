@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Joseph Rudoler">
-<meta name="dcterms.date" content="2025-07-01">
+<meta name="dcterms.date" content="2025-07-03">
 <meta name="description" content="Introduction to Probability and Random Variables">
 
 <title>Lecture 02: Probability and Random Variables – Understanding Uncertainty</title>
@@ -76,10 +76,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-a14e3238c51140e99ccc48519b6ed9ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-6bdd2aebeb936dcddaa5f935a5de481c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-ccd81253fefb92e9cd3f9eb5b5d87b54.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-6bdd2aebeb936dcddaa5f935a5de481c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -147,7 +151,169 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-sidebar floating nav-fixed quarto-light">
+<body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -256,48 +422,6 @@ window.Quarto = {
  <span class="menu-text">Lecture 05: Hypothesis Testing</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-06.ipynb" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture 06: Bootstrapping</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-07.ipynb" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture 07: Permutation Tests</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-08.ipynb" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture 08: Regression Basics</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-09.ipynb" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture 09: Interpreting Regression</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture 10: Classification</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-11.ipynb" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture 11: Model Evaluation</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-12.ipynb" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture 12: Advanced Topics</span></a>
-  </div>
-</li>
     </ul>
     </div>
 </nav>
@@ -327,6 +451,7 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <div class="quarto-title-block"><div><h1 class="title">Lecture 02: Probability and Random Variables</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
@@ -351,7 +476,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 1, 2025</p>
+      <p class="date">July 3, 2025</p>
     </div>
   </div>
   
@@ -366,6 +491,9 @@ window.Quarto = {
 <div class="hidden">
 <p><span class="math display">\[
 \renewcommand{\P}{\mathbb{P}}
+\renewcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathbb{V}\text{ar}}
+\newcommand{\Cov}{\mathbb{C}\text{ov}}
 \]</span></p>
 </div>
 <section id="probability" class="level2">
@@ -382,6 +510,14 @@ window.Quarto = {
       &amp;= \frac{1}{2} \\
 \end{align*}\]</span></p>
 <p>This matches our intuition that a fair coin has a 50% chance of landing on heads.</p>
+<p>An important property of probabilities is that the sum of the probabilities of all possible outcomes must equal 1. This is like say “there’s a 100% chance that <em>something</em> will happen”.</p>
+<p>In our coin flip example, we have two possible outcomes: heads and tails. If the coin flip is not heads, it must be tails. In other words, the events <span class="math inline">\(H\)</span> and <span class="math inline">\(T\)</span> cover 100% of the possible outcomes. So we can write: <span class="math display">\[\begin{align*}
+\P(H) + \P(T) &amp;= 1 \\
+\frac{1}{2} + \frac{1}{2} &amp;= 1
+\end{align*}\]</span></p>
+<p>When we know the events we are interested in make up all of the possible outcomes, we can use this property to compute probabilities. For example, for any event <span class="math inline">\(A\)</span>, the event either happens or it doesn’t. So we can compute the probability of the event not occurring as: <span class="math display">\[\begin{align*}
+\P(\text{not}~ A) &amp;= 1 - \P(A)
+\end{align*}\]</span></p>
 <section id="probability-of-multiple-events" class="level3">
 <h3 class="anchored" data-anchor-id="probability-of-multiple-events">Probability of multiple events</h3>
 <p>But what if we flip the coin twice? Now there are four possible outcomes: <span class="math inline">\(HH\)</span>, <span class="math inline">\(HT\)</span>, <span class="math inline">\(TH\)</span>, and <span class="math inline">\(TT\)</span>.</p>
@@ -464,10 +600,10 @@ Conditional probability
 </div>
 <p>The multiplication rule helps us calculate the probability of multiple events happening, as long as we know how one event affects the other (i.e., the conditional probability). An example will help clarify make this concrete.</p>
 <p>Consider a deck of cards (52 cards total, 13 of each suit). I might ask you, “What is the probability of drawing a club on the first draw and a club on the second draw? (Assuming you do not replace the first card.)”</p>
-<div id="6aef992a" class="cell" data-execution_count="2">
+<div id="6aef992a" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
-<div id="gZSMlmYiUXOy" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
-#gZSMlmYiUXOy {
+<div id="XccMBjoYIYeL" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
+#XccMBjoYIYeL {
    --jq-multiple-choice-bg: #6f78ffff;
    --jq-mc-button-bg: #fafafa;
    --jq-mc-button-border: #e0e0e0e0;
@@ -688,7 +824,7 @@ Conditional probability
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/javascript">
-var questionsgZSMlmYiUXOy=[{"question": "What is the conditional probability of drawing a club on the second draw given that the first card drawn was a club?", "type": "multiple_choice", "answers": [{"answer": "1/52", "correct": false}, {"answer": "1/4", "correct": false}, {"answer": "12/51", "correct": true}, {"answer": "13/52", "correct": false}]}, {"question": "What is the probability of drawing a club on the first draw and a club on the second draw? (Assuming you do not replace the first card.)", "type": "numeric", "precision": 4, "answers": [{"type": "range", "range": [0.055, 0.062], "correct": true, "feedback": "Correct! The probability is 13/52 * 12/51 = 1/4 * 12/51 = .0588"}, {"type": "default", "feedback": "Incorrect. Consider the multiplication rule!"}]}];
+var questionsXccMBjoYIYeL=[{"question": "What is the conditional probability of drawing a club on the second draw given that the first card drawn was a club?", "type": "multiple_choice", "answers": [{"answer": "1/52", "correct": false}, {"answer": "1/4", "correct": false}, {"answer": "12/51", "correct": true}, {"answer": "13/52", "correct": false}]}, {"question": "What is the probability of drawing a club on the first draw and a club on the second draw? (Assuming you do not replace the first card.)", "type": "numeric", "precision": 4, "answers": [{"type": "range", "range": [0.055, 0.062], "correct": true, "feedback": "Correct! The probability is 13/52 * 12/51 = 1/4 * 12/51 = .0588"}, {"type": "default", "feedback": "Incorrect. Consider the multiplication rule!"}]}];
 
 if (typeof Question === 'undefined') {
 // Make a random ID
@@ -1751,8 +1887,8 @@ function make_string(qa, outerqDiv, qDiv, aDiv, id) {
  * Ensures show_questions is called after the container div is in the DOM.
  */
 function try_show() {
-  if (document.getElementById("gZSMlmYiUXOy")) {
-    show_questions(questionsgZSMlmYiUXOy, gZSMlmYiUXOy);
+  if (document.getElementById("XccMBjoYIYeL")) {
+    show_questions(questionsXccMBjoYIYeL, XccMBjoYIYeL);
   } else {
     setTimeout(try_show, 200);
   }
@@ -1954,8 +2090,8 @@ Uniform random variable
 <p>We call the probability function for a random variable a <strong>probability distribution</strong>, which describes how the probabilities are distributed across the possible values of the random variable.</p>
 <p>Distributions can be discrete or continuous, depending on the type of random variable. For discrete random variables, the probability distribution is often represented as a <strong>probability mass function (PMF)</strong>, which gives the probability of each possible value. For continuous random variables, the probability distribution is represented as a <strong>probability density function (PDF)</strong>, which gives the density of probability at each point.</p>
 <p>Let’s say we have a random variable <span class="math inline">\(X\)</span>, but we don’t know the exact probability function. Instead, we have a set of observed data points <span class="math inline">\(\{x_1, x_2, \ldots, x_n\}\)</span> that we believe are individual realizations of <span class="math inline">\(X\)</span>. In other words, we have a sample of data that we think is representative of the underlying random variable.</p>
-<p>How can we visualize this data to understand the distribution of <span class="math inline">\(X\)</span>? The simplest solution is to just plot how many times each value occurs in the data. This is called a <strong>histogram</strong>.</p>
-<div id="a44145c5" class="cell" data-execution_count="8">
+<p>How can we visualize this data to understand the distribution of <span class="math inline">\(X\)</span>? The simplest solution is to just plot how many times each value occurs in the data. We can use a <strong>bar chart</strong> to visualize the counts of each value.</p>
+<div id="a44145c5" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -1964,12 +2100,12 @@ Uniform random variable
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.array([<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>])</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>plt.hist(x, bins<span class="op">=</span>np.arange(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">2.5</span>, <span class="dv">1</span>), density<span class="op">=</span><span class="va">False</span>, align<span class="op">=</span><span class="st">"mid"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>plt.hist(x, bins<span class="op">=</span>np.arange(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">2.5</span>, <span class="dv">1</span>), density<span class="op">=</span><span class="va">False</span>, align<span class="op">=</span><span class="st">"mid"</span>, rwidth<span class="op">=</span><span class="fl">0.8</span>)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>plt.xticks([<span class="dv">0</span>, <span class="dv">1</span>])</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Value'</span>)</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Frequency'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="8">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>Text(0, 0.5, 'Frequency')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -1980,9 +2116,8 @@ Uniform random variable
 </div>
 </div>
 </div>
-<p>The <strong>histogram</strong> is a graphical representation that summarizes the distribution of a dataset. It divides the data into discrete, equally-sized intervals (or “bins”) along the x-axis and counts how many data points fall into each bin. The height of each bar represents the either the total count of data points in that bin or the proportion of data points in that bin. If the height of the bar is the proportion, then the area of the bar represents the probability of the random variable falling within that bin.</p>
-<p>Consider a bunch of dice rolls. If we roll a die 100 times, we would expect to see each number appear roughly a similar number of times. If we plot the histogram of the data, we would see a discrete uniform distribution, where each number from 1 to 6 has approximately the same height in the histogram. Let’s check it out:</p>
-<div id="9cb54ef4" class="cell" data-execution_count="5">
+<p>Consider a bunch of dice rolls. If we roll a die 100 times, we would expect to see each number appear roughly a similar number of times. If we plot the frequencies of each roll, we should see a discrete uniform distribution, where each number from 1 to 6 has approximately the same height. Let’s check it out:</p>
+<div id="9cb54ef4" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load in the dice rolls data</span></span>
@@ -1993,7 +2128,7 @@ Uniform random variable
 <div class="cell-output cell-output-stdout">
 <pre><code>Total number of dice rolls: 1000</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 
 
@@ -2051,11 +2186,11 @@ Uniform random variable
 </div>
 </div>
 </div>
-<div id="12164adf" class="cell" data-execution_count="6">
+<div id="12164adf" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>plt.hist(dice_rolls_df[<span class="st">'rolls'</span>], bins<span class="op">=</span>np.arange(<span class="fl">0.5</span>, <span class="fl">7.5</span>, <span class="dv">1</span>), density<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>plt.hist(dice_rolls_df[<span class="st">'rolls'</span>], bins<span class="op">=</span>np.arange(<span class="fl">0.5</span>, <span class="fl">7.5</span>, <span class="dv">1</span>), density<span class="op">=</span><span class="va">True</span>, rwidth<span class="op">=</span><span class="fl">0.8</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Histogram of Dice Rolls'</span>)</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Dice Value'</span>)</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Probability'</span>)</span>
@@ -2071,6 +2206,51 @@ Uniform random variable
 </div>
 </div>
 </div>
+<p>Notice that when the <span class="math inline">\(y\)</span>-axis represents probabilities, the heights of the bars sum to 1. This is because the total probability of all possible outcomes must equal 1!</p>
+<p>What about continuous random variables? In this case, we cannot just count the number of occurrences of each value, because there are infinitely many possible values. Instead, we can use a <strong>histogram</strong> to visualize the distribution of the data.</p>
+<p>The <strong>histogram</strong> is a graphical representation that summarizes the distribution of a dataset. It divides the data into discrete, equally-sized intervals (or “bins”) along the x-axis and counts how many data points fall into each bin. The height of each bar represents the either the total count of data points in that bin or the proportion of data points in that bin. If the height of the bar is the proportion, then the area of the bar represents the probability of the random variable falling within that bin.</p>
+<p>The prices of Airbnb listings from back in the first lecture are a good example of a continuous random variable. The resolution (cents) is so small that basically every price is unique. So we cannot just count the number of occurrences of each price. Instead, we can create a histogram to visualize the distribution of prices across bins.</p>
+<div id="afaccda7" class="cell" data-execution_count="16">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"../data/airbnb.csv"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># import the data on Airbnb listings in the New York City</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>airbnb <span class="op">=</span> pd.read_csv(<span class="st">"../data/airbnb.csv"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># data cleaning</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>airbnb <span class="op">=</span> airbnb.dropna(subset<span class="op">=</span>[<span class="st">"price"</span>])</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># format the price column</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>airbnb[<span class="st">'price'</span>] <span class="op">=</span> airbnb[<span class="st">'price'</span>].replace({<span class="st">'</span><span class="ch">\\</span><span class="st">$'</span>: <span class="st">''</span>, <span class="st">','</span>: <span class="st">''</span>}, regex<span class="op">=</span><span class="va">True</span>).astype(<span class="bu">float</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>sns.histplot(airbnb[<span class="st">'price'</span>], bins<span class="op">=</span><span class="dv">50</span>, stat<span class="op">=</span><span class="st">"proportion"</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Histogram of Airbnb Prices'</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Price (USD)'</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Probability'</span>)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-02_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Area under a probability distribution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Area under a probability distribution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>At the beginning of this lecture, we said that the probability of all possible outcomes must sum up to 1. This is true for both discrete and continuous random variables. For discrete random variables, the sum of the probabilities of all possible outcomes equals 1. For continuous random variables, the area under the probability density function (PDF) must equal 1.</p>
+<p>For discrete: <span class="math display">\[ \sum_{x} f(x) = 1 \]</span> For continuous: <span class="math display">\[ \int_{-\infty}^{\infty} f(x) \, dx = 1 \]</span></p>
+<p>We can use the same idea to compute the probability of a continuous random variable falling within a certain range. For example, if we want to know the probability that a continuous random variable <span class="math inline">\(X\)</span> falls between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, we can compute the area under the PDF from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span>: <span class="math display">\[ \P(a \leq X \leq b) = \int_{a}^{b} f(x) \, dx \]</span></p>
+</div>
+</div>
 </section>
 <section id="expectation" class="level2">
 <h2 class="anchored" data-anchor-id="expectation">Expectation</h2>
@@ -2078,7 +2258,7 @@ Uniform random variable
 <p>Why do we need an average? Since a random variable can take on many different values, a single sample does not give you a lot of information. You might win hundreds of dollars on one game, but this does not mean you will win that much every time you play.</p>
 <p>Instead, think about what would happen if we repeated the random process many times and took the average. Values that occur more frequently will tend to have a larger impact on the average, while values that occur less frequently will have a smaller impact. For example, at a casino roulette table perhaps you place a bet that has a 10% chance of winning. You might bet $1 and win $10 ($9 net profit) on one game, but if you lose $1 on the next 9 games you’re not making money in the long run. Even though $9 profit sounds great, the fact that it happens so infrequently (and you lose $1 90% of the time) means that your average profit is actually zero.</p>
 <div class="callout callout-style-default callout-warning callout-titled" title="Gambling warning: the house always wins">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -2087,7 +2267,7 @@ Gambling warning: the house always wins
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Actually, at real casinos, the games are designed so that “the house always wins” in the long run. So they would not let you bet $10 to win $100 ($90 profit) with a 10% chance – they would give you worse odds, like a 9% chance of winning $100 for a $10 bet.</p>
 <p>In the short term this is hardly noticeable – you’re actually quite likely to win a few times! But in the long term, the house edge means that you will lose money if you keep playing. This is why casinos are profitable businesses.</p>
@@ -2126,11 +2306,11 @@ Gambling warning: the house always wins
 <p>The average is a useful summary of a random variable’s central tendency, but it does not tell us anything about how spread out the values are.</p>
 <p>Consider the roulette example again. If we play roulette many times, it does not matter how much we bet on each game – the <strong>average</strong> amount we can expect to win or lose is always zero. You can bet $1 or $10,000 on each game, but the average outcome is still zero.</p>
 <p>Of course, the outcome of each game is not zero. Sometimes you win, sometimes you lose, and the amount you win or lose changes drastically depending on how much you bet.</p>
-<div id="69ab7544" class="cell" data-execution_count="7">
+<div id="69ab7544" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lecture-02_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="lecture-02_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -2138,7 +2318,7 @@ Gambling warning: the house always wins
 <p>How can we quantify this spread? Meaning, we want to capture that even though the average outcome is zero, winning $90 and losing $10 is very different from winning $9 and losing $1. Maybe you want to pay for dinner with your winnings, so a $90 payout is much more useful than a $9 payout. Or maybe you only have $10 in your pocket, so you can’t afford to lose all of it on a single game.</p>
 <p>We need a statistic that captures the typical <em>distance</em> between the values of the random variable and the average value.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Why distance from the average?">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -2147,7 +2327,7 @@ Why distance from the average?
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Let’s imagine for a moment that there was a casino (a very poorly run casino) that let you place bets that win no matter what – the only question is how much you win. Let’s take an example where the payouts still differ by $10: you get $5 if you “lose” and $15 if you “win”.</p>
 <p>In this case, the expected value is: <span class="math display">\[
@@ -2182,7 +2362,7 @@ d^2_\text{avg} = \frac{1}{n} \sum_x (x - \mathbb{E}[X])^2
 \hat{\sigma}(X) = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (x_i - \bar{X})^2}
 \]</span></p>
 <div class="callout callout-style-default callout-note callout-titled" title="Sample variance vs. population variance">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -2191,7 +2371,7 @@ Sample variance vs.&nbsp;population variance
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Technically, the formula above is an imperfect estimate of the population standard deviation. It’s in general a little bit too small, because the sample mean <span class="math inline">\(\bar{X}\)</span> does not perfectly represent the population mean <span class="math inline">\(\mathbb{E}[X]\)</span>. We can correct for this by dividing by <span class="math inline">\(n-1\)</span> instead of <span class="math inline">\(n\)</span>: <span class="math display">\[
 \hat{\sigma}(X) = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{X})^2}
@@ -2244,6 +2424,19 @@ window._ojs.runtime.interpretFromScriptTags();
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
