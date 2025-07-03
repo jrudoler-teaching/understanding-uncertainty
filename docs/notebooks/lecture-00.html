@@ -758,8 +758,8 @@ Sample vs.&nbsp;Population
 <p>Descriptive statistics are useful for understanding the data at hand, but they don’t necessarily tell us much about the world outside of the data. For that, we need to do something more.</p>
 <div id="cell-14" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
-<div id="zyPUphrZAlln" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
-#zyPUphrZAlln {
+<div id="ygoRmQIBvPNV" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
+#ygoRmQIBvPNV {
    --jq-multiple-choice-bg: #6f78ffff;
    --jq-mc-button-bg: #fafafa;
    --jq-mc-button-border: #e0e0e0e0;
@@ -980,7 +980,7 @@ Sample vs.&nbsp;Population
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/javascript">
-var questionszyPUphrZAlln=[{"question": "You are interested in finding the best restaurant in Philadelphia, so you survey 1000 people and ask them to rank their top 10 favorite restaurants in the city. What is the population corresponding to this sample?", "type": "many_choice", "answers": [{"answer": "All restaurants in Philadelphia", "correct": false}, {"answer": "The 1000 people surveyed", "correct": false}, {"answer": "The top 10 restaurants in Philadelphia", "correct": false}, {"answer": "All people in Philadelphia", "correct": true}]}];
+var questionsygoRmQIBvPNV=[{"question": "You are interested in finding the best restaurant in Philadelphia, so you survey 1000 people and ask them to rank their top 10 favorite restaurants in the city. What is the population corresponding to this sample?", "type": "many_choice", "answers": [{"answer": "All restaurants in Philadelphia", "correct": false}, {"answer": "The 1000 people surveyed", "correct": false}, {"answer": "The top 10 restaurants in Philadelphia", "correct": false}, {"answer": "All people in Philadelphia", "correct": true}]}];
 
 if (typeof Question === 'undefined') {
 // Make a random ID
@@ -2043,8 +2043,8 @@ function make_string(qa, outerqDiv, qDiv, aDiv, id) {
  * Ensures show_questions is called after the container div is in the DOM.
  */
 function try_show() {
-  if (document.getElementById("zyPUphrZAlln")) {
-    show_questions(questionszyPUphrZAlln, zyPUphrZAlln);
+  if (document.getElementById("ygoRmQIBvPNV")) {
+    show_questions(questionsygoRmQIBvPNV, ygoRmQIBvPNV);
   } else {
     setTimeout(try_show, 200);
   }
@@ -2270,7 +2270,7 @@ What is a “good” prediction rate?
 </div>
 </div>
 <p>Now let’s take a look at the distribution of the model’s predictions.</p>
-<div id="cell-23" class="cell" data-execution_count="11">
+<div id="cell-23" class="cell" data-execution_count="16">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the counts of predicted listings per borough side by side with the actual counts</span></span>
@@ -2280,8 +2280,8 @@ What is a “good” prediction rate?
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'actual'</span>: pd.Series(y_test.flatten())</span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>})</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>plot_df <span class="op">=</span> plot_df.melt(var_name<span class="op">=</span><span class="st">'type'</span>, value_name<span class="op">=</span><span class="st">'borough'</span>)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> sns.catplot(x<span class="op">=</span><span class="st">'borough'</span>, hue<span class="op">=</span><span class="st">'type'</span>, data<span class="op">=</span>plot_df, kind<span class="op">=</span><span class="st">'count'</span>, height<span class="op">=</span><span class="dv">5</span>, aspect<span class="op">=</span><span class="fl">1.2</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> sns.catplot(x<span class="op">=</span><span class="st">'borough'</span>, hue<span class="op">=</span><span class="st">'type'</span>, data<span class="op">=</span>plot_df, kind<span class="op">=</span><span class="st">'count'</span>, height<span class="op">=</span><span class="dv">5</span>, aspect<span class="op">=</span><span class="fl">1.2</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>sns.move_legend(ax, loc<span class="op">=</span><span class="st">"center right"</span>, title<span class="op">=</span><span class="va">None</span>)</span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Predicted vs Actual Airbnb Listings per Borough'</span>)</span>
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Borough'</span>)</span>
@@ -2291,11 +2291,7 @@ What is a “good” prediction rate?
 <span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="lecture-00_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
+<pre><code>&lt;Figure size 3000x1800 with 0 Axes&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
