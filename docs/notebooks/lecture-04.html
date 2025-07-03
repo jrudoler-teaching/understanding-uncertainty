@@ -420,6 +420,12 @@ window.Quarto = {
  <span class="menu-text">Lecture 05: Hypothesis Testing</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 06: Bootstrapping</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -2063,7 +2069,7 @@ Central Limit Theorem
 </div>
 </div>
 <p>As you can see the distribution of the sum is approximately normal! It has the mean we would expect (3.5) and clearly values are clustered symmetrically around the mean.</p>
-<p>For the purposes of the class it’s not necessary to understand why this happens, just that it happens. To give a bit of intuition though, we basically think that with more samples distributions will starts to cluster around their means.</p>
+<p>For the purposes of the class it’s not necessary to understand why this happens, just that it happens. To give a bit of intuition, though: with more samples, averages tend to cluster around the true mean of the distribution.</p>
 <p>Why is this useful? Well, the normal distribution is a well studied distribution with many useful properties. It is symmetric, easy to work with mathematically, and is useful for approximating the distribution of many real-world processes. The normal distribution is decently good description of most data that clusters around its mean.</p>
 <p>The CLT tells us that even if we don’t know the distribution of the individual variables, if we average enough of them together, we magically know the distribution of the sample mean.</p>
 <p>Remember earlier in the lecture, we talked about how statistical models are useful as long as they are a faithful description of the outcome probabilities for a DGP? Well, the CLT gives us a guarantee that for a huge class of DGPs, we can use the normal distribution to model the sample mean.</p>

@@ -66,6 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../notebooks/lecture-06.html" rel="next">
 <link href="../notebooks/lecture-04.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -416,6 +417,12 @@ window.Quarto = {
  <span class="menu-text">Lecture 05: Hypothesis Testing</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture 06: Bootstrapping</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -764,7 +771,7 @@ p-value: 0.1702</code></pre>
 <p>All of a sudden, this is way more familiar, specific, and testable. We can now use data to compute the <span class="math inline">\(p\)</span>-value for this hypothesis test.</p>
 <p>Shai scored 32.7 PPG in 76 games the 2024-2025 season, which is the highest average in the league. The next-highest scorer was Giannis Antetokounmpo with 30.4 PPG in 72 games.</p>
 <p>We will use data from the 2024-2025 NBA season, courtesy of <a href="https://www.basketball-reference.com/">Basketball Reference</a>, to evaluate our hypothesis.</p>
-<div id="7b3afcec" class="cell" data-execution_count="31">
+<div id="7b3afcec" class="cell" data-execution_count="51">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read the data for Shai Gilgeous-Alexander and Giannis Antetokounmpo</span></span>
@@ -795,19 +802,17 @@ p-value: 0.1702</code></pre>
 <span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>ax.axvline(shai_sample_mean, color<span class="op">=</span><span class="st">"blue"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Shai's PPG: </span><span class="sc">{</span>shai_sample_mean<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
 <span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>ax.axvline(giannis_sample_mean, color<span class="op">=</span><span class="st">"orange"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Giannis's PPG: </span><span class="sc">{</span>giannis_sample_mean<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
 <span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Distribution of Points Per Game (PPG) for Shai and Giannis"</span>)</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Points Per Game (PPG)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Points Per Game (PPG)"</span>)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Shai's PPG is 32.68 with a standard deviation of 7.54.
 Giannis's PPG is 30.39 with a standard deviation of 7.32.</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="31">
-<pre><code>Text(0.5, 0, 'Points Per Game (PPG)')</code></pre>
-</div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lecture-05_files/figure-html/cell-8-output-3.png" class="img-fluid figure-img"></p>
+<p><img src="lecture-05_files/figure-html/cell-8-output-2.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -837,25 +842,25 @@ P(X &gt; x) = 1 - P(X \leq x) = 1 - \text{CDF}(x) = 1 - \int_{-\infty}^{x} f(t) 
 <div id="b3008862" class="cell" data-execution_count="43">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">## PDF of normal</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>shai_n_games <span class="op">=</span> compare_df.query(<span class="st">"player == 'Shai Gilgeous-Alexander'"</span>)[<span class="st">"PTS"</span>].count()</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>p_value_clt <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> stats.norm.cdf(</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="fl">32.7</span>, </span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    loc<span class="op">=</span><span class="fl">30.4</span>, <span class="co"># the mean of the null distribution (Giannis's PPG)</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    scale<span class="op">=</span>shai_sample_std<span class="op">/</span>np.sqrt(shai_n_games)) </span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"p-value from CLT:"</span>, p_value_clt)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize the p-value</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">27</span>, <span class="dv">35</span>, <span class="dv">1000</span>)</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>null_pdf <span class="op">=</span> stats.norm.pdf(x, loc<span class="op">=</span><span class="fl">30.4</span>, scale<span class="op">=</span>shai_sample_std<span class="op">/</span>np.sqrt(shai_n_games))</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>ax.plot(x, null_pdf, label<span class="op">=</span><span class="vs">r"Normal Distribution given </span><span class="dv">$</span><span class="vs">H_0:</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="fl">32.7</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Observed PPG: 32.7"</span>)</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>ax.fill_between(x, null_pdf, where<span class="op">=</span>(x <span class="op">&gt;=</span> <span class="fl">32.7</span>), alpha<span class="op">=</span><span class="fl">0.4</span>, label<span class="op">=</span><span class="st">"Area for p-value"</span>)</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"PPG distribution under the Null Hypothesis"</span>)</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Points Per Game (PPG)"</span>)</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Probability Density"</span>)</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">## PDF of normal</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>shai_n_games <span class="op">=</span> compare_df.query(<span class="st">"player == 'Shai Gilgeous-Alexander'"</span>)[<span class="st">"PTS"</span>].count()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>p_value_clt <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> stats.norm.cdf(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="fl">32.7</span>, </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    loc<span class="op">=</span><span class="fl">30.4</span>, <span class="co"># the mean of the null distribution (Giannis's PPG)</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    scale<span class="op">=</span>shai_sample_std<span class="op">/</span>np.sqrt(shai_n_games)) </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"p-value from CLT:"</span>, p_value_clt)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize the p-value</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">27</span>, <span class="dv">35</span>, <span class="dv">1000</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>null_pdf <span class="op">=</span> stats.norm.pdf(x, loc<span class="op">=</span><span class="fl">30.4</span>, scale<span class="op">=</span>shai_sample_std<span class="op">/</span>np.sqrt(shai_n_games))</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>ax.plot(x, null_pdf, label<span class="op">=</span><span class="vs">r"Normal Distribution given </span><span class="dv">$</span><span class="vs">H_0:</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="fl">32.7</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Observed PPG: 32.7"</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>ax.fill_between(x, null_pdf, where<span class="op">=</span>(x <span class="op">&gt;=</span> <span class="fl">32.7</span>), alpha<span class="op">=</span><span class="fl">0.4</span>, label<span class="op">=</span><span class="st">"Area for p-value"</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"PPG distribution under the Null Hypothesis"</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Points Per Game (PPG)"</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Probability Density"</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>p-value from CLT: 0.00391019858958408</code></pre>
@@ -873,31 +878,31 @@ P(X &gt; x) = 1 - P(X \leq x) = 1 - \text{CDF}(x) = 1 - \int_{-\infty}^{x} f(t) 
 <div id="38a21791" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)  <span class="co"># for reproducibility</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>n_sims <span class="op">=</span> <span class="dv">5000</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>shai_simulated_ppg <span class="op">=</span> []</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_sims):</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># simulate 76 games of scoring, each game is drawn from a distribution with </span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># mean 30.4 and standard deviation equal to the observed sample standard deviation of Shai's points scored</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Variance of continuous uniform distribution on [a, b] is (b-a)^2 / 12</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    low_minus_high <span class="op">=</span> np.sqrt(<span class="dv">12</span> <span class="op">*</span> shai_sample_std<span class="op">**</span><span class="dv">2</span>)</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    simulated_scores <span class="op">=</span> rng.uniform(low<span class="op">=</span><span class="fl">30.4</span> <span class="op">-</span> low_minus_high<span class="op">/</span><span class="dv">2</span>, high<span class="op">=</span><span class="fl">30.4</span> <span class="op">+</span> low_minus_high<span class="op">/</span><span class="dv">2</span>, size<span class="op">=</span><span class="dv">76</span>)</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    simulated_ppg <span class="op">=</span> np.mean(simulated_scores)</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    shai_simulated_ppg.append(simulated_ppg)</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># compute the p-value from the simulated PPG scores</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>shai_simulated_ppg <span class="op">=</span> np.array(shai_simulated_ppg)</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>p_value_simulated <span class="op">=</span> np.mean(shai_simulated_ppg <span class="op">&gt;=</span> <span class="fl">32.7</span>)</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"p-value from simulation:"</span>, p_value_simulated)</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the distribution of simulated PPG scores</span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>sns.histplot(shai_simulated_ppg, bins<span class="op">=</span><span class="dv">30</span>, stat<span class="op">=</span><span class="st">"density"</span>, ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">"Simulated PPG under $H_0$"</span>)</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="fl">32.7</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Observed PPG: </span><span class="sc">{</span><span class="fl">32.7</span><span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Simulated PPG Distribution under the Null Hypothesis"</span>)</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Points Per Game (PPG)"</span>)</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Density"</span>)</span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)  <span class="co"># for reproducibility</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>n_sims <span class="op">=</span> <span class="dv">5000</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>shai_simulated_ppg <span class="op">=</span> []</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_sims):</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># simulate 76 games of scoring, each game is drawn from a distribution with </span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># mean 30.4 and standard deviation equal to the observed sample standard deviation of Shai's points scored</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Variance of continuous uniform distribution on [a, b] is (b-a)^2 / 12</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    low_minus_high <span class="op">=</span> np.sqrt(<span class="dv">12</span> <span class="op">*</span> shai_sample_std<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    simulated_scores <span class="op">=</span> rng.uniform(low<span class="op">=</span><span class="fl">30.4</span> <span class="op">-</span> low_minus_high<span class="op">/</span><span class="dv">2</span>, high<span class="op">=</span><span class="fl">30.4</span> <span class="op">+</span> low_minus_high<span class="op">/</span><span class="dv">2</span>, size<span class="op">=</span><span class="dv">76</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    simulated_ppg <span class="op">=</span> np.mean(simulated_scores)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    shai_simulated_ppg.append(simulated_ppg)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co"># compute the p-value from the simulated PPG scores</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>shai_simulated_ppg <span class="op">=</span> np.array(shai_simulated_ppg)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>p_value_simulated <span class="op">=</span> np.mean(shai_simulated_ppg <span class="op">&gt;=</span> <span class="fl">32.7</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"p-value from simulation:"</span>, p_value_simulated)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the distribution of simulated PPG scores</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>sns.histplot(shai_simulated_ppg, bins<span class="op">=</span><span class="dv">30</span>, stat<span class="op">=</span><span class="st">"density"</span>, ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">"Simulated PPG under $H_0$"</span>)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="fl">32.7</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Observed PPG: </span><span class="sc">{</span><span class="fl">32.7</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Simulated PPG Distribution under the Null Hypothesis"</span>)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Points Per Game (PPG)"</span>)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Density"</span>)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>p-value from simulation: 0.004</code></pre>
@@ -915,7 +920,8 @@ P(X &gt; x) = 1 - P(X \leq x) = 1 - \text{CDF}(x) = 1 - \int_{-\infty}^{x} f(t) 
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>In this lecture, we</p>
+<p>In this lecture, we studied hypothesis testing – a framework for evaluating claims about data and making data-driven decisions under uncertainty. We learned about the need to formalize claims and quantify uncertainty due to sampling variability, how to establish a null hypothesis, the meaning of the <span class="math inline">\(p\)</span>-value, and how to compute it based on sampling distributions.</p>
+<p>In the next lecture, we will think about what to do when we don’t have any idea about the underlying distribution of the data, which makes it hard to generate sampling distributions.</p>
 
 
 <script type="ojs-module-contents">
@@ -1424,6 +1430,9 @@ window._ojs.runtime.interpretFromScriptTags();
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../notebooks/lecture-06.html" class="pagination-link" aria-label="Lecture 06: Bootstrapping">
+        <span class="nav-page-text">Lecture 06: Bootstrapping</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
