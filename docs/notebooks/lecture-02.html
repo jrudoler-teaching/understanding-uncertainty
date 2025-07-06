@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Joseph Rudoler">
-<meta name="dcterms.date" content="2025-07-03">
+<meta name="dcterms.date" content="2025-07-06">
 <meta name="description" content="Introduction to Probability and Random Variables">
 
 <title>Lecture 02: Probability and Random Variables – Understanding Uncertainty</title>
@@ -450,6 +450,7 @@ window.Quarto = {
   <li><a href="#probability-distributions-and-histograms" id="toc-probability-distributions-and-histograms" class="nav-link" data-scroll-target="#probability-distributions-and-histograms">Probability distributions and histograms</a></li>
   <li><a href="#expectation" id="toc-expectation" class="nav-link" data-scroll-target="#expectation">Expectation</a></li>
   <li><a href="#variance-and-standard-deviation" id="toc-variance-and-standard-deviation" class="nav-link" data-scroll-target="#variance-and-standard-deviation">Variance and standard deviation</a></li>
+  <li><a href="#common-probability-distributions" id="toc-common-probability-distributions" class="nav-link" data-scroll-target="#common-probability-distributions">Common probability distributions</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul>
 </nav>
@@ -482,7 +483,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 3, 2025</p>
+      <p class="date">July 6, 2025</p>
     </div>
   </div>
   
@@ -497,7 +498,7 @@ window.Quarto = {
 <div class="hidden">
 <p><span class="math display">\[
 \renewcommand{\P}{\mathbb{P}}
-\renewcommand{\E}{\mathbb{E}}
+\newcommand{\E}{\mathbb{E}}
 \newcommand{\Var}{\mathbb{V}\text{ar}}
 \newcommand{\Cov}{\mathbb{C}\text{ov}}
 \]</span></p>
@@ -2385,6 +2386,155 @@ Sample variance vs.&nbsp;population variance
 <p>Why is the initial estimate too small? In a small dataset, the sample mean “overfits” the data, meaning it is closer to the individual data points than the true population mean. Let’s think about this in terms of coin flips. If we flip a coin once, the sample mean is either <span class="math inline">\(\hat{X}=0\)</span> or 1, depending on whether we got heads or tails. But the true population mean is <span class="math inline">\(\mathbb{E}[X]=\frac{1}{2}\)</span>. If we compute the standard deviation using the original formula, the distance from the sample mean is exactly 0! So the standard deviation is also 0 (either <span class="math inline">\((1-1)^2\)</span> or <span class="math inline">\((0-0)^2\)</span>).</p>
 <p>By contrast, the true (population) standard deviation is <span class="math inline">\(\sigma(X) = \sqrt{\mathbb{E}[(X - \mathbb{E}[X])^2]} = \sqrt{\frac{1}{4}} = \frac{1}{2}\)</span>, which is larger than the estimate using the sample mean.</p>
 <p>This <strong>bias</strong> in computing the standard deviation gets smaller as the sample size <span class="math inline">\(n\)</span> increases, so for large datasets the difference is negligible. In smaller datasets, though, it is important to use the <span class="math inline">\(n-1\)</span> correction to get a more accurate estimate of the population standard deviation.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="common-probability-distributions" class="level2">
+<h2 class="anchored" data-anchor-id="common-probability-distributions">Common probability distributions</h2>
+<p>Certain probability distributions are very common, and their corresponding probability functions are well-known. It is not necessary to memorize these distributions, but it is useful to be familiar with them and their properties.</p>
+<!-- Table of common probability distributions: -->
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 8%">
+<col style="width: 31%">
+<col style="width: 17%">
+<col style="width: 8%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Distribution</th>
+<th>Type</th>
+<th>Probability Function</th>
+<th>Parameters</th>
+<th>Mean</th>
+<th>Variance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bernoulli</td>
+<td>Discrete</td>
+<td><span class="math inline">\(f(x) = p^x (1-p)^{1-x}\)</span></td>
+<td><span class="math inline">\(p \in [0, 1]\)</span></td>
+<td><span class="math inline">\(p\)</span></td>
+<td><span class="math inline">\(p(1-p)\)</span></td>
+</tr>
+<tr class="even">
+<td>Binomial</td>
+<td>Discrete</td>
+<td><span class="math inline">\(f(x) = \binom{n}{x} p^x (1-p)^{n-x}\)</span></td>
+<td><span class="math inline">\(n \in \mathbb{N}, p \in [0, 1]\)</span></td>
+<td><span class="math inline">\(np\)</span></td>
+<td><span class="math inline">\(np(1-p)\)</span></td>
+</tr>
+<tr class="odd">
+<td>Poisson</td>
+<td>Discrete</td>
+<td><span class="math inline">\(f(x) = \frac{\lambda^x e^{-\lambda}}{x!}\)</span></td>
+<td><span class="math inline">\(\lambda &gt; 0\)</span></td>
+<td><span class="math inline">\(\lambda\)</span></td>
+<td><span class="math inline">\(\lambda\)</span></td>
+</tr>
+<tr class="even">
+<td>Uniform</td>
+<td>Continuous</td>
+<td><span class="math inline">\(f(x) = \frac{1}{b-a}\)</span></td>
+<td><span class="math inline">\(a &lt; b\)</span></td>
+<td><span class="math inline">\(\frac{a+b}{2}\)</span></td>
+<td><span class="math inline">\(\frac{(b-a)^2}{12}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Normal</td>
+<td>Continuous</td>
+<td><span class="math inline">\(f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}\)</span></td>
+<td><span class="math inline">\(\mu \in \mathbb{R}, \sigma &gt; 0\)</span></td>
+<td><span class="math inline">\(\mu\)</span></td>
+<td><span class="math inline">\(\sigma^2\)</span></td>
+</tr>
+<tr class="even">
+<td>Exponential</td>
+<td>Continuous</td>
+<td><span class="math inline">\(f(x) = \lambda e^{-\lambda x}\)</span></td>
+<td><span class="math inline">\(\lambda &gt; 0\)</span></td>
+<td><span class="math inline">\(\frac{1}{\lambda}\)</span></td>
+<td><span class="math inline">\(\frac{1}{\lambda^2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The plots below show the probability functions for each of these distributions.</p>
+<div id="17758d84" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">12</span>), sharex<span class="op">=</span><span class="va">False</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> ax.flatten()</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Bernoulli Distribution</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">2</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].bar(x, stats.bernoulli.pmf(x, p), width<span class="op">=</span><span class="fl">0.4</span>, color<span class="op">=</span><span class="st">'blue'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_title(<span class="st">'Bernoulli Distribution (p=0.5)'</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xticks(x)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xticklabels([<span class="st">'0'</span>, <span class="st">'1'</span>])</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xlabel(<span class="st">'Value'</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylabel(<span class="st">'Probability'</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Binomial Distribution</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="dv">0</span>, n <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].bar(x, stats.binom.pmf(x, n, p), width<span class="op">=</span><span class="fl">0.4</span>, color<span class="op">=</span><span class="st">'green'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_title(<span class="st">'Binomial Distribution (n=10, p=0.5)'</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xticks(x)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xlabel(<span class="st">'Number of Successes'</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylabel(<span class="st">'Probability'</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Poisson Distribution</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>lambda_ <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">15</span>)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].bar(x, stats.poisson.pmf(x, lambda_), width<span class="op">=</span><span class="fl">0.4</span>, color<span class="op">=</span><span class="st">'orange'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].set_title(<span class="st">'Poisson Distribution (λ=5)'</span>)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].set_xticks(x)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].set_xlabel(<span class="st">'Number of Events'</span>)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].set_ylabel(<span class="st">'Probability'</span>) </span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Uniform Distribution</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>a, b <span class="op">=</span> <span class="dv">0</span>, <span class="dv">10</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(a, b, <span class="dv">1000</span>)</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">3</span>].plot(x, stats.uniform.pdf(x, loc<span class="op">=</span>a, scale<span class="op">=</span>b<span class="op">-</span>a), color<span class="op">=</span><span class="st">'cyan'</span>)</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">3</span>].set_title(<span class="st">'Uniform Distribution (a=0, b=10)'</span>)</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">3</span>].set_xlabel(<span class="st">'Value'</span>)</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">3</span>].set_ylabel(<span class="st">'Probability Density'</span>)</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">3</span>].fill_between(x, stats.uniform.pdf(x, loc<span class="op">=</span>a, scale<span class="op">=</span>b<span class="op">-</span>a), color<span class="op">=</span><span class="st">'cyan'</span>, alpha<span class="op">=</span><span class="fl">0.2</span>)</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Normal Distribution</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>mu, sigma <span class="op">=</span> <span class="dv">0</span>, <span class="dv">1</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(mu <span class="op">-</span> <span class="dv">4</span><span class="op">*</span>sigma, mu <span class="op">+</span> <span class="dv">4</span><span class="op">*</span>sigma, <span class="dv">1000</span>)</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">4</span>].plot(x, stats.norm.pdf(x, mu, sigma), color<span class="op">=</span><span class="st">'purple'</span>)</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">4</span>].set_title(<span class="st">'Normal Distribution (μ=0, σ=1)'</span>)</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">4</span>].set_xlabel(<span class="st">'Value'</span>)</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">4</span>].set_ylabel(<span class="st">'Probability Density'</span>)</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">4</span>].fill_between(x, stats.norm.pdf(x, mu, sigma), color<span class="op">=</span><span class="st">'purple'</span>, alpha<span class="op">=</span><span class="fl">0.2</span>)</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Exponential Distribution</span></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>lambda_ <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">1000</span>)</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">5</span>].plot(x, stats.expon.pdf(x, scale<span class="op">=</span><span class="dv">1</span><span class="op">/</span>lambda_), color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">5</span>].set_title(<span class="st">'Exponential Distribution (λ=1)'</span>)</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">5</span>].set_xlabel(<span class="st">'Value'</span>)</span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">5</span>].set_ylabel(<span class="st">'Probability Density'</span>)</span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">5</span>].fill_between(x, stats.expon.pdf(x, scale<span class="op">=</span><span class="dv">1</span><span class="op">/</span>lambda_), color<span class="op">=</span><span class="st">'red'</span>, alpha<span class="op">=</span><span class="fl">0.2</span>)</span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-02_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img"></p>
+</figure>
 </div>
 </div>
 </div>
