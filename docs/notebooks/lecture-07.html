@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-07-06">
+<meta name="dcterms.date" content="2025-07-07">
 
-<title>Lecture 06: Permutation and Computational Hypothesis Testing – Understanding Uncertainty</title>
+<title>Lecture 07: Permutation and Computational Hypothesis Testing – Understanding Uncertainty</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -439,7 +439,10 @@ window.Quarto = {
    
   <ul>
   <li><a href="#permutation-tests" id="toc-permutation-tests" class="nav-link active" data-scroll-target="#permutation-tests">Permutation Tests</a></li>
-  <li><a href="#there-is-really-only-one-test" id="toc-there-is-really-only-one-test" class="nav-link" data-scroll-target="#there-is-really-only-one-test">There is really only one test!</a></li>
+  <li><a href="#there-is-really-only-one-test" id="toc-there-is-really-only-one-test" class="nav-link" data-scroll-target="#there-is-really-only-one-test">There is really only one test!</a>
+  <ul class="collapse">
+  <li><a href="#example-two-sample-t-test" id="toc-example-two-sample-t-test" class="nav-link" data-scroll-target="#example-two-sample-t-test">Example: Two-sample t-test</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -449,7 +452,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Lecture 06: Permutation and Computational Hypothesis Testing</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Lecture 07: Permutation and Computational Hypothesis Testing</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
 </div>
 
 
@@ -460,7 +463,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 6, 2025</p>
+      <p class="date">July 7, 2025</p>
     </div>
   </div>
   
@@ -483,7 +486,7 @@ window.Quarto = {
 <div id="5711dccf" class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> permutation_test(test_func, x, y, num_permutations<span class="op">=</span><span class="dv">10000</span>, rng<span class="op">=</span><span class="va">None</span>):</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> permutation_test(test_func, x, y, num_permutations<span class="op">=</span><span class="dv">10000</span>, rng<span class="op">=</span><span class="va">None</span>, one_sided<span class="op">=</span><span class="va">True</span>):</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute the observed test statistic</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    observed_stat <span class="op">=</span> test_func(x, y)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -505,12 +508,16 @@ window.Quarto = {
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        permuted_stat <span class="op">=</span> test_func(x_perm, y_perm)</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compare the permuted statistic to the observed statistic</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> permuted_stat <span class="op">&gt;=</span> observed_stat:</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>            count <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute the p-value</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    p_value <span class="op">=</span> count <span class="op">/</span> num_permutations</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> p_value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> one_sided:</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> permuted_stat <span class="op">&gt;=</span> observed_stat:</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>                count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> np.<span class="bu">abs</span>(permuted_stat) <span class="op">&gt;=</span> np.<span class="bu">abs</span>(observed_stat):</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>                count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute the p-value</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    p_value <span class="op">=</span> count <span class="op">/</span> num_permutations</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> p_value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>We can apply this to our NBA data to test if SGA and Giannis have different scoring rates. This is quite similar to the bootstrap hypothesis test we did in the previous lecture, but instead of resampling with replacement, we will resample without replacement.</p>
@@ -575,8 +582,202 @@ The probability of correctly rejecting the null hypothesis when it is false.
 <h2 class="anchored" data-anchor-id="there-is-really-only-one-test">There is really only one test!</h2>
 <p>The more statistics you learn and the more you are exposed to work in quantitative fields, the more you will see a wide variety of complicated statistical techniques and methods.</p>
 <p>Ultimately they all represent the same process: 1. Compute a test statistic on the observed data. 2. Choose a null hypothesis / model. Either specify the null distribution explicitly or use a simulation-based method to generate a distribution of test statistics under the null hypothesis. 3. Compute a p-value by comparing the observed test statistic to the distribution of test statistics under the null hypothesis.</p>
-<p>Most of the literature in classical statistics focuses on mathematically deriving analytical solutions for 2 and 3. They</p>
+<p>Most of the literature in classical statistics focuses on mathematically deriving analytical solutions for 2 and 3. All of the fancy named statistical tests you see are variations with different test statistics and null hypotheses.</p>
 <p>Check out <a href="https://allendowney.blogspot.com/2016/06/there-is-still-only-one-test.html">this blog post</a> by Allen Downey for more on this idea and explanation of the advantages of simulation-based methods for hypothesis testing.</p>
+<section id="example-two-sample-t-test" class="level3">
+<h3 class="anchored" data-anchor-id="example-two-sample-t-test">Example: Two-sample t-test</h3>
+<p>One of the most common statistical tests is the independent two-sample <span class="math inline">\(t\)</span>-test, which tests if two independent samples have different means. This is used in many fields, including psychology, medicine, and social sciences – basically anywhere you want to compare two groups.</p>
+<p>Remembering the <span class="math inline">\(t\)</span>-test is not an important point of this course – we introduce it here because it is used so frequently in practice that it is worth understanding the basic idea behind it (and that it is just a special case of the general hypothesis testing framework we have been discussing).</p>
+<p>We learned already that (by the Central Limit Theorem) as the sample size increases, the sampling distribution of the sample mean becomes approximately normal, even if the underlying distribution is not normal. The <em>exact</em> distribution of the sample mean, however, is called the <strong>t-distribution</strong>. It is quite like the normal distribution, but has heavier tails (more likely to produce extreme values). See the plots below for an illustration of how the t-distribution converges to the standard normal distribution as the sample size increases.</p>
+<div id="33ee218a" class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">100</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>stats.t.pdf(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    x,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    loc<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    scale<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the t-distribution and normal distribution for comparison</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, sample_size <span class="kw">in</span> <span class="bu">enumerate</span>([<span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">30</span>]):</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> sample_size <span class="op">-</span> <span class="dv">2</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    sns.lineplot(</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span>x,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span>stats.t.pdf(x, df<span class="op">=</span>df, loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="ss">f"$t$ (df=</span><span class="sc">{</span>df<span class="sc">}</span><span class="ss">)"</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        ax<span class="op">=</span>ax[i]</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    sns.lineplot(</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span>x,</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span>stats.norm.pdf(x, loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Normal"</span>,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        ax<span class="op">=</span>ax[i]</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    ax[i].grid(<span class="va">True</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    ax[i].set_title(<span class="ss">f"$t$ vs Normal ($n=</span><span class="sc">{</span>sample_size<span class="sc">}</span><span class="ss">$)"</span>)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    ax[i].set_xlabel(<span class="st">"x"</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    ax[i].set_ylabel(<span class="st">"Density"</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    sns.move_legend(ax[i], loc<span class="op">=</span><span class="st">"upper left"</span>)</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-07_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Let’s create two independent samples from uniform distributions with different means and equal variance. We’ll perform a two-sample t-test to see if they are significantly different. In other words, we will test the null hypothesis that the two samples have the same mean against the alternative hypothesis that they have different means.</p>
+<p>We’ll use the built-in <code>scipy.stats.ttest_ind</code> function to perform the t-test, but we will also manually compute the t-statistic and p-value to illustrate the process. We will also sample from the t-distribution to compare our results. Finally, we will perform a permutation test to see how it compares.</p>
+<div id="2ef0a2f3" class="cell" data-execution_count="107">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate a t-distribution</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">43</span>)  <span class="co"># set a random seed for reproducibility</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># take two samples from different uniform distributions</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>samples_a <span class="op">=</span> rng.uniform(low<span class="op">=-</span><span class="dv">1</span>, high<span class="op">=</span><span class="dv">3</span>, size<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>samples_b <span class="op">=</span> rng.uniform(low<span class="op">=-</span><span class="dv">3</span>, high<span class="op">=</span><span class="dv">1</span>, size<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>t_parametric <span class="op">=</span> stats.ttest_ind(</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    samples_a,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    samples_b,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    equal_var<span class="op">=</span><span class="va">True</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Parametric t-test statistic: </span><span class="sc">{</span>t_parametric<span class="sc">.</span>statistic<span class="sc">:.4f}</span><span class="ss">, p-value: </span><span class="sc">{</span>t_parametric<span class="sc">.</span>pvalue<span class="sc">:.6f}</span><span class="ss">"</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the t-statistic manually</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>diff_means <span class="op">=</span> np.mean(samples_a) <span class="op">-</span> np.mean(samples_b)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co"># assume they have the same variance -- use the "pooled" or averaged variance</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>pooled_var <span class="op">=</span> (np.var(samples_a, ddof<span class="op">=</span><span class="dv">1</span>) <span class="op">+</span> np.var(samples_b, ddof<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>pooled_std_error <span class="op">=</span> np.sqrt(pooled_var <span class="op">/</span> <span class="bu">len</span>(samples_a))</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>t_stat<span class="op">=</span> diff_means <span class="op">/</span> pooled_std_error</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>t_abs <span class="op">=</span> np.<span class="bu">abs</span>(t_stat)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Manual t-statistic: </span><span class="sc">{</span>t_stat<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co"># two-tailed test: 1 - (CDF(t_statistic) - CDF(-t_statistic))</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>p_value_t_pdf <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> (stats.t.cdf(</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    t_abs,</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span><span class="bu">len</span>(samples_a) <span class="op">+</span> <span class="bu">len</span>(samples_b) <span class="op">-</span> <span class="dv">2</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>) <span class="op">-</span> stats.t.cdf(</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>t_abs,</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span><span class="bu">len</span>(samples_a) <span class="op">+</span> <span class="bu">len</span>(samples_b) <span class="op">-</span> <span class="dv">2</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Theoretical p-value from PDF of t: </span><span class="sc">{</span>p_value_t_pdf<span class="sc">:.6f}</span><span class="ss">"</span>)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample from a t-distribution</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>num_samples <span class="op">=</span> <span class="dv">10000</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>t_samples <span class="op">=</span> rng.standard_t(</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span><span class="bu">len</span>(samples_a) <span class="op">+</span> <span class="bu">len</span>(samples_b) <span class="op">-</span> <span class="dv">2</span>,</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    size<span class="op">=</span>num_samples</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the p-value from the simulated t-distribution</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>p_value_simulated <span class="op">=</span> np.mean(np.<span class="bu">abs</span>(t_samples) <span class="op">&gt;=</span> t_abs)</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Simulated p-value by sampling from t: </span><span class="sc">{</span>p_value_simulated<span class="sc">:.6f}</span><span class="ss">"</span>)</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="co">## # Permutation test for t-statistic</span></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> permutation_test_t(</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>    x, y, num_permutations<span class="op">=</span><span class="dv">10000</span>, rng<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>):</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute the observed t-statistic</span></span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>    observed_stat <span class="op">=</span> stats.ttest_ind(x, y, equal_var<span class="op">=</span><span class="va">True</span>).statistic</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Combine the two samples</span></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>    combined <span class="op">=</span> np.concatenate([x, y])</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> rng <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>        rng <span class="op">=</span> np.random.default_rng()</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>    permuted_stats <span class="op">=</span> []</span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(num_permutations):</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Permute the combined array</span></span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>        permuted <span class="op">=</span> rng.permutation(combined)</span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Split the permuted array into two new samples</span></span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>        x_perm <span class="op">=</span> permuted[:<span class="bu">len</span>(x)]</span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>        y_perm <span class="op">=</span> permuted[<span class="bu">len</span>(x):]</span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compute the t-statistic for the permuted samples</span></span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>        permuted_stat <span class="op">=</span> stats.ttest_ind(x_perm, y_perm, equal_var<span class="op">=</span><span class="va">True</span>).statistic</span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compare the permuted statistic to the observed statistic</span></span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>        permuted_stats.append(permuted_stat)</span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute the p-value</span></span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>    permuted_stats <span class="op">=</span> np.array(permuted_stats)</span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>    p_value <span class="op">=</span> np.mean(np.<span class="bu">abs</span>(permuted_stats) <span class="op">&gt;=</span> np.<span class="bu">abs</span>(observed_stat))</span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> permuted_stats, p_value</span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the permutation test</span></span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>permuted_stats, p_value <span class="op">=</span> permutation_test_t(</span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>    samples_a,</span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>    samples_b,</span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>    num_permutations<span class="op">=</span><span class="dv">10000</span>,</span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a>    rng <span class="op">=</span> rng</span>
+<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Permutation test p-value: </span><span class="sc">{</span>p_value<span class="sc">:.6f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Parametric t-test statistic: 2.6958, p-value: 0.014783
+Manual t-statistic: 2.6958
+Theoretical p-value from PDF of t: 0.014783
+Simulated p-value by sampling from t: 0.014400
+Permutation test p-value: 0.015700</code></pre>
+</div>
+</div>
+<p>All of these results are quite similar! It’s not a coincidence – they are all effectively the same test. We’re comparing the observed t-statistic to the distribution of t-statistics under the null hypothesis that the two samples are drawn from the same distribution.</p>
+<p>This might be easier to appreciate visually:</p>
+<div id="a0dbb057" class="cell" data-execution_count="108">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>), sharey<span class="op">=</span><span class="va">True</span>, sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the t-distribution and highlight the observed t-statistic</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].plot(x, stats.t.pdf(x, df<span class="op">=</span><span class="bu">len</span>(samples_a) <span class="op">+</span> <span class="bu">len</span>(samples_b) <span class="op">-</span> <span class="dv">2</span>), label<span class="op">=</span><span class="st">'t-distribution'</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axvline(t_abs, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'Observed t-statistic'</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].fill_between(</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    x,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    stats.t.pdf(x, df<span class="op">=</span><span class="bu">len</span>(samples_a) <span class="op">+</span> <span class="bu">len</span>(samples_b) <span class="op">-</span> <span class="dv">2</span>),</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    where<span class="op">=</span>np.<span class="bu">abs</span>(x) <span class="op">&gt;=</span> t_abs,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.3</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'red'</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">'Area for p-value'</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_title(<span class="st">'t-distribution PDF'</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$-value'</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylabel(<span class="st">'Density'</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].legend(loc<span class="op">=</span><span class="st">"upper left"</span>, fontsize<span class="op">=</span><span class="st">'x-small'</span>, frameon<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>sns.histplot(t_samples, bins<span class="op">=</span><span class="dv">30</span>, ax<span class="op">=</span>ax[<span class="dv">1</span>], stat<span class="op">=</span><span class="st">"density"</span>, color<span class="op">=</span><span class="st">"gray"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].plot(x, stats.t.pdf(x, df<span class="op">=</span><span class="bu">len</span>(samples_a) <span class="op">+</span> <span class="bu">len</span>(samples_b) <span class="op">-</span> <span class="dv">2</span>), linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'t-distribution'</span>)   </span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axvline(t_abs, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'Observed t-statistic'</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_title(<span class="st">'Sampled t-distribution'</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xlabel(<span class="st">'$t$-value'</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylabel(<span class="st">'Density'</span>)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>sns.histplot(permuted_stats, bins<span class="op">=</span><span class="dv">30</span>, ax<span class="op">=</span>ax[<span class="dv">2</span>], stat<span class="op">=</span><span class="st">"density"</span>, color<span class="op">=</span><span class="st">"gray"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].plot(x, stats.t.pdf(x, df<span class="op">=</span><span class="bu">len</span>(samples_a) <span class="op">+</span> <span class="bu">len</span>(samples_b) <span class="op">-</span> <span class="dv">2</span>), linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'t-distribution'</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].axvline(t_abs, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'Observed t-statistic'</span>)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].set_title(<span class="st">'Permutation Test Statistics'</span>)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].set_xlabel(<span class="st">'$t$-value'</span>)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].set_ylabel(<span class="st">'Density'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="108">
+<pre><code>Text(0, 0.5, 'Density')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-07_files/figure-html/cell-7-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>See how close the sampling distributions are to the theoretical t-distribution? This is why all the tests are so similar.</p>
 
 
 <script type="ojs-module-contents">
@@ -593,6 +794,7 @@ eyJjb250ZW50cyI6W119
 <script type="vfs-file">
 W10=
 </script>
+</section>
 </section>
 
 </main> <!-- /main -->
