@@ -13,8 +13,8 @@ title: "Syllabus"
 
 | Date | Topic | Assignment |
 |:------|:-------|:------------|
-| 7/09 | Intro, [Why Statistics?](../notebooks/lecture-00.ipynb) |  |
-| 7/10 | [Programming](../notebooks/lecture-01.ipynb) |  |
+| 7/09 | Intro, [Why Statistics?](../notebooks/lecture-00.ipynb)([slides](../slides/lecture-00-slides.html)) |  |
+| 7/10 | [Programming](../notebooks/lecture-01.ipynb) ([slides](../slides/lecture-01-slides.html))|  |
 | 7/11 | Programming cont. |  |
 | 7/14 | [Probability](../notebooks/lecture-02.ipynb) |  |
 | 7/15 | Probability cont. |  |

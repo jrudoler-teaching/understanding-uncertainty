@@ -9,8 +9,8 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.7.31">
 
-  <meta name="dcterms.date" content="2025-07-07">
-  <title>Understanding Uncertainty – Lecture 00</title>
+  <meta name="dcterms.date" content="2025-07-08">
+  <title>Understanding Uncertainty – Why Statistics?</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -45,6 +45,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -130,26 +131,29 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Lecture 00</h1>
+  <h1 class="title">Why Statistics?</h1>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">2025-07-07</p>
+  <p class="date">2025-07-08</p>
 </section>
-<section id="welcome" class="slide level2">
-<h2>Welcome!</h2>
-<p>So begins “Understanding Uncertainty”, a course in statistical thinking and data science.</p>
-<p>This is lecture 0. See the <a href="../syllabus.html">syllabus</a> for an overview of the course.</p>
+<section id="course-goals" class="slide level2 scrollable">
+<h2>Course Goals</h2>
 <p>Our basic goals for the course are:</p>
 <ol type="1">
-<li><p>to build a strong intuition about data, where it comes from, and what questions it can answer.</p></li>
-<li><p>to learn the basic computational skills needed to manipulate and analyze data. Working with data also helps with (1)!</p></li>
+<li class="fragment"><p>to build a strong intuition about data, where it comes from, and what questions it can answer.</p></li>
+<li class="fragment"><p>to learn the basic computational skills needed to manipulate and analyze data. Working with data also helps with (1)!</p></li>
 </ol>
 </section>
-<section id="why-statistics" class="slide level2">
+<section id="why-statistics" class="slide level2 scrollable">
 <h2>Why statistics?</h2>
-<p>Statistics is, essentially, the study of data and how to use it. People argue about the purpose of statistics, but basically you can do 3 things with data: (1) description, (2) inference, and (3) prediction.</p>
+<p>Statistics is, essentially, the study of data and how to use it. People argue about the purpose of statistics, but basically you can do 3 things with data:</p>
+<ol type="1">
+<li class="fragment">description</li>
+<li class="fragment">inference</li>
+<li class="fragment">prediction</li>
+</ol>
 </section>
 <section id="description" class="slide level2">
 <h2>Description</h2>
@@ -168,8 +172,12 @@
       }</style></aside>
 <p>Let’s load in some data and take a look at it.</p>
 <p>The <a href="https://www.kaggle.com/datasets/arianazmoudeh/airbnbopendata">dataset</a> contains Airbnb listings in New York City, including prices, locations, and other features.</p>
-<div id="cell-4" class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display" data-execution_count="3">
+</section>
+<section id="description-1" class="slide level2">
+<h2>Description</h2>
+<!-- ^[from https://www.kaggle.com/datasets/arianazmoudeh/airbnbopendata] -->
+<div id="cell-4" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -285,74 +293,21 @@
 <td>I encourage you to use my kitchen, cooking and...</td>
 <td>NaN</td>
 </tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
-<td>1002755</td>
-<td>NaN</td>
-<td>85098326012</td>
-<td>unconfirmed</td>
-<td>Garry</td>
-<td>brooklyn</td>
-<td>Clinton Hill</td>
-<td>40.68514</td>
-<td>-73.95976</td>
-<td>United States</td>
-<td>...</td>
-<td>$74</td>
-<td>30.0</td>
-<td>270.0</td>
-<td>7/5/2019</td>
-<td>4.64</td>
-<td>4.0</td>
-<td>1.0</td>
-<td>322.0</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
-<td>1003689</td>
-<td>Entire Apt: Spacious Studio/Loft by central park</td>
-<td>92037596077</td>
-<td>verified</td>
-<td>Lyndon</td>
-<td>manhattan</td>
-<td>East Harlem</td>
-<td>40.79851</td>
-<td>-73.94399</td>
-<td>United States</td>
-<td>...</td>
-<td>$41</td>
-<td>10.0</td>
-<td>9.0</td>
-<td>11/19/2018</td>
-<td>0.10</td>
-<td>3.0</td>
-<td>1.0</td>
-<td>289.0</td>
-<td>Please no smoking in the house, porch or on th...</td>
-<td>NaN</td>
-</tr>
 </tbody>
 </table>
 
-<p>5 rows × 26 columns</p>
+<p>3 rows × 26 columns</p>
 </div>
 </div>
 </div>
+</section>
+<section class="slide level2">
+
 <p>Now there’s a lot you can do, but let’s start by visualizing the prices of listings.</p>
-<div id="cell-6" class="cell" data-execution_count="4">
-<div class="cell-output cell-output-display" data-execution_count="4">
-<pre><code>Text(0, 0.5, 'Frequency')</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="lecture-00-slides_files/figure-revealjs/cell-4-output-2.png"></p>
-</figure>
-</div>
-</div>
-</div>
+
+<img data-src="lecture-00-slides_files/figure-revealjs/cell-4-output-1.png" class="r-stretch"></section>
+<section class="slide level2">
+
 <p>Computing statistics like the mean (average), standard deviation (average distance from the mean), and quartiles (top 25% and bottom 25%) is easy.</p>
 <div id="cell-8" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display" data-execution_count="5">
@@ -367,30 +322,20 @@ max        1200.000000
 Name: price, dtype: float64</code></pre>
 </div>
 </div>
+</section>
+<section class="slide level2">
+
 <p>We can even use specialized libraries to make use of the geographic information in the data. For example, we can use the <code>geopandas</code> library to plot the locations of listings on a map of New York City.</p>
-<div id="cell-10" class="cell" data-execution_count="6">
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="lecture-00-slides_files/figure-revealjs/cell-6-output-1.png"></p>
-</figure>
-</div>
-</div>
-</div>
+
+<img data-src="lecture-00-slides_files/figure-revealjs/cell-6-output-1.png" class="r-stretch"></section>
+<section class="slide level2">
+
 <p>There is a lot of information in the data, and we can summarize it in many different ways. But descriptive statistics <strong>only describe the data</strong>.</p>
 <p>Why is this limiting? After all, we like data – it tells us things about the world and it’s objective and quantifiable.</p>
 <p>The problem is that data is not always complete. In fact, it almost never is. And incomplete data can lead to misleading conclusions.</p>
 <p>Let’s look at our Airbnb data again. What if instead of looking at the entire dataset, we only looked at a small “sample” or subset of the data?</p>
-<div id="cell-12" class="cell" data-execution_count="7">
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="lecture-00-slides_files/figure-revealjs/cell-7-output-1.png"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Notice how the samples differ from one another. They have different geography and different prices. This means you can’t just look at the descriptive statistics of a single sample and draw conclusions about the entire population.</p>
+
+<img data-src="lecture-00-slides_files/figure-revealjs/cell-7-output-1.png" class="r-stretch"><p>Notice how the samples differ from one another. They have different geography and different prices. This means you can’t just look at the descriptive statistics of a single sample and draw conclusions about the entire population.</p>
 <div title="Sample vs. Population">
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -1712,7 +1657,7 @@ function try_show() {
 </div>
 </div>
 </div></section>
-<section id="inference" class="slide level2">
+<section id="inference" class="slide level2 scrollable">
 <h2>Inference</h2>
 <p>So what if we want to answer questions about a population <em>based</em> on a sample? This is where <strong>inference</strong> comes in. Specifically, we want to use the given sample to <strong>infer</strong> something about the population.</p>
 <p>How do we do this if we can’t ever see the entire population? The answer is that we need a link which connects the sample to the population – specifically, we can explicitly treat the sample as the outcome of a <strong>data-generating process</strong> (DGP).</p>
@@ -1766,8 +1711,8 @@ P(X) = \begin{cases}
 <div class="callout-content">
 <p>There are two main culprits when we see a sample that is unlikely under our model:</p>
 <ol type="1">
-<li>The sample! Think of this as “luck of the draw”. This is only really a risk if your sample is small or systematically biased in some way. Usually if you collect enough data, the sample will start to look more like the population. If you flip a coin 5 times, you might get all tails (there’s actually a 3% chance of this happening); if you flip a coin 100 times, there’s virtually no chance that you’ll get all tails (less than 10<sup>-30</sup> chance).</li>
-<li>The model! This means that our assumptions about the DGP are incorrect or incomplete. This is a more serious problem, and it won’t go away just by collecting more data.</li>
+<li class="fragment">The sample! Think of this as “luck of the draw”. This is only really a risk if your sample is small or systematically biased in some way. Usually if you collect enough data, the sample will start to look more like the population. If you flip a coin 5 times, you might get all tails (there’s actually a 3% chance of this happening); if you flip a coin 100 times, there’s virtually no chance that you’ll get all tails (less than 10<sup>-30</sup> chance).</li>
+<li class="fragment">The model! This means that our assumptions about the DGP are incorrect or incomplete. This is a more serious problem, and it won’t go away just by collecting more data.</li>
 </ol>
 </div>
 </div>
@@ -1925,7 +1870,7 @@ Prediction Accuracy: 45.38%
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'smaller': false,
+'smaller': true,
  
         // Display controls in the bottom right corner
         controls: false,
