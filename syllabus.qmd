@@ -13,18 +13,18 @@ title: "Syllabus"
 
 | Date | Topic | Assignment |
 |:------|:-------|:------------|
-| 7/09 | Intro, [Why Statistics?](../notebooks/lecture-00.ipynb)([slides](../slides/lecture-00-slides.html)) |  |
-| 7/10 | [Programming](../notebooks/lecture-01.ipynb) ([slides](../slides/lecture-01-slides.html))|  |
+| 7/09 | Intro, [Why Statistics?](notebooks/lecture-00.ipynb) ([slides](slides/lecture-00-slides.html)) | [Assignment 0](assignments/assignment-00.html) |
+| 7/10 | [Programming](notebooks/lecture-01.ipynb) ([slides](slides/lecture-01-slides.html))|  |
 | 7/11 | Programming cont. |  |
-| 7/14 | [Probability](../notebooks/lecture-02.ipynb) |  |
+| 7/14 | [Probability](notebooks/lecture-02.ipynb) ([slides](slides/lecture-02-slides.html))|  |
 | 7/15 | Probability cont. |  |
-| 7/16 | [Sampling and simulation](../notebooks/lecture-03.ipynb) |  |
-| 7/17 | [Data Generating Processes and Statistical Models](../notebooks/lecture-04.ipynb) |  |
-| 7/18 | [Hypothesis Testing](../notebooks/lecture-05.ipynb) |  |
+| 7/16 | [Sampling and simulation](notebooks/lecture-03.ipynb) ([slides](slides/lecture-03-slides.html))|  |
+| 7/17 | [Data Generating Processes and Statistical Models](notebooks/lecture-04.ipynb) ([slides](slides/lecture-04-slides.html))|  |
+| 7/18 | [Hypothesis Testing](notebooks/lecture-05.ipynb) ([slides](slides/lecture-05-slides.html))|  |
 | 7/21 | Hypothesis Testing cont. |  |
-| 7/22 | [Confidence Intervals, bootstrapping](../notebooks/lecture-06.ipynb) |  |
-| 7/23 | [Permutation tests](../notebooks/lecture-07.ipynb) |  |
-| 7/24 | Regression | |
+| 7/22 | [Confidence Intervals, bootstrapping](notebooks/lecture-06.ipynb) ([slides](slides/lecture-06-slides.html))|  |
+| 7/23 | [Permutation tests](notebooks/lecture-07.ipynb) ([slides](slides/lecture-07-slides.html))|  |
+| 7/24 | [Regression](notebooks/lecture-08.ipynb) ([slides](slides/lecture-08-slides.html)) |  |
 | 7/25 | Regression cont. |  |
 | 7/28 | Classification | |
 | 7/29 | Crash course: Deep Learning and AI |  |
