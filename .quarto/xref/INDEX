@@ -3,7 +3,9 @@
     "assignments.html": "ef4ca65f"
   },
   "assignments/assignment-00.ipynb": {
-    "assignment-00.html": "4dcd5d82"
+    "assignment-00.html": "4dcd5d82",
+    "assignment-00.out.ipynb": "4b1ccb02",
+    "assignment-00-preview.html": "262f3c58"
   },
   "docs/notebooks/lecture-00.ipynb": {
     "lecture-00.html": "f43017b9",
@@ -56,5 +58,11 @@
   },
   "notebooks/lecture-01.ipynb": {
     "lecture-01.html": "6d080582"
+  },
+  "assignments/assignment-01.ipynb": {
+    "assignment-01.html": "60430553"
+  },
+  "notebooks/lecture-09.ipynb": {
+    "lecture-09.html": "3644fff5"
   }
 }

@@ -149,7 +149,7 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar floating nav-fixed slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -458,7 +458,7 @@ window.Quarto = {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -487,12 +487,12 @@ window.Quarto = {
 
 
 <p>In the introductory lecture, we talked about the role of inference: drawing more general conclusions (about a population) from specific observations (a sample). Now that we have covered the most important building blocks, we can start to actually talk about how to make statistical inferences.</p>
-<section id="the-burden-of-proof" class="level3">
+<section id="the-burden-of-proof" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="the-burden-of-proof">The burden of proof</h3>
 <p>How can we use statistics to “prove” something? In diverse domains ranging from politics to sports, people often cite data as evidence. They may cherry-pick data that appears to support their argument, often constructing charts that highlight the point they want to make. You might hear data-grounded statements like “the unemployment rate is lower than it was 4 years ago” or “player X has the highest scoring average in the league”. These statistical facts can sound iron-clad, but they ignore the complexity of the underlying data and the uncertainty therein. They typically fail to acknowledge aspects of the data that do not support their argument, and they are rarely transparent about how the data was collected or analyzed.</p>
 <p>For example, a politician might claim that their policies have led to a reduction in unemployment. Their support for this claim might be primarily based on a single statistic: “the unemployment rate is lower than it was 4 years ago”. However, this statement does not provide any context or evidence that the politician’s policies are actually responsible for the change.</p>
 <p>Let’s look at unemployment data from the US Bureau of Labor Statistics (BLS) <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
-<div id="dee301ed" class="cell" data-execution_count="4">
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;from <a href="https://data.bls.gov/dataQuery/find?fq=survey:%5Bln%5D&amp;s=popularity:D">here</a>, accessed July 2025</p></div></div><div id="dee301ed" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime</span>
@@ -564,7 +564,7 @@ window.Quarto = {
 <p>If you changed the time period you were looking at, you could easily come to a different conclusion. For example, if you looked at the last 3 years or the last 6 years, you would see that unemployment actually increased.</p>
 <p>The key point is that <em>one should always be skeptical about data presented as evidence</em>. Data can be manipulated, cherry-picked, or misinterpreted to support a particular narrative. It’s especially hard to evaluate the validity of a claim when the data is not presented in a transparent way. Because the world is so complicated, there are almost always alternative explanations for a given observation. In this case, the politician cited statistic can potentially be explained by external factors (like the pandemic) rather than their policies.</p>
 <p>To make matters worse, as we saw in the previous lecture, the data itself is not perfect. There is additional variability in the data generating process that we have not accounted for. You will notice that the unemployment rate is not a smooth line, but rather has some fluctuations. This is at least partly due to the fact that the data is collected from a sample of the population, and there is uncertainty in the estimates. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> How do we know that a change in the unemployment rate is not just due to random fluctuations in the data?</p>
-<p>The <strong>burden of proof</strong> is on the person making the claim. If you want to convince someone that your claim is true, you need to provide evidence that supports it.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;They survey around 50,000 housing units each month. See the BLS’s <a href="https://www.bls.gov/opub/hom/cps/design.htm#sample-size">documentation</a> for more information on the sample size and design of the Current Population Survey, which is used to estimate the unemployment rate.</p></div></div><p>The <strong>burden of proof</strong> is on the person making the claim. If you want to convince someone that your claim is true, you need to provide evidence that supports it.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Beyond a reasonable doubt?">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -584,7 +584,7 @@ Beyond a reasonable doubt?
 </div>
 </div>
 </section>
-<section id="formalizing-hypotheses" class="level3">
+<section id="formalizing-hypotheses" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="formalizing-hypotheses">Formalizing hypotheses</h3>
 <p>One way to increase the transparency of empirical claims is to formalize them as hypotheses. A hypothesis is a specific, testable statement about observed variables. This helps us clarify exactly what the claim is, and design tests to evaluate it.</p>
 <p>In the U.S. legal system, a defendant is presumed innocent until proven guilty. In statistical hypothesis testing, we apply a similar principle:</p>
@@ -599,12 +599,12 @@ The alternative hypothesis represents the claim we want to test (in the legal an
 </dd>
 </dl>
 <p>The quantity of interest in hypothesis testing is the <strong><span class="math inline">\(p\)</span>-value</strong>.</p>
-<dl>
+<dl class="page-columns page-full">
 <dt><span class="math inline">\(p\)</span>-value</dt>
 <dd>
 the probability of a random process producing a result at least as extreme as the observed data, assuming that the null hypothesis is true.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>
 </dd>
-</dl>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;This is often phrased as “under the assumption that the null hypothesis is true” or more succinctly “under the null”.</p></div></div></dl>
 <p>In other words, <em>p</em> is just the probability that the null is true and our observed data is a result of randomness / sampling variability. The logic of hypothesis testing is that if the <span class="math inline">\(p\)</span>-value is very small, it suggests that the data is unlikely to have occurred under the null hypothesis. In this case, we would <span style="color:red">reject</span> the null hypothesis in favor of the alternative hypothesis.</p>
 <p>To get an intuition for <span class="math inline">\(p\)</span>-values, we can visualize a simple example. Let’s say that we have a random variable <span class="math inline">\(X\)</span> that follows a normal distribution with unknown mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma = 1\)</span>. We want to test the hypothesis that <span class="math inline">\(\mu = 0\)</span> (the null hypothesis) against the alternative hypothesis that <span class="math inline">\(\mu \neq 0\)</span> (the alternative hypothesis). We take a sample of <span class="math inline">\(X\)</span> and observe that its value is <span class="math inline">\(X_1 = 2.1\)</span>. What is the <span class="math inline">\(p\)</span>-value?</p>
 <p>To get the <span class="math inline">\(p\)</span>-value, we need the probability distribution of <span class="math inline">\(X\)</span> under the null hypothesis. Since we assume that <span class="math inline">\(X\)</span> follows a normal distribution with mean <span class="math inline">\(\mu = 0\)</span> and standard deviation <span class="math inline">\(\sigma = 1\)</span>, we know that the probability density function (PDF) of <span class="math inline">\(X\)</span> is given by: <span class="math display">\[
@@ -2296,14 +2296,7 @@ W10=
 </section>
 
 
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>from <a href="https://data.bls.gov/dataQuery/find?fq=survey:%5Bln%5D&amp;s=popularity:D">here</a>, accessed July 2025<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>They survey around 50,000 housing units each month. See the BLS’s <a href="https://www.bls.gov/opub/hom/cps/design.htm#sample-size">documentation</a> for more information on the sample size and design of the Current Population Survey, which is used to estimate the unemployment rate.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>This is often phrased as “under the assumption that the null hypothesis is true” or more succinctly “under the null”.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script type="ojs-module-contents">
 eyJjb250ZW50cyI6W119
 </script>
@@ -2719,25 +2712,64 @@ window._ojs.runtime.interpretFromScriptTags();
           }
         };
       }
-        // Attach click handler to the DT
-        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-        for (const annoteDlNode of annoteDls) {
-          annoteDlNode.addEventListener('click', (event) => {
-            const clickedEl = event.target;
-            if (clickedEl !== selectedAnnoteEl) {
-              unselectCodeLines();
-              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-              if (activeEl) {
-                activeEl.classList.remove('code-annotation-active');
-              }
-              selectCodeLines(clickedEl);
-              clickedEl.classList.add('code-annotation-active');
-            } else {
-              // Unselect the line
-              unselectCodeLines();
-              clickedEl.classList.remove('code-annotation-active');
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
             }
-          });
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
         }
     const findCites = (el) => {
       const parentEl = el.parentElement;
