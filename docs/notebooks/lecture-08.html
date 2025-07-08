@@ -21,10 +21,45 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -76,7 +111,39 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
 
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -368,8 +435,17 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#predictions-from-patterns" id="toc-predictions-from-patterns" class="nav-link active" data-scroll-target="#predictions-from-patterns">Predictions from patterns</a>
+  <ul class="collapse">
+  <li><a href="#quantifying-relationships" id="toc-quantifying-relationships" class="nav-link" data-scroll-target="#quantifying-relationships">Quantifying relationships</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -377,7 +453,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Lecture 08: Linear Regression</h1>
+<div class="quarto-title-block"><div><h1 class="title">Lecture 08: Linear Regression</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
 </div>
 
 
@@ -400,7 +476,458 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Now that we’ve talked about inference in depth, it is time to talk about <strong>prediction</strong>. In this lecture, we will cover the basics of linear regression, which is a powerful tool for making predictions based on data.</p>
+<p>Now that we’ve talked about inference in depth, it is time to talk about <strong>prediction</strong>. In this lecture, we will build up to the basics of linear regression, which is a powerful tool for making predictions based on data.</p>
+<section id="predictions-from-patterns" class="level2">
+<h2 class="anchored" data-anchor-id="predictions-from-patterns">Predictions from patterns</h2>
+<p>How do we make predictions? We typically look for patterns in the data and use those patterns to make informed guesses about future outcomes.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Why not memorize?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Why not memorize?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Why not just memorize the data? Think about a dataset like this:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Apples / Day</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Alice</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>Bob</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td>Charlie</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>If you were asked to predict how many apples a new person would eat per day, you could memorize the data and say “Alice eats 3 apples, Bob eats 5 apples, Charlie eats 2 apples.” You would be 100% correct on this dataset! But what if you were asked to predict how many apples a new person would eat? You would have no idea, because your memorized list only contains the data you have seen already. You have no way to make a prediction about a new person like Dave: | Name | Apples / Day | |——|————–| | Dave | ? |</p>
+<p>So, we need a better strategy!</p>
+<p>More broadly, this is called <strong>generalization</strong>: the ability to make predictions about new data based on patterns learned from existing data.</p>
+</div>
+</div>
+<p>Consider the following dataset of the heights (in inches) of a sample of adults. The dataset also records the height of their parents, so we’ll refer to the adults as “children” and their parents as “parents” in this context. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div id="dc60ac8a" class="cell" data-execution_count="14">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>galton <span class="op">=</span> pd.read_csv(<span class="st">"../data/galton-stata11.tsv"</span>, sep<span class="op">=</span><span class="st">"</span><span class="ch">\t</span><span class="st">"</span>, dtype<span class="op">=</span>{<span class="st">"male"</span>: <span class="bu">bool</span>, <span class="st">"female"</span>: <span class="bu">bool</span>, <span class="st">"gender"</span>: <span class="st">"category"</span>, <span class="st">"family"</span>: <span class="st">"category"</span>})</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>galton.head() <span class="co"># first few rows of the dataset</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">family</th>
+<th data-quarto-table-cell-role="th">father</th>
+<th data-quarto-table-cell-role="th">mother</th>
+<th data-quarto-table-cell-role="th">gender</th>
+<th data-quarto-table-cell-role="th">height</th>
+<th data-quarto-table-cell-role="th">kids</th>
+<th data-quarto-table-cell-role="th">male</th>
+<th data-quarto-table-cell-role="th">female</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>1</td>
+<td>78.5</td>
+<td>67.0</td>
+<td>M</td>
+<td>73.2</td>
+<td>4</td>
+<td>True</td>
+<td>False</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1</td>
+<td>78.5</td>
+<td>67.0</td>
+<td>F</td>
+<td>69.2</td>
+<td>4</td>
+<td>False</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1</td>
+<td>78.5</td>
+<td>67.0</td>
+<td>F</td>
+<td>69.0</td>
+<td>4</td>
+<td>False</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>1</td>
+<td>78.5</td>
+<td>67.0</td>
+<td>F</td>
+<td>69.0</td>
+<td>4</td>
+<td>False</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>2</td>
+<td>75.5</td>
+<td>66.5</td>
+<td>M</td>
+<td>73.5</td>
+<td>4</td>
+<td>True</td>
+<td>False</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Let’s say I asked you to predict the height of another child not in the dataset. Assume they’re from the same population as the children in the dataset. You have no other information about the child. How would you do it?</p>
+<p>The most straightforward thing to do is ask yourself: “What is the typical height of a child in this dataset?” You could then use that typical height as your prediction. This is the simplest kind of pattern recognition: finding the average value in the dataset and using it as a prediction.</p>
+<div id="736034ad" class="cell" data-execution_count="15">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print the mean height of children in the dataset</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>mean_height <span class="op">=</span> galton[<span class="st">"height"</span>].mean()</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The mean height of children in the Galton dataset is </span><span class="sc">{</span>mean_height<span class="sc">:.2f}</span><span class="ss"> inches."</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the distribution of heights</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>sns.histplot(galton[<span class="st">"height"</span>], stat<span class="op">=</span><span class="st">"proportion"</span>, bins<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Height (inches)"</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Proportion of children"</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Distribution of Heights of Children"</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>plt.axvline(mean_height, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"Mean Height"</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>The mean height of children in the Galton dataset is 66.76 inches.</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-08_files/figure-html/cell-4-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This isn’t bad as a first guess, and you actually can’t do any better than this if you have no other information about the child.</p>
+<p>But what if you had more information? For example, say you had other information about the child (besides their own height), such as their sex (male / female) or the heights of their parents. If you think that these factors might be related to the child’s height, they should inform your prediction.</p>
+<p>Let’s start by just plotting the heights of the children in the dataset against the heights of their parents. This will help us visualize the relationship between the two variables.</p>
+<div id="fb1f624e" class="cell" data-execution_count="16">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>), sharey<span class="op">=</span><span class="va">True</span>, sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the heights of children against the heights of their fathers</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(data<span class="op">=</span>galton, x<span class="op">=</span><span class="st">"father"</span>, y<span class="op">=</span><span class="st">"height"</span>, ax<span class="op">=</span>ax[<span class="dv">0</span>], alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xlabel(<span class="st">"Father's Height (inches)"</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylabel(<span class="st">"Child's Height (inches)"</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_title(<span class="st">"Child's Height vs Father's Height"</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axvline(galton[<span class="st">"father"</span>].mean(), color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"Mean Father's Height"</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axhline(mean_height, color<span class="op">=</span><span class="st">"blue"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"Mean Child's Height"</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].legend(loc<span class="op">=</span><span class="st">'lower right'</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the heights of children against the heights of their mothers</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(data<span class="op">=</span>galton, x<span class="op">=</span><span class="st">"mother"</span>, y<span class="op">=</span><span class="st">"height"</span>, ax<span class="op">=</span>ax[<span class="dv">1</span>], alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xlabel(<span class="st">"Mother's Height (inches)"</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylabel(<span class="st">"Child's Height (inches)"</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_title(<span class="st">"Child's Height vs Mother's Height"</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axvline(galton[<span class="st">"mother"</span>].mean(), color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"Mean Mother's Height"</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axhline(mean_height, color<span class="op">=</span><span class="st">"blue"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"Mean Child's Height"</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].legend(loc<span class="op">=</span><span class="st">'lower right'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-08_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice how the naive prediction we made earlier (the average height of the children), shown as a blue dashed line, totally ignores the heights of the parents. It’s constant across the entire plot, and does not capture any of the variation in the data.</p>
+<p>You may, based on your own experience and understanding of the world, expect that children with taller parents tend to be taller themselves. It sure looks that way in the plot above – the taller children tend to have taller parents, and the shorter children tend to have shorter parents. It’s not always the case, by any means, but it seems to be a general trend.</p>
+<p>But <strong>how much</strong> taller? We want to quantify this relationship, so that we can get a formula for predicting a child’s height based on their parents’ heights. Mathematically, we want to define a function <span class="math inline">\(f\)</span> that takes the heights of the parents as input and returns the predicted height of the child as output.</p>
+<section id="preparing-the-data" class="level4">
+<h4 class="anchored" data-anchor-id="preparing-the-data">Preparing the data</h4>
+<p>Dealing with two separate parents is cumbersome. Can we combine the heights of the parents into a single number that represents “the height of the parents”? One way to do this is to take the average of the two heights.</p>
+<p>This is problematic at the moment. Based on the plot it seems that the father’s height has a different relationship with the child’s height than the mother’s height does. The trends are similar, but the plots have different shapes. This is probably because men and women tend to have different average heights (as you can see in the plot above). Also because men are taller on average, they contribute more to the average height of the parents than women do.</p>
+<p>There is a useful trick we can use to simplify this. We can put the heights of men and women in the dataset on the same scale by <strong>standardizing</strong> them.</p>
+<p><span class="math display">\[
+\begin{align*}
+\text{standardized female height} = \frac{\text{height} - \text{average of female heights}}{\text{standard deviation of female heights}} \\
+\text{standardized male height} = \frac{\text{height} - \text{average of male heights}}{\text{standard deviation of male heights}} \\
+\end{align*}
+\]</span></p>
+<p>This procedure transforms all of the heights into a common scale, where the average is zero and the standard deviation is one. This process is called <strong>standardization</strong> or <strong>z-scoring</strong>.</p>
+<p>Let’s do this and plot the standardized heights of the parents against the heights of the children.</p>
+<div id="e8126d8a" class="cell" data-execution_count="17">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># include all female and male heights (parents and children)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>mother_heights <span class="op">=</span> galton[[<span class="st">"mother"</span>, <span class="st">"family"</span>]].drop_duplicates()[<span class="st">"mother"</span>].values</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>female_child_heights <span class="op">=</span> galton[galton[<span class="st">"gender"</span>] <span class="op">==</span> <span class="st">"F"</span>][<span class="st">"height"</span>].values</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>female_heights <span class="op">=</span> np.concatenate([mother_heights, female_child_heights])</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>father_heights <span class="op">=</span> galton[[<span class="st">"father"</span>, <span class="st">"family"</span>]].drop_duplicates()[<span class="st">"father"</span>].values</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>male_child_heights <span class="op">=</span> galton[galton[<span class="st">"gender"</span>] <span class="op">==</span> <span class="st">"M"</span>][<span class="st">"height"</span>].values</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>male_heights <span class="op">=</span> np.concatenate([father_heights, male_child_heights])</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the mean and standard deviation of the heights of mothers and fathers</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>female_mean <span class="op">=</span> female_heights.mean()</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>female_std <span class="op">=</span> female_heights.std(ddof<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>male_mean <span class="op">=</span> male_heights.mean()</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>male_std <span class="op">=</span> male_heights.std(ddof<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co"># transform the heights to z-scores</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>galton[<span class="st">"mother_z"</span>] <span class="op">=</span> (galton[<span class="st">"mother"</span>] <span class="op">-</span> female_mean) <span class="op">/</span> female_std</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>galton[<span class="st">"father_z"</span>] <span class="op">=</span> (galton[<span class="st">"father"</span>] <span class="op">-</span> male_mean) <span class="op">/</span> male_std</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>galton.loc[galton[<span class="st">"gender"</span>] <span class="op">==</span> <span class="st">"F"</span>, <span class="st">"height_z"</span>] <span class="op">=</span> (galton.loc[galton[<span class="st">"gender"</span>] <span class="op">==</span> <span class="st">"F"</span>, <span class="st">"height"</span>] <span class="op">-</span> female_mean) <span class="op">/</span> female_std</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>galton.loc[galton[<span class="st">"gender"</span>] <span class="op">==</span> <span class="st">"M"</span>, <span class="st">"height_z"</span>] <span class="op">=</span> (galton.loc[galton[<span class="st">"gender"</span>] <span class="op">==</span> <span class="st">"M"</span>, <span class="st">"height"</span>] <span class="op">-</span> male_mean) <span class="op">/</span> male_std</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the z-scores of the heights of children against the z-scores of their fathers</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>), sharey<span class="op">=</span><span class="va">True</span>, sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(data<span class="op">=</span>galton, x<span class="op">=</span><span class="st">"father_z"</span>, y<span class="op">=</span><span class="st">"height_z"</span>, ax<span class="op">=</span>ax[<span class="dv">0</span>], alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xlabel(<span class="st">"Father's Height (z-score)"</span>)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylabel(<span class="st">"Child's Height (z-score)"</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"blue"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the z-scores of the heights of children against the z-scores of their mothers</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(data<span class="op">=</span>galton, x<span class="op">=</span><span class="st">"mother_z"</span>, y<span class="op">=</span><span class="st">"height_z"</span>, ax<span class="op">=</span>ax[<span class="dv">1</span>], alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xlabel(<span class="st">"Mother's Height (z-score)"</span>)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylabel(<span class="st">"Child's Height (z-score)"</span>)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"blue"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-08_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now we have put the heights of the parents on the same scale, so we can combine them into a single number that represents “the height of the parents”. We can do this by taking the average of the standardized heights of the parents.</p>
+<div id="e8572f00" class="cell" data-execution_count="18">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>galton[<span class="st">"midparent"</span>] <span class="op">=</span> (galton[<span class="st">"mother_z"</span>] <span class="op">+</span> galton[<span class="st">"father_z"</span>]) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the z-scores of the heights of children against the midparent z-scores</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(data<span class="op">=</span>galton, x<span class="op">=</span><span class="st">"midparent"</span>, y<span class="op">=</span><span class="st">"height_z"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Midparent Height (z-score)"</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Child's Height (z-score)"</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"blue"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Child's Height vs Midparent Height (z-score)"</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-08_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Nice! It seems like this retains the relationship between the heights of the parents and the heights of the children, but now we have a single number that represents the height of the parents.</p>
+<p>Let’s go back to the units we care about predicting, though. It’s ok to use standardized heights for the parents, but we want to predict the height of the child in inches.</p>
+<div id="8a85b3b3" class="cell" data-execution_count="19">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(data<span class="op">=</span>galton, x<span class="op">=</span><span class="st">"midparent"</span>, y<span class="op">=</span><span class="st">"height"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Midparent Height (Z-score)"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Child's Height (inches)"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>plt.axhline(mean_height, color<span class="op">=</span><span class="st">"blue"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"Mean Child's Height"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Child's Height vs Midparent Height (Z-score)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>Text(0.5, 1.0, "Child's Height vs Midparent Height (Z-score)")</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-08_files/figure-html/cell-8-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="quantifying-relationships" class="level3">
+<h3 class="anchored" data-anchor-id="quantifying-relationships">Quantifying relationships</h3>
+<p>Back to our question: <strong>how much</strong> taller are the children of tall parents?</p>
+<p>The simplest way to quantify this relationship is to use a linear function, which is a function of the form <span class="math inline">\(f(x) = mx + b\)</span>, where <span class="math inline">\(m\)</span> is the slope of the line and <span class="math inline">\(b\)</span> is the y-intercept. A linear function has a constant rate of change, which means that for every unit increase in the input, the output increases by a fixed amount. Fitting a linear function to data is called <strong>linear regression</strong>.</p>
+<p>In our case, we choose to <em>model</em> the relationship between the heights of the parents and the heights of the children as a linear function.</p>
+<p><span class="math display">\[\text{predicted height of child} = \text{slope} \times \text{midparent height} + \text{intercept}\]</span></p>
+<p>Note that our first model, the average height of the children, is a special case of this linear function where the slope is zero and the intercept is the average height of the children.</p>
+<p>What <em>should</em> the slope be? Basically, we want it to be whatever value makes the predicted heights of the children as close to the actual heights of the children as possible.</p>
+<p>We can use a statistical technique called <strong>ordinary least squares</strong> (OLS) to find the best-fitting line for our data. OLS minimizes the (squared) distance between the predicted heights of the children and the actual heights of the children.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Why squared?">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Why squared?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>OLS minimizes <span class="math inline">\((\text{predicted height} - \text{actual height})^2\)</span>. Why squared? There are two main reasons: 1. Squaring the differences ensures that we don’t have negative values canceling out positive values 2. When you square a number, it becomes larger as the number gets larger. This means that larger errors are penalized more heavily than smaller errors. So you’d rather be off by 1 inch 10 times (squared error of 10) than be off by 10 inches once (squared error of 100). This helps us find a line that is close to all of the points and avoids being too far off on any one point.</p>
+<p><em>Advanced note:</em> If you like calculus, the other benefit of squared errors is that they are differentiable (think about a parabola <span class="math inline">\(y = x^2\)</span> - the slope is always changing, but it never has a sharp corner). This is a big difference compared to absolute errors, which have a sharp corner at zero (the slope of <span class="math inline">\(|x|\)</span> is not defined at zero, where it changes from -1 to 1).</p>
+</div>
+</div>
+</div>
+<p>Let’s fit a linear regression model to the data and see what the best-fitting line looks like.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Specifying regression models">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Specifying regression models
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Statistical software packages have built-in functions for fitting many common models to data. There are a variety of packages that do pretty much the same thing, and they all have their own syntax for specifying the model you want to fit.</p>
+<p>Some packages accept a formula as input, which specifies the relationship between the variables. The “formula” is a string that describes the model you want to fit, and has its own syntax. In this case, we want to predict the height of the child based on the midparent height, so we use the formula <code>height ~ midparent</code>. The <code>~</code> symbol separates the outcome variable (the variable we want to predict) from the input variable (the variable we are using to make the prediction). The <code>+</code> symbol can be used to add more input variables to the model, but in this case we only have one input variable. The intercept is included by default, so we don’t need to specify it explicitly.</p>
+</div>
+</div>
+</div>
+<div id="07b5693a" class="cell" data-execution_count="20">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit OLS and draw the prediction errors</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.formula.api <span class="im">import</span> ols</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a linear regression model to the data</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ols(<span class="st">"height ~ midparent"</span>, data<span class="op">=</span>galton).fit()</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># print the summary of the model</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>predicted_heights <span class="op">=</span> model.predict(galton[<span class="st">"midparent"</span>]).values</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> galton[<span class="st">"height"</span>] <span class="op">-</span> predicted_heights</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>select_idx <span class="op">=</span> galton[<span class="st">"family"</span>].drop_duplicates().sample(<span class="dv">20</span>).index.values <span class="co"># avoid overplotting a few non-overlapping families</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>remaining_idx <span class="op">=</span> galton.index.difference(select_idx).values</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">10</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(data<span class="op">=</span>galton, x<span class="op">=</span><span class="st">"midparent"</span>, y<span class="op">=</span><span class="st">"height"</span>, ax<span class="op">=</span>ax[<span class="dv">0</span>])</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x<span class="op">=</span>galton[<span class="st">"midparent"</span>], y<span class="op">=</span>predicted_heights, color<span class="op">=</span><span class="st">"k"</span>, label<span class="op">=</span><span class="st">"Predicted Height"</span>, ax<span class="op">=</span>ax[<span class="dv">0</span>])</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(data<span class="op">=</span>galton.iloc[select_idx], x<span class="op">=</span><span class="st">"midparent"</span>, y<span class="op">=</span><span class="st">"height"</span>, alpha<span class="op">=</span><span class="fl">1.</span>, ax<span class="op">=</span>ax[<span class="dv">1</span>])</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(data<span class="op">=</span>galton.iloc[remaining_idx], x<span class="op">=</span><span class="st">"midparent"</span>, y<span class="op">=</span><span class="st">"height"</span>, alpha<span class="op">=</span><span class="fl">0.15</span>, color<span class="op">=</span><span class="st">"gray"</span>, ax<span class="op">=</span>ax[<span class="dv">1</span>])</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Midparent Height (Z-score)"</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Child's Height (inches)"</span>)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x<span class="op">=</span>galton[<span class="st">"midparent"</span>], y<span class="op">=</span>predicted_heights, color<span class="op">=</span><span class="st">"k"</span>, label<span class="op">=</span><span class="st">"Predicted Height"</span>, ax<span class="op">=</span>ax[<span class="dv">1</span>])</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> select_idx:</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># draw a line from the predicted height to the actual height</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    ax[<span class="dv">1</span>].plot([galton[<span class="st">"midparent"</span>].iloc[i], galton[<span class="st">"midparent"</span>].iloc[i]], [predicted_heights[i], galton[<span class="st">"height"</span>].iloc[i]], color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-08_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In the second plot, we show the prediction errors for a few datapoints. The red lines show the difference between the predicted height of the child and the actual height of the child. OLS finds the best fit that minimizes the sum of the squared lengths of these red lines.</p>
+<p>So what’s the slope that answers our question? We can extract the parameters of the model to find out. The slope is the parameter associated with the midparent height variable.</p>
+<div id="abf9238a" class="cell" data-execution_count="21">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model.params</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<pre><code>Intercept    66.765946
+midparent     1.656486
+dtype: float64</code></pre>
+</div>
+</div>
+<p>So what exactly can we say?</p>
+<p>The slope of a line <span class="math inline">\(y = mx + b\)</span> is the change in <span class="math inline">\(y\)</span> for a one-unit increase in <span class="math inline">\(x\)</span>. So, in our case, the slope is the change in the predicted height of the child for a one-unit increase in the midparent height.</p>
+<p>So, for every one unit increase in the midparent height, the predicted height of the child increases by about 1.7 inches.</p>
+<p>This probably seems confusing because the midparent heights are standardized and averaged. It means that if the parents’ heights are on average one standard deviation above the mean height, the predicted height of the child is 1.7 inches taller than the average height of the children in the dataset.</p>
+<p>So how did we do in terms of prediction?</p>
+<p>Let’s take a look at the distribution of the errors.</p>
+<div id="2c4f7a55" class="cell" data-execution_count="22">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>sns.histplot(x<span class="op">=</span>errors, alpha<span class="op">=</span><span class="fl">0.5</span>, stat<span class="op">=</span><span class="st">"probability"</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Prediction Error (inches)"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"gray"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"gray"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Prediction Error vs Midparent Height (Z-score)"</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-08_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We often evaluate our predictions by studying the mean and standard deviation of the prediction errors. We want the mean to be close to zero, which means that our predictions are on average correct. You don’t want to be consistently over- or under-predicting. The standard deviation tells us how much the prediction errors vary.</p>
+<div id="0fe1ab67" class="cell" data-execution_count="23">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Mean prediction error: </span><span class="sc">{</span>np<span class="sc">.</span>mean(errors)<span class="sc">:.2e}</span><span class="ss"> </span><span class="ch">\n</span><span class="ss">Standard deviation of prediction error: </span><span class="sc">{</span>np<span class="sc">.</span>std(errors)<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mean prediction error: -2.43e-14 
+Standard deviation of prediction error: 3.39</code></pre>
+</div>
+</div>
+<p>Specifically, the standard deviation is called the “Root Mean Squared Error” (RMSE), and it tells us how far off our predictions are from the actual values on average: <span class="math display">\[\text{RMSE} = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (\text{predicted height}_i - \text{actual height}_i)^2}\]</span> So, in our case the RMSE is about 3.4. This means that on average, our predictions are off by about 3.4 inches.</p>
+<p>Let’s compare this to the RMSE of the naive prediction we made earlier (the average height of the children).</p>
+<div id="408a112d" class="cell" data-execution_count="24">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>naive_rmse <span class="op">=</span> np.sqrt(np.mean((galton[<span class="st">"height"</span>] <span class="op">-</span> mean_height) <span class="op">**</span> <span class="dv">2</span>))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Naive RMSE: </span><span class="sc">{</span>naive_rmse<span class="sc">:.2f}</span><span class="ss"> inches"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Naive RMSE: 3.58 inches</code></pre>
+</div>
+</div>
+<p>Notice anything else interesting about the residual distribution? It’s centered around zero, and most of the residuals close to that mean – it’s approximately normal!</p>
+<p>We skipped over this important detail before, but that’s actually a key assumption of the linear regression model. The residuals (or you can think of them as “noise” – variation in the data that we can’t explain with our model) should be normally distributed.</p>
+<p>This highlights the connection between linear regression and the kind of probabilistic statistical models we have been discussing in this course all along. The regression model treats the variable we are predicting (the height of the child) as a random variable itself. It has an expected value that depends in a linear way on the input variable, but it also has some inherent variability.</p>
+<p>So the linear regression model predictions can be written as: <span class="math display">\[y \sim \mathcal{N}(\beta_0 + \beta_1 x, \sigma^2)\]</span></p>
+<p>where <span class="math inline">\(\beta_0\)</span> is the intercept, <span class="math inline">\(\beta_1\)</span> is the slope, and <span class="math inline">\(\sigma^2\)</span> is the variance of the residuals.</p>
+<p>The consequence of this variability is that, just like our previous models, our data-driven conclusions are subject to uncertainty from sampling. We might just <strong>happen</strong> to get a sample where the children of tall parents are shorter than average, and get a slope that is negative.</p>
+<p>This is why we need to be careful about interpreting the results of our regression model. We’ll return to the hypothesis testing framework in the next lecture, and show how it can be applied to regression models.</p>
 
 
 <script type="ojs-module-contents">
@@ -417,8 +944,16 @@ eyJjb250ZW50cyI6W119
 <script type="vfs-file">
 W10=
 </script>
+</section>
+</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>The Galton dataset is is a classic dataset in statistics, named after Sir Francis Galton, who studied the relationship between the heights of parents and their children. The study is the origin of the term “linear regression” and is murkily involved in the eugenics movement of the early 1900s. Data from <a href="https://doi.org/10.7910/DVN/T0HSJ1">here</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script type="ojs-module-contents">
 eyJjb250ZW50cyI6W119
 </script>
