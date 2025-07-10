@@ -5,5 +5,6 @@ title: "Assignments"
 
 | Assignment | Description | Due Date |
 | --- | --- | --- |
-| [Assignment 1](assignments/assignment-00.html) |  |  |
+| [Assignment 0](assignments/assignment-00.html) |  |  |
+| [Assignment 1](assignments/assignment-01.html) |  |  |
 
