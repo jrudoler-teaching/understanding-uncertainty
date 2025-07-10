@@ -64,5 +64,11 @@
   },
   "notebooks/lecture-09.ipynb": {
     "lecture-09.html": "3644fff5"
+  },
+  "slides/lecture-01-slides.ipynb": {
+    "lecture-01-slides.html": "71964bb5"
+  },
+  "slides/lecture-02-slides.ipynb": {
+    "lecture-02-slides.html": "bd908a93"
   }
 }
