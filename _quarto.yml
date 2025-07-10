@@ -52,7 +52,8 @@ website:
         # - text: "Lecture 12: Advanced Topics"
         #   href: notebooks/lecture-12.ipynb
   page-navigation: true
-
+filters:
+  - shinylive
 format:
   live-html:
     theme: 

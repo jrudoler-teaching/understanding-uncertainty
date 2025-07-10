@@ -9,7 +9,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.7.31">
 
-  <meta name="dcterms.date" content="2025-07-08">
+  <meta name="dcterms.date" content="2025-07-09">
   <title>Understanding Uncertainty – Why Statistics?</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -138,7 +138,7 @@
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">2025-07-08</p>
+  <p class="date">2025-07-09</p>
 </section>
 <section id="course-goals" class="slide level2 scrollable">
 <h2>Course Goals</h2>
@@ -1816,7 +1816,11 @@ P(X) = \begin{cases}
 </section>
 <section id="evaluating-models" class="slide level2 scrollable">
 <h2>Evaluating models</h2>
-<p>What should we do now? - Now that we realize our sample is very unlikely under our model, then perhaps we should reconsider our model. - Model is just a “guess” about the DGP, while the sample is real data that we have observed.</p>
+<p>What should we do now?</p>
+<ul>
+<li class="fragment">Now that we realize our sample is very unlikely under our model, then perhaps we should reconsider our model.</li>
+<li class="fragment">Model is just a “guess” about the DGP, while the sample is real data that we have observed.</li>
+</ul>
 <div class="fragment">
 <div title="Unlikely data or unlikely model?">
 <div class="callout callout-note callout-titled callout-style-default">
@@ -1874,7 +1878,13 @@ P(X) = \begin{cases}
 <h2>Prediction</h2>
 <p>Prediction is the process of using a model to make predictions about unseen (or future) data.</p>
 <p>Back to the Airbnb data: we might want to <strong>predict</strong> which borough a new listing belongs to based on its features (e.g., listing type, review ratings, price, etc.).</p>
-<p>To that end we will <em>fit</em> a predictive model to the data. Basic idea of the model: - we assume the features of the listing (e.g., price) are related to the probability of it being in a certain borough - e.g., perhaps more expensive listings are more likely to be in Manhattan</p>
+<p>To that end we will <em>fit</em> a predictive model to the data. Basic idea of the model:</p>
+<ul>
+<li class="fragment">we assume the features of the listing (e.g., price) are related to the probability of it being in a certain borough
+<ul>
+<li class="fragment">e.g., perhaps more expensive listings are more likely to be in Manhattan</li>
+</ul></li>
+</ul>
 <div class="fragment">
 <div title="Fitting a model">
 <div class="callout callout-note callout-titled callout-style-default">
@@ -1969,7 +1979,11 @@ Prediction Accuracy: 45.38%
 <h2>Summary</h2>
 <p>3 objectives of data analysis: description, inference, and prediction.</p>
 <p>Hopefully you now have a better understanding of <strong>what</strong> statistics is supposed to help you do with data. Of course, we haven’t actually gone into any of the details of <strong>how</strong> to do anything. (Don’t worry, we’ll get there!)</p>
-<p>Up next: - basic programming concepts that are important for data science. - After that we will learn some foundational concepts in probability that will help us think about data and models more rigorously.</p>
+<p>Up next:</p>
+<ul>
+<li class="fragment">basic programming concepts that are important for data science.</li>
+<li class="fragment">After that we will learn some foundational concepts in probability that will help us think about data and models more rigorously.</li>
+</ul>
 <div class="fragment">
 <p>From there, the sky is the limit! We’ll cover a wide range of topics, including statistical inference, uncertainty quantification, machine learning, and more.</p>
 <p>Since we haven’t learned any programming or statistics yet, we won’t have any real exercises for this lecture. There’s just a quick <a href="../assignments/assignment-00.html">Assignment 0</a> to make sure you are set up to run Python code for future assignments.</p>
