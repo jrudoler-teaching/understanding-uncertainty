@@ -8,6 +8,8 @@ project:
     - "slides/*.ipynb"
 website:
   title: "Understanding Uncertainty"
+  site-url: https://jrudoler-teaching.github.io/understanding-uncertainty/
+  description: "A course on statistical thinking and uncertainty quantification."
   navbar:
     left:
       - href: index.qmd
