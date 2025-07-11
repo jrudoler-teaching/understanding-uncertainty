@@ -7,4 +7,6 @@ title: "Assignments"
 | --- | --- | --- |
 | [Assignment 0](assignments/assignment-00.html) |  |  |
 | [Assignment 1](assignments/assignment-01.html) |  |  |
+| [Assignment 2](assignments/assignment-02.html) |  |  |
+| [Assignment 3](assignments/assignment-03.html) |  |  |
 
