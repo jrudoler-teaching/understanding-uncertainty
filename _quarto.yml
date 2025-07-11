@@ -9,6 +9,7 @@ project:
 website:
   title: "Understanding Uncertainty"
   site-url: https://jrudoler-teaching.github.io/understanding-uncertainty/
+  site-path: "/understanding-uncertainty/"
   description: "A course on statistical thinking and uncertainty quantification."
   navbar:
     left:
