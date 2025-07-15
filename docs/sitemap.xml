@@ -1,87 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/slides/lecture-02-slides.html</loc>
-    <lastmod>2025-07-14T13:17:57.518Z</lastmod>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/slides/lecture-03-slides.html</loc>
+    <lastmod>2025-07-15T13:56:34.751Z</lastmod>
   </url>
   <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/slides/lecture-00-slides.html</loc>
-    <lastmod>2025-07-09T17:04:15.836Z</lastmod>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/slides/lecture-01-slides.html</loc>
+    <lastmod>2025-07-10T15:18:54.031Z</lastmod>
   </url>
   <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/assignments/assignment-01.html</loc>
-    <lastmod>2025-07-13T20:02:05.635Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-10.html</loc>
-    <lastmod>2025-07-08T15:55:03.606Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-08.html</loc>
-    <lastmod>2025-07-08T15:55:03.606Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-06.html</loc>
-    <lastmod>2025-07-08T15:55:03.598Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-04.html</loc>
-    <lastmod>2025-07-09T13:40:02.349Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-02.html</loc>
-    <lastmod>2025-07-11T13:35:22.846Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-00.html</loc>
-    <lastmod>2025-07-11T13:35:26.837Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/index.html</loc>
-    <lastmod>2025-07-08T15:55:03.580Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/about.html</loc>
-    <lastmod>2025-07-08T21:25:19.615Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/assignments.html</loc>
-    <lastmod>2025-07-11T13:35:24.036Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/syllabus.html</loc>
-    <lastmod>2025-07-08T19:14:35.155Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-01.html</loc>
-    <lastmod>2025-07-11T13:14:48.395Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-03.html</loc>
-    <lastmod>2025-07-09T13:40:02.332Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-05.html</loc>
-    <lastmod>2025-07-08T20:17:08.814Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-07.html</loc>
-    <lastmod>2025-07-08T15:55:03.600Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-09.html</loc>
-    <lastmod>2025-07-09T13:46:11.746Z</lastmod>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/assignments/assignment-02.html</loc>
+    <lastmod>2025-07-15T19:43:20.614Z</lastmod>
   </url>
   <url>
     <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/assignments/assignment-00.html</loc>
     <lastmod>2025-07-08T19:19:37.462Z</lastmod>
   </url>
   <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/assignments/assignment-02.html</loc>
-    <lastmod>2025-07-13T20:52:29.995Z</lastmod>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-09.html</loc>
+    <lastmod>2025-07-09T13:46:11.746Z</lastmod>
   </url>
   <url>
-    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/slides/lecture-01-slides.html</loc>
-    <lastmod>2025-07-10T15:18:54.031Z</lastmod>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-07.html</loc>
+    <lastmod>2025-07-08T15:55:03.600Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-05.html</loc>
+    <lastmod>2025-07-08T20:17:08.814Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-03.html</loc>
+    <lastmod>2025-07-15T22:28:49.853Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-01.html</loc>
+    <lastmod>2025-07-15T22:39:38.254Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/syllabus.html</loc>
+    <lastmod>2025-07-08T19:14:35.155Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/assignments.html</loc>
+    <lastmod>2025-07-11T13:35:24.036Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/about.html</loc>
+    <lastmod>2025-07-08T21:25:19.615Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/index.html</loc>
+    <lastmod>2025-07-08T15:55:03.580Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-00.html</loc>
+    <lastmod>2025-07-11T13:35:26.837Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-02.html</loc>
+    <lastmod>2025-07-15T20:10:12.076Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-04.html</loc>
+    <lastmod>2025-07-09T13:40:02.349Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-06.html</loc>
+    <lastmod>2025-07-08T15:55:03.598Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-08.html</loc>
+    <lastmod>2025-07-08T15:55:03.606Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/notebooks/lecture-10.html</loc>
+    <lastmod>2025-07-08T15:55:03.606Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/assignments/assignment-01.html</loc>
+    <lastmod>2025-07-13T20:02:05.635Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/slides/lecture-00-slides.html</loc>
+    <lastmod>2025-07-09T17:04:15.836Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jrudoler-teaching.github.io/understanding-uncertainty/slides/lecture-02-slides.html</loc>
+    <lastmod>2025-07-15T19:34:33.397Z</lastmod>
   </url>
 </urlset>

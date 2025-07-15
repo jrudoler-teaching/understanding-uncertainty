@@ -11,7 +11,7 @@
 
   <meta name="author" content="Joseph Rudoler">
   <meta name="dcterms.date" content="2025-07-15">
-  <title>Understanding Uncertainty – Lecture 02: Probability and Random Variables</title>
+  <title>Understanding Uncertainty – Lecture 03: Sampling and Simulation</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -200,7 +200,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Lecture 02: Probability and Random Variables</h1>
+  <h1 class="title">Lecture 03: Sampling and Simulation</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -212,181 +212,30 @@ Joseph Rudoler
 
   <p class="date">2025-07-15</p>
 </section>
-<section class="slide level2">
-
-<div class="hidden">
-<p><span class="math display">\[
-\renewcommand{\P}{\mathbb{P}}
-\newcommand{\E}{\mathbb{E}}
-\newcommand{\Var}{\mathbb{V}\text{ar}}
-\newcommand{\Cov}{\mathbb{C}\text{ov}}
-\]</span></p>
-</div>
+<section id="recap" class="slide level2">
+<h2>Recap</h2>
+<p>In the last lecture, we introduced some basic concepts of probability and random variables. We learned about: - Probability - Conditional probability - Independence - Probability functions - Random variables - Expectation (or expected value) - Variance - Probability distributions</p>
+<p>Now that we have a good understanding of the basics of probability, we can start to explore how we deal with randomness computationally.</p>
 </section>
-<section id="probability" class="slide level2">
-<h2>Probability</h2>
-<p>Most of you are probably familiar with the basic intuition of <strong>probability</strong>: essentially it measures how likely an event is to occur.</p>
-<div class="fragment">
-<p>In mathematical terms, the probability <span class="math inline">\(\P\)</span> of an event <span class="math inline">\(A\)</span> is defined as:</p>
-<p><span class="math display">\[\begin{align*}
-\P(A) &amp;= \frac{\text{ \# of outcomes where } A \text{ occurs}}{\text{ total \# of outcomes}} \\
-\end{align*}\]</span></p>
-</div>
-<div class="fragment">
-<p>By definition this quantity:</p>
+<section id="sampling-from-probability-distributions" class="slide level2">
+<h2>Sampling from probability distributions</h2>
+<!-- Talk about what a sample is, IID sampling, sampling with replacement, sampling without replacement, -->
+<p>A sample is a subset of data drawn from a more general population. That population can be thought of as a probability distribution – this distribution essentially describes how likely you are to observe different values when you sample from it.</p>
+<p>We will quickly review some important concepts related to sampling.</p>
+<h3 id="independent-and-identically-distributed-iid-sampling">Independent and identically distributed (IID) sampling</h3>
+<p>When we sample from a probability distribution, we often assume that the samples are independent and identically distributed (IID). This means that each sample is drawn from the same distribution and that the samples do not influence each other.</p>
+<p>Coin flips are a good example of IID sampling. If you flip a fair coin multiple times, each flip has the same probability of being heads or tails (this is the “identically distributed” part), and the outcome of one flip does not affect the outcome of another (this is the “independent” part). The same is true for rolling a die!</p>
+<p>We often apply this concept to more complex random processes as well, where we do not have such a clear understanding of the underlying process. For example, if we are sampling the heights of people in a city, we might assume that each person’s height is drawn from the same distribution (the distribution of heights in that city) and that one person’s height does not affect another’s. Whether or not the IID assumption holds in practice is an important question to consider when analyzing data – for example, do you think that the heights of people in a family are independent of each other?</p>
+<h3 id="sampling-with-and-without-replacement">Sampling with and without replacement</h3>
+<p>Another important concept in sampling is the distinction between sampling with replacement and sampling without replacement.</p>
 <ul>
-<li class="fragment">cannot be negative (<span class="math inline">\(\P(A) = 0\)</span> means <span class="math inline">\(A\)</span> never occurs), and</li>
-<li class="fragment">it must be less than or equal to 1 (<span class="math inline">\(\P(A) = 1\)</span> means <span class="math inline">\(A\)</span> always occurs).</li>
+<li class="fragment"><p><strong>Sampling with replacement</strong> means that after we draw a sample from the population, we put it back before drawing the next sample. This means that the same object / instance can be selected multiple times.</p></li>
+<li class="fragment"><p><strong>Sampling without replacement</strong> means that once we draw a sample, we do not put it back before drawing the next sample. This means that each individual can only be selected once. This can introduce dependencies between samples, as the population changes after each draw.</p></li>
 </ul>
-</div>
-</section>
-<section id="example-coin-flip" class="slide level2">
-<h2>Example: Coin Flip</h2>
-<p>The classical example of probability is flipping a coin. When you flip a fair coin, there are two possible outcomes: heads (<span class="math inline">\(H\)</span>) and tails (<span class="math inline">\(T\)</span>).</p>
-<p>If we let <span class="math inline">\(A\)</span> be the event that the coin lands on heads, then we can compute the probability of <span class="math inline">\(A\)</span> as follows:</p>
-<p><span class="math display">\[\begin{align*}
-\P(\text{H}) &amp;= \frac{\text{ \# of heads}}{\text{ total \# of outcomes}} \\
-      &amp;= \frac{1}{2} \\
-\end{align*}\]</span></p>
-<p>This matches our intuition that a fair coin has a 50% chance of landing on heads.</p>
-</section>
-<section id="properties-of-probability-sum-to-1" class="slide level2">
-<h2>Properties of Probability: Sum to 1</h2>
-<p>An important property of probabilities is that the sum of the probabilities of all possible outcomes must equal 1. This is like say “there’s a 100% chance that <em>something</em> will happen”.</p>
-<div class="fragment">
-<p>In our coin flip example, we have two possible outcomes: heads and tails. If the coin flip is not heads, it must be tails. In other words, the events <span class="math inline">\(H\)</span> and <span class="math inline">\(T\)</span> cover 100% of the possible outcomes. So we can write: <span class="math display">\[\begin{align*}
-\P(H) + \P(T) &amp;= 1 \\
-\frac{1}{2} + \frac{1}{2} &amp;= 1
-\end{align*}\]</span></p>
-</div>
-<div class="fragment">
-<p>When we know the events we are interested in make up all of the possible outcomes, we can use this property to compute probabilities.</p>
-</div>
-<div class="fragment">
-<p>For example, for any event <span class="math inline">\(A\)</span>, the event either happens or it doesn’t. So we can compute the probability of the event not occurring as: <span class="math display">\[\begin{align*}
-\P(\text{not}~ A) &amp;= 1 - \P(A)
-\end{align*}\]</span></p>
-</div>
-</section>
-<section id="probability-of-multiple-events" class="slide level2">
-<h2>Probability of multiple events</h2>
-<p>But what if we flip the coin twice?</p>
-<p>Now there are four possible outcomes:</p>
-<ul>
-<li class="fragment"><span class="math inline">\(HH\)</span></li>
-<li class="fragment"><span class="math inline">\(HT\)</span></li>
-<li class="fragment"><span class="math inline">\(TH\)</span></li>
-<li class="fragment"><span class="math inline">\(TT\)</span></li>
-</ul>
-<div class="fragment">
-<p>If we let <span class="math inline">\(B\)</span> be the event that at least one coin lands on heads, we can compute the probability of <span class="math inline">\(B\)</span> as follows:</p>
-</div>
-<div class="fragment">
-<p><span class="math display">\[\begin{align*}
-\P(B) &amp;= \frac{\text{ \# of outcomes with at least one head}}{\text{ total \# of outcomes}} \\
-      &amp;= \frac{|\{HH, HT, TH\}|}{|\{HH, HT, TH, TT\}|} \\
-      &amp;= \frac{3}{4} \\
-\end{align*}\]</span></p>
-</div>
-</section>
-<section id="probability-of-multiple-events-and-vs-or" class="slide level2">
-<h2>Probability of multiple events: AND vs OR</h2>
-<p>What is the probability of getting heads on the first flip AND the second flip (i.e., the event <span class="math inline">\(C = \{HH\}\)</span>)?</p>
-<ul>
-<li class="fragment">There is only one outcome where both flips are heads</li>
-<li class="fragment">Still four total outcomes</li>
-<li class="fragment"><span class="math inline">\(\P(C) = \P (H_1 ~\text{and}~ H_2) = \frac{1}{4}\)</span>.</li>
-</ul>
-<div class="fragment">
-<p>What about the probability of getting heads on the first flip OR the second flip?</p>
-</div>
-<div class="fragment">
-<p>This is actually the same event as <span class="math inline">\(B\)</span> before (at least 1 heads), so we can use the same calculation:</p>
-<p><span class="math inline">\(\P(B) = \P(H_1 ~\text{or}~ H_2) = \frac{3}{4}\)</span>.</p>
-</div>
-</section>
-<section id="set-notation-and-or" class="slide level2">
-<h2>Set notation (AND / OR)</h2>
-<p>In the above, we used <span class="math inline">\(H_1\)</span> and <span class="math inline">\(H_2\)</span> to denote heads on the first and second flips, respectively.</p>
-<p>The notation <span class="math inline">\(H_1 ~\text{and}~ H_2\)</span> means both flips are heads, while <span class="math inline">\(H_1 ~\text{or}~ H_2\)</span> means at least one flip is heads.</p>
-<p>In probability theory, we often use the symbols <span class="math inline">\(\cap\)</span> and <span class="math inline">\(\cup\)</span> to denote “and” and “or” respectively.</p>
-<p>So we could also write <span class="math inline">\(\P(H_1 \cap H_2)\)</span> for the probability of both flips being heads, and <span class="math inline">\(\P(H_1 \cup H_2)\)</span> for the probability of at least one flip being heads.</p>
-<p>Technically, this is set notation where <span class="math inline">\(\cap\)</span> means intersection (the event where both <span class="math inline">\(H_1\)</span> and <span class="math inline">\(H_2\)</span> occur), while <span class="math inline">\(\cup\)</span> means union (the event where either <span class="math inline">\(H_1\)</span> or <span class="math inline">\(H_2\)</span> occurs).</p>
-</section>
-<section id="rules-for-multiple-events" class="slide level2">
-<h2>Rules for multiple events</h2>
-<p>There are some important rules for calculating probabilities of multiple events. In particular, if you have two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, the following rules hold:</p>
-<ul>
-<li class="fragment"><p><strong>Addition rule</strong>: For any two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, the probability of either <span class="math inline">\(A\)</span> or <span class="math inline">\(B\)</span> occurring is given by: <span class="math display">\[
-\P(A \cup B) = \P(A) + \P(B) - \P(A \cap B)
-\]</span> This last term, <span class="math inline">\(\P(A \cap B)\)</span>, is necessary to avoid double counting the outcomes where both <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> occur.</p>
-<p>Note that if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are mutually exclusive (i.e., they cannot both occur at the same time), then <span class="math inline">\(\P(A \cap B) = 0\)</span>, and the formula simplifies to: <span class="math display">\[  \P(A \cup B) = \P(A) + \P(B)\]</span></p></li>
-</ul>
-</section>
-<section id="rules-for-multiple-events-1" class="slide level2">
-<h2>Rules for multiple events</h2>
-<div title="Visualizing sets of events">
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Visualizing sets of events</strong></p>
-</div>
-<div class="callout-content">
-<p>The following image illustrates the addition rule for two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> using a Venn diagram. <img data-src="../images/probability-sets-union.jpeg" alt="probability-set"></p>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="rules-for-multiple-events-2" class="slide level2">
-<h2>Rules for multiple events</h2>
-<ul>
-<li class="fragment"><strong>Multiplication rule</strong>: For any two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, the probability of both <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> occurring is given by: <span class="math display">\[\P(A \cap B) = \P(A) \cdot \P(B | A)\]</span> where <span class="math inline">\(\P(B | A)\)</span> is the conditional probability of <span class="math inline">\(B\)</span> given that <span class="math inline">\(A\)</span> has occurred. This means you first consider the outcomes where <span class="math inline">\(A\)</span> occurs, and then look at the probability of <span class="math inline">\(B\)</span> within that subset.</li>
-</ul>
-<div class="fragment">
-<div title="Conditional probability">
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Conditional probability</strong></p>
-</div>
-<div class="callout-content">
-<p>The notation <span class="math inline">\(\P(B | A)\)</span> is read as “the probability of <span class="math inline">\(B\)</span> given <span class="math inline">\(A\)</span>”. It represents the probability of event <span class="math inline">\(B\)</span> occurring under the condition that event <span class="math inline">\(A\)</span> has already occurred.</p>
-<p>We make these adjustments in our heads all of the time.</p>
-<ul>
-<li class="fragment">For example, you might expect that it is more likely I will buy ice cream if it is hot outside. In this case, the event <span class="math inline">\(A\)</span> is “it is hot outside”, and the event <span class="math inline">\(B\)</span> is “I buy ice cream”.</li>
-<li class="fragment">The conditional probability <span class="math inline">\(\P(B | A)\)</span> would be higher than <span class="math inline">\(\P(B)\)</span> on a typical day.</li>
-</ul>
-<p>Let’s think about this in the context of our coin flips. If we know that the first flip is heads (<span class="math inline">\(H_1\)</span>), then only two outcomes are possible (<span class="math inline">\(HH\)</span> and <span class="math inline">\(HT\)</span>) instead of four (<span class="math inline">\(HH\)</span>, <span class="math inline">\(HT\)</span>, <span class="math inline">\(TH\)</span>, <span class="math inline">\(TT\)</span>).</p>
-<ul>
-<li class="fragment">The conditional probability <span class="math inline">\(\P(H_2 | H_1)\)</span>, which is the probability of the second flip being heads given that the first flip was heads, is: <span class="math display">\[\begin{align*}
-\P(H_2 | H_1) &amp;= \frac{\text{ \# of outcomes where } H_2 \text{ occurs and } H_1 \text{ has occurred}}{\text{ total \# of outcomes where } H_1 \text{ has occurred}} \\
-&amp;= \frac{|\{HH\}|}{|\{HH, HT\}|} \\
-&amp;= \frac{1}{2} \\
-\end{align*}\]</span></li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<p>The multiplication rule helps us calculate the probability of multiple events happening, as long as we know how one event affects the other (i.e., the conditional probability).</p>
-</div>
-</section>
-<section id="problem-drawing-cards" class="slide level2">
-<h2>Problem: Drawing Cards</h2>
-<p>Consider a deck of cards (52 cards total, 13 of each suit). I might ask you, “What is the probability of drawing a club on the first draw and a club on the second draw? (Assuming you do not replace the first card.)”</p>
-<div id="6aef992a" class="cell" data-execution_count="2">
+<div id="fb2bd7a6" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
-<div id="FUBDYjgPuwjl" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
-#FUBDYjgPuwjl {
+<div id="NFpfRRhlrrtx" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
+#NFpfRRhlrrtx {
    --jq-multiple-choice-bg: #6f78ffff;
    --jq-mc-button-bg: #fafafa;
    --jq-mc-button-border: #e0e0e0e0;
@@ -607,7 +456,7 @@ Joseph Rudoler
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/javascript">
-var questionsFUBDYjgPuwjl=[{"question": "What is the conditional probability of drawing a club on the second draw given that the first card drawn was a club?", "type": "multiple_choice", "answers": [{"answer": "1/52", "correct": false}, {"answer": "1/4", "correct": false}, {"answer": "12/51", "correct": true}, {"answer": "13/52", "correct": false}]}, {"question": "What is the probability of drawing a club on the first draw and a club on the second draw? (Assuming you do not replace the first card.)", "type": "numeric", "precision": 4, "answers": [{"type": "range", "range": [0.055, 0.062], "correct": true, "feedback": "Correct! The probability is 13/52 * 12/51 = 1/4 * 12/51 = .0588"}, {"type": "default", "feedback": "Incorrect. Consider the multiplication rule!"}]}];
+var questionsNFpfRRhlrrtx=[{"question": "Is flipping a coin an example of sampling with, or without replacement?", "type": "multiple_choice", "answers": [{"answer": "With replacement", "correct": true}, {"answer": "Without replacement", "correct": false}]}, {"question": "Is dealing a hand in poker an example of sampling with, or without replacement?", "type": "multiple_choice", "answers": [{"answer": "With replacement", "correct": false}, {"answer": "Without replacement", "correct": true}]}];
 
 if (typeof Question === 'undefined') {
 // Make a random ID
@@ -1670,8 +1519,8 @@ function make_string(qa, outerqDiv, qDiv, aDiv, id) {
  * Ensures show_questions is called after the container div is in the DOM.
  */
 function try_show() {
-  if (document.getElementById("FUBDYjgPuwjl")) {
-    show_questions(questionsFUBDYjgPuwjl, FUBDYjgPuwjl);
+  if (document.getElementById("NFpfRRhlrrtx")) {
+    show_questions(questionsNFpfRRhlrrtx, NFpfRRhlrrtx);
   } else {
     setTimeout(try_show, 200);
   }
@@ -1686,328 +1535,71 @@ function try_show() {
 </div>
 </div>
 </div></section>
-<section id="independence" class="slide level2">
-<h2>Independence</h2>
-<p>Two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are said to be <strong>independent</strong> if the occurrence of one does not affect the probability of the other.</p>
-<div class="fragment">
-<p>How does this relate to the multiplication rule?</p>
-<ul>
-<li class="fragment">If <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent, then the conditional probability <span class="math inline">\(\P(B | A)\)</span> is simply <span class="math inline">\(\P(B)\)</span>.
-<ul>
-<li class="fragment">Knowing that <span class="math inline">\(A\)</span> has occurred does not change the probability of <span class="math inline">\(B\)</span> occurring.</li>
-</ul></li>
-</ul>
-</div>
-<div class="fragment">
-<p>This means that for independent events, the multiplication rule simplifies to:<br>
-<span class="math display">\[\P(A \cap B) = \P(A) \cdot \P(B)\]</span></p>
-</div>
-<div class="fragment">
-<p>Our coin flip example illustrates this nicely.</p>
-<ul>
-<li class="fragment">If we flip a fair coin twice, the outcome of the first flip does not affect the outcome of the second flip.</li>
-<li class="fragment">Therefore, the two events (the first flip being heads and the second flip being heads) are independent.</li>
-</ul>
-<p>So the probability of both flips being heads is simply</p>
-</div>
-<div class="fragment">
-<p><span class="math display">\[\P(H_1 \cap H_2) = \P(H_1) \cdot \P(H_2) = \frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}\]</span></p>
-</div>
-</section>
-<section id="complicated-counting" class="slide level2">
-<h2>Complicated counting</h2>
-<p>Counting gets confusing and cumbersome quickly, especially when we have many events or outcomes.</p>
-<p>Say that I want to know the probability of getting exactly one head when flipping a coin 5 times.</p>
-<p>Let’s think about the case where the first flip is heads.</p>
-<ul>
-<li class="fragment">The probability of getting a head on the first flip is <span class="math inline">\(\frac{1}{2}\)</span>, and the probability of getting tails on the 4 other flips is also <span class="math inline">\(\frac{1}{2}\)</span> each.</li>
-<li class="fragment">Because the flips are independent, we can multiply these probabilities together to get the probability of this specific sequence of flips: <span class="math display">\[\P(H_1 \cap T_2 \cap T_3 \ldots \cap T_{5}) = \frac{1}{2} \cdot \left(\frac{1}{2}\right)^4 = \frac{1}{2^{5}}\]</span></li>
-</ul>
-<div class="fragment">
-<p>Are we done? As it stands, this is the probability of getting heads on the first flip and tails on all other flips.</p>
-<ul>
-<li class="fragment">But there are many other sequences that would also meet the conditions of getting “exactly one head”
-<ul>
-<li class="fragment">For example, we could have heads on the second flip and tails on all other flips, or heads on the third flip and tails on all other flips, and so on.</li>
-</ul></li>
-<li class="fragment">In fact, there are exactly 5 different sequences that would meet the conditions of getting exactly one head in 5 flips. So we need to multiply our previous result by the number of sequences that meet the conditions: <span class="math display">\[\P(\text{exactly one head in 5 flips}) = 5 \cdot \frac{1}{2^{5}} = \frac{5}{32} \approx .16\]</span></li>
-</ul>
-</div>
-</section>
-<section id="counting-outcomes" class="slide level2">
-<h2>Counting Outcomes</h2>
-<p>There are two common types of outcomes we want to count: <strong>permutations</strong> and <strong>combinations</strong>.</p>
-<div class="fragment">
-<p>A <strong>combination</strong> is a selection of items or events without regard to the order in which they occur. For example, the number of ways 1 out of 5 flips could be heads.</p>
-<p>An important and intuitive way to think about combinations is that we are <strong>choosing</strong> an item from a set. In our example, we are choosing 1 flip to be heads out of 5 flips.</p>
-<p><span class="math display">\[
-\begin{align*}
-\text{Flip 1 is heads} &amp;= \{1, 0, 0, 0, 0\} \\
-\text{Flip 2 is heads} &amp;= \{0, 1, 0, 0, 0\} \\
-\text{Flip 3 is heads} &amp;= \{0, 0, 1, 0, 0\} \\
-\vdots \\
-\text{Flip 5 is heads} &amp;= \{0, 0, 0, 0, 1\}
-\end{align*}
-\]</span></p>
-<p>It is clear here that there are 5 possible “slots” where we can place a head.</p>
-</div>
-<div class="fragment">
-<p>What if we want to know the number of ways to choose 2 flips to be heads out of 5 flips? Naturally the logic above still applies, and the 5 flips we counted above are still all valid placements for one of the two heads. Now we just need to consider the second head.</p>
-</div>
-<div class="fragment">
-<p>Let’s take the first row from above, where the first flip is heads. Given that the first flip is heads, how many ways can we choose a second flip to also be heads? The second flip can be any of the remaining 4 flips, so there are 4 possible choices. <span class="math display">\[
-\begin{align*}
-\text{Flip 1 and 2 are heads} &amp;= \{1, 1, 0, 0, 0\} \\
-\text{Flip 1 and 3 are heads} &amp;= \{1, 0, 1, 0, 0\} \\
-\text{Flip 1 and 4 are heads} &amp;= \{1, 0, 0, 1, 0\} \\
-\text{Flip 1 and 5 are heads} &amp;= \{1, 0, 0, 0, 1\}
-\end{align*}
-\]</span></p>
-</div>
-<div class="fragment">
-<p>Now let’s consider the second row, where the second flip is heads. Given that the second flip is heads, how many ways can we choose a first flip to also be heads? The first flip can be any of the remaining 4 flips, so there are again 4 possible choices.</p>
-<p><span class="math display">\[
-\begin{align*}
-\text{Flip 2 and 1 are heads} &amp;= \{1, 1, 0, 0, 0\} \\
-\text{Flip 2 and 3 are heads} &amp;= \{0, 1, 1, 0, 0\} \\
-\text{Flip 2 and 4 are heads} &amp;= \{0, 1, 0, 1, 0\} \\
-\text{Flip 2 and 5 are heads} &amp;= \{0, 1, 0, 0, 1\}
-\end{align*}
-\]</span></p>
-</div>
-<div class="fragment">
-<p>You would continue this process for the third, fourth, and fifth flips. So for each of the 5 flips, you can choose any of the remaining 4 flips to be heads.</p>
-<p>This gives us a total of <span class="math inline">\(5 \cdot 4 = 20\)</span> ways to choose 2 flips to be heads out of 5 flips.</p>
-</div>
-<div class="fragment">
-<p>But wait! We already counted the combination of flips 2 and 1 earlier (just in a different order – where flip 1 was heads first).</p>
-</div>
-<div class="fragment">
-<p>This illustrates the key distinction between combinations and permutations. A <strong>permutation</strong> is an arrangement of items or events in a specific order.</p>
-<ul>
-<li class="fragment">Every possible combination of heads can be arranged in different ways, leading to different sequences of flips.</li>
-<li class="fragment">If you are only interested in counting combinations, listing out all of the possible arrangements like we did above leads to double counting.</li>
-</ul>
-</div>
-<div class="fragment">
-<p>Counting all of the possible permutations of a sequence is straightforward. Using the logic above, you just assign “slots” in a sequence to each of the items you are arranging.</p>
-</div>
-<div class="fragment">
-<p>Each time you allocate a slot, you have one fewer item to place in the remaining slots. So for a sequence of length <span class="math inline">\(n\)</span>, the number of permutations is: <span class="math display">\[
-n! = n \cdot (n-1) \cdot (n-2) \cdots 2 \cdot 1
-\]</span></p>
-</div>
-<div class="fragment">
-<p>Now, if we want to count combinations instead of permutations, we start with the number of permutations and then discount to account for the fact that the order does not matter.</p>
-<p>Namely, the number of combinations of <span class="math inline">\(k\)</span> items from a set of <span class="math inline">\(n\)</span> items is given by the formula: <span class="math display">\[
-\binom{n}{k} = \frac{n!}{k! \cdot (n-k)!}
-\]</span></p>
-</div>
-<div class="fragment">
-<p>This formula:</p>
-<ul>
-<li class="fragment">counts <em>all</em> of the possible permutations of the sequence (<span class="math inline">\(n!\)</span>)</li>
-<li class="fragment">divides by the number of ways to arrange the <span class="math inline">\(k\)</span> items that are selected (which is <span class="math inline">\(k!\)</span>)</li>
-<li class="fragment">divides by the number of ways to arrange the remaining <span class="math inline">\(n-k\)</span> items (which is <span class="math inline">\((n-k)!\)</span>).</li>
-</ul>
-</div>
-<div class="fragment">
-<p>In our example, we have <span class="math inline">\(n = 5\)</span> (the number of flips) and <span class="math inline">\(k = 2\)</span> (the number of heads). So the number of combinations of 2 heads from 5 flips is: <span class="math display">\[
-\binom{5}{2} = \frac{5!}{2! \cdot (5-2)!} = \frac{5!}{2! \cdot 3!} = \frac{5 \cdot 4 \cdot 3!}{2 \cdot 1 \cdot 3!} = \frac{5 \cdot 4}{2 \cdot 1} = 10
-\]</span></p>
-</div>
-</section>
-<section id="end-of-part-1" class="slide level2">
-<h2>End of Part 1</h2>
-<p>This concludes the first part of our lecture on probability. We have covered the basic concepts of probability, how to compute probabilities for single and multiple events, and the distinction between combinations and permutations. Next we will talk about probability functions, which allow us to concisely describe the probability of outcomes that have many possible values.</p>
-</section>
-<section id="probability-functions" class="slide level2">
-<h2>Probability functions</h2>
-<p>Thinking about probability in terms of counting outcomes is useful, and it is always a good idea to keep that intuition in mind if you ever get stuck.</p>
-<div class="fragment">
-<p>However, it is often more convenient to work with <strong>probability functions</strong>.</p>
-<ul>
-<li class="fragment">assigns a probability to each possible outcome. For example, if we have a fair coin, we can define a probability function <span class="math inline">\(f\)</span> as follows: <span class="math display">\[
-f(x) = \begin{cases}
-  \frac{1}{2} &amp; \text{if } x = 0 \text{ (heads)} \\
-  \frac{1}{2} &amp; \text{if } x = 1 \text{ (tails)} \\
-  0 &amp; \text{otherwise}
-\end{cases}
-\]</span> where <span class="math inline">\(x\)</span> is the outcome of the coin flip (0 for heads, 1 for tails).</li>
-</ul>
-</div>
-<div class="fragment">
-<div title="Functions map inputs to outputs">
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Functions map inputs to outputs</strong></p>
-</div>
-<div class="callout-content">
-<p>Functions are just a “map” that tells you what output to expect for each input. A probability function is a special type of function that maps inputs to probabilities in the range <span class="math inline">\([0, 1]\)</span>.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<p>This might seem a bit redundant because we’re just presenting the same information in a new format.</p>
-<p>But probability functions are much more concise!</p>
-</div>
-<div class="fragment">
-<p>For example, if we have a die with six sides, we can define a probability function <span class="math inline">\(f\)</span> as follows: <span class="math display">\[
-f(x) = \begin{cases}
-    \frac{1}{6} &amp; \text{if } x = 1, 2, 3, 4, 5, 6 \\
-    0 &amp; \text{otherwise}
-\end{cases}
-\]</span></p>
-</div>
-<div class="fragment">
-<p>But we can also use the same function to describe the probability of rolling a die with any number of sides. For example, if we have a die with <span class="math inline">\(k\)</span> sides, we can define a probability function <span class="math inline">\(f\)</span> as follows:</p>
-<p><span class="math display">\[
-f(x) = \begin{cases}
-    \frac{1}{k} &amp; \text{if } x = 1, 2, \ldots, k \\
-    0 &amp; \text{otherwise}
-\end{cases}
-\]</span> This is much more concise than writing out the probability for each possible outcome, and it allows us to easily generalize to any number of sides.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {python} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a></span>
-<span id="cb1-2"><a></a># Define your function below</span>
-<span id="cb1-3"><a></a>def f(x, k):</span>
-<span id="cb1-4"><a></a>    # your code here</span>
-<span id="cb1-5"><a></a>    pass</span>
-<span id="cb1-6"><a></a></span>
-<span id="cb1-7"><a></a># Example usage:</span>
-<span id="cb1-8"><a></a># print(f(1, 5))  # Expected output: 0.2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="fragment">
-<p>Solution:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {python} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a></a></span>
-<span id="cb2-2"><a></a>def f(x, k):</span>
-<span id="cb2-3"><a></a>    if 1 &lt;= x &lt;= k:</span>
-<span id="cb2-4"><a></a>        return 1 / k</span>
-<span id="cb2-5"><a></a>    else:</span>
-<span id="cb2-6"><a></a>        return 0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="random-variables" class="slide level2">
-<h2>Random Variables</h2>
-<p>A random variable is a quantity that</p>
-<ul>
-<li class="fragment">can take on different values based on the outcome of a random event.</li>
-<li class="fragment">it might be a discrete variable (like the outcome of a coin flip)</li>
-<li class="fragment">it might be a continuous variable (like the height of a person).</li>
-<li class="fragment">basically it is any quantity that has randomness associated with it.</li>
-</ul>
-<p>We denote random variables with capital letters, like <span class="math inline">\(X\)</span> or <span class="math inline">\(Y\)</span>. The specific values that a random variable can take on in a particular instance are usually denoted with lowercase letters, like <span class="math inline">\(x\)</span> or <span class="math inline">\(y\)</span>.</p>
-</section>
-<section id="probability-functions-for-random-variables" class="slide level2">
-<h2>Probability Functions for Random Variables</h2>
-<p>We use <strong>probability functions</strong> to describe the probabilities associated with random variables.</p>
-<ul>
-<li class="fragment">Specifically, a probability function <span class="math inline">\(f\)</span> for a random variable <span class="math inline">\(X\)</span> gives the probability that <span class="math inline">\(X\)</span> takes on a specific value <span class="math inline">\(x\)</span>.</li>
-</ul>
-<p>For example, let <span class="math inline">\(X\)</span> be a random variable that represents the outcome of flipping a fair coin. The probability function for <span class="math inline">\(X\)</span> would be: <span class="math display">\[
-f(x) = \P (X = x) = \begin{cases}
-    \frac{1}{2} &amp; \text{if } x = 0 \text{ (heads)} \\
-    \frac{1}{2} &amp; \text{if } x = 1 \text{ (tails)} \\
-    0 &amp; \text{otherwise}
-\end{cases}
-\]</span></p>
-<div class="fragment">
-<div title="Bernoulli random variable">
+<section id="simulating-a-random-sample" class="slide level2">
+<h2>Simulating a random sample</h2>
+<p>We can simulate a random process by sampling from a corresponding probability distribution.</p>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Bernoulli random variable</strong></p>
+<p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>The above is an example of a <strong>Bernoulli random variable</strong>, which takes on the value 1 with probability <span class="math inline">\(p\)</span> and the value 0 with probability <span class="math inline">\(1 - p\)</span>. In our case, <span class="math inline">\(p = \frac{1}{2}\)</span> for a fair coin.</p>
+<p>Programmatic random sampling is not truly random, but rather “pseudo-random.” This means that the numbers generated are determined by an initial value called a “seed”. If you use the same seed, you will get the same sequence of random numbers. This is useful for reproducibility in experiments and simulations.</p>
+<p>If you don’t specify a seed, the random number generator (RNG) will use a default seed that is typically based on the current date and time, which means that you will get different results each time you run the code.</p>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="fragment">
-<p>As mentioned above, we can also think about random variables with continuous values. For example, let <span class="math inline">\(Y\)</span> be a random variable that represents the height of a person in centimeters. Let’s assume that every person’s height is equally likely to be between 150 cm and 200 cm (this is not true of course). The probability function for <span class="math inline">\(Y\)</span> would be: <span class="math display">\[
-f(y) = \P (Y = y) = \begin{cases}
-    \frac{1}{50} &amp; \text{if } 150 \leq y \leq 200 \\
-    0 &amp; \text{otherwise}
-\end{cases}
-\]</span></p>
-</div>
-<div class="fragment">
-<div title="Uniform random variable">
+<p>There are built-in functions in many programming languages, including Python, that allow us to sample from common probability distributions. For example, in Python’s NumPy library, we can use <code>numpy.random</code> module to sample from various distributions like uniform, normal, binomial, etc.</p>
+<div title="Normal distribution">
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Uniform random variable</strong></p>
+<p><strong>Normal distribution</strong></p>
 </div>
 <div class="callout-content">
-<p>The above is an example of a <strong>uniform random variable</strong>, which takes on values in a continuous range with equal probability. In our case, the range is from 150 cm to 200 cm, and the probability density function is <span class="math inline">\(\frac{1}{50}\)</span>.</p>
+<p>The normal distribution is one of the most commonly used probability distributions in statistics. It is useful for modeling lots of real-world data, especially when the data tends to cluster around a mean (or average) value. The normal distribution is defined by two parameters: the mean (average) and the standard deviation (which measures how spread out the data is around the mean).</p>
 </div>
 </div>
 </div>
 </div>
-</div>
-</section>
-<section id="random-variables-for-random-processes" class="slide level2">
-<h2>Random Variables for random processes</h2>
-<p>In statistics, we treat our data as a random variable (or a collection of random variables). What this means is that we assume that the data we observe is just one possible outcome of a random process.</p>
-<p>This is a powerful assumption because it allows us to use probability theory to make inferences about the underlying process that generated the data. This is going to be a key idea in the next lecture and throughout the course.</p>
-</section>
-<section id="probability-distributions" class="slide level2">
-<h2>Probability distributions</h2>
-<p>We call the probability function for a random variable a <strong>probability distribution</strong></p>
-<ul>
-<li class="fragment">describes how the probabilities are distributed across the possible values of the random variable.</li>
-</ul>
-<div class="fragment">
-<p>Distributions can be discrete or continuous, depending on the type of random variable.</p>
-<ul>
-<li class="fragment">for discrete random variables, the probability distribution is often represented as a <strong>probability mass function (PMF)</strong>, which gives the probability of each possible value.</li>
-<li class="fragment">for continuous random variables, the probability distribution is represented as a <strong>probability density function (PDF)</strong>, which gives the density of probability at each point.</li>
-</ul>
-</div>
-</section>
-<section id="visualizing-random-variables-and-distributions" class="slide level2">
-<h2>Visualizing Random Variables and Distributions</h2>
-<p>Let’s say we have a random variable <span class="math inline">\(X\)</span>, but we don’t know the exact probability function. Instead, we have a set of observed data points <span class="math inline">\(\{x_1, x_2, \ldots, x_n\}\)</span> that we believe are individual realizations of <span class="math inline">\(X\)</span>. In other words, we have a sample of data that we think is representative of the underlying random variable.</p>
-<p>How can we visualize this data to understand the distribution of <span class="math inline">\(X\)</span>? The simplest solution is to just plot how many times each value occurs in the data. We can use a <strong>bar chart</strong> to visualize the counts of each value.</p>
-<div id="a44145c5" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb3-2"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb3-3"><a></a></span>
-<span id="cb3-4"><a></a>x <span class="op">=</span> np.array([<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>])</span>
-<span id="cb3-5"><a></a></span>
-<span id="cb3-6"><a></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
-<span id="cb3-7"><a></a>plt.hist(x, bins<span class="op">=</span>np.arange(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">2.5</span>, <span class="dv">1</span>), density<span class="op">=</span><span class="va">False</span>, align<span class="op">=</span><span class="st">"mid"</span>, rwidth<span class="op">=</span><span class="fl">0.8</span>)</span>
-<span id="cb3-8"><a></a>plt.xticks([<span class="dv">0</span>, <span class="dv">1</span>])</span>
-<span id="cb3-9"><a></a>plt.xlabel(<span class="st">'Value'</span>)</span>
-<span id="cb3-10"><a></a>plt.ylabel(<span class="st">'Frequency'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
-<pre><code>Text(0, 0.5, 'Frequency')</code></pre>
+<p>For example, to sample 100 values from a normal distribution with mean 0 and standard deviation 1, you can use:</p>
+<div id="238df48c" class="cell" data-execution_count="8">
+<div class="cell-output cell-output-stdout">
+<pre><code>Samples:
+ [ 0.30471708 -1.03998411  0.7504512   0.94056472 -1.95103519 -1.30217951
+  0.1278404  -0.31624259 -0.01680116 -0.85304393  0.87939797  0.77779194
+  0.0660307   1.12724121  0.46750934 -0.85929246  0.36875078 -0.9588826
+  0.8784503  -0.04992591 -0.18486236 -0.68092954  1.22254134 -0.15452948
+ -0.42832782 -0.35213355  0.53230919  0.36544406  0.41273261  0.430821
+  2.1416476  -0.40641502 -0.51224273 -0.81377273  0.61597942  1.12897229
+ -0.11394746 -0.84015648 -0.82448122  0.65059279  0.74325417  0.54315427
+ -0.66550971  0.23216132  0.11668581  0.2186886   0.87142878  0.22359555
+  0.67891356  0.06757907  0.2891194   0.63128823 -1.45715582 -0.31967122
+ -0.47037265 -0.63887785 -0.27514225  1.49494131 -0.86583112  0.96827835
+ -1.68286977 -0.33488503  0.16275307  0.58622233  0.71122658  0.79334724
+ -0.34872507 -0.46235179  0.85797588 -0.19130432 -1.27568632 -1.13328721
+ -0.91945229  0.49716074  0.14242574  0.69048535 -0.42725265  0.15853969
+  0.62559039 -0.30934654  0.45677524 -0.66192594 -0.36305385 -0.38173789
+ -1.19583965  0.48697248 -0.46940234  0.01249412  0.48074666  0.44653118
+  0.66538511 -0.09848548 -0.42329831 -0.07971821 -1.68733443 -1.44711247
+ -1.32269961 -0.99724683  0.39977423 -0.90547906]</code></pre>
 </div>
 
 </div>
-<img data-src="lecture-02-slides_files/figure-revealjs/cell-4-output-2.png" class="r-stretch"></section>
-<section id="example-dice-rolls" class="slide level2">
-<h2>Example: Dice Rolls</h2>
-<p>Consider a bunch of dice rolls. If we roll a die 100 times, we would expect to see each number appear roughly a similar number of times.</p>
-<p>If we plot the frequencies of each roll, we should see a discrete uniform distribution, where each number from 1 to 6 has approximately the same height. Let’s check it out:</p>
-<div id="9cb54ef4" class="cell" data-execution_count="5">
+<img data-src="lecture-03-slides_files/figure-revealjs/cell-4-output-2.png" class="r-stretch"><p>If you have a dataset and you want to sample from it, you can use the <code>numpy.random.choice</code> function to randomly select elements from the dataset (with or without replacement). If your dataset is in a pandas DataFrame, you can also use the <code>sample</code> method to randomly select rows from the DataFrame.</p>
+<div id="04efaa32" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-stdout">
-<pre><code>Total number of dice rolls: 1000</code></pre>
+<pre><code>Sample:
+ [-1.32269961 -1.13328721 -0.01680116 -1.68286977  0.54315427 -1.68733443
+  0.85797588 -0.85304393 -0.04992591 -0.36305385]</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -2027,49 +1619,49 @@ f(y) = \P (Y = y) = \begin{cases}
 <thead>
 <tr class="header" style="text-align: right;">
 <th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">rolls</th>
+<th data-quarto-table-cell-role="th">Sample</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
+<td data-quarto-table-cell-role="th">83</td>
+<td>-0.381738</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">53</td>
+<td>-0.319671</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">70</td>
+<td>-1.275686</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">45</td>
+<td>0.218689</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">44</td>
+<td>0.116686</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">39</td>
+<td>0.650593</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">22</td>
+<td>1.222541</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">80</td>
+<td>0.456775</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10</td>
+<td>0.879398</td>
+</tr>
+<tr class="even">
 <td data-quarto-table-cell-role="th">0</td>
-<td>1</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
-<td>5</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
-<td>4</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
-<td>3</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
-<td>3</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">5</td>
-<td>6</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">6</td>
-<td>1</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">7</td>
-<td>5</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">8</td>
-<td>2</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">9</td>
-<td>1</td>
+<td>0.304717</td>
 </tr>
 </tbody>
 </table>
@@ -2077,357 +1669,181 @@ f(y) = \P (Y = y) = \begin{cases}
 </div>
 </div>
 </div>
-<div class="fragment">
-<p>Now the plot:</p>
-<div id="12164adf" class="cell" data-execution_count="6">
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="lecture-02-slides_files/figure-revealjs/cell-7-output-1.png"></p>
-</figure>
+<p>If you want to sample from a custom distribution, you can also use the <code>numpy.random.choice</code> function to sample from a list of values with specified probabilities.</p>
+<p>Here’s an example of how to sample 100 dice rolls with a rigged die that has a 50% chance of rolling a 6, and a 10% chance of rolling each of the other numbers (1-5):</p>
+<div id="5a06edab" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>array([4, 6, 6, 6, 5, 3, 6, 1, 6, 6, 6, 4, 6, 6, 6, 2, 5, 1, 2, 6, 6, 6,
+       4, 4, 5, 2, 2, 5, 3, 6, 5, 6, 6, 4, 6, 6, 4, 3, 6, 2, 2, 1, 6, 6,
+       6, 6, 5, 6, 2, 2, 6, 5, 6, 6, 6, 6, 6, 4, 1, 5, 3, 5, 6, 3, 1, 3,
+       3, 6, 6, 6, 6, 5, 6, 2, 1, 1, 6, 5, 2, 6, 2, 6, 5, 4, 4, 6, 4, 1,
+       2, 6, 6, 6, 3, 6, 6, 6, 5, 3, 1, 6])</code></pre>
+</div>
+</div>
+<h3 id="simulating-more-complex-processes">Simulating more complex processes</h3>
+<p>Sometimes real-world processes are complex, and the samples we take are not independent. The simplest version of non-independence is sampling without replacement.</p>
+<p>Consider dealing poker hands from a standard deck of cards. When you deal a hand, you draw cards one at a time, and each card drawn affects the next card that can be drawn (because you do not put the card back into the deck).</p>
+<div id="18743e5c" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-stdout">
+<pre><code>Deck of cards before shuffling:
+ [ 1  1  1  1  2  2  2  2  3  3  3  3  4  4  4  4  5  5  5  5  6  6  6  6
+  7  7  7  7  8  8  8  8  9  9  9  9 10 10 10 10 11 11 11 11 12 12 12 12
+ 13 13 13 13]
+Deck of cards after shuffling:
+ [ 3  7 11  8 13  9  1  6  1 12  3  6  9  5 10  9  9  2 10  7  2 11  4  8
+  4 12  6 10  2 12  7  6  3 13  8  4  5  2  3 13  4  1  5  5  8 11 13 11
+ 12 10  7  1]
+Hands dealt to players:
+ [[10 13]
+ [ 4  5]
+ [ 2 12]
+ [ 4 10]]
+Remaining cards in the deck:
+ [ 3  7 11  8  9  1  6  1 12  3  6  9 10  9  9  7  2 11  8  4 12  6 10  2
+  7  6  3 13  8  5  2  3 13  4  1  5  5  8 11 13 11 12  7  1]
+Community cards on the board:
+ [ 2  7 11  7  8]</code></pre>
+</div>
+</div>
+<p>But it can get even more complex than that. In many real-world scenarios, the process of generating data involves multiple steps or conditions that affect the outcome.</p>
+<p>In these cases simulation might not be as straightforward as sampling from a single distribution (which takes just one or two lines of code). We then tend to write loops that simulate the process step by step, keeping track of the state of things as we go along.</p>
+<p>Let’s consider an example of a musician busking for money in Rittenhouse Square. The musician’s earnings might depend on various factors like the weather and and the number of passersby. To keep it simple, let’s assume that the musician earns $3 for every passerby who stops to listen. Of course, not every passerby will stop – let’s pretend every passerby has the same 20% chance of stopping.</p>
+<p>The musician might want to know how much money they can expect to earn in a day of busking. We can simulate this process by generating a random number of passersby and then calculating the earnings based on the stopping probability.</p>
+<div title="Poisson distribution">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Poisson distribution</strong></p>
+</div>
+<div class="callout-content">
+<p>The Poisson distribution is commonly used to model the number of events that occur in a fixed interval of time or space, given a known average rate of occurrence. It assumes that the events occur independently and at a constant average rate. In our example, we can use the Poisson distribution to model the number of passersby in a given time period (e.g., one hour of busking).</p>
 </div>
 </div>
 </div>
-<p>Notice that when the <span class="math inline">\(y\)</span>-axis represents probabilities, the heights of the bars sum to 1. This is because the total probability of all possible outcomes must equal 1!</p>
 </div>
-</section>
-<section id="histograms-for-continuous-random-variables" class="slide level2">
-<h2>Histograms for Continuous Random Variables</h2>
-<p>What about continuous random variables? In this case, we cannot just count the number of occurrences of each value, because there are infinitely many possible values.</p>
-<div class="fragment">
-<p>Instead, we can use a <strong>histogram</strong> to visualize the distribution of the data.</p>
+<div id="f958f240" class="cell" data-execution_count="7">
+<div class="cell-output cell-output-stdout">
+<pre><code>Day 1 (54.18% chance): No rain
+     Number of passersby: 211
+     Number of listeners: 41
+     Daily earnings: $123
+----------------------------------------
+Day 2 (30.72% chance): No rain
+     Number of passersby: 226
+     Number of listeners: 54
+     Daily earnings: $162
+----------------------------------------
+Day 3 (60.10% chance): Rain
+     Number of passersby: 51
+     Number of listeners: 13
+     Daily earnings: $39
+----------------------------------------
+Day 4 (48.82% chance): Rain
+     Number of passersby: 56
+     Number of listeners: 17
+     Daily earnings: $51
+----------------------------------------
+Day 5 (6.59% chance): No rain
+     Number of passersby: 212
+     Number of listeners: 34
+     Daily earnings: $102
+----------------------------------------
+Total earnings over 5 days: $477</code></pre>
 </div>
-<div class="fragment">
-<p>The <strong>histogram</strong> is a graphical representation that summarizes the distribution of a dataset.</p>
-<ul>
-<li class="fragment">divides the data into discrete, equally-sized intervals (or “bins”) along the x-axis and counts how many data points fall into each bin.</li>
-<li class="fragment">the height of each bar represents the either the total count of data points in that bin <strong>or</strong> the proportion of data points in that bin.</li>
-<li class="fragment">if the height of the bar is the proportion, then the area of the bar represents the probability of the random variable falling within that bin.</li>
-</ul>
 </div>
-<div class="fragment">
-<p>The prices of Airbnb listings from back in the first lecture are a good example of a continuous random variable. The resolution (cents) is so small that basically every price is unique. So we cannot just count the number of occurrences of each price. Instead, we can create a histogram to visualize the distribution of prices across bins.</p>
-<div id="afaccda7" class="cell" data-execution_count="7">
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="lecture-02-slides_files/figure-revealjs/cell-8-output-1.png"></p>
-</figure>
-</div>
-</div>
-</div>
-<div title="Area under a probability distribution">
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {pyodide} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a></a>#| exercise: average-weekly-busking</span>
+<span id="cb6-2"><a></a>#| caption: Simulate the expected earning of a busker in Rittenhouse Square over the course of a week.</span>
+<span id="cb6-3"><a></a></span>
+<span id="cb6-4"><a></a>import numpy as np</span>
+<span id="cb6-5"><a></a>def busk_one_week(rng, n_days=7):</span>
+<span id="cb6-6"><a></a>    """Simulate the earnings of a busker in Rittenhouse Square over the course of a week.</span>
+<span id="cb6-7"><a></a>    Args:</span>
+<span id="cb6-8"><a></a>        rng: A NumPy random number generator.</span>
+<span id="cb6-9"><a></a>        n_days: The number of days to simulate (default is 7).</span>
+<span id="cb6-10"><a></a>    Returns:</span>
+<span id="cb6-11"><a></a>        total_earnings: The total earnings over the week.</span>
+<span id="cb6-12"><a></a>    """</span>
+<span id="cb6-13"><a></a>    # TODO: </span>
+<span id="cb6-14"><a></a></span>
+<span id="cb6-15"><a></a>n_simulations = 1000</span>
+<span id="cb6-16"><a></a>random_seed = 33</span>
+<span id="cb6-17"><a></a></span>
+<span id="cb6-18"><a></a># TODO: Use the above function to simulate the expected earnings of a busker in Rittenhouse Square over the course of a week. Run the simulation 1000 times and calculate the average earnings over 1000 simulations. Hint: for loops are your friend here!</span>
+<span id="cb6-19"><a></a></span>
+<span id="cb6-20"><a></a>average_earnings = ...</span>
+<span id="cb6-21"><a></a>average_earnings</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="proof solution" data-exercise="average-weekly-busking">
+<p><span class="proof-title"><em>Solution</em>. </span></p>
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Area under a probability distribution</strong></p>
+<p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p>At the beginning of this lecture, we said that the probability of all possible outcomes must sum up to 1. This is true for both discrete and continuous random variables. For discrete random variables, the sum of the probabilities of all possible outcomes equals 1. For continuous random variables, the area under the probability density function (PDF) must equal 1.</p>
-<p>For discrete: <span class="math display">\[ \sum_{x} f(x) = 1 \]</span> For continuous: <span class="math display">\[ \int_{-\infty}^{\infty} f(x) \, dx = 1 \]</span></p>
-<p>We can use the same idea to compute the probability of a continuous random variable falling within a certain range. For example, if we want to know the probability that a continuous random variable <span class="math inline">\(X\)</span> falls between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, we can compute the area under the PDF from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span>: <span class="math display">\[ \P(a \leq X \leq b) = \int_{a}^{b} f(x) \, dx \]</span></p>
+<p>The key here is to re-use the logic of the weekly busking simulation in a loop that runs 1000 times. Each time we run the simulation, we get a different weekly outcome based on the random number generator. By averaging these outcomes, we can get a good estimate of the expected earnings over a week of busking.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a></a><span class="kw">def</span> busk_one_week(rng, n_days<span class="op">=</span><span class="dv">7</span>):</span>
+<span id="cb7-3"><a></a>    <span class="co">"""Simulate the earnings of a busker in Rittenhouse Square over the course of a week.</span></span>
+<span id="cb7-4"><a></a><span class="co">    Args:</span></span>
+<span id="cb7-5"><a></a><span class="co">        rng: A NumPy random number generator.</span></span>
+<span id="cb7-6"><a></a><span class="co">        n_days: The number of days to simulate (default is 7).</span></span>
+<span id="cb7-7"><a></a><span class="co">    Returns:</span></span>
+<span id="cb7-8"><a></a><span class="co">        total_earnings: The total earnings over the week.</span></span>
+<span id="cb7-9"><a></a><span class="co">    """</span></span>
+<span id="cb7-10"><a></a>    rain_probabilities <span class="op">=</span> rng.uniform(<span class="fl">0.</span>, <span class="fl">0.7</span>, size<span class="op">=</span>n_days)</span>
+<span id="cb7-11"><a></a></span>
+<span id="cb7-12"><a></a>    total_earnings <span class="op">=</span> <span class="dv">0</span> <span class="co"># initialize a variable to keep track of total earnings</span></span>
+<span id="cb7-13"><a></a>    <span class="cf">for</span> day <span class="kw">in</span> <span class="bu">range</span>(n_days):</span>
+<span id="cb7-14"><a></a>        <span class="co"># For each day, decide if it rains based on the probability</span></span>
+<span id="cb7-15"><a></a>        did_it_rain <span class="op">=</span> rng.binomial(n<span class="op">=</span><span class="dv">1</span>, p<span class="op">=</span>rain_probabilities[day])</span>
+<span id="cb7-16"><a></a>        <span class="co"># Based on the outcome, the number of passersby changes</span></span>
+<span id="cb7-17"><a></a>        <span class="cf">if</span> did_it_rain:</span>
+<span id="cb7-18"><a></a>            passersby <span class="op">=</span> rng.poisson(lam<span class="op">=</span><span class="dv">50</span>)  <span class="co"># fewer passersby when it rains</span></span>
+<span id="cb7-19"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb7-20"><a></a>            passersby <span class="op">=</span> rng.poisson(lam<span class="op">=</span><span class="dv">200</span>) <span class="co"># more passersby when it doesn't rain</span></span>
+<span id="cb7-21"><a></a>        <span class="co"># Simulate the number who stop to listen to the busker</span></span>
+<span id="cb7-22"><a></a>        listeners <span class="op">=</span> rng.binomial(n<span class="op">=</span>passersby, p<span class="op">=</span><span class="fl">0.2</span>)  <span class="co"># 20% of passersby stop</span></span>
+<span id="cb7-23"><a></a>        <span class="co"># Compute the busker's daily earnings</span></span>
+<span id="cb7-24"><a></a>        earnings <span class="op">=</span> <span class="dv">3</span> <span class="op">*</span> listeners  <span class="co"># $3 per listener</span></span>
+<span id="cb7-25"><a></a></span>
+<span id="cb7-26"><a></a>        total_earnings <span class="op">+=</span> earnings</span>
+<span id="cb7-27"><a></a></span>
+<span id="cb7-28"><a></a>    <span class="cf">return</span> total_earnings</span>
+<span id="cb7-29"><a></a></span>
+<span id="cb7-30"><a></a>n_simulations <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb7-31"><a></a>random_seed <span class="op">=</span> <span class="dv">33</span></span>
+<span id="cb7-32"><a></a></span>
+<span id="cb7-33"><a></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span>random_seed)</span>
+<span id="cb7-34"><a></a></span>
+<span id="cb7-35"><a></a><span class="co"># Use the above function to simulate the expected earnings of a busker in Rittenhouse Square over the course of a week.</span></span>
+<span id="cb7-36"><a></a><span class="co"># Run the simulation 1000 times and calculate the average earnings over 1000 simulations.</span></span>
+<span id="cb7-37"><a></a>earnings_by_week <span class="op">=</span> [busk_one_week(rng) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_simulations)]</span>
+<span id="cb7-38"><a></a>average_earnings <span class="op">=</span> np.mean(earnings_by_week)</span>
+<span id="cb7-39"><a></a>average_earnings</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
 </div>
-</div>
-</section>
-<section id="expectation" class="slide level2">
-<h2>Expectation</h2>
-<p>We are often interested in the <strong>average</strong> value of a random variable.</p>
-<ul>
-<li class="fragment">For example, if we play roulette, we might want to know the average amount of money we can expect to win or lose per game.</li>
-</ul>
-<div class="fragment">
-<p>Why do we need an average?</p>
-<ul>
-<li class="fragment">Since a random variable can take on many different values, a single sample does not give you a lot of information.</li>
-<li class="fragment">You might win hundreds of dollars on one game, but this does not mean you will win that much every time you play.</li>
-</ul>
-</div>
-<div class="fragment">
-<p>Instead, <strong>think about what would happen if we repeated the random process many times and took the average.</strong> - Values that occur more frequently will tend to have a larger impact on the average, while values that occur less frequently will have a smaller impact. - For example, at a casino roulette table perhaps you place a bet that has a 10% chance of winning. You might bet $1 and win $10 ($9 net profit) on one game, but if you lose $1 on the next 9 games you’re not making money in the long run. Even though $9 profit sounds great, the fact that it happens so infrequently (and you lose $1 90% of the time) means that your average profit is actually zero.</p>
-</div>
-<div class="fragment">
-<div title="Gambling warning: the house always wins">
-<div class="callout callout-warning callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Gambling warning: the house always wins</strong></p>
-</div>
-<div class="callout-content">
-<p>Actually, at real casinos, the games are designed so that “the house always wins” in the long run. So they would not let you bet $10 to win $100 ($90 profit) with a 10% chance – they would give you worse odds, like a 9% chance of winning $100 for a $10 bet.</p>
-<p>In the short term this is hardly noticeable – you’re actually quite likely to win a few times! But in the long term, the house edge means that you will lose money if you keep playing. This is why casinos are profitable businesses.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="expectation-formal-definition" class="slide level2">
-<h2>Expectation (formal definition)</h2>
-<p>We can formalize this idea that the average gives more weight to values that occur more frequently.</p>
-<p>The <strong>expectation</strong> (or expected value) of a random variable <span class="math inline">\(X\)</span> is gives the average value of <span class="math inline">\(X\)</span> over many instances. It is denoted as <span class="math inline">\(\mathbb{E}[X]\)</span> or <span class="math inline">\(\mu_X\)</span>. The expectation is calculated as follows: <span class="math display">\[
-\mathbb{E}[X] = \sum_{x} x \cdot f(x)
-\]</span> where <span class="math inline">\(f(x)\)</span> is the probability function of <span class="math inline">\(X\)</span>. For continuous random variables, the sum is replaced with an integral: <span class="math display">\[
-\mathbb{E}[X] = \int_{-\infty}^{\infty} x \cdot f(x) \, dx
-\]</span></p>
-<div class="fragment">
-<p>The way to think about this is that the expectation is a weighted average of all possible values of <span class="math inline">\(X\)</span>, where the weights are the probabilities of each value.</p>
-</div>
-<div class="fragment">
-<p>So in our roulette example, you can either lose $1 (with 90% probability) or win $9 (with 10% probability). The expectation would be: <span class="math display">\[
-\begin{align*}
-\mathbb{E}[X] &amp;= \sum_{x \in \{-1, 10\}} x \cdot f(x) \\
-&amp;= (-1) \cdot 0.9 + (10-1) \cdot 0.1 \\
-&amp;= -0.9 + 0.9 \\
-&amp;= 0
-\end{align*}
-\]</span></p>
-</div>
-<div class="fragment">
-<p>This is also the same as what you get if you just take the average of the outcomes. Say we play roulette 10 times, and we win $10 on one game and lose $1 on the other 9 games. The average outcome is: <span class="math display">\[
-\begin{align*}
-\frac{1}{10} \left( -1 \cdot 9 + 9 \cdot 1 \right) &amp;= -1 \cdot 0.9 + 9 \cdot 0.1 \\
-&amp;= -0.9 + 0.9 \\
-&amp;= 0
-\end{align*}
-\]</span></p>
-</div>
-<div class="fragment">
-<p>So for a finite dataset, or set of outcomes, we can estimate the expected value by taking the average of the outcomes. This is often written as <span class="math inline">\(\bar{X}\)</span>, and referred to as the sample mean. <span class="math display">\[
-\mathbb{E}[X] \approx \bar{X} = \frac{1}{n} \sum_{i=1}^{n} x_i
-\]</span></p>
-<p>This approximation becomes more accurate as the number of samples <span class="math inline">\(n\)</span> increases. We will talk about this more in a future lecture.</p>
-</div>
-</section>
-<section id="variance-and-standard-deviation" class="slide level2">
-<h2>Variance and standard deviation</h2>
-<p>The average is a useful summary of a random variable’s central tendency, but it does not tell us anything about how spread out the values are.</p>
-<div class="fragment">
-<p>Consider the roulette example again. If we play roulette many times, it does not matter how much we bet on each game – the <strong>average</strong> amount we can expect to win or lose is always zero. You can bet $1 or $10,000 on each game, but the average outcome is still zero.</p>
-</div>
-<div class="fragment">
-<p>Of course, the outcome of each game is not zero. Sometimes you win, sometimes you lose, and the amount you win or lose changes drastically depending on how much you bet.</p>
-<div id="69ab7544" class="cell" data-execution_count="8">
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="lecture-02-slides_files/figure-revealjs/cell-9-output-1.png"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="variance-intuition" class="slide level2">
-<h2>Variance (intuition)</h2>
-<p>How can we quantify this spread?</p>
-<ul>
-<li class="fragment">we want to capture that even though the average outcome is zero, winning $90 and losing $10 is very different from winning $9 and losing $1.
-<ul>
-<li class="fragment">maybe you want to pay for dinner with your winnings, so a $90 payout is much more useful than a $9 payout.</li>
-<li class="fragment">maybe you only have $10 in your pocket, so you can’t afford to lose all of it on a single game.</li>
-</ul></li>
-</ul>
-<div class="fragment">
-<p>We need a statistic that captures the typical <em>distance</em> between the values of the random variable and the average value.</p>
-</div>
-<div class="fragment">
-<div title="Why distance from the average?">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Why distance from the average?</strong></p>
-</div>
-<div class="callout-content">
-<p>Let’s imagine for a moment that there was a casino (a very poorly run casino) that let you place bets that win no matter what – the only question is how much you win. Let’s take an example where the payouts still differ by $10: you get $5 if you “lose” and $15 if you “win”.</p>
-<p>In this case, the expected value is: <span class="math display">\[
-\mathbb{E}[X] = \sum_{x
-} x \cdot f(x) = 5 \cdot 0.9 + 15 \cdot 0.1 = 4.5 + 1.5 = 6
-\]</span> So you can expect to win $6 per game on average.</p>
-<p>The amount that the winnings vary, though is exactly the same as the original roulette game. How can we replicate this notion mathematically?</p>
-<p>The answer is simple: we subtract the average from each value of <span class="math inline">\(X\)</span>: <span class="math display">\[X' = X - \mathbb{E}[X]\]</span> This gives us a new random variable <span class="math inline">\(X'\)</span> that represents the distance from the average. Notice that this new random variable has an average of zero, just like the original roulette game.</p>
-<p><span class="math display">\[\mathbb{E}[X'] = \sum_{x} (x - \mathbb{E}[X]) \cdot f(x) = ((5-6) \cdot 0.9 + (15-6) \cdot 0.1 = (-1) \cdot 0.9 + (9) \cdot 0.1 = -0.9 + 0.9 = 0\]</span></p>
-<p>or more generally: <span class="math display">\[\mathbb{E}[X'] = \mathbb{E}[X - \mathbb{E}[X]] = \mathbb{E}[X] - \mathbb{E}[X] = 0\]</span></p>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<p>So let’s compute exactly that - the distance from the average. The formula for distance between two vectors <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> is: <span class="math display">\[
-d^2 = \sum_{i} (x_i - y_i)^2
-\]</span> where <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> are the elements of the two vectors.</p>
-<ul>
-<li class="fragment">This is like the Pythagorean Theorem for computing the length of athe hypotenuse of a triange (<span class="math inline">\(a^2 + b^2 = c^2\)</span>).</li>
-</ul>
-</div>
-<div class="fragment">
-<p>In our case, we want to compute the distance between the values of the random variable <span class="math inline">\(X\)</span> and the average value <span class="math inline">\(\mathbb{E}[X]\)</span>. <span class="math display">\[
-d^2 = \sum_x (x - \mathbb{E}[X])^2
-\]</span></p>
-<p>Now we’re getting somewhere! However, this is adding up all of the squared distances – that means that the more values we have, the larger the distance will be.</p>
-<p>This is not quite right – instead we want to compute the average distance from the mean in order to get a sense of how spread out the values <em>typically</em> are.</p>
-</div>
-<div class="fragment">
-<p>So we need to divide by the number of values: <span class="math display">\[
-d^2_\text{avg} = \frac{1}{n} \sum_x (x - \mathbb{E}[X])^2
-\]</span></p>
-<p>Something should feel familiar about this expression. Recall that the average is related to the expectation.</p>
-</div>
-<div class="fragment">
-<p>If we replace the average with the expectation, we get the formula for the <strong>variance</strong> of a random variable <span class="math inline">\(X\)</span>: <span class="math display">\[
-\text{Var}(X) = \sigma^2(X) = \mathbb{E}[(X - \mathbb{E}[X])^2] = \sum_x (x - \mathbb{E}[X])^2 \cdot f(x)
-\]</span></p>
-</div>
-<div class="fragment">
-<p>The variance tells us how spread out the values of a random variable are around the average.</p>
-<ul>
-<li class="fragment">a larger variance means that the values are more spread out</li>
-<li class="fragment">a smaller variance means that the values are closer to the average.</li>
-</ul>
-</div>
-<div class="fragment">
-<p>The variance is a useful statistic, but it is not in the same units as the original random variable. For example, if <span class="math inline">\(X\)</span> represents the amount of money you win or lose in dollars, then the variance is in dollars squared. This can make it difficult to interpret.</p>
-</div>
-<div class="fragment">
-<p>So we often take the square root of the variance to get the <strong>standard deviation</strong>: <span class="math display">\[
-\text{SD}(X) = \sigma(X) = \sqrt{\text{Var}(X)} = \sqrt{\mathbb{E}[(X - \mathbb{E}[X])^2]}
-\]</span></p>
-</div>
-<div class="fragment">
-<p>Like with expected value, we can replace the expectation with the sample mean to get an estimate of the standard deviation (or variance) from a finite dataset: <span class="math display">\[
-\hat{\sigma}(X) = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (x_i - \bar{X})^2}
-\]</span></p>
-</div>
-<div class="fragment">
-<div title="Sample variance vs. population variance">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Sample variance vs.&nbsp;population variance</strong></p>
-</div>
-<div class="callout-content">
-<p>Technically, the formula above is an imperfect estimate of the population standard deviation. It’s in general a little bit too small, because the sample mean <span class="math inline">\(\bar{X}\)</span> does not perfectly represent the population mean <span class="math inline">\(\mathbb{E}[X]\)</span>. We can correct for this by dividing by <span class="math inline">\(n-1\)</span> instead of <span class="math inline">\(n\)</span>: <span class="math display">\[
-\hat{\sigma}(X) = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{X})^2}
-\]</span> This is called the <strong>sample standard deviation</strong>.</p>
-<p>Why is the initial estimate too small? In a small dataset, the sample mean “overfits” the data, meaning it is closer to the individual data points than the true population mean. Let’s think about this in terms of coin flips. If we flip a coin once, the sample mean is either <span class="math inline">\(\hat{X}=0\)</span> or 1, depending on whether we got heads or tails. But the true population mean is <span class="math inline">\(\mathbb{E}[X]=\frac{1}{2}\)</span>. If we compute the standard deviation using the original formula, the distance from the sample mean is exactly 0! So the standard deviation is also 0 (either <span class="math inline">\((1-1)^2\)</span> or <span class="math inline">\((0-0)^2\)</span>).</p>
-<p>By contrast, the true (population) standard deviation is <span class="math inline">\(\sigma(X) = \sqrt{\mathbb{E}[(X - \mathbb{E}[X])^2]} = \sqrt{\frac{1}{4}} = \frac{1}{2}\)</span>, which is larger than the estimate using the sample mean.</p>
-<p>This <strong>bias</strong> in computing the standard deviation gets smaller as the sample size <span class="math inline">\(n\)</span> increases, so for large datasets the difference is negligible. In smaller datasets, though, it is important to use the <span class="math inline">\(n-1\)</span> correction to get a more accurate estimate of the population standard deviation.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="common-probability-distributions" class="slide level2">
-<h2>Common probability distributions</h2>
-<p>Certain probability distributions are very common, and their corresponding probability functions are well-known. It is not necessary to memorize these distributions, but it is useful to be familiar with them and their properties.</p>
-<!-- Table of common probability distributions: -->
-<table class="caption-top">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 8%">
-<col style="width: 31%">
-<col style="width: 17%">
-<col style="width: 8%">
-<col style="width: 14%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Distribution</th>
-<th>Type</th>
-<th>Probability Function</th>
-<th>Parameters</th>
-<th>Mean</th>
-<th>Variance</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Bernoulli</td>
-<td>Discrete</td>
-<td><span class="math inline">\(f(x) = p^x (1-p)^{1-x}\)</span></td>
-<td><span class="math inline">\(p \in [0, 1]\)</span></td>
-<td><span class="math inline">\(p\)</span></td>
-<td><span class="math inline">\(p(1-p)\)</span></td>
-</tr>
-<tr class="even">
-<td>Binomial</td>
-<td>Discrete</td>
-<td><span class="math inline">\(f(x) = \binom{n}{x} p^x (1-p)^{n-x}\)</span></td>
-<td><span class="math inline">\(n \in \mathbb{N}, p \in [0, 1]\)</span></td>
-<td><span class="math inline">\(np\)</span></td>
-<td><span class="math inline">\(np(1-p)\)</span></td>
-</tr>
-<tr class="odd">
-<td>Poisson</td>
-<td>Discrete</td>
-<td><span class="math inline">\(f(x) = \frac{\lambda^x e^{-\lambda}}{x!}\)</span></td>
-<td><span class="math inline">\(\lambda &gt; 0\)</span></td>
-<td><span class="math inline">\(\lambda\)</span></td>
-<td><span class="math inline">\(\lambda\)</span></td>
-</tr>
-<tr class="even">
-<td>Uniform</td>
-<td>Continuous</td>
-<td><span class="math inline">\(f(x) = \frac{1}{b-a}\)</span></td>
-<td><span class="math inline">\(a &lt; b\)</span></td>
-<td><span class="math inline">\(\frac{a+b}{2}\)</span></td>
-<td><span class="math inline">\(\frac{(b-a)^2}{12}\)</span></td>
-</tr>
-<tr class="odd">
-<td>Normal</td>
-<td>Continuous</td>
-<td><span class="math inline">\(f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}\)</span></td>
-<td><span class="math inline">\(\mu \in \mathbb{R}, \sigma &gt; 0\)</span></td>
-<td><span class="math inline">\(\mu\)</span></td>
-<td><span class="math inline">\(\sigma^2\)</span></td>
-</tr>
-<tr class="even">
-<td>Exponential</td>
-<td>Continuous</td>
-<td><span class="math inline">\(f(x) = \lambda e^{-\lambda x}\)</span></td>
-<td><span class="math inline">\(\lambda &gt; 0\)</span></td>
-<td><span class="math inline">\(\frac{1}{\lambda}\)</span></td>
-<td><span class="math inline">\(\frac{1}{\lambda^2}\)</span></td>
-</tr>
-</tbody>
-</table>
-<p>The plots below show the probability functions for each of these distributions.</p>
-
-<img data-src="lecture-02-slides_files/figure-revealjs/cell-10-output-1.png" class="r-stretch"></section>
-<section id="summary" class="slide level2">
-<h2>Summary</h2>
-<p>This lecture introduced many important concepts from probability theory that will be useful throughout the course. Probability gives us a mathematical language and toolkit for reasoning about uncertainty and randomness in data, by thinking about possible outcomes and their likelihoods.</p>
-<p>In particular, we covered:</p>
-<ul>
-<li class="fragment">The basic definition of probability and how to compute it for simple events.</li>
-<li class="fragment">The addition and multiplication rules for calculating probabilities of multiple events.</li>
-<li class="fragment">The concept of independence and how it affects probabilities.</li>
-<li class="fragment">Random variables and their probability distributions</li>
-<li class="fragment">The expectation (or expected value) of a random variable</li>
-<li class="fragment">Variance and standard deviation</li>
-</ul>
-<div class="fragment">
-<p>Going forward, these concepts will be foundational for statistical modeling and designing good simulations and statistical tests.</p>
-<p>Assignment 2 will give you a chance to work through some of these concepts in more detail, so be sure to check it out!</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource {pyodide} number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a></a>#| exercise: average-weekly-busking</span>
+<span id="cb8-2"><a></a>#| check: true</span>
+<span id="cb8-3"><a></a></span>
+<span id="cb8-4"><a></a># Initialize feedback</span>
+<span id="cb8-5"><a></a>feedback = {"correct": True, "message": "Great job!"}</span>
+<span id="cb8-6"><a></a># Check if the average earnings are within a reasonable range</span>
+<span id="cb8-7"><a></a>if not random_seed == 33:</span>
+<span id="cb8-8"><a></a>    feedback["correct"] = False</span>
+<span id="cb8-9"><a></a>    feedback["message"] = "Make sure to use the correct random seed for reproducibility."</span>
+<span id="cb8-10"><a></a>elif not (average_earnings != 89.307):</span>
+<span id="cb8-11"><a></a>    feedback["correct"] = False</span>
+<span id="cb8-12"><a></a>    feedback["message"] = "The average earnings seem off. Check your simulation logic."</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
-</div>
 </section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
