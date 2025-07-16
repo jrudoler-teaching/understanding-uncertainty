@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2025-07-15">
 
-<title>Syllabus – Understanding Uncertainty</title>
+<title>Final Project – Understanding Uncertainty</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,29 +24,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-6bdd2aebeb936dcddaa5f935a5de481c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-ccd81253fefb92e9cd3f9eb5b5d87b54.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-6bdd2aebeb936dcddaa5f935a5de481c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
-<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
-<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-a14e3238c51140e99ccc48519b6ed9ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -73,182 +68,18 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
-<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
 
 </head>
 
-<body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
-    const toggleBodyColorMode = (bsSheetEl) => {
-      const mode = bsSheetEl.getAttribute("data-mode");
-      const bodyEl = window.document.querySelector("body");
-      if (mode === "dark") {
-        bodyEl.classList.add("quarto-dark");
-        bodyEl.classList.remove("quarto-light");
-      } else {
-        bodyEl.classList.add("quarto-light");
-        bodyEl.classList.remove("quarto-dark");
-      }
-    }
-    const toggleBodyColorPrimary = () => {
-      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
-      if (bsSheetEl) {
-        toggleBodyColorMode(bsSheetEl);
-      }
-    }
-    const setColorSchemeToggle = (alternate) => {
-      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
-      for (let i=0; i < toggles.length; i++) {
-        const toggle = toggles[i];
-        if (toggle) {
-          if (alternate) {
-            toggle.classList.add("alternate");
-          } else {
-            toggle.classList.remove("alternate");
-          }
-        }
-      }
-    };
-    const toggleColorMode = (alternate) => {
-      // Switch the stylesheets
-      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
-      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
-      manageTransitions('#quarto-margin-sidebar .nav-link', false);
-      if (alternate) {
-        // note: dark is layered on light, we don't disable primary!
-        enableStylesheet(alternateStylesheets);
-        for (const sheetNode of alternateStylesheets) {
-          if (sheetNode.id === "quarto-bootstrap") {
-            toggleBodyColorMode(sheetNode);
-          }
-        }
-      } else {
-        disableStylesheet(alternateStylesheets);
-        enableStylesheet(primaryStylesheets)
-        toggleBodyColorPrimary();
-      }
-      manageTransitions('#quarto-margin-sidebar .nav-link', true);
-      // Switch the toggles
-      setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
-      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
-        manageTransitions("body", false);
-        window.scrollTo(0, 1);
-        setTimeout(() => {
-          window.scrollTo(0, 0);
-          manageTransitions("body", true);
-        }, 40);
-      }
-    }
-    const disableStylesheet = (stylesheets) => {
-      for (let i=0; i < stylesheets.length; i++) {
-        const stylesheet = stylesheets[i];
-        stylesheet.rel = 'disabled-stylesheet';
-      }
-    }
-    const enableStylesheet = (stylesheets) => {
-      for (let i=0; i < stylesheets.length; i++) {
-        const stylesheet = stylesheets[i];
-        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
-          stylesheet.rel = 'stylesheet';
-        }
-      }
-    }
-    const manageTransitions = (selector, allowTransitions) => {
-      const els = window.document.querySelectorAll(selector);
-      for (let i=0; i < els.length; i++) {
-        const el = els[i];
-        if (allowTransitions) {
-          el.classList.remove('notransition');
-        } else {
-          el.classList.add('notransition');
-        }
-      }
-    }
-    const isFileUrl = () => {
-      return window.location.protocol === 'file:';
-    }
-    const hasAlternateSentinel = () => {
-      let styleSentinel = getColorSchemeSentinel();
-      if (styleSentinel !== null) {
-        return styleSentinel === "alternate";
-      } else {
-        return false;
-      }
-    }
-    const setStyleSentinel = (alternate) => {
-      const value = alternate ? "alternate" : "default";
-      if (!isFileUrl()) {
-        window.localStorage.setItem("quarto-color-scheme", value);
-      } else {
-        localAlternateSentinel = value;
-      }
-    }
-    const getColorSchemeSentinel = () => {
-      if (!isFileUrl()) {
-        const storageValue = window.localStorage.getItem("quarto-color-scheme");
-        return storageValue != null ? storageValue : localAlternateSentinel;
-      } else {
-        return localAlternateSentinel;
-      }
-    }
-    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
-      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
-      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
-      let newTheme = '';
-      if(authorPrefersDark) {
-        newTheme = isAlternate ? baseTheme : alternateTheme;
-      } else {
-        newTheme = isAlternate ? alternateTheme : baseTheme;
-      }
-      const changeGiscusTheme = () => {
-        // From: https://github.com/giscus/giscus/issues/336
-        const sendMessage = (message) => {
-          const iframe = document.querySelector('iframe.giscus-frame');
-          if (!iframe) return;
-          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
-        }
-        sendMessage({
-          setConfig: {
-            theme: newTheme
-          }
-        });
-      }
-      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
-      if (isGiscussLoaded) {
-        changeGiscusTheme();
-      }
-    };
-    const authorPrefersDark = false;
-    const darkModeDefault = authorPrefersDark;
-      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
-      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
-    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
-    // Dark / light mode switch
-    window.quartoToggleColorScheme = () => {
-      // Read the current dark / light value
-      let toAlternate = !hasAlternateSentinel();
-      toggleColorMode(toAlternate);
-      setStyleSentinel(toAlternate);
-      toggleGiscusIfUsed(toAlternate, darkModeDefault);
-      window.dispatchEvent(new Event('resize'));
-    };
-    // Switch to dark mode if need be
-    if (hasAlternateSentinel()) {
-      toggleColorMode(true);
-    } else {
-      toggleColorMode(false);
-    }
-  </script>
+<body class="nav-sidebar floating nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Understanding Uncertainty</span>
     </a>
   </div>
@@ -259,15 +90,15 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./syllabus.html" aria-current="page"> 
+    <a class="nav-link" href="../syllabus.html"> 
 <span class="menu-text">Syllabus</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./assignments.html"> 
+    <a class="nav-link" href="../assignments.html"> 
 <span class="menu-text">Assignments</span></a>
   </li>  
 </ul>
@@ -294,7 +125,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Syllabus</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Final Project</li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -316,55 +147,55 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./notebooks/lecture-00.html" class="sidebar-item-text sidebar-link">
+  <a href="../notebooks/lecture-00.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lecture 00: Why Statistics?</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./notebooks/lecture-01.html" class="sidebar-item-text sidebar-link">
+  <a href="../notebooks/lecture-01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lecture 01: Programming Basics</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./notebooks/lecture-02.html" class="sidebar-item-text sidebar-link">
+  <a href="../notebooks/lecture-02.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lecture 02: Probability and Random Variables</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./notebooks/lecture-03.html" class="sidebar-item-text sidebar-link">
+  <a href="../notebooks/lecture-03.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lecture 03: Sampling and Simulation</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./notebooks/lecture-04.html" class="sidebar-item-text sidebar-link">
+  <a href="../notebooks/lecture-04.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lecture 04: Data Generating Processes</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./notebooks/lecture-05.html" class="sidebar-item-text sidebar-link">
+  <a href="../notebooks/lecture-05.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lecture 05: Hypothesis Testing</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./notebooks/lecture-06.html" class="sidebar-item-text sidebar-link">
+  <a href="../notebooks/lecture-06.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lecture 06: Bootstrapping</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./notebooks/lecture-07.html" class="sidebar-item-text sidebar-link">
+  <a href="../notebooks/lecture-07.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lecture 07: Permutation Tests</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./notebooks/lecture-08.html" class="sidebar-item-text sidebar-link">
+  <a href="../notebooks/lecture-08.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lecture 08: Regression Basics</span></a>
   </div>
 </li>
@@ -373,16 +204,13 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Syllabus</h1>
+<h1 class="title">Final Project</h1>
 </div>
 
 
@@ -390,6 +218,12 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 15, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -399,181 +233,60 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><strong>Course Title</strong>: Understanding Uncertainty: An Introduction to Statistics through Data Generating Processes and Computational Simulations</p>
-<p><strong>Instructor:</strong> Joey Rudoler</p>
-<p><strong>Classroom:</strong> Academic Research Building (ARB), Room 401</p>
-<p><strong>Course Schedule:</strong></p>
-<table class="caption-top table">
-<caption>Tentative schedule, subject to change.</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Date</th>
-<th style="text-align: left;">Topic</th>
-<th style="text-align: left;">Assignment</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">7/09</td>
-<td style="text-align: left;">Intro, <a href="./notebooks/lecture-00.html">Why Statistics?</a> (<a href="slides/lecture-00-slides.html">slides</a>)</td>
-<td style="text-align: left;"><a href="assignments/assignment-00.html">Assignment 0</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">7/10</td>
-<td style="text-align: left;"><a href="./notebooks/lecture-01.html">Programming</a> (<a href="slides/lecture-01-slides.html">slides</a>)</td>
-<td style="text-align: left;"><a href="assignments/assignment-01.html">Assignment 1</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">7/11</td>
-<td style="text-align: left;">Programming cont.</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">7/14</td>
-<td style="text-align: left;"><a href="./notebooks/lecture-02.html">Probability</a> (<a href="slides/lecture-02-slides.html">slides</a>)</td>
-<td style="text-align: left;"><a href="assignments/assignment-02.html">Assignment 2</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">7/15</td>
-<td style="text-align: left;">Probability cont.</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">7/16</td>
-<td style="text-align: left;"><a href="./notebooks/lecture-03.html">Sampling and simulation</a> (<a href="slides/lecture-03-slides.html">slides</a>)</td>
-<td style="text-align: left;"><a href="assignments/assignment-03.html">Assignment 3</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">7/17</td>
-<td style="text-align: left;"><a href="./notebooks/lecture-04.html">Data Generating Processes and Statistical Models</a> (<a href="slides/lecture-04-slides.html">slides</a>)</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">7/18</td>
-<td style="text-align: left;"><a href="./notebooks/lecture-05.html">Hypothesis Testing</a> (<a href="slides/lecture-05-slides.html">slides</a>)</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">7/21</td>
-<td style="text-align: left;">Hypothesis Testing cont.</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">7/22</td>
-<td style="text-align: left;"><a href="./notebooks/lecture-06.html">Confidence Intervals, bootstrapping</a> (<a href="slides/lecture-06-slides.html">slides</a>)</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">7/23</td>
-<td style="text-align: left;"><a href="./notebooks/lecture-07.html">Permutation tests</a> (<a href="slides/lecture-07-slides.html">slides</a>)</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">7/24</td>
-<td style="text-align: left;"><a href="./notebooks/lecture-08.html">Regression</a> (<a href="slides/lecture-08-slides.html">slides</a>)</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">7/25</td>
-<td style="text-align: left;">Regression cont.</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">7/28</td>
-<td style="text-align: left;">Classification</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">7/29</td>
-<td style="text-align: left;">Crash course: Deep Learning and AI</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">7/30</td>
-<td style="text-align: left;">Advanced Data Visualization</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">7/31</td>
-<td style="text-align: left;">Paradoxes and Statistical Gotchas</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">8/01</td>
-<td style="text-align: left;">Guest Lecture / Final Projects</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">8/04</td>
-<td style="text-align: left;">Guest Lecture / Final Projects</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">8/05</td>
-<td style="text-align: left;">Guest Lecture / Final Projects</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">8/06</td>
-<td style="text-align: left;">Guest Lecture / Final Projects</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">8/07</td>
-<td style="text-align: left;">Final Project Presentations</td>
-<td style="text-align: left;"><a href="assignments/final-project.html">Final Project Guidelines</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">8/08</td>
-<td style="text-align: left;">Wrap-up and course evaluation</td>
-<td style="text-align: left;"></td>
-</tr>
-</tbody>
-</table>
+<p>The final project for our course is designed to allow you to explore a topic of your choice and apply the concepts we’ve learned throughout the course. You will have the opportunity to select a topic that interests you, conduct research and source relevant data, analyze the data, and present your findings at one of our final class sessions.</p>
+<section id="selecting-a-topic-research-question" class="level3">
+<h3 class="anchored" data-anchor-id="selecting-a-topic-research-question">Selecting a Topic / Research Question</h3>
+<p>You are free to choose any topic that interests you, provided that you can find relevant data to analyze. Finding a dataset is crucial, and obtained and cleaning data can often be the most time-consuming part of any data analysis project. To mitigate this challenge, it is recommended that you search for well-curated and documented datasets that are readily available online before you finalize your topic.</p>
+<p>A good place to start is to check <a href="https://datasetsearch.research.google.com/">Google Dataset Search</a> or <a href="https://www.kaggle.com/datasets">Kaggle</a> for datasets that are relevant to your topic. There are also many other sources of datasets, such as government databases, academic repositories, and other open data platforms. For example, the Israeli Central Bureau of Statistics (CBS) has a wealth of data available on various topics, which can be found <a href="https://www.cbs.gov.il/en/cbsNewBrand/Pages/default.aspx">here</a>. Sports data availability is sometimes limited, depending on the sport and the league, but leagues are increasingly making data available.</p>
+<p>Once you have a general topic in mind, and confirm that you can find relevant data, you can start to refine your research question. A good research question should be specific, measurable, and generate interesting insights:</p>
+<ul>
+<li><strong>Specific</strong>: The question should be focused and not too broad. For example, instead of asking “How does war affect the economy?”, you might ask “How does the outbreak of war in a country affect its GDP growth rate in the following year?”</li>
+<li><strong>Measurable</strong>: The question should be answerable with data. For example, instead of asking “Is climate change real?”, you might ask “What is the trend in global average temperatures over the past 50 years?”</li>
+<li><strong>Insightful</strong>: There are lots of questions that can be answered with data, but not all of them are interesting or insightful. A good research question should lead to new insights or a better understanding of the topic. For example, rather than asking “Who has the most goals in the Premier League?”, you might ask “How does the presence of other star players on a team affect the goal-scoring performance of a player in the Premier League?”</li>
+</ul>
+<p>As we talk about uncertainty quantification and hypothesis testing throughout the course, you may want to consider how they can be applied to your research question.</p>
+</section>
+<section id="expectations" class="level3">
+<h3 class="anchored" data-anchor-id="expectations">Expectations</h3>
+<p>The first main goal is that your project should apply some of the uncertainty-related concepts we’ve covered in the course. Hypothesis testing, confidence intervals, and prediction intervals are all fair game.</p>
+<p>The second main goal is that you should learn something new about your topic! I want this course and this project is to make you feel empowered to use data to answer questions and gain insights. You should aim to uncover new information or perspectives on your topic that you didn’t know before.</p>
+<p>Of secondary importance is that you should work on the skills surrounding the presentation of your findings. This includes thoughtful and professional-looking data visualizations, clear and concise explanations of your methods and results, and a well-structured presentation that both informs and engages your audience. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+</section>
+<section id="presentation" class="level3">
+<h3 class="anchored" data-anchor-id="presentation">Presentation</h3>
+<p>You will present your findings in 20-25 minutes at one of our final class sessions. I am hoping that some of the program organizers (and hopefully other fellows and mentors) will be able to attend. You are expected to prepare slides for your presentation, which should include:</p>
+<ul>
+<li>An introduction to your topic and research question</li>
+<li>A description of the data you used</li>
+<li>An explanation of your methods and analysis</li>
+<li>A summary of your findings and insights (with specific statistics and supporting data visualizations)</li>
+<li>A conclusion that ties everything together and discusses the implications of your findings</li>
+</ul>
+</section>
+<section id="timeline" class="level3">
+<h3 class="anchored" data-anchor-id="timeline">Timeline</h3>
+<p>The exact dates will depend on how quickly we get through course material, but roughly speaking, the recommended timeline is as follows:</p>
+<ul>
+<li>7/18 - 7/21: Choose a topic, find relevant data.</li>
+<li>7/22 - 7/25: Refine your research question start with data cleaning and exploratory data analysis.</li>
+<li>7/28 - 8/1: We will have covered the main course material by this point, so you can start to apply the concepts we’ve learned to your analysis.</li>
+<li>8/2 - 8/5: Nearly full-time work on your project. You should be basically done with your data analysis by the end of this period.</li>
+<li>8/6 - 8/7: Prepare your presentation slides and practice your presentation</li>
+<li>8/7 or 8/8: Present your findings in class.</li>
+</ul>
 
 
-<script type="ojs-module-contents">
-eyJjb250ZW50cyI6W119
-</script>
-<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
-<div id="exercise-loading-status" class="d-flex gap-2">
+</section>
 
-</div>
-<div class="spinner-grow spinner-grow-sm">
 
-</div>
-</div>
-<script type="vfs-file">
-W10=
-</script>
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
-</main> <!-- /main -->
-<script type="ojs-module-contents">
-eyJjb250ZW50cyI6W119
-</script>
-<script type="module">
-if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
-window._ojs.paths.runtimeToDoc = "../..";
-window._ojs.paths.runtimeToRoot = "../..";
-window._ojs.paths.docToRoot = "";
-window._ojs.selfContained = false;
-window._ojs.runtime.interpretFromScriptTags();
-</script>
+<ol>
+<li id="fn1"><p>It is of course exceptionally difficult to do this in your second or third language. Don’t worry about it – you’re not being graded and all that matters is that you do your best to communicate your ideas.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
-    // Ensure there is a toggle, if there isn't float one in the top right
-    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
-      const i = window.document.createElement("i");
-      i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
-    }
-    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {

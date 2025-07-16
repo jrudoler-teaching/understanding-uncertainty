@@ -14,11 +14,11 @@ title: "Syllabus"
 | Date | Topic | Assignment |
 |:------|:-------|:------------|
 | 7/09 | Intro, [Why Statistics?](notebooks/lecture-00.ipynb) ([slides](slides/lecture-00-slides.html)) | [Assignment 0](assignments/assignment-00.html) |
-| 7/10 | [Programming](notebooks/lecture-01.ipynb) ([slides](slides/lecture-01-slides.html))|  |
+| 7/10 | [Programming](notebooks/lecture-01.ipynb) ([slides](slides/lecture-01-slides.html))| [Assignment 1](assignments/assignment-01.html) |
 | 7/11 | Programming cont. |  |
-| 7/14 | [Probability](notebooks/lecture-02.ipynb) ([slides](slides/lecture-02-slides.html))|  |
+| 7/14 | [Probability](notebooks/lecture-02.ipynb) ([slides](slides/lecture-02-slides.html))| [Assignment 2](assignments/assignment-02.html) |
 | 7/15 | Probability cont. |  |
-| 7/16 | [Sampling and simulation](notebooks/lecture-03.ipynb) ([slides](slides/lecture-03-slides.html))|  |
+| 7/16 | [Sampling and simulation](notebooks/lecture-03.ipynb) ([slides](slides/lecture-03-slides.html))| [Assignment 3](assignments/assignment-03.html) |
 | 7/17 | [Data Generating Processes and Statistical Models](notebooks/lecture-04.ipynb) ([slides](slides/lecture-04-slides.html))|  |
 | 7/18 | [Hypothesis Testing](notebooks/lecture-05.ipynb) ([slides](slides/lecture-05-slides.html))|  |
 | 7/21 | Hypothesis Testing cont. |  |
@@ -34,7 +34,7 @@ title: "Syllabus"
 | 8/04 | Guest Lecture / Final Projects |  |
 | 8/05 | Guest Lecture / Final Projects |  |
 | 8/06 | Guest Lecture / Final Projects |  |
-| 8/07 | Final Project Presentations |  |
+| 8/07 | Final Project Presentations | [Final Project Guidelines](assignments/final-project.html) |
 | 8/08 | Wrap-up and course evaluation |  |
 
 : Tentative schedule, subject to change.
