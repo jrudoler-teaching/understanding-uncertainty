@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-07-15">
+<meta name="dcterms.date" content="2025-07-22">
 
 <title>Lecture 03: Sampling and Simulation – Understanding Uncertainty</title>
 <style>
@@ -448,7 +448,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 15, 2025</p>
+      <p class="date">July 22, 2025</p>
     </div>
   </div>
   
@@ -480,10 +480,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><strong>Sampling with replacement</strong> means that after we draw a sample from the population, we put it back before drawing the next sample. This means that the same object / instance can be selected multiple times.</p></li>
 <li><p><strong>Sampling without replacement</strong> means that once we draw a sample, we do not put it back before drawing the next sample. This means that each individual can only be selected once. This can introduce dependencies between samples, as the population changes after each draw.</p></li>
 </ul>
-<div id="fb2bd7a6" class="cell" data-execution_count="3">
+<div id="fb2bd7a6" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display">
-<div id="vYitpnaNixAi" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
-#vYitpnaNixAi {
+<div id="iIAGHUjxiyiP" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
+#iIAGHUjxiyiP {
    --jq-multiple-choice-bg: #6f78ffff;
    --jq-mc-button-bg: #fafafa;
    --jq-mc-button-border: #e0e0e0e0;
@@ -704,7 +704,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/javascript">
-var questionsvYitpnaNixAi=[{"question": "Is flipping a coin an example of sampling with, or without replacement?", "type": "multiple_choice", "answers": [{"answer": "With replacement", "correct": true}, {"answer": "Without replacement", "correct": false}]}, {"question": "Is dealing a hand in poker an example of sampling with, or without replacement?", "type": "multiple_choice", "answers": [{"answer": "With replacement", "correct": false}, {"answer": "Without replacement", "correct": true}]}];
+var questionsiIAGHUjxiyiP=[{"question": "Is flipping a coin an example of sampling with, or without replacement?", "type": "multiple_choice", "answers": [{"answer": "With replacement", "correct": true}, {"answer": "Without replacement", "correct": false}]}, {"question": "Is dealing a hand in poker an example of sampling with, or without replacement?", "type": "multiple_choice", "answers": [{"answer": "With replacement", "correct": false}, {"answer": "Without replacement", "correct": true}]}];
 
 if (typeof Question === 'undefined') {
 // Make a random ID
@@ -1767,8 +1767,8 @@ function make_string(qa, outerqDiv, qDiv, aDiv, id) {
  * Ensures show_questions is called after the container div is in the DOM.
  */
 function try_show() {
-  if (document.getElementById("vYitpnaNixAi")) {
-    show_questions(questionsvYitpnaNixAi, vYitpnaNixAi);
+  if (document.getElementById("iIAGHUjxiyiP")) {
+    show_questions(questionsiIAGHUjxiyiP, iIAGHUjxiyiP);
   } else {
     setTimeout(try_show, 200);
   }
@@ -1816,7 +1816,7 @@ Normal distribution
 </div>
 </div>
 <p>For example, to sample 100 values from a normal distribution with mean 0 and standard deviation 1, you can use:</p>
-<div id="238df48c" class="cell" data-execution_count="4">
+<div id="238df48c" class="cell" data-execution_count="11">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="annotated-cell-1"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1">1</button><span id="annotated-cell-1-1" class="code-annotation-target"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="dv">42</span>)</span>
@@ -1879,7 +1879,29 @@ Normal distribution
 </div>
 </div>
 <p>If you have a dataset and you want to sample from it, you can use the <code>numpy.random.choice</code> function to randomly select elements from the dataset (with or without replacement). If your dataset is in a pandas DataFrame, you can also use the <code>sample</code> method to randomly select rows from the DataFrame.</p>
-<div id="04efaa32" class="cell" data-execution_count="5">
+<div id="19c60ab9" class="cell" data-execution_count="17">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>subsample <span class="op">=</span> rng.choice(samples, size<span class="op">=</span><span class="dv">1000</span>, replace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>plt.hist(subsample, bins<span class="op">=</span><span class="dv">10</span>, density<span class="op">=</span><span class="va">True</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>(array([0.06841478, 0.18814065, 0.27610251, 0.44469608, 0.3103099 ,
+        0.58152565, 0.425149  , 0.10017879, 0.02443385, 0.02443385]),
+ array([-1.95103519, -1.54176691, -1.13249863, -0.72323035, -0.31396207,
+         0.09530621,  0.50457449,  0.91384276,  1.32311104,  1.73237932,
+         2.1416476 ]),
+ &lt;BarContainer object of 10 artists&gt;)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-03_files/figure-html/cell-6-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="04efaa32" class="cell" data-execution_count="12">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="dv">42</span>)</span>
@@ -1903,11 +1925,9 @@ Normal distribution
 <div class="cell-output cell-output-stdout">
 <pre><code>Sample:
  [-1.32269961 -1.13328721 -0.01680116 -1.68286977  0.54315427 -1.68733443
-  0.85797588 -0.85304393 -0.04992591 -0.36305385]
- [-1.32269961 -1.13328721 -0.01680116 -1.68286977  0.54315427 -1.68733443
   0.85797588 -0.85304393 -0.04992591 -0.36305385]</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="12">
 <div>
 
 
@@ -1970,23 +1990,23 @@ Normal distribution
 <div id="5a06edab" class="cell" data-execution_count="6">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-1" class="code-annotation-target"><a href="#annotated-cell-3-1" aria-hidden="true" tabindex="-1"></a>possible_rolls <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]</span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2">2</button><span id="annotated-cell-3-2" class="code-annotation-target"><a href="#annotated-cell-3-2" aria-hidden="true" tabindex="-1"></a>probabilities <span class="op">=</span> [<span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>]</span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="3">3</button><span id="annotated-cell-3-3" class="code-annotation-target"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a>rng.choice(possible_rolls, p<span class="op">=</span>probabilities, size<span class="op">=</span><span class="dv">100</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-1" class="code-annotation-target"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a>possible_rolls <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2">2</button><span id="annotated-cell-4-2" class="code-annotation-target"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a>probabilities <span class="op">=</span> [<span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>]</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="3">3</button><span id="annotated-cell-4-3" class="code-annotation-target"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a>rng.choice(possible_rolls, p<span class="op">=</span>probabilities, size<span class="op">=</span><span class="dv">100</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="1" data-code-annotation="1">Set the values to choose from</span>
+<span data-code-cell="annotated-cell-4" data-code-lines="1" data-code-annotation="1">Set the values to choose from</span>
 </dd>
-<dt data-target-cell="annotated-cell-3" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="2" data-code-annotation="2">Set the probabilities for each value (rolling a 6 has a 50% chance, rolling 1-5 has a 10% chance each)</span>
+<span data-code-cell="annotated-cell-4" data-code-lines="2" data-code-annotation="2">Set the probabilities for each value (rolling a 6 has a 50% chance, rolling 1-5 has a 10% chance each)</span>
 </dd>
-<dt data-target-cell="annotated-cell-3" data-target-annotation="3">3</dt>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="3" data-code-annotation="3">Sample 100 times from the specified distribution</span>
+<span data-code-cell="annotated-cell-4" data-code-lines="3" data-code-annotation="3">Sample 100 times from the specified distribution</span>
 </dd>
 </dl>
 </div>
@@ -2005,44 +2025,44 @@ Normal distribution
 <div id="18743e5c" class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-1" class="code-annotation-target"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a>deck <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">14</span>).repeat(<span class="dv">4</span>)</span>
-<span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Deck of cards before shuffling:</span><span class="ch">\n</span><span class="st">"</span>, deck)</span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2">2</button><span id="annotated-cell-4-3" class="code-annotation-target"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a>deck <span class="op">=</span> np.random.permutation(deck)</span>
-<span id="annotated-cell-4-4"><a href="#annotated-cell-4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Deck of cards after shuffling:</span><span class="ch">\n</span><span class="st">"</span>, deck)</span>
-<span id="annotated-cell-4-5"><a href="#annotated-cell-4-5" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="dv">21</span>)</span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="3">3</button><span id="annotated-cell-4-6" class="code-annotation-target"><a href="#annotated-cell-4-6" aria-hidden="true" tabindex="-1"></a>chosen_indices <span class="op">=</span> rng.choice(<span class="bu">len</span>(deck), size<span class="op">=</span><span class="dv">8</span>, replace<span class="op">=</span><span class="va">False</span>)</span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="4">4</button><span id="annotated-cell-4-7" class="code-annotation-target"><a href="#annotated-cell-4-7" aria-hidden="true" tabindex="-1"></a>hands <span class="op">=</span> deck[chosen_indices].reshape(<span class="dv">4</span>, <span class="dv">2</span>)</span>
-<span id="annotated-cell-4-8"><a href="#annotated-cell-4-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Hands dealt to players:</span><span class="ch">\n</span><span class="st">"</span>, hands)</span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="5">5</button><span id="annotated-cell-4-9" class="code-annotation-target"><a href="#annotated-cell-4-9" aria-hidden="true" tabindex="-1"></a>remaining_deck <span class="op">=</span> np.delete(deck, chosen_indices)</span>
-<span id="annotated-cell-4-10"><a href="#annotated-cell-4-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Remaining cards in the deck:</span><span class="ch">\n</span><span class="st">"</span>, remaining_deck)</span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="6">6</button><span id="annotated-cell-4-11" class="code-annotation-target"><a href="#annotated-cell-4-11" aria-hidden="true" tabindex="-1"></a>board <span class="op">=</span> np.random.choice(remaining_deck, size<span class="op">=</span><span class="dv">5</span>, replace<span class="op">=</span><span class="va">False</span>)</span>
-<span id="annotated-cell-4-12"><a href="#annotated-cell-4-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Community cards on the board:</span><span class="ch">\n</span><span class="st">"</span>, board)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1">1</button><span id="annotated-cell-5-1" class="code-annotation-target"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a>deck <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">14</span>).repeat(<span class="dv">4</span>)</span>
+<span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Deck of cards before shuffling:</span><span class="ch">\n</span><span class="st">"</span>, deck)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2">2</button><span id="annotated-cell-5-3" class="code-annotation-target"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a>deck <span class="op">=</span> np.random.permutation(deck)</span>
+<span id="annotated-cell-5-4"><a href="#annotated-cell-5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Deck of cards after shuffling:</span><span class="ch">\n</span><span class="st">"</span>, deck)</span>
+<span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="dv">21</span>)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3">3</button><span id="annotated-cell-5-6" class="code-annotation-target"><a href="#annotated-cell-5-6" aria-hidden="true" tabindex="-1"></a>chosen_indices <span class="op">=</span> rng.choice(<span class="bu">len</span>(deck), size<span class="op">=</span><span class="dv">8</span>, replace<span class="op">=</span><span class="va">False</span>)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="4">4</button><span id="annotated-cell-5-7" class="code-annotation-target"><a href="#annotated-cell-5-7" aria-hidden="true" tabindex="-1"></a>hands <span class="op">=</span> deck[chosen_indices].reshape(<span class="dv">4</span>, <span class="dv">2</span>)</span>
+<span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Hands dealt to players:</span><span class="ch">\n</span><span class="st">"</span>, hands)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="5">5</button><span id="annotated-cell-5-9" class="code-annotation-target"><a href="#annotated-cell-5-9" aria-hidden="true" tabindex="-1"></a>remaining_deck <span class="op">=</span> np.delete(deck, chosen_indices)</span>
+<span id="annotated-cell-5-10"><a href="#annotated-cell-5-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Remaining cards in the deck:</span><span class="ch">\n</span><span class="st">"</span>, remaining_deck)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="6">6</button><span id="annotated-cell-5-11" class="code-annotation-target"><a href="#annotated-cell-5-11" aria-hidden="true" tabindex="-1"></a>board <span class="op">=</span> np.random.choice(remaining_deck, size<span class="op">=</span><span class="dv">5</span>, replace<span class="op">=</span><span class="va">False</span>)</span>
+<span id="annotated-cell-5-12"><a href="#annotated-cell-5-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Community cards on the board:</span><span class="ch">\n</span><span class="st">"</span>, board)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="1" data-code-annotation="1">Make a deck of cards (Ace is 1, King is 13). 4 suits, each with cards 1 to 13</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="1" data-code-annotation="1">Make a deck of cards (Ace is 1, King is 13). 4 suits, each with cards 1 to 13</span>
 </dd>
-<dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="3" data-code-annotation="2">Shuffle the deck</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="3" data-code-annotation="2">Shuffle the deck</span>
 </dd>
-<dt data-target-cell="annotated-cell-4" data-target-annotation="3">3</dt>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="6" data-code-annotation="3">Deal the cards. We have 4 players, 2 cards to each of 4 players. That’s 8 cards total. So we select 8 cards from the deck without replacement. Here we select the indices, i.e.&nbsp;the positions in the deck that correspond to the cards we will deal to the players.</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="6" data-code-annotation="3">Deal the cards. We have 4 players, 2 cards to each of 4 players. That’s 8 cards total. So we select 8 cards from the deck without replacement. Here we select the indices, i.e.&nbsp;the positions in the deck that correspond to the cards we will deal to the players.</span>
 </dd>
-<dt data-target-cell="annotated-cell-4" data-target-annotation="4">4</dt>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="4">4</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="7" data-code-annotation="4">Use the indices to select the corresponding cards. Reshape the selected cards into a 4x2 array, where each row represents a player’s hand. In other words, split the 8 selected cards into 4 pairs, one pair for each player.</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="7" data-code-annotation="4">Use the indices to select the corresponding cards. Reshape the selected cards into a 4x2 array, where each row represents a player’s hand. In other words, split the 8 selected cards into 4 pairs, one pair for each player.</span>
 </dd>
-<dt data-target-cell="annotated-cell-4" data-target-annotation="5">5</dt>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="5">5</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="9" data-code-annotation="5">Remove the dealt cards from the deck.</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="9" data-code-annotation="5">Remove the dealt cards from the deck.</span>
 </dd>
-<dt data-target-cell="annotated-cell-4" data-target-annotation="6">6</dt>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="6">6</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="11" data-code-annotation="6">Select 5 more cards from the remaining deck to form the community cards. Here we select the actual cards, not the indices, because there is no need to keep track of which cards were dealt (since we are done dealing for the round).</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="11" data-code-annotation="6">Select 5 more cards from the remaining deck to form the community cards. Here we select the actual cards, not the indices, because there is no need to keep track of which cards were dealt (since we are done dealing for the round).</span>
 </dd>
 </dl>
 </div>
@@ -2207,45 +2227,45 @@ Tip
 <div id="callout-4" class="callout-4-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <p>The key here is to re-use the logic of the weekly busking simulation in a loop that runs 1000 times. Each time we run the simulation, we get a different weekly outcome based on the random number generator. By averaging these outcomes, we can get a good estimate of the expected earnings over a week of busking.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> busk_one_week(rng, n_days<span class="op">=</span><span class="dv">7</span>):</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Simulate the earnings of a busker in Rittenhouse Square over the course of a week.</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">        rng: A NumPy random number generator.</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">        n_days: The number of days to simulate (default is 7).</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">        total_earnings: The total earnings over the week.</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    rain_probabilities <span class="op">=</span> rng.uniform(<span class="fl">0.</span>, <span class="fl">0.7</span>, size<span class="op">=</span>n_days)</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    total_earnings <span class="op">=</span> <span class="dv">0</span> <span class="co"># initialize a variable to keep track of total earnings</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> day <span class="kw">in</span> <span class="bu">range</span>(n_days):</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># For each day, decide if it rains based on the probability</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        did_it_rain <span class="op">=</span> rng.binomial(n<span class="op">=</span><span class="dv">1</span>, p<span class="op">=</span>rain_probabilities[day])</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Based on the outcome, the number of passersby changes</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> did_it_rain:</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>            passersby <span class="op">=</span> rng.poisson(lam<span class="op">=</span><span class="dv">50</span>)  <span class="co"># fewer passersby when it rains</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>            passersby <span class="op">=</span> rng.poisson(lam<span class="op">=</span><span class="dv">200</span>) <span class="co"># more passersby when it doesn't rain</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Simulate the number who stop to listen to the busker</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        listeners <span class="op">=</span> rng.binomial(n<span class="op">=</span>passersby, p<span class="op">=</span><span class="fl">0.2</span>)  <span class="co"># 20% of passersby stop</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compute the busker's daily earnings</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        earnings <span class="op">=</span> <span class="dv">3</span> <span class="op">*</span> listeners  <span class="co"># $3 per listener</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        total_earnings <span class="op">+=</span> earnings</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> total_earnings</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>n_simulations <span class="op">=</span> <span class="dv">1000</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>random_seed <span class="op">=</span> <span class="dv">33</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span>random_seed)</span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the above function to simulate the expected earnings of a busker in Rittenhouse Square over the course of a week.</span></span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the simulation 1000 times and calculate the average earnings over 1000 simulations.</span></span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>earnings_by_week <span class="op">=</span> [busk_one_week(rng) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_simulations)]</span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>average_earnings <span class="op">=</span> np.mean(earnings_by_week)</span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>average_earnings</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> busk_one_week(rng, n_days<span class="op">=</span><span class="dv">7</span>):</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Simulate the earnings of a busker in Rittenhouse Square over the course of a week.</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">        rng: A NumPy random number generator.</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">        n_days: The number of days to simulate (default is 7).</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">        total_earnings: The total earnings over the week.</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    rain_probabilities <span class="op">=</span> rng.uniform(<span class="fl">0.</span>, <span class="fl">0.7</span>, size<span class="op">=</span>n_days)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    total_earnings <span class="op">=</span> <span class="dv">0</span> <span class="co"># initialize a variable to keep track of total earnings</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> day <span class="kw">in</span> <span class="bu">range</span>(n_days):</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># For each day, decide if it rains based on the probability</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        did_it_rain <span class="op">=</span> rng.binomial(n<span class="op">=</span><span class="dv">1</span>, p<span class="op">=</span>rain_probabilities[day])</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Based on the outcome, the number of passersby changes</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> did_it_rain:</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>            passersby <span class="op">=</span> rng.poisson(lam<span class="op">=</span><span class="dv">50</span>)  <span class="co"># fewer passersby when it rains</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>            passersby <span class="op">=</span> rng.poisson(lam<span class="op">=</span><span class="dv">200</span>) <span class="co"># more passersby when it doesn't rain</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Simulate the number who stop to listen to the busker</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>        listeners <span class="op">=</span> rng.binomial(n<span class="op">=</span>passersby, p<span class="op">=</span><span class="fl">0.2</span>)  <span class="co"># 20% of passersby stop</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compute the busker's daily earnings</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>        earnings <span class="op">=</span> <span class="dv">3</span> <span class="op">*</span> listeners  <span class="co"># $3 per listener</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>        total_earnings <span class="op">+=</span> earnings</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> total_earnings</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>n_simulations <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>random_seed <span class="op">=</span> <span class="dv">33</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span>random_seed)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the above function to simulate the expected earnings of a busker in Rittenhouse Square over the course of a week.</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the simulation 1000 times and calculate the average earnings over 1000 simulations.</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>earnings_by_week <span class="op">=</span> [busk_one_week(rng) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_simulations)]</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>average_earnings <span class="op">=</span> np.mean(earnings_by_week)</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>average_earnings</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>

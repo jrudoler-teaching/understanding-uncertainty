@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-07-15">
+<meta name="dcterms.date" content="2025-07-22">
 
 <title>Lecture 05: Hypothesis Testing – Understanding Uncertainty</title>
 <style>
@@ -474,7 +474,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 15, 2025</p>
+      <p class="date">July 22, 2025</p>
     </div>
   </div>
   
@@ -696,7 +696,10 @@ Choosing a null hypothesis
 </section>
 <section id="a-worked-example-the-rigged-coin" class="level3">
 <h3 class="anchored" data-anchor-id="a-worked-example-the-rigged-coin">A worked example: the rigged coin</h3>
-<p>Let’s return to the argument with your roommate from the last lecture. Your roommate has made an unproven claim that you are flipping a rigged coin in your favor. #### Define the null and alternative hypotheses We can formalize this as a hypothesis test:</p>
+<p>Let’s return to the argument with your roommate from the last lecture. Your roommate has made an unproven claim that you are flipping a rigged coin in your favor.</p>
+<section id="define-the-null-and-alternative-hypotheses" class="level4">
+<h4 class="anchored" data-anchor-id="define-the-null-and-alternative-hypotheses">Define the null and alternative hypotheses</h4>
+<p>We can formalize this as a hypothesis test:</p>
 <ul>
 <li><strong><span class="math inline">\(H_0\)</span></strong> (null): The coin is fair, at worst (i.e.&nbsp;the probability of heads is greater than or equal to 0.5).</li>
 <li><strong><span class="math inline">\(H_1\)</span></strong> (alternative): The coin is rigged (i.e.&nbsp;the probability of heads is <strong>less than</strong> 0.5).</li>
@@ -721,6 +724,7 @@ One-sided vs two-sided tests
 </div>
 </div>
 </div>
+</section>
 <section id="simulate-the-null-distribution" class="level4">
 <h4 class="anchored" data-anchor-id="simulate-the-null-distribution">Simulate the null distribution</h4>
 <p>So how do we actually compute the <span class="math inline">\(p\)</span>-value? This is where the <strong>sampling and simulation</strong> come into play. We will simulate the process of flipping a fair coin many times, and then see how often we get a result at least as extreme as the one we observed (getting 3 heads out 10). This will give us a <strong>sampling distribution</strong> of the proportion of heads we would expect to see if the coin is fair.</p>
@@ -734,30 +738,69 @@ The distribution of a statistic (like the number of heads in 10 coin flips) comp
 <div id="8b8250b7" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">56</span>)  <span class="co"># for reproducibility</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>n_sims <span class="op">=</span> <span class="dv">10000</span> <span class="co"># number of simulations</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>n_flips <span class="op">=</span> <span class="dv">10</span> <span class="co"># number of coin flips in each simulation</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>prob_heads <span class="op">=</span> <span class="fl">0.5</span> <span class="co"># probability of heads for a fair coin</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize a list to store the proportions of heads</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>proportions <span class="op">=</span> []</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_sims):</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Simulate flipping a fair coin 10 times</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    flips <span class="op">=</span> rng.binomial(n<span class="op">=</span>n_flips, p<span class="op">=</span>prob_heads)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store the proportion of heads</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    proportions.append(flips <span class="op">/</span> n_flips)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>proportions <span class="op">=</span> np.array(proportions) <span class="co"># convert to numpy array</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>greater_than_observed <span class="op">=</span> proportions <span class="op">&lt;=</span> <span class="fl">0.3</span> <span class="co"># boolean array </span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"First 10 values of greater_than_observed:</span><span class="ch">\n</span><span class="st">"</span>, greater_than_observed[:<span class="dv">10</span>]) <span class="co"># print first 10 values</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"First 10 values of greater_than_observed (as integers):</span><span class="ch">\n</span><span class="st">"</span>, greater_than_observed.astype(<span class="bu">int</span>)[:<span class="dv">10</span>]) <span class="co"># print first 10 values as integers (0 or 1)</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>p_value <span class="op">=</span> np.mean(greater_than_observed) <span class="co"># compute the p-value</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"p-value:"</span>, p_value)</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the histogram of the proportions</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>sns.histplot(proportions, bins<span class="op">=</span><span class="dv">10</span>, stat<span class="op">=</span><span class="st">"proportion"</span>, ax<span class="op">=</span>ax)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co"># add a vertical line for the observed value</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="fl">0.3</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"Observed Proportion: 0.3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">56</span>) </span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-2" class="code-annotation-target"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a>n_sims <span class="op">=</span> <span class="dv">10000</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2">2</button><span id="annotated-cell-4-3" class="code-annotation-target"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a>n_flips <span class="op">=</span> <span class="dv">10</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="3">3</button><span id="annotated-cell-4-4" class="code-annotation-target"><a href="#annotated-cell-4-4" aria-hidden="true" tabindex="-1"></a>prob_heads <span class="op">=</span> <span class="fl">0.5</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="4">4</button><span id="annotated-cell-4-5" class="code-annotation-target"><a href="#annotated-cell-4-5" aria-hidden="true" tabindex="-1"></a>proportions <span class="op">=</span> []</span>
+<span id="annotated-cell-4-6"><a href="#annotated-cell-4-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_sims):</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="5">5</button><span id="annotated-cell-4-7" class="code-annotation-target"><a href="#annotated-cell-4-7" aria-hidden="true" tabindex="-1"></a>    flips <span class="op">=</span> rng.binomial(n<span class="op">=</span>n_flips, p<span class="op">=</span>prob_heads)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="6">6</button><span id="annotated-cell-4-8" class="code-annotation-target"><a href="#annotated-cell-4-8" aria-hidden="true" tabindex="-1"></a>    proportions.append(flips <span class="op">/</span> n_flips)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="7">7</button><span id="annotated-cell-4-9" class="code-annotation-target"><a href="#annotated-cell-4-9" aria-hidden="true" tabindex="-1"></a>proportions <span class="op">=</span> np.array(proportions)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="8">8</button><span id="annotated-cell-4-10" class="code-annotation-target"><a href="#annotated-cell-4-10" aria-hidden="true" tabindex="-1"></a>greater_than_observed <span class="op">=</span> proportions <span class="op">&lt;=</span> <span class="fl">0.3</span></span>
+<span id="annotated-cell-4-11"><a href="#annotated-cell-4-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"First 10 values of greater_than_observed:</span><span class="ch">\n</span><span class="st">"</span>, greater_than_observed[:<span class="dv">10</span>]) </span>
+<span id="annotated-cell-4-12"><a href="#annotated-cell-4-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"First 10 values of greater_than_observed (as integers):</span><span class="ch">\n</span><span class="st">"</span>, greater_than_observed.astype(<span class="bu">int</span>)[:<span class="dv">10</span>])</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="9">9</button><span id="annotated-cell-4-13" class="code-annotation-target"><a href="#annotated-cell-4-13" aria-hidden="true" tabindex="-1"></a>p_value <span class="op">=</span> np.mean(greater_than_observed)</span>
+<span id="annotated-cell-4-14"><a href="#annotated-cell-4-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"p-value:"</span>, p_value)</span>
+<span id="annotated-cell-4-15"><a href="#annotated-cell-4-15" aria-hidden="true" tabindex="-1"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="10">10</button><span id="annotated-cell-4-16" class="code-annotation-target"><a href="#annotated-cell-4-16" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="annotated-cell-4-17"><a href="#annotated-cell-4-17" aria-hidden="true" tabindex="-1"></a>sns.histplot(proportions, bins<span class="op">=</span><span class="dv">10</span>, stat<span class="op">=</span><span class="st">"proportion"</span>, ax<span class="op">=</span>ax)</span>
+<span id="annotated-cell-4-18"><a href="#annotated-cell-4-18" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="fl">0.3</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"Observed Proportion: 0.3"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="2" data-code-annotation="1">Number of simulations</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="3" data-code-annotation="2">Number of coin flips per simulation</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="4" data-code-annotation="3">Probability of heads for a fair coin</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="5" data-code-annotation="4">Initialize a list to store the proportions of heads</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="7" data-code-annotation="5">Simulate flipping a fair coin 10 times</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="6">6</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="8" data-code-annotation="6">Store the proportion of heads from each simulation</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="7">7</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="9" data-code-annotation="7">Convert to numpy array</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="8">8</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="10" data-code-annotation="8">Boolean mask indicating which proportions are less than or equal to 0.3(i.e.&nbsp;the proportion of heads we observed in our data)</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="9">9</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="13" data-code-annotation="9"><span class="math inline">\(p\)</span> value is the mean of the boolean mask (which gets typecast to integers, so it is either 0 or 1)</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="10">10</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="16" data-code-annotation="10">Plot the histogram of the proportions across all simulations</span>
+</dd>
+</dl>
+</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>First 10 values of greater_than_observed:
  [False  True False False False False False False False False]
@@ -780,47 +823,78 @@ p-value: 0.1702</code></pre>
 <h2 class="anchored" data-anchor-id="a-worked-example-the-nbas-most-valuable-player-mvp">A worked example: The NBA’s most valuable player (MVP)</h2>
 <p>“<a href="https://en.wikipedia.org/wiki/Shai_Gilgeous-Alexander">Shai Gilgeous Alexander</a> (SGA) is the best player in the NBA” is a very broad claim that is hard to test. What makes a player “the best”? Does stating that they scored the most points make them the best? That his team won the most games?</p>
 <p>Let’s try to instead design a hypothesis that is more specific and testable. We can choose a specific metric to evaluate players, such as points per game (PPG). You can care about other metrics, like assists or rebounds, but let’s just focus on PPG for now.</p>
-<p>To make the claim more specific and testable, we’ll start off with some assumptions: - Every player’s scoring follows a distribution with some mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma\)</span>. Becuase PPG is an average over the points scored in each game, the CLT tells us that the distribution of average PPG is approximately normal (even if “points scored” is not). Specifically, PPG is a normal distribution with mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma / \sqrt{n}\)</span>, where <span class="math inline">\(n\)</span> is the number of games played. - The player with the highest <span class="math inline">\(\mu\)</span> is the best scorer in the league (i.e.&nbsp;assume that teammates, coaches, conferences, etc. are all negligible).</p>
+<p>To make the claim more specific and testable, we’ll start off with some assumptions:</p>
+<ul>
+<li>Every player’s scoring follows a distribution with some mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma\)</span>. Becuase PPG is an average over the points scored in each game, the CLT tells us that the distribution of average PPG is approximately normal (even if “points scored” is not). Specifically, PPG is a normal distribution with mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma / \sqrt{n}\)</span>, where <span class="math inline">\(n\)</span> is the number of games played.</li>
+<li>The player with the highest <span class="math inline">\(\mu\)</span> is the best scorer in the league (i.e.&nbsp;assume that teammates, coaches, conferences, etc. are all negligible).</li>
+</ul>
 <p>To make the claim that SGA is a better scorer than his competitors, we need to show how unlikely it is that he has the highest scoring average if his skill level is not actually the highest in the league.</p>
 <p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_{\text{SGA}} \leq c\)</span></p>
 <p><span class="math inline">\(H_1\)</span>: <span class="math inline">\(\mu_{\text{SGA}} &gt; c\)</span></p>
 <p>All of a sudden, this is way more familiar, specific, and testable. We can now use data to compute the <span class="math inline">\(p\)</span>-value for this hypothesis test.</p>
 <p>Shai scored 32.7 PPG in 76 games the 2024-2025 season, which is the highest average in the league. The next-highest scorer was Giannis Antetokounmpo with 30.4 PPG in 72 games.</p>
 <p>We will use data from the 2024-2025 NBA season, courtesy of <a href="https://www.basketball-reference.com/">Basketball Reference</a>, to evaluate our hypothesis.</p>
-<div id="7b3afcec" class="cell" data-execution_count="51">
+<div id="7b3afcec" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read the data for Shai Gilgeous-Alexander and Giannis Antetokounmpo</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>sga_df <span class="op">=</span> pd.read_csv(<span class="st">"../data/sga-stats-24-25.csv"</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>giannis_df <span class="op">=</span> pd.read_csv(<span class="st">"../data/giannis-stats-24-25.csv"</span>)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># combine the dataframes and clean up the data</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>sga_df[<span class="st">"player"</span>] <span class="op">=</span> <span class="st">"Shai Gilgeous-Alexander"</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>giannis_df[<span class="st">"player"</span>] <span class="op">=</span> <span class="st">"Giannis Antetokounmpo"</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>compare_df <span class="op">=</span> pd.concat([sga_df, giannis_df], ignore_index<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># filter out rows where the player did not play or was inactive</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>compare_df <span class="op">=</span> compare_df.replace({<span class="st">"Did Not Dress"</span>: np.nan, <span class="st">"Inactive"</span>: np.nan, <span class="st">"Did Not Play"</span>: np.nan, <span class="st">""</span>: np.nan})</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>compare_df.dropna(subset<span class="op">=</span>[<span class="st">"PTS"</span>], inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># convert PTS to float/numeric and Date to datetime</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>compare_df[<span class="st">"PTS"</span>] <span class="op">=</span> compare_df[<span class="st">"PTS"</span>].astype(<span class="bu">float</span>)</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>compare_df[<span class="st">"Date"</span>] <span class="op">=</span> pd.to_datetime(compare_df[<span class="st">"Date"</span>])</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>shai_sample_mean <span class="op">=</span> compare_df.query(<span class="st">"player == 'Shai Gilgeous-Alexander'"</span>)[<span class="st">"PTS"</span>].mean()</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>shai_sample_std <span class="op">=</span> compare_df.query(<span class="st">"player == 'Shai Gilgeous-Alexander'"</span>)[<span class="st">"PTS"</span>].std()</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Shai's PPG is </span><span class="sc">{</span>shai_sample_mean<span class="sc">:.2f}</span><span class="ss"> with a standard deviation of </span><span class="sc">{</span>shai_sample_std<span class="sc">:.2f}</span><span class="ss">."</span>)</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>giannis_sample_mean <span class="op">=</span> compare_df.query(<span class="st">"player == 'Giannis Antetokounmpo'"</span>)[<span class="st">"PTS"</span>].mean()</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>giannis_sample_std <span class="op">=</span> compare_df.query(<span class="st">"player == 'Giannis Antetokounmpo'"</span>)[<span class="st">"PTS"</span>].std()</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Giannis's PPG is </span><span class="sc">{</span>giannis_sample_mean<span class="sc">:.2f}</span><span class="ss"> with a standard deviation of </span><span class="sc">{</span>giannis_sample_std<span class="sc">:.2f}</span><span class="ss">."</span>)</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the distribution of PPG for both players</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>compare_df, x<span class="op">=</span><span class="st">"PTS"</span>, hue<span class="op">=</span><span class="st">"player"</span>, stat<span class="op">=</span><span class="st">"density"</span>, common_norm<span class="op">=</span><span class="va">False</span>, bins<span class="op">=</span><span class="dv">20</span>, ax<span class="op">=</span>ax)</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>ax.axvline(shai_sample_mean, color<span class="op">=</span><span class="st">"blue"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Shai's PPG: </span><span class="sc">{</span>shai_sample_mean<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>ax.axvline(giannis_sample_mean, color<span class="op">=</span><span class="st">"orange"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Giannis's PPG: </span><span class="sc">{</span>giannis_sample_mean<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Distribution of Points Per Game (PPG) for Shai and Giannis"</span>)</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Points Per Game (PPG)"</span>)</span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1">1</button><span id="annotated-cell-5-1" class="code-annotation-target"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a>sga_df <span class="op">=</span> pd.read_csv(<span class="st">"../data/sga-stats-24-25.csv"</span>)</span>
+<span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a>giannis_df <span class="op">=</span> pd.read_csv(<span class="st">"../data/giannis-stats-24-25.csv"</span>)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2">2</button><span id="annotated-cell-5-3" class="code-annotation-target"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a>sga_df[<span class="st">"player"</span>] <span class="op">=</span> <span class="st">"Shai Gilgeous-Alexander"</span></span>
+<span id="annotated-cell-5-4"><a href="#annotated-cell-5-4" aria-hidden="true" tabindex="-1"></a>giannis_df[<span class="st">"player"</span>] <span class="op">=</span> <span class="st">"Giannis Antetokounmpo"</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3">3</button><span id="annotated-cell-5-5" class="code-annotation-target"><a href="#annotated-cell-5-5" aria-hidden="true" tabindex="-1"></a>compare_df <span class="op">=</span> pd.concat([sga_df, giannis_df], ignore_index<span class="op">=</span><span class="va">True</span>)</span>
+<span id="annotated-cell-5-6"><a href="#annotated-cell-5-6" aria-hidden="true" tabindex="-1"></a>compare_df <span class="op">=</span> compare_df.replace({<span class="st">"Did Not Dress"</span>: np.nan, <span class="st">"Inactive"</span>: np.nan, <span class="st">"Did Not Play"</span>: np.nan, <span class="st">""</span>: np.nan}) </span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="4">4</button><span id="annotated-cell-5-7" class="code-annotation-target"><a href="#annotated-cell-5-7" aria-hidden="true" tabindex="-1"></a>compare_df.dropna(subset<span class="op">=</span>[<span class="st">"PTS"</span>], inplace<span class="op">=</span><span class="va">True</span>)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="5">5</button><span id="annotated-cell-5-8" class="code-annotation-target"><a href="#annotated-cell-5-8" aria-hidden="true" tabindex="-1"></a>compare_df[<span class="st">"PTS"</span>] <span class="op">=</span> compare_df[<span class="st">"PTS"</span>].astype(<span class="bu">float</span>)</span>
+<span id="annotated-cell-5-9"><a href="#annotated-cell-5-9" aria-hidden="true" tabindex="-1"></a>compare_df[<span class="st">"Date"</span>] <span class="op">=</span> pd.to_datetime(compare_df[<span class="st">"Date"</span>])</span>
+<span id="annotated-cell-5-10"><a href="#annotated-cell-5-10" aria-hidden="true" tabindex="-1"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="6">6</button><span id="annotated-cell-5-11" class="code-annotation-target"><a href="#annotated-cell-5-11" aria-hidden="true" tabindex="-1"></a>shai_sample_mean <span class="op">=</span> compare_df.query(<span class="st">"player == 'Shai Gilgeous-Alexander'"</span>)[<span class="st">"PTS"</span>].mean()</span>
+<span id="annotated-cell-5-12"><a href="#annotated-cell-5-12" aria-hidden="true" tabindex="-1"></a>shai_sample_std <span class="op">=</span> compare_df.query(<span class="st">"player == 'Shai Gilgeous-Alexander'"</span>)[<span class="st">"PTS"</span>].std()</span>
+<span id="annotated-cell-5-13"><a href="#annotated-cell-5-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Shai's PPG is </span><span class="sc">{</span>shai_sample_mean<span class="sc">:.2f}</span><span class="ss"> with a standard deviation of </span><span class="sc">{</span>shai_sample_std<span class="sc">:.2f}</span><span class="ss">."</span>)</span>
+<span id="annotated-cell-5-14"><a href="#annotated-cell-5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-5-15"><a href="#annotated-cell-5-15" aria-hidden="true" tabindex="-1"></a>giannis_sample_mean <span class="op">=</span> compare_df.query(<span class="st">"player == 'Giannis Antetokounmpo'"</span>)[<span class="st">"PTS"</span>].mean()</span>
+<span id="annotated-cell-5-16"><a href="#annotated-cell-5-16" aria-hidden="true" tabindex="-1"></a>giannis_sample_std <span class="op">=</span> compare_df.query(<span class="st">"player == 'Giannis Antetokounmpo'"</span>)[<span class="st">"PTS"</span>].std()</span>
+<span id="annotated-cell-5-17"><a href="#annotated-cell-5-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Giannis's PPG is </span><span class="sc">{</span>giannis_sample_mean<span class="sc">:.2f}</span><span class="ss"> with a standard deviation of </span><span class="sc">{</span>giannis_sample_std<span class="sc">:.2f}</span><span class="ss">."</span>)</span>
+<span id="annotated-cell-5-18"><a href="#annotated-cell-5-18" aria-hidden="true" tabindex="-1"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="7">7</button><span id="annotated-cell-5-19" class="code-annotation-target"><a href="#annotated-cell-5-19" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="annotated-cell-5-20"><a href="#annotated-cell-5-20" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>compare_df, x<span class="op">=</span><span class="st">"PTS"</span>, hue<span class="op">=</span><span class="st">"player"</span>, stat<span class="op">=</span><span class="st">"density"</span>, common_norm<span class="op">=</span><span class="va">False</span>, bins<span class="op">=</span><span class="dv">20</span>, ax<span class="op">=</span>ax)</span>
+<span id="annotated-cell-5-21"><a href="#annotated-cell-5-21" aria-hidden="true" tabindex="-1"></a>ax.axvline(shai_sample_mean, color<span class="op">=</span><span class="st">"blue"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Shai's PPG: </span><span class="sc">{</span>shai_sample_mean<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-5-22"><a href="#annotated-cell-5-22" aria-hidden="true" tabindex="-1"></a>ax.axvline(giannis_sample_mean, color<span class="op">=</span><span class="st">"orange"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Giannis's PPG: </span><span class="sc">{</span>giannis_sample_mean<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-5-23"><a href="#annotated-cell-5-23" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Distribution of Points Per Game (PPG) for Shai and Giannis"</span>)</span>
+<span id="annotated-cell-5-24"><a href="#annotated-cell-5-24" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Points Per Game (PPG)"</span>)</span>
+<span id="annotated-cell-5-25"><a href="#annotated-cell-5-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="1" data-code-annotation="1">Read the data for Shai Gilgeous-Alexander and Giannis Antetokounmpo</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="3" data-code-annotation="2">Annotate the data with the player’s name</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="5" data-code-annotation="3">Combine the dataframes and clean up the data</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="7" data-code-annotation="4">Filter out rows where the player did not play or was inactive</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="8" data-code-annotation="5">Convert PTS to float/numeric and Date to datetime</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="6">6</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="11" data-code-annotation="6">“DataFrame.query” is a method to filter the dataframe based on a condition. Here we are filtering the dataframe to only include rows where the player is Shai Gilgeous-Alexander. Then compute the mean and standard deviation of his points scored.</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="7">7</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="19" data-code-annotation="7">Plot the distribution of PPG for both players</span>
+</dd>
+</dl>
+</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Shai's PPG is 32.68 with a standard deviation of 7.54.
 Giannis's PPG is 30.39 with a standard deviation of 7.32.</code></pre>
@@ -855,29 +929,53 @@ P(X &gt; x) = 1 - P(X \leq x) = 1 - \text{CDF}(x) = 1 - \int_{-\infty}^{x} f(t) 
 </div>
 </div>
 </div>
-<div id="b3008862" class="cell" data-execution_count="43">
+<div id="b3008862" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">## PDF of normal</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>shai_n_games <span class="op">=</span> compare_df.query(<span class="st">"player == 'Shai Gilgeous-Alexander'"</span>)[<span class="st">"PTS"</span>].count()</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>p_value_clt <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> stats.norm.cdf(</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="fl">32.7</span>, </span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    loc<span class="op">=</span><span class="fl">30.4</span>, <span class="co"># the mean of the null distribution (Giannis's PPG)</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    scale<span class="op">=</span>shai_sample_std<span class="op">/</span>np.sqrt(shai_n_games)) </span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"p-value from CLT:"</span>, p_value_clt)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize the p-value</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">27</span>, <span class="dv">35</span>, <span class="dv">1000</span>)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>null_pdf <span class="op">=</span> stats.norm.pdf(x, loc<span class="op">=</span><span class="fl">30.4</span>, scale<span class="op">=</span>shai_sample_std<span class="op">/</span>np.sqrt(shai_n_games))</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>ax.plot(x, null_pdf, label<span class="op">=</span><span class="vs">r"Normal Distribution given </span><span class="dv">$</span><span class="vs">H_0:</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="fl">32.7</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Observed PPG: 32.7"</span>)</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>ax.fill_between(x, null_pdf, where<span class="op">=</span>(x <span class="op">&gt;=</span> <span class="fl">32.7</span>), alpha<span class="op">=</span><span class="fl">0.4</span>, label<span class="op">=</span><span class="st">"Area for p-value"</span>)</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"PPG distribution under the Null Hypothesis"</span>)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Points Per Game (PPG)"</span>)</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Probability Density"</span>)</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a>shai_n_games <span class="op">=</span> compare_df.query(<span class="st">"player == 'Shai Gilgeous-Alexander'"</span>)[<span class="st">"PTS"</span>].count()</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1">1</button><span id="annotated-cell-6-2" class="code-annotation-target"><a href="#annotated-cell-6-2" aria-hidden="true" tabindex="-1"></a>p_value_clt <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> stats.norm.cdf(</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="2">2</button><span id="annotated-cell-6-3" class="code-annotation-target"><a href="#annotated-cell-6-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="fl">32.7</span>,</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="3">3</button><span id="annotated-cell-6-4" class="code-annotation-target"><a href="#annotated-cell-6-4" aria-hidden="true" tabindex="-1"></a>    loc<span class="op">=</span><span class="fl">30.4</span>,</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="4">4</button><span id="annotated-cell-6-5" class="code-annotation-target"><a href="#annotated-cell-6-5" aria-hidden="true" tabindex="-1"></a>    scale<span class="op">=</span>shai_sample_std<span class="op">/</span>np.sqrt(shai_n_games))</span>
+<span id="annotated-cell-6-6"><a href="#annotated-cell-6-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"p-value from CLT:"</span>, p_value_clt)</span>
+<span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">27</span>, <span class="dv">35</span>, <span class="dv">1000</span>)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="5">5</button><span id="annotated-cell-6-9" class="code-annotation-target"><a href="#annotated-cell-6-9" aria-hidden="true" tabindex="-1"></a>null_pdf <span class="op">=</span> stats.norm.pdf(x, loc<span class="op">=</span><span class="fl">30.4</span>,</span>
+<span id="annotated-cell-6-10"><a href="#annotated-cell-6-10" aria-hidden="true" tabindex="-1"></a>                          scale<span class="op">=</span>shai_sample_std<span class="op">/</span>np.sqrt(shai_n_games)) </span>
+<span id="annotated-cell-6-11"><a href="#annotated-cell-6-11" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="annotated-cell-6-12"><a href="#annotated-cell-6-12" aria-hidden="true" tabindex="-1"></a>ax.plot(x, null_pdf, label<span class="op">=</span><span class="vs">r"Normal Distribution given </span><span class="dv">$</span><span class="vs">H_0:</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="annotated-cell-6-13"><a href="#annotated-cell-6-13" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="fl">32.7</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Observed PPG: 32.7"</span>)</span>
+<span id="annotated-cell-6-14"><a href="#annotated-cell-6-14" aria-hidden="true" tabindex="-1"></a>ax.fill_between(x, null_pdf, where<span class="op">=</span>(x <span class="op">&gt;=</span> <span class="fl">32.7</span>), alpha<span class="op">=</span><span class="fl">0.4</span>, label<span class="op">=</span><span class="st">"Area for p-value"</span>)</span>
+<span id="annotated-cell-6-15"><a href="#annotated-cell-6-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"PPG distribution under the Null Hypothesis"</span>)</span>
+<span id="annotated-cell-6-16"><a href="#annotated-cell-6-16" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Points Per Game (PPG)"</span>)</span>
+<span id="annotated-cell-6-17"><a href="#annotated-cell-6-17" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Probability Density"</span>)</span>
+<span id="annotated-cell-6-18"><a href="#annotated-cell-6-18" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="annotated-cell-6-19"><a href="#annotated-cell-6-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="2" data-code-annotation="1">The <span class="math inline">\(p\)</span>-value is the probability of scoring at least 32.7 PPG under the null hypothesis that SGA’s true scoring ability is at most 30.4 PPG. We can compute this using the CDF of the normal distribution. The probability of scoring at least 32.7 PPG is equal to <span class="math inline">\(1 - \text{CDF}(32.7)\)</span>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="3" data-code-annotation="2">We evaluate the CDF at 32.7 PPG, which is the observed PPG for SGA.</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="4" data-code-annotation="3">We set the mean of the null distribution to 30.4 (Giannis’s observed PPG)</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="5" data-code-annotation="4">The standard deviation of the null distribution is the sample standard deviation of Shai’s points scored divided by the square root of the number of games he played (standard error of the mean).</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="9" data-code-annotation="5">Plotting the PDF of the null distribution helps us visualize the probability of scoring at least 32.7 PPG under the null hypothesis.</span>
+</dd>
+</dl>
+</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>p-value from CLT: 0.00391019858958408</code></pre>
 </div>
@@ -894,32 +992,54 @@ P(X &gt; x) = 1 - P(X \leq x) = 1 - \text{CDF}(x) = 1 - \int_{-\infty}^{x} f(t) 
 <div id="38a21791" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)  <span class="co"># for reproducibility</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>n_sims <span class="op">=</span> <span class="dv">5000</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>shai_simulated_ppg <span class="op">=</span> []</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_sims):</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># simulate 76 games of scoring, each game is drawn from a distribution with </span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># mean 30.4 and standard deviation equal to the observed sample standard deviation of Shai's points scored</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Variance of continuous uniform distribution on [a, b] is (b-a)^2 / 12</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    low_minus_high <span class="op">=</span> np.sqrt(<span class="dv">12</span> <span class="op">*</span> shai_sample_std<span class="op">**</span><span class="dv">2</span>)</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    simulated_scores <span class="op">=</span> rng.uniform(low<span class="op">=</span><span class="fl">30.4</span> <span class="op">-</span> low_minus_high<span class="op">/</span><span class="dv">2</span>, high<span class="op">=</span><span class="fl">30.4</span> <span class="op">+</span> low_minus_high<span class="op">/</span><span class="dv">2</span>, size<span class="op">=</span><span class="dv">76</span>)</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    simulated_ppg <span class="op">=</span> np.mean(simulated_scores)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    shai_simulated_ppg.append(simulated_ppg)</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co"># compute the p-value from the simulated PPG scores</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>shai_simulated_ppg <span class="op">=</span> np.array(shai_simulated_ppg)</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>p_value_simulated <span class="op">=</span> np.mean(shai_simulated_ppg <span class="op">&gt;=</span> <span class="fl">32.7</span>)</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"p-value from simulation:"</span>, p_value_simulated)</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the distribution of simulated PPG scores</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>sns.histplot(shai_simulated_ppg, bins<span class="op">=</span><span class="dv">30</span>, stat<span class="op">=</span><span class="st">"density"</span>, ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">"Simulated PPG under $H_0$"</span>)</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="fl">32.7</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Observed PPG: </span><span class="sc">{</span><span class="fl">32.7</span><span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Simulated PPG Distribution under the Null Hypothesis"</span>)</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Points Per Game (PPG)"</span>)</span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Density"</span>)</span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>) </span>
+<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a>n_sims <span class="op">=</span> <span class="dv">5000</span></span>
+<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a>shai_simulated_ppg <span class="op">=</span> []</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1">1</button><span id="annotated-cell-7-4" class="code-annotation-target"><a href="#annotated-cell-7-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_sims):</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="2">2</button><span id="annotated-cell-7-5" class="code-annotation-target"><a href="#annotated-cell-7-5" aria-hidden="true" tabindex="-1"></a>    low_minus_high <span class="op">=</span> np.sqrt(<span class="dv">12</span> <span class="op">*</span> shai_sample_std<span class="op">**</span><span class="dv">2</span>)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="3">3</button><span id="annotated-cell-7-6" class="code-annotation-target"><a href="#annotated-cell-7-6" aria-hidden="true" tabindex="-1"></a>    simulated_scores <span class="op">=</span> rng.uniform(low<span class="op">=</span><span class="fl">30.4</span> <span class="op">-</span> low_minus_high<span class="op">/</span><span class="dv">2</span>,</span>
+<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-hidden="true" tabindex="-1"></a>                                   high<span class="op">=</span><span class="fl">30.4</span> <span class="op">+</span> low_minus_high<span class="op">/</span><span class="dv">2</span>, </span>
+<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-hidden="true" tabindex="-1"></a>                                   size<span class="op">=</span><span class="dv">76</span>)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="4">4</button><span id="annotated-cell-7-9" class="code-annotation-target"><a href="#annotated-cell-7-9" aria-hidden="true" tabindex="-1"></a>    simulated_ppg <span class="op">=</span> np.mean(simulated_scores)</span>
+<span id="annotated-cell-7-10"><a href="#annotated-cell-7-10" aria-hidden="true" tabindex="-1"></a>    shai_simulated_ppg.append(simulated_ppg)</span>
+<span id="annotated-cell-7-11"><a href="#annotated-cell-7-11" aria-hidden="true" tabindex="-1"></a>shai_simulated_ppg <span class="op">=</span> np.array(shai_simulated_ppg) </span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="5">5</button><span id="annotated-cell-7-12" class="code-annotation-target"><a href="#annotated-cell-7-12" aria-hidden="true" tabindex="-1"></a>p_value_simulated <span class="op">=</span> np.mean(shai_simulated_ppg <span class="op">&gt;=</span> <span class="fl">32.7</span>)</span>
+<span id="annotated-cell-7-13"><a href="#annotated-cell-7-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"p-value from simulation:"</span>, p_value_simulated)</span>
+<span id="annotated-cell-7-14"><a href="#annotated-cell-7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-7-15"><a href="#annotated-cell-7-15" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="annotated-cell-7-16"><a href="#annotated-cell-7-16" aria-hidden="true" tabindex="-1"></a>sns.histplot(shai_simulated_ppg, bins<span class="op">=</span><span class="dv">30</span>, stat<span class="op">=</span><span class="st">"density"</span>, ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">"Simulated PPG under $H_0$"</span>)</span>
+<span id="annotated-cell-7-17"><a href="#annotated-cell-7-17" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="fl">32.7</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Observed PPG: </span><span class="sc">{</span><span class="fl">32.7</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-7-18"><a href="#annotated-cell-7-18" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="fl">30.4</span>, color<span class="op">=</span><span class="st">"blue"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"$H_0$ Mean: </span><span class="sc">{</span><span class="fl">30.4</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-7-19"><a href="#annotated-cell-7-19" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Simulated PPG Distribution under the Null Hypothesis"</span>)</span>
+<span id="annotated-cell-7-20"><a href="#annotated-cell-7-20" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Points Per Game (PPG)"</span>)</span>
+<span id="annotated-cell-7-21"><a href="#annotated-cell-7-21" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Density"</span>)</span>
+<span id="annotated-cell-7-22"><a href="#annotated-cell-7-22" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="annotated-cell-7-23"><a href="#annotated-cell-7-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="4" data-code-annotation="1">Simulate many seasons, each with the same number of games as Shai played (76)</span>
+</dd>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="5" data-code-annotation="2">Variance of continuous uniform distribution on <span class="math inline">\([a, b]\)</span> is <span class="math inline">\((b-a)^2 / 12\)</span></span>
+</dd>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="6" data-code-annotation="3">Sample 76 scores from a uniform distribution with mean 30.4 and standard deviation equal to the observed sample standard deviation of Shai’s points scored</span>
+</dd>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="9" data-code-annotation="4">Compute the mean of the simulated scores to get the PPG for that simulation</span>
+</dd>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="12" data-code-annotation="5">Compute the p-value from the simulated PPG scores. It is the proportion of simulated PPG scores that are greater than or equal to 32.7 PPG.</span>
+</dd>
+</dl>
+</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>p-value from simulation: 0.004</code></pre>
 </div>
@@ -970,10 +1090,10 @@ P(X &gt; x) = 1 - P(X \leq x) = 1 - \text{CDF}(x) = 1 - \int_{-\infty}^{x} f(t) 
 </tbody>
 </table>
 <p>The convention in statistics is to denote the probability of a Type I error (false positive) as <span class="math inline">\(\alpha\)</span> and the probability of a Type II error (false negative) as <span class="math inline">\(\beta\)</span>.</p>
-<div id="5c8fbfba" class="cell" data-execution_count="56">
+<div id="5c8fbfba" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display">
-<div id="rCkLLIFBkACq" data-shufflequestions="False" data-shuffleanswers="False" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
-#rCkLLIFBkACq {
+<div id="FqdpdaGKnCyX" data-shufflequestions="False" data-shuffleanswers="False" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
+#FqdpdaGKnCyX {
    --jq-multiple-choice-bg: #6f78ffff;
    --jq-mc-button-bg: #fafafa;
    --jq-mc-button-border: #e0e0e0e0;
@@ -1194,7 +1314,7 @@ P(X &gt; x) = 1 - P(X \leq x) = 1 - \text{CDF}(x) = 1 - \int_{-\infty}^{x} f(t) 
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/javascript">
-var questionsrCkLLIFBkACq=[{"question": "You are trying to decide if an economic policy reduces unemployment. You set up an experiment comparing two demographically and statistically similar groups. One group gets the policy change, the other does not. What is the appropriate null hypothesis?", "type": "multiple_choice", "answers": [{"answer": "The policy has no effect on unemployment", "correct": false}, {"answer": "The policy reduces unemployment", "correct": false}, {"answer": "The policy increases unemployment", "correct": false}, {"answer": "The policy either reduces or increases unemployment", "correct": true}]}, {"question": "Assume your study results in a p-value of 0.12. Since there is a 12\\% chance of observing the data if the null hypothesis is true, you decide not to reject the null hypothesis. As it turns out, the policy actually works really well -- many other concurrent studies show that the policy reduces unemployment by 10\\%. What kind of error did you make?", "type": "multiple_choice", "answers": [{"answer": "Type I error (false positive)", "correct": false}, {"answer": "Type II error (false negative)", "correct": true}, {"answer": "No error, the null hypothesis was correctly not rejected", "correct": false}, {"answer": "No error, the null hypothesis was correctly rejected", "correct": false}]}, {"question": "Instead assume your study results in a p-value of .00003. True or false: the alternative hypothesis is definitely correct, and the policy reduces unemployment.", "type": "multiple_choice", "answers": [{"answer": "True, the alternative hypothesis is definitely correct", "correct": false}, {"answer": "False, the alternative hypothesis is not definitely correct", "correct": true}]}];
+var questionsFqdpdaGKnCyX=[{"question": "You are trying to decide if an economic policy reduces unemployment. You set up an experiment comparing two demographically and statistically similar groups. One group gets the policy change, the other does not. What is the appropriate null hypothesis?", "type": "multiple_choice", "answers": [{"answer": "The policy has no effect on unemployment", "correct": false}, {"answer": "The policy reduces unemployment", "correct": false}, {"answer": "The policy increases unemployment", "correct": false}, {"answer": "The policy either has no effect or increases unemployment", "correct": true}]}, {"question": "Assume your study results in a p-value of 0.12. Since there is a 12\\% chance of observing the data if the null hypothesis is true, you decide not to reject the null hypothesis. As it turns out, the policy actually works really well -- many other concurrent studies show that the policy reduces unemployment by 10\\%. What kind of error did you make?", "type": "multiple_choice", "answers": [{"answer": "Type I error (false positive)", "correct": false}, {"answer": "Type II error (false negative)", "correct": true}, {"answer": "No error, the null hypothesis was correctly not rejected", "correct": false}, {"answer": "No error, the null hypothesis was correctly rejected", "correct": false}]}, {"question": "Instead assume your study results in a p-value of .00003. True or false: the alternative hypothesis is definitely correct, and the policy reduces unemployment.", "type": "multiple_choice", "answers": [{"answer": "True, the alternative hypothesis is definitely correct", "correct": false}, {"answer": "False, the alternative hypothesis is not definitely correct", "correct": true}]}];
 
 if (typeof Question === 'undefined') {
 // Make a random ID
@@ -2257,8 +2377,8 @@ function make_string(qa, outerqDiv, qDiv, aDiv, id) {
  * Ensures show_questions is called after the container div is in the DOM.
  */
 function try_show() {
-  if (document.getElementById("rCkLLIFBkACq")) {
-    show_questions(questionsrCkLLIFBkACq, rCkLLIFBkACq);
+  if (document.getElementById("FqdpdaGKnCyX")) {
+    show_questions(questionsFqdpdaGKnCyX, FqdpdaGKnCyX);
   } else {
     setTimeout(try_show, 200);
   }
