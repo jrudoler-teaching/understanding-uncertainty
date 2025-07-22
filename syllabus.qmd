@@ -22,7 +22,7 @@ title: "Syllabus"
 | 7/17 | [Data Generating Processes and Statistical Models](notebooks/lecture-04.ipynb) ([slides](slides/lecture-04-slides.html))|  |
 | 7/18 | [Hypothesis Testing](notebooks/lecture-05.ipynb) ([slides](slides/lecture-05-slides.html))|  |
 | 7/21 | Hypothesis Testing cont. |  |
-| 7/22 | [Confidence Intervals, bootstrapping](notebooks/lecture-06.ipynb) ([slides](slides/lecture-06-slides.html))|  |
+| 7/22 | [Confidence Intervals, bootstrapping](notebooks/lecture-06.ipynb) ([slides](slides/lecture-06-slides.html))| [Assignment 4](assignments/assignment-04.html) |
 | 7/23 | [Permutation tests](notebooks/lecture-07.ipynb) ([slides](slides/lecture-07-slides.html))|  |
 | 7/24 | [Regression](notebooks/lecture-08.ipynb) ([slides](slides/lecture-08-slides.html)) |  |
 | 7/25 | Regression cont. |  |
