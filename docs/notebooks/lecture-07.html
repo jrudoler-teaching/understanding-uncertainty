@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-07-22">
+<meta name="dcterms.date" content="2025-07-23">
 
 <title>Lecture 07: Permutation and Computational Hypothesis Testing – Understanding Uncertainty</title>
 <style>
@@ -470,7 +470,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 22, 2025</p>
+      <p class="date">July 23, 2025</p>
     </div>
   </div>
   
@@ -489,8 +489,8 @@ window.Quarto = {
 <p>Say we have two samples, <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, and we want to test if they have different underlying distributions (e.g.&nbsp;different means). Then, our null hypothesis (<span class="math inline">\(H_0\)</span>) is that the two samples are drawn from the same distribution.</p>
 <p>So, we can combine the two samples into one larger sample, <span class="math inline">\(Z = X \cup Y\)</span>, and then randomly split <span class="math inline">\(Z\)</span> into two new samples, <span class="math inline">\(X'\)</span> and <span class="math inline">\(Y'\)</span>, of the same size as the original samples. We can then compute the test statistic (e.g.&nbsp;the difference in means) for the new samples and repeat this process many times to build a distribution of test statistics under the null hypothesis.</p>
 <p>The only assumption we need to make is that the two samples are <strong>exchangeable</strong> under the null hypothesis. This means that, if the null hypothesis is true, the two samples could be shuffled without changing the underlying distribution.</p>
-<p><code>np.random.permutation</code> is a useful function for this. It randomly permutes the elements of an array, which we can use to create our new samples. Let’s define a function to perform a permutation test for</p>
-<div id="5711dccf" class="cell">
+<p><code>np.random.permutation</code> is a useful function for this. It randomly permutes the elements of an array, which we can use to create our new samples. Let’s define a function to perform a permutation test</p>
+<div id="5711dccf" class="cell" data-execution_count="3">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> permutation_test(test_func, x, y, num_permutations<span class="op">=</span><span class="dv">10000</span>, rng<span class="op">=</span><span class="va">None</span>, one_sided<span class="op">=</span><span class="va">True</span>):</span>
@@ -549,7 +549,7 @@ The probability of correctly rejecting the null hypothesis when it is false.
 <p>We usually want our tests to have high power, so we can detect true effects when they exist. We try to balance this against the risk of <strong>falsely</strong> rejecting the null hypothesis (Type I error) when it is actually true.</p>
 </div>
 </div>
-<div id="f203285c" class="cell" data-execution_count="10">
+<div id="f203285c" class="cell" data-execution_count="4">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Data import and preparation </span><span class="al">###</span></span>
@@ -588,7 +588,12 @@ The probability of correctly rejecting the null hypothesis when it is false.
 <section id="there-is-really-only-one-test" class="level2">
 <h2 class="anchored" data-anchor-id="there-is-really-only-one-test">There is really only one test!</h2>
 <p>The more statistics you learn and the more you are exposed to work in quantitative fields, the more you will see a wide variety of complicated statistical techniques and methods.</p>
-<p>Ultimately they all represent the same process: 1. Compute a test statistic on the observed data. 2. Choose a null hypothesis / model. Either specify the null distribution explicitly or use a simulation-based method to generate a distribution of test statistics under the null hypothesis. 3. Compute a p-value by comparing the observed test statistic to the distribution of test statistics under the null hypothesis.</p>
+<p>Ultimately they all represent the same process:</p>
+<ol type="1">
+<li>Compute a test statistic on the observed data.</li>
+<li>Choose a null hypothesis / model. Either specify the null distribution explicitly or use a simulation-based method to generate a distribution of test statistics under the null hypothesis.</li>
+<li>Compute a p-value by comparing the observed test statistic to the distribution of test statistics under the null hypothesis.</li>
+</ol>
 <p>Most of the literature in classical statistics focuses on mathematically deriving analytical solutions for 2 and 3. All of the fancy named statistical tests you see are variations with different test statistics and null hypotheses.</p>
 <p>Check out <a href="https://allendowney.blogspot.com/2016/06/there-is-still-only-one-test.html">this blog post</a> by Allen Downey for more on this idea and explanation of the advantages of simulation-based methods for hypothesis testing.</p>
 <section id="example-two-sample-t-test" class="level3">
@@ -596,7 +601,7 @@ The probability of correctly rejecting the null hypothesis when it is false.
 <p>One of the most common statistical tests is the independent two-sample <span class="math inline">\(t\)</span>-test, which tests if two independent samples have different means. This is used in many fields, including psychology, medicine, and social sciences – basically anywhere you want to compare two groups.</p>
 <p>Remembering the <span class="math inline">\(t\)</span>-test is not an important point of this course – we introduce it here because it is used so frequently in practice that it is worth understanding the basic idea behind it (and that it is just a special case of the general hypothesis testing framework we have been discussing).</p>
 <p>We learned already that (by the Central Limit Theorem) as the sample size increases, the sampling distribution of the sample mean becomes approximately normal, even if the underlying distribution is not normal. The <em>exact</em> distribution of the sample mean, however, is called the <strong>t-distribution</strong>. It is quite like the normal distribution, but has heavier tails (more likely to produce extreme values). See the plots below for an illustration of how the t-distribution converges to the standard normal distribution as the sample size increases.</p>
-<div id="33ee218a" class="cell">
+<div id="33ee218a" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">100</span>)</span>
@@ -641,7 +646,7 @@ The probability of correctly rejecting the null hypothesis when it is false.
 </div>
 <p>Let’s create two independent samples from uniform distributions with different means and equal variance. We’ll perform a two-sample t-test to see if they are significantly different. In other words, we will test the null hypothesis that the two samples have the same mean against the alternative hypothesis that they have different means.</p>
 <p>We’ll use the built-in <code>scipy.stats.ttest_ind</code> function to perform the t-test, but we will also manually compute the t-statistic and p-value to illustrate the process. We will also sample from the t-distribution to compare our results. Finally, we will perform a permutation test to see how it compares.</p>
-<div id="2ef0a2f3" class="cell" data-execution_count="107">
+<div id="2ef0a2f3" class="cell" data-execution_count="6">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate a t-distribution</span></span>
@@ -739,7 +744,7 @@ Permutation test p-value: 0.015700</code></pre>
 </div>
 <p>All of these results are quite similar! It’s not a coincidence – they are all effectively the same test. We’re comparing the observed t-statistic to the distribution of t-statistics under the null hypothesis that the two samples are drawn from the same distribution.</p>
 <p>This might be easier to appreciate visually:</p>
-<div id="a0dbb057" class="cell" data-execution_count="108">
+<div id="a0dbb057" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>), sharey<span class="op">=</span><span class="va">True</span>, sharex<span class="op">=</span><span class="va">True</span>)</span>
@@ -771,15 +776,13 @@ Permutation test p-value: 0.015700</code></pre>
 <span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].axvline(t_abs, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'Observed t-statistic'</span>)</span>
 <span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].set_title(<span class="st">'Permutation Test Statistics'</span>)</span>
 <span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].set_xlabel(<span class="st">'$t$-value'</span>)</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].set_ylabel(<span class="st">'Density'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].set_ylabel(<span class="st">'Density'</span>)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="108">
-<pre><code>Text(0, 0.5, 'Density')</code></pre>
-</div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lecture-07_files/figure-html/cell-7-output-2.png" class="img-fluid figure-img"></p>
+<p><img src="lecture-07_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
