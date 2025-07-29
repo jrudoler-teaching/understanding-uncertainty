@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-07-23">
+<meta name="dcterms.date" content="2025-07-28">
 
 <title>Lecture 08: Linear Regression – Understanding Uncertainty</title>
 <style>
@@ -447,10 +447,10 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#predictions-from-patterns" id="toc-predictions-from-patterns" class="nav-link active" data-scroll-target="#predictions-from-patterns">Predictions from patterns</a>
-  <ul class="collapse">
+  <li><a href="#predictions-from-patterns" id="toc-predictions-from-patterns" class="nav-link active" data-scroll-target="#predictions-from-patterns">Predictions from patterns</a></li>
+  <li><a href="#preparing-the-data" id="toc-preparing-the-data" class="nav-link" data-scroll-target="#preparing-the-data">Preparing the data</a></li>
   <li><a href="#quantifying-relationships" id="toc-quantifying-relationships" class="nav-link" data-scroll-target="#quantifying-relationships">Quantifying relationships</a></li>
-  </ul></li>
+  <li><a href="#correlation-is-a-special-case-of-regression" id="toc-correlation-is-a-special-case-of-regression" class="nav-link" data-scroll-target="#correlation-is-a-special-case-of-regression">Correlation is a special case of regression</a></li>
   </ul>
 </nav>
     </div>
@@ -471,7 +471,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 23, 2025</p>
+      <p class="date">July 28, 2025</p>
     </div>
   </div>
   
@@ -540,13 +540,13 @@ Why not memorize?
 </div>
 </div>
 <p>Consider the following dataset of the heights (in inches) of a sample of adults. The dataset also records the height of their parents, so we’ll refer to the adults as “children” and their parents as “parents” in this context. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
-<div id="dc60ac8a" class="cell" data-execution_count="14">
+<div id="dc60ac8a" class="cell" data-execution_count="18">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>galton <span class="op">=</span> pd.read_csv(<span class="st">"../data/galton-stata11.tsv"</span>, sep<span class="op">=</span><span class="st">"</span><span class="ch">\t</span><span class="st">"</span>, dtype<span class="op">=</span>{<span class="st">"male"</span>: <span class="bu">bool</span>, <span class="st">"female"</span>: <span class="bu">bool</span>, <span class="st">"gender"</span>: <span class="st">"category"</span>, <span class="st">"family"</span>: <span class="st">"category"</span>})</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>galton.head() <span class="co"># first few rows of the dataset</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="18">
 <div>
 
 
@@ -628,7 +628,7 @@ Why not memorize?
 </div>
 <p>Let’s say I asked you to predict the height of another child not in the dataset. Assume they’re from the same population as the children in the dataset. You have no other information about the child. How would you do it?</p>
 <p>The most straightforward thing to do is ask yourself: “What is the typical height of a child in this dataset?” You could then use that typical height as your prediction. This is the simplest kind of pattern recognition: finding the average value in the dataset and using it as a prediction.</p>
-<div id="736034ad" class="cell" data-execution_count="15">
+<div id="736034ad" class="cell" data-execution_count="19">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print the mean height of children in the dataset</span></span>
@@ -659,7 +659,7 @@ Why not memorize?
 <p>This isn’t bad as a first guess, and you actually can’t do any better than this if you have no other information about the child.</p>
 <p>But what if you had more information? For example, say you had other information about the child (besides their own height), such as their sex (male / female) or the heights of their parents. If you think that these factors might be related to the child’s height, they should inform your prediction.</p>
 <p>Let’s start by just plotting the heights of the children in the dataset against the heights of their parents. This will help us visualize the relationship between the two variables.</p>
-<div id="fb1f624e" class="cell" data-execution_count="16">
+<div id="fb1f624e" class="cell" data-execution_count="20">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>), sharey<span class="op">=</span><span class="va">True</span>, sharex<span class="op">=</span><span class="va">True</span>)</span>
@@ -692,8 +692,9 @@ Why not memorize?
 <p>Notice how the naive prediction we made earlier (the average height of the children), shown as a blue dashed line, totally ignores the heights of the parents. It’s constant across the entire plot, and does not capture any of the variation in the data.</p>
 <p>You may, based on your own experience and understanding of the world, expect that children with taller parents tend to be taller themselves. It sure looks that way in the plot above – the taller children tend to have taller parents, and the shorter children tend to have shorter parents. It’s not always the case, by any means, but it seems to be a general trend.</p>
 <p>But <strong>how much</strong> taller? We want to quantify this relationship, so that we can get a formula for predicting a child’s height based on their parents’ heights. Mathematically, we want to define a function <span class="math inline">\(f\)</span> that takes the heights of the parents as input and returns the predicted height of the child as output.</p>
-<section id="preparing-the-data" class="level4">
-<h4 class="anchored" data-anchor-id="preparing-the-data">Preparing the data</h4>
+</section>
+<section id="preparing-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="preparing-the-data">Preparing the data</h2>
 <p>Dealing with two separate parents is cumbersome. Can we combine the heights of the parents into a single number that represents “the height of the parents”? One way to do this is to take the average of the two heights.</p>
 <p>This is problematic at the moment. Based on the plot it seems that the father’s height has a different relationship with the child’s height than the mother’s height does. The trends are similar, but the plots have different shapes. This is probably because men and women tend to have different average heights (as you can see in the plot above). Also because men are taller on average, they contribute more to the average height of the parents than women do.</p>
 <p>There is a useful trick we can use to simplify this. We can put the heights of men and women in the dataset on the same scale by <strong>standardizing</strong> them.</p>
@@ -705,7 +706,7 @@ Why not memorize?
 \]</span></p>
 <p>This procedure transforms all of the heights into a common scale, where the average is zero and the standard deviation is one. This process is called <strong>standardization</strong> or <strong>z-scoring</strong>.</p>
 <p>Let’s do this and plot the standardized heights of the parents against the heights of the children.</p>
-<div id="e8126d8a" class="cell" data-execution_count="17">
+<div id="e8126d8a" class="cell" data-execution_count="21">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># include all female and male heights (parents and children)</span></span>
@@ -753,7 +754,7 @@ Why not memorize?
 </div>
 </div>
 <p>Now we have put the heights of the parents on the same scale, so we can combine them into a single number that represents “the height of the parents”. We can do this by taking the average of the standardized heights of the parents.</p>
-<div id="e8572f00" class="cell" data-execution_count="18">
+<div id="e8572f00" class="cell" data-execution_count="22">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>galton[<span class="st">"midparent"</span>] <span class="op">=</span> (galton[<span class="st">"mother_z"</span>] <span class="op">+</span> galton[<span class="st">"father_z"</span>]) <span class="op">/</span> <span class="dv">2</span></span>
@@ -778,7 +779,7 @@ Why not memorize?
 </div>
 <p>Nice! It seems like this retains the relationship between the heights of the parents and the heights of the children, but now we have a single number that represents the height of the parents.</p>
 <p>Let’s go back to the units we care about predicting, though. It’s ok to use standardized heights for the parents, but we want to predict the height of the child in inches.</p>
-<div id="8a85b3b3" class="cell" data-execution_count="19">
+<div id="8a85b3b3" class="cell" data-execution_count="23">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
@@ -789,7 +790,7 @@ Why not memorize?
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>plt.axhline(mean_height, color<span class="op">=</span><span class="st">"blue"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"Mean Child's Height"</span>)</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Child's Height vs Midparent Height (Z-score)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="19">
+<div class="cell-output cell-output-display" data-execution_count="23">
 <pre><code>Text(0.5, 1.0, "Child's Height vs Midparent Height (Z-score)")</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -801,8 +802,8 @@ Why not memorize?
 </div>
 </div>
 </section>
-<section id="quantifying-relationships" class="level3">
-<h3 class="anchored" data-anchor-id="quantifying-relationships">Quantifying relationships</h3>
+<section id="quantifying-relationships" class="level2">
+<h2 class="anchored" data-anchor-id="quantifying-relationships">Quantifying relationships</h2>
 <p>Back to our question: <strong>how much</strong> taller are the children of tall parents?</p>
 <p>The simplest way to quantify this relationship is to use a linear function, which is a function of the form <span class="math inline">\(f(x) = mx + b\)</span>, where <span class="math inline">\(m\)</span> is the slope of the line and <span class="math inline">\(b\)</span> is the y-intercept. A linear function has a constant rate of change, which means that for every unit increase in the input, the output increases by a fixed amount. Fitting a linear function to data is called <strong>linear regression</strong>.</p>
 <p>In our case, we choose to <em>model</em> the relationship between the heights of the parents and the heights of the children as a linear function.</p>
@@ -845,7 +846,7 @@ Specifying regression models
 </div>
 </div>
 </div>
-<div id="07b5693a" class="cell" data-execution_count="20">
+<div id="07b5693a" class="cell" data-execution_count="24">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit OLS and draw the prediction errors</span></span>
@@ -883,12 +884,12 @@ Specifying regression models
 </div>
 <p>In the second plot, we show the prediction errors for a few datapoints. The red lines show the difference between the predicted height of the child and the actual height of the child. OLS finds the best fit that minimizes the sum of the squared lengths of these red lines.</p>
 <p>So what’s the slope that answers our question? We can extract the parameters of the model to find out. The slope is the parameter associated with the midparent height variable.</p>
-<div id="abf9238a" class="cell" data-execution_count="21">
+<div id="abf9238a" class="cell" data-execution_count="25">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model.params</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="21">
+<div class="cell-output cell-output-display" data-execution_count="25">
 <pre><code>Intercept    66.765946
 midparent     1.656486
 dtype: float64</code></pre>
@@ -900,7 +901,7 @@ dtype: float64</code></pre>
 <p>This probably seems confusing because the midparent heights are standardized and averaged. It means that if the parents’ heights are on average one standard deviation above the mean height, the predicted height of the child is 1.7 inches taller than the average height of the children in the dataset.</p>
 <p>So how did we do in terms of prediction?</p>
 <p>Let’s take a look at the distribution of the errors.</p>
-<div id="2c4f7a55" class="cell" data-execution_count="22">
+<div id="2c4f7a55" class="cell" data-execution_count="26">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
@@ -920,7 +921,7 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p>We often evaluate our predictions by studying the mean and standard deviation of the prediction errors. We want the mean to be close to zero, which means that our predictions are on average correct. You don’t want to be consistently over- or under-predicting. The standard deviation tells us how much the prediction errors vary.</p>
-<div id="0fe1ab67" class="cell" data-execution_count="23">
+<div id="0fe1ab67" class="cell" data-execution_count="27">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Mean prediction error: </span><span class="sc">{</span>np<span class="sc">.</span>mean(errors)<span class="sc">:.2e}</span><span class="ss"> </span><span class="ch">\n</span><span class="ss">Standard deviation of prediction error: </span><span class="sc">{</span>np<span class="sc">.</span>std(errors)<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -932,7 +933,7 @@ Standard deviation of prediction error: 3.39</code></pre>
 </div>
 <p>Specifically, the standard deviation is called the “Root Mean Squared Error” (RMSE), and it tells us how far off our predictions are from the actual values on average: <span class="math display">\[\text{RMSE} = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (\text{predicted height}_i - \text{actual height}_i)^2}\]</span> So, in our case the RMSE is about 3.4. This means that on average, our predictions are off by about 3.4 inches.</p>
 <p>Let’s compare this to the RMSE of the naive prediction we made earlier (the average height of the children).</p>
-<div id="408a112d" class="cell" data-execution_count="24">
+<div id="408a112d" class="cell" data-execution_count="28">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>naive_rmse <span class="op">=</span> np.sqrt(np.mean((galton[<span class="st">"height"</span>] <span class="op">-</span> mean_height) <span class="op">**</span> <span class="dv">2</span>))</span>
@@ -949,6 +950,109 @@ Standard deviation of prediction error: 3.39</code></pre>
 <p>where <span class="math inline">\(\beta_0\)</span> is the intercept, <span class="math inline">\(\beta_1\)</span> is the slope, and <span class="math inline">\(\sigma^2\)</span> is the variance of the residuals.</p>
 <p>The consequence of this variability is that, just like our previous models, our data-driven conclusions are subject to uncertainty from sampling. We might just <strong>happen</strong> to get a sample where the children of tall parents are shorter than average, and get a slope that is negative.</p>
 <p>This is why we need to be careful about interpreting the results of our regression model. We’ll return to the hypothesis testing framework in the next lecture, and show how it can be applied to regression models.</p>
+</section>
+<section id="correlation-is-a-special-case-of-regression" class="level2">
+<h2 class="anchored" data-anchor-id="correlation-is-a-special-case-of-regression">Correlation is a special case of regression</h2>
+<p>You have probably heard of the term “correlation” before. Correlation is a measure of the strength and direction of the linear relationship between two variables. If two things are correlated, it means that when one variable increases, the other variable tends to increase (or decrease) as well.</p>
+<p>The correlation coefficient (<span class="math inline">\(R\)</span>) quantifies this relationship, and takes values between -1 and 1. A correlation of 1 means that the two variables are perfectly positively correlated (when one increases, the other increases by a fixed amount), and a correlation of -1 means that the two variables are perfectly negatively correlated (when one increases, the other decreases by a fixed amount). A correlation of 0 means that there is no linear relationship between the two variables. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>Correlation is nice because it is a single number that summarizes the relationship between two variables and tells us how strong that relationship is. Regression coefficients are also single numbers that summarize the relationship between two variables, but they vary depending on the units of the variables.</p>
+<p>Here is the key point we want to make: <strong>correlation is a special case of regression</strong>. Specifically, the correlation coefficient is the slope of the regression line when both variables are standardized (i.e., when they are <span class="math inline">\(z\)</span>-scored – subtracting off the mean and dividing by the standard deviation).</p>
+<p>Let’s see this in action. We’ll generate some date with different linear relationships, and run a regression before and after standardizing the variables.</p>
+<div id="665dd863" class="cell" data-execution_count="29">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.formula.api <span class="im">import</span> ols</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)  <span class="co"># for reproducibility</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>x_shared <span class="op">=</span> <span class="dv">20</span> <span class="op">*</span> rng.normal(size<span class="op">=</span><span class="dv">100</span>) <span class="op">+</span> <span class="dv">7</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>y_1 <span class="op">=</span> <span class="fl">2.5</span> <span class="op">*</span> x_shared <span class="op">+</span> <span class="dv">10</span> <span class="op">+</span> rng.normal(size<span class="op">=</span><span class="dv">100</span>, loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>y_2 <span class="op">=</span> <span class="op">-</span><span class="dv">3</span> <span class="op">*</span> x_shared <span class="op">+</span> <span class="dv">15</span> <span class="op">+</span> rng.normal(size<span class="op">=</span><span class="dv">100</span>, loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>y_3 <span class="op">=</span> <span class="fl">0.4</span> <span class="op">*</span> x_shared <span class="op">+</span> <span class="dv">12</span> <span class="op">+</span> rng.normal(size<span class="op">=</span><span class="dv">100</span>, loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"x"</span>: x_shared,</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"x_norm"</span>: stats.zscore(x_shared),</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"y_1"</span>: y_1,</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"y_2"</span>: y_2,</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"y_3"</span>: y_3,</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"y_1_norm"</span>: stats.zscore(y_1),</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"y_2_norm"</span>: stats.zscore(y_2),</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"y_3_norm"</span>: stats.zscore(y_3)</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">12</span>), sharex<span class="op">=</span><span class="va">False</span>, sharey<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>    sns.regplot(data<span class="op">=</span>data, x<span class="op">=</span><span class="st">"x"</span>, y<span class="op">=</span><span class="ss">f"y_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>, ax<span class="op">=</span>ax[i, <span class="dv">0</span>], ci<span class="op">=</span><span class="va">None</span>, line_kws<span class="op">=</span>{<span class="st">"color"</span>: <span class="st">"red"</span>})</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate the regression coefficient and correlation</span></span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> ols(<span class="ss">f"y_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> ~ x"</span>, data<span class="op">=</span>data).fit()</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>    slope <span class="op">=</span> model.params[<span class="st">"x"</span>]</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>    intercept <span class="op">=</span> model.params[<span class="st">"Intercept"</span>]</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>    r_value, _ <span class="op">=</span> stats.pearsonr(data[<span class="st">"x"</span>], data[<span class="ss">f"y_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>])</span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print the regression coefficient and correlation, top center</span></span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>    ax[i, <span class="dv">0</span>].annotate(<span class="ss">f"y = </span><span class="sc">{</span>slope<span class="sc">:.2f}</span><span class="ss">x + </span><span class="sc">{</span>intercept<span class="sc">:.2f}</span><span class="ch">\n</span><span class="ss">R = </span><span class="sc">{</span>r_value<span class="sc">:.2f}</span><span class="ss">"</span>, xy<span class="op">=</span>(<span class="fl">0.4</span>, <span class="fl">0.95</span>), xycoords<span class="op">=</span><span class="st">"axes fraction"</span>, fontsize<span class="op">=</span><span class="dv">12</span>, ha<span class="op">=</span><span class="st">"left"</span>, va<span class="op">=</span><span class="st">"top"</span>)</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>    sns.regplot(x<span class="op">=</span>stats.zscore(data[<span class="st">"x"</span>]), y<span class="op">=</span>stats.zscore(data[<span class="ss">f"y_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>]), ax<span class="op">=</span>ax[i, <span class="dv">1</span>], ci<span class="op">=</span><span class="va">None</span>, line_kws<span class="op">=</span>{<span class="st">"color"</span>: <span class="st">"red"</span>})</span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate the regression coefficient and correlation for standardized data</span></span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>    model_norm <span class="op">=</span> ols(<span class="ss">f"y_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">_norm ~ x_norm"</span>, data<span class="op">=</span>data).fit()</span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>    slope_norm <span class="op">=</span> model_norm.params[<span class="st">"x_norm"</span>]</span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>    intercept_norm <span class="op">=</span> model_norm.params[<span class="st">"Intercept"</span>]</span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>    r_value_norm, _ <span class="op">=</span> stats.pearsonr(stats.zscore(data[<span class="st">"x"</span>]), stats.zscore(data[<span class="ss">f"y_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>]))</span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print the regression coefficient and correlation, top center</span></span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a>    ax[i, <span class="dv">1</span>].annotate(<span class="ss">f"y = </span><span class="sc">{</span>slope_norm<span class="sc">:.2f}</span><span class="ss">x + </span><span class="sc">{</span>intercept_norm<span class="sc">:.2f}</span><span class="ch">\n</span><span class="ss">R = </span><span class="sc">{</span>r_value_norm<span class="sc">:.2f}</span><span class="ss">"</span>, xy<span class="op">=</span>(<span class="fl">0.4</span>, <span class="fl">0.95</span>), xycoords<span class="op">=</span><span class="st">"axes fraction"</span>, fontsize<span class="op">=</span><span class="dv">12</span>, ha<span class="op">=</span><span class="st">"left"</span>, va<span class="op">=</span><span class="st">"top"</span>)</span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a>    ax[i, <span class="dv">0</span>].set_title(<span class="st">"Original Scale"</span>)</span>
+<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a>    ax[i, <span class="dv">1</span>].set_title(<span class="st">"Standardized Scale"</span>)</span>
+<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-08_files/figure-html/cell-14-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Going back to the Galton dataset, we can compute the correlation between the heights of the parents and the heights of the children.</p>
+<div id="788422be" class="cell" data-execution_count="38">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ols(<span class="st">"height ~ midparent"</span>, data<span class="op">=</span>galton).fit()</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>predicted_heights <span class="op">=</span> model.predict(galton[<span class="st">"midparent"</span>]).values</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>galton[<span class="st">"midparent_z"</span>] <span class="op">=</span> (galton[<span class="st">"midparent"</span>] <span class="op">-</span> galton[<span class="st">"midparent"</span>].mean()) <span class="op">/</span> galton[<span class="st">"midparent"</span>].std(ddof<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>galton[<span class="st">"child_z"</span>] <span class="op">=</span> (galton[<span class="st">"height"</span>] <span class="op">-</span> galton[<span class="st">"height"</span>].mean()) <span class="op">/</span> galton[<span class="st">"height"</span>].std(ddof<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>model_z <span class="op">=</span> ols(<span class="st">"child_z ~ midparent_z"</span>, data<span class="op">=</span>galton).fit()</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>predicted_heights_z <span class="op">=</span> model_z.predict(galton[<span class="st">"midparent_z"</span>]).values</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>), sharey<span class="op">=</span><span class="va">False</span>, sharex<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(data<span class="op">=</span>galton, x<span class="op">=</span><span class="st">"midparent"</span>, y<span class="op">=</span><span class="st">"height"</span>, ax<span class="op">=</span>ax[<span class="dv">0</span>], alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x<span class="op">=</span>galton[<span class="st">"midparent"</span>], y<span class="op">=</span>predicted_heights, color<span class="op">=</span><span class="st">"k"</span>, label<span class="op">=</span><span class="st">"Predicted Height"</span>, ax<span class="op">=</span>ax[<span class="dv">0</span>])</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].annotate(<span class="ss">f"Slope: </span><span class="sc">{</span>model<span class="sc">.</span>params[<span class="st">'midparent'</span>]<span class="sc">:.2f}</span><span class="ch">\n</span><span class="ss">R: </span><span class="sc">{</span>np<span class="sc">.</span>sqrt(model.rsquared)<span class="sc">:.2f}</span><span class="ss">"</span>, xy<span class="op">=</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>), xycoords<span class="op">=</span><span class="st">"axes fraction"</span>, fontsize<span class="op">=</span><span class="dv">12</span>, ha<span class="op">=</span><span class="st">"left"</span>, va<span class="op">=</span><span class="st">"top"</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xlabel(<span class="st">"Midparent Height (avg of z-scores)"</span>)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylabel(<span class="st">"Child's Height (inches)"</span>)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(data<span class="op">=</span>galton, x<span class="op">=</span><span class="st">"midparent_z"</span>, y<span class="op">=</span><span class="st">"child_z"</span>, ax<span class="op">=</span>ax[<span class="dv">1</span>], alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x<span class="op">=</span>galton[<span class="st">"midparent_z"</span>], y<span class="op">=</span>predicted_heights_z, color<span class="op">=</span><span class="st">"k"</span>, label<span class="op">=</span><span class="st">"Predicted Height"</span>, ax<span class="op">=</span>ax[<span class="dv">1</span>])</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].annotate(<span class="ss">f"Slope: </span><span class="sc">{</span>model_z<span class="sc">.</span>params[<span class="st">'midparent_z'</span>]<span class="sc">:.2f}</span><span class="ch">\n</span><span class="ss">R: </span><span class="sc">{</span>np<span class="sc">.</span>sqrt(model_z.rsquared)<span class="sc">:.2f}</span><span class="ss">"</span>, xy<span class="op">=</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>), xycoords<span class="op">=</span><span class="st">"axes fraction"</span>, fontsize<span class="op">=</span><span class="dv">12</span>, ha<span class="op">=</span><span class="st">"left"</span>, va<span class="op">=</span><span class="st">"top"</span>)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xlabel(<span class="st">"Midparent Height (z-score)"</span>)</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylabel(<span class="st">"Child's Height (z-score)"</span>)</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-08_files/figure-html/cell-15-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 <script type="ojs-module-contents">
@@ -966,13 +1070,13 @@ eyJjb250ZW50cyI6W119
 W10=
 </script>
 </section>
-</section>
 
 
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
 <li id="fn1"><p>The Galton dataset is is a classic dataset in statistics, named after Sir Francis Galton, who studied the relationship between the heights of parents and their children. The study is the origin of the term “linear regression” and is murkily involved in the eugenics movement of the early 1900s. Data from <a href="https://doi.org/10.7910/DVN/T0HSJ1">here</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>There is a super fun online game where you can practice guessing correlations based on scatterplots: <a href="https://www.guessthecorrelation.com/">Guess the Correlation</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script type="ojs-module-contents">

@@ -1,1 +1,8 @@
 /* css styles */
+.scrollable-fixed {
+  max-height: 300px;  /* Change this value to adjust height */
+  overflow-y: auto;   /* Vertical scroll */
+  overflow-x: auto;   /* Horizontal scroll */
+  border: 1px solid #ddd;
+  padding: 5px;
+}

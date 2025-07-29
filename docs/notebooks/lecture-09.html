@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-07-27">
+<meta name="dcterms.date" content="2025-07-28">
 
-<title>Lecture 09: Regression Cont. – Understanding Uncertainty</title>
+<title>Lecture 09: Regression inference and multiple regression – Understanding Uncertainty</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -59,13 +59,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../notebooks/lecture-08.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -116,6 +117,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -149,7 +153,7 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar floating nav-fixed slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -364,7 +368,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Lecture 09: Regression Cont.</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/lecture-09.html">Lecture 09: Regression Inference and Multiple Regression</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -438,6 +442,12 @@ window.Quarto = {
  <span class="menu-text">Lecture 08: Regression Basics</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-09.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Lecture 09: Regression Inference and Multiple Regression</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -453,6 +463,12 @@ window.Quarto = {
   <li><a href="#hypothesis-testing-in-regression" id="toc-hypothesis-testing-in-regression" class="nav-link" data-scroll-target="#hypothesis-testing-in-regression">Hypothesis Testing in Regression</a></li>
   <li><a href="#confidence-intervals-for-regression-coefficients" id="toc-confidence-intervals-for-regression-coefficients" class="nav-link" data-scroll-target="#confidence-intervals-for-regression-coefficients">Confidence Intervals for Regression Coefficients</a></li>
   </ul></li>
+  <li><a href="#multiple-regression" id="toc-multiple-regression" class="nav-link" data-scroll-target="#multiple-regression">Multiple Regression</a></li>
+  <li><a href="#causality" id="toc-causality" class="nav-link" data-scroll-target="#causality">Causality</a>
+  <ul class="collapse">
+  <li><a href="#including-confounding-variables-in-regression" id="toc-including-confounding-variables-in-regression" class="nav-link" data-scroll-target="#including-confounding-variables-in-regression">Including Confounding Variables in Regression</a></li>
+  <li><a href="#randomized-controlled-trials-rcts" id="toc-randomized-controlled-trials-rcts" class="nav-link" data-scroll-target="#randomized-controlled-trials-rcts">Randomized Controlled Trials (RCTs)</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -462,7 +478,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Lecture 09: Regression Cont.</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Lecture 09: Regression inference and multiple regression</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
 </div>
 
 
@@ -473,7 +489,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 27, 2025</p>
+      <p class="date">July 28, 2025</p>
     </div>
   </div>
   
@@ -750,7 +766,7 @@ H_1:&amp; ~\beta_1 \neq 0 \quad \text{(there is a relationship)}
 
 </div>
 <script type="pyodide-1-contents">
-eyJhdHRyIjp7ImNhcHRpb24iOiJXcml0ZSBhIHBlcm11dGF0aW9uIHRlc3QgdG8gc2ltdWxhdGUgdGhlIGRpc3RyaWJ1dGlvbiBvZiB0aGUgZXN0aW1hdGVkIHNsb3BlIHVuZGVyIHRoZSBudWxsIGh5cG90aGVzaXMgdGhhdCB0aGVyZSBpcyBubyByZWxhdGlvbnNoaXAgYmV0d2VlbiBYIGFuZCBZLiIsImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiaHlwb3RoZXNpcy10ZXN0aW5nLXJlZ3Jlc3Npb24ifSwiY29kZSI6ImltcG9ydCBzdGF0c21vZGVscy5mb3JtdWxhLmFwaSBhcyBzbWZcbmltcG9ydCBwYW5kYXMgYXMgcGRcbmltcG9ydCBudW1weSBhcyBucFxuXG5uID0gMTAwXG54ID0gcm5nLm5vcm1hbChzaXplPTEwMClcbnkgPSAwLjUgKiB4ICsgMC41ICogcm5nLm5vcm1hbChzaXplPTEwMClcbmRhdGEgPSBwZC5EYXRhRnJhbWUoeyd4JzogeCwgJ3knOiB5fSlcbnJuZyA9IG5wLnJhbmRvbS5kZWZhdWx0X3JuZyg0MilcblxuZGVmIHBlcm11dGF0aW9uX3Rlc3RfcmVncmVzc2lvbihkYXRhLCBuX3Blcm11dGF0aW9ucz0xMDAwKTpcbiAgICAjIGZpcnN0LCBmaXQgdGhlIHJlZ3Jlc3Npb24gbW9kZWwgKG9uIHRoZSBvcmlnaW5hbCBkYXRhKVxuICAgIG1vZGVsID0gc21mLm9scygneSB+IHgnLCBkYXRhPWRhdGEpLmZpdCgpXG4gICAgYmV0YV9oYXQgPSBtb2RlbC5wYXJhbXNbJ3gnXVxuICAgIFxuICAgICMgVE9ETzogaW1wbGVtZW50IHRoZSBwZXJtdXRhdGlvbiB0ZXN0LiBcbiAgICAjIFlvdSBzaG91bGQgYmUgYWJsZSB0byByZXR1cm4gdGhlIG9ic2VydmVkIHNsb3BlLCBcbiAgICAjIHRoZSBhcnJheSBvZiBwZXJtdXRlZCBzbG9wZXMsIGFuZCB0aGUgcC12YWx1ZSBcbiAgICAjIGFzc29jaWF0ZWQgd2l0aCB0aGUgdGVzdC5cblxuICAgIHJldHVybiB7XG4gICAgICAgIFwiYmV0YV9oYXRcIjogYmV0YV9oYXQsXG4gICAgICAgIFwicGVybV9iZXRhX2hhdHNcIjogcGVybV9iZXRhX2hhdHMsXG4gICAgICAgIFwicF92YWxcIjogcF92YWwsXG4gICAgfSAifQ==
+eyJhdHRyIjp7ImNhcHRpb24iOiJXcml0ZSBhIHBlcm11dGF0aW9uIHRlc3QgdG8gc2ltdWxhdGUgdGhlIGRpc3RyaWJ1dGlvbiBvZiB0aGUgZXN0aW1hdGVkIHNsb3BlIHVuZGVyIHRoZSBudWxsIGh5cG90aGVzaXMgdGhhdCB0aGVyZSBpcyBubyByZWxhdGlvbnNoaXAgYmV0d2VlbiBYIGFuZCBZLiIsImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiaHlwb3RoZXNpcy10ZXN0aW5nLXJlZ3Jlc3Npb24ifSwiY29kZSI6ImltcG9ydCBzdGF0c21vZGVscy5mb3JtdWxhLmFwaSBhcyBzbWZcbmltcG9ydCBwYW5kYXMgYXMgcGRcbmltcG9ydCBudW1weSBhcyBucFxuXG5uID0gMTAwXG54ID0gcm5nLm5vcm1hbChzaXplPTEwMClcbnkgPSAwLjUgKiB4ICsgMC41ICogcm5nLm5vcm1hbChzaXplPTEwMClcbmRhdGEgPSBwZC5EYXRhRnJhbWUoeyd4JzogeCwgJ3knOiB5fSlcbnJuZyA9IG5wLnJhbmRvbS5kZWZhdWx0X3JuZyg0MilcblxuZGVmIHBlcm11dGF0aW9uX3Rlc3RfcmVncmVzc2lvbihkYXRhLCBuX3Blcm11dGF0aW9ucz0xMDAwLCBybmc9Tm9uZSk6XG4gIGlmIHJuZyBpcyBOb25lOlxuICAgIHJuZyA9IG5wLnJhbmRvbS5kZWZhdWx0X3JuZygpXG4gICMgZmlyc3QsIGZpdCB0aGUgcmVncmVzc2lvbiBtb2RlbCAob24gdGhlIG9yaWdpbmFsIGRhdGEpXG4gIG1vZGVsID0gc21mLm9scygneSB+IHgnLCBkYXRhPWRhdGEpLmZpdCgpXG4gIGJldGFfaGF0ID0gbW9kZWwucGFyYW1zWyd4J11cbiAgXG4gICMgVE9ETzogaW1wbGVtZW50IHRoZSBwZXJtdXRhdGlvbiB0ZXN0LiBcbiAgIyBZb3Ugc2hvdWxkIGJlIGFibGUgdG8gcmV0dXJuIHRoZSBvYnNlcnZlZCBzbG9wZSwgXG4gICMgdGhlIGFycmF5IG9mIHBlcm11dGVkIHNsb3BlcywgYW5kIHRoZSBwLXZhbHVlIFxuICAjIGFzc29jaWF0ZWQgd2l0aCB0aGUgdGVzdC5cbiAgcmV0dXJuIHtcbiAgICBcImJldGFfaGF0XCI6IGJldGFfaGF0LFxuICAgIFwicGVybV9iZXRhX2hhdHNcIjogcGVybV9iZXRhX2hhdHMsXG4gICAgXCJwX3ZhbFwiOiBwX3ZhbCxcbiAgfVxuXG5yZXN1bHRfZGljdCA9IHBlcm11dGF0aW9uX3Rlc3RfcmVncmVzc2lvbihkYXRhLCBuX3Blcm11dGF0aW9ucz0xMDAwLCBybmc9cm5nKVxucHJpbnQoXCJPYnNlcnZlZCBzbG9wZSAoYmV0YV9oYXQpOlwiLCByZXN1bHRfZGljdFsnYmV0YV9oYXQnXSlcbnByaW50KFwiUGVybXV0YXRpb24gcC12YWx1ZTpcIiwgcmVzdWx0X2RpY3RbJ3BfdmFsJ10pIn0=
 </script>
 </div>
 </div>
@@ -771,31 +787,36 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJXcml0ZSBhIHBlcm11dGF0aW9uIHRlc3QgdG8gc2ltdWxhdGUgdGhl
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="hypothesis-testing-regression">
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> permutation_test_regression(data, n_permutations<span class="op">=</span><span class="dv">1000</span>):</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># first, fit the regression model (on the original data)</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> sm.ols(<span class="st">'y ~ x'</span>, data<span class="op">=</span>data).fit()</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    beta_hat <span class="op">=</span> model.params[<span class="st">'x'</span>]</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    perm_beta_hats <span class="op">=</span> [] <span class="co"># list to store permuted slopes</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_permutations):</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># permute the response variable y</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># this breaks the relationship between x and y</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        y_perm <span class="op">=</span> rng.permutation(data[<span class="st">'y'</span>])</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># fit the regression model to the permuted data</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        perm_model <span class="op">=</span> sm.OLS(y_perm, X).fit()</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># store the estimated slope</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        perm_beta_hats.append(perm_model.params[<span class="st">'x'</span>])</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># the slopes from the permuted data are</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># your null distribution</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    perm_beta_hats <span class="op">=</span> np.array(perm_beta_hats)</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># compute p-value</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    p_val <span class="op">=</span> np.mean(np.<span class="bu">abs</span>(perm_beta_hats) <span class="op">&gt;=</span> np.<span class="bu">abs</span>(beta_hat))</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"beta_hat"</span>: beta_hat,</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"perm_beta_hats"</span>: perm_beta_hats,</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>        <span class="st">"p_val"</span>: p_val,</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> permutation_test_regression(data, n_permutations<span class="op">=</span><span class="dv">1000</span>, rng<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> rng <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        rng <span class="op">=</span> np.random.default_rng()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># first, fit the regression model (on the original data)</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> sm.ols(<span class="st">'y ~ x'</span>, data<span class="op">=</span>data).fit()</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    beta_hat <span class="op">=</span> model.params[<span class="st">'x'</span>]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    perm_beta_hats <span class="op">=</span> [] <span class="co"># list to store permuted slopes</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_permutations):</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># permute the response variable y</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># this breaks the relationship between x and y</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        y_perm <span class="op">=</span> rng.permutation(data[<span class="st">'y'</span>])</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># fit the regression model to the permuted data</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        perm_model <span class="op">=</span> sm.OLS(y_perm, X).fit()</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># store the estimated slope</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        perm_beta_hats.append(perm_model.params[<span class="st">'x'</span>])</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># the slopes from the permuted data are</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># your null distribution</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    perm_beta_hats <span class="op">=</span> np.array(perm_beta_hats)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># compute p-value</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    p_val <span class="op">=</span> np.mean(np.<span class="bu">abs</span>(perm_beta_hats) <span class="op">&gt;=</span> np.<span class="bu">abs</span>(beta_hat))</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>        <span class="st">"beta_hat"</span>: beta_hat,</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">"perm_beta_hats"</span>: perm_beta_hats,</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>        <span class="st">"p_val"</span>: p_val,</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>result_dict <span class="op">=</span> permutation_test_regression(data, n_permutations<span class="op">=</span><span class="dv">1000</span>, rng<span class="op">=</span>rng)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Observed slope (beta_hat):"</span>, result_dict[<span class="st">'beta_hat'</span>])</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Permutation p-value:"</span>, result_dict[<span class="st">'p_val'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -821,7 +842,7 @@ Parametric inference in regression
 </div>
 </div>
 </section>
-<section id="confidence-intervals-for-regression-coefficients" class="level3">
+<section id="confidence-intervals-for-regression-coefficients" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="confidence-intervals-for-regression-coefficients">Confidence Intervals for Regression Coefficients</h3>
 <p><span class="math inline">\(p\)</span>-values are nice, but they don’t tell us the whole story. We might want to get a sense of the range of plausible values for the regression coefficients, because the effect size is important too.</p>
 <div class="callout callout-style-default callout-warning callout-titled" title="Effect Size">
@@ -844,7 +865,7 @@ Effect Size
 </div>
 <p>In addition to hypothesis testing, we can also use bootstrapping to construct confidence intervals for the regression coefficients.</p>
 <p>Here’s some code that does this:</p>
-<div id="d57c605e" class="cell">
+<div id="d57c605e" class="cell" data-execution_count="43">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="annotated-cell-1"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> sm</span>
@@ -872,13 +893,14 @@ Effect Size
 <span id="annotated-cell-1-23"><a href="#annotated-cell-1-23" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.DataFrame({<span class="st">"x"</span>: x, <span class="st">"y"</span>: y})</span>
 <span id="annotated-cell-1-24"><a href="#annotated-cell-1-24" aria-hidden="true" tabindex="-1"></a></span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="5">5</button><span id="annotated-cell-1-25" class="code-annotation-target"><a href="#annotated-cell-1-25" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> sm.ols(<span class="st">"y ~ x"</span>, data<span class="op">=</span>data).fit()</span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="6">6</button><span id="annotated-cell-1-26" class="code-annotation-target"><a href="#annotated-cell-1-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model.summary())</span>
-<span id="annotated-cell-1-27"><a href="#annotated-cell-1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-1-28"><a href="#annotated-cell-1-28" aria-hidden="true" tabindex="-1"></a>bootstrap_coefs, lower_bound, upper_bound <span class="op">=</span> bootstrap_regression_ci(</span>
-<span id="annotated-cell-1-29"><a href="#annotated-cell-1-29" aria-hidden="true" tabindex="-1"></a>    data, <span class="st">"x"</span>, <span class="st">"y"</span>, n_bootstraps<span class="op">=</span><span class="dv">10000</span></span>
-<span id="annotated-cell-1-30"><a href="#annotated-cell-1-30" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="annotated-cell-1-31"><a href="#annotated-cell-1-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"#"</span> <span class="op">*</span> <span class="dv">40</span>)</span>
-<span id="annotated-cell-1-32"><a href="#annotated-cell-1-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Bootstrap CI for slope: [</span><span class="sc">{</span>lower_bound<span class="sc">:.3f}</span><span class="ss">, </span><span class="sc">{</span>upper_bound<span class="sc">:.3f}</span><span class="ss">]"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-1-26"><a href="#annotated-cell-1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-1-27"><a href="#annotated-cell-1-27" aria-hidden="true" tabindex="-1"></a>bootstrap_coefs, lower_bound, upper_bound <span class="op">=</span> bootstrap_regression_ci(</span>
+<span id="annotated-cell-1-28"><a href="#annotated-cell-1-28" aria-hidden="true" tabindex="-1"></a>    data, <span class="st">"x"</span>, <span class="st">"y"</span>, n_bootstraps<span class="op">=</span><span class="dv">1000</span></span>
+<span id="annotated-cell-1-29"><a href="#annotated-cell-1-29" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="annotated-cell-1-30"><a href="#annotated-cell-1-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"#"</span> <span class="op">*</span> <span class="dv">40</span>)</span>
+<span id="annotated-cell-1-31"><a href="#annotated-cell-1-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Bootstrap CI for slope: [</span><span class="sc">{</span>lower_bound<span class="sc">:.3f}</span><span class="ss">, </span><span class="sc">{</span>upper_bound<span class="sc">:.3f}</span><span class="ss">]"</span>)</span>
+<span id="annotated-cell-1-32"><a href="#annotated-cell-1-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"#"</span> <span class="op">*</span> <span class="dv">40</span>)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="6">6</button><span id="annotated-cell-1-33" class="code-annotation-target"><a href="#annotated-cell-1-33" aria-hidden="true" tabindex="-1"></a>model.summary(slim<span class="op">=</span><span class="va">True</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
@@ -904,48 +926,90 @@ Effect Size
 </dd>
 <dt data-target-cell="annotated-cell-1" data-target-annotation="6">6</dt>
 <dd>
-<span data-code-cell="annotated-cell-1" data-code-lines="26" data-code-annotation="6">Print statsmodels summary table with the confidence intervals.</span>
+<span data-code-cell="annotated-cell-1" data-code-lines="33" data-code-annotation="6">Print statsmodels summary table with the confidence intervals.</span>
 </dd>
 </dl>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>                            OLS Regression Results                            
-==============================================================================
-Dep. Variable:                      y   R-squared:                       0.699
-Model:                            OLS   Adj. R-squared:                  0.696
-Method:                 Least Squares   F-statistic:                     227.5
-Date:                Sun, 27 Jul 2025   Prob (F-statistic):           2.71e-27
-Time:                        18:50:46   Log-Likelihood:                -132.94
-No. Observations:                 100   AIC:                             269.9
-Df Residuals:                      98   BIC:                             275.1
-Df Model:                           1                                         
-Covariance Type:            nonrobust                                         
-==============================================================================
-                 coef    std err          t      P&gt;|t|      [0.025      0.975]
-------------------------------------------------------------------------------
-Intercept      2.0933      0.093     22.569      0.000       1.909       2.277
-x              1.5567      0.103     15.084      0.000       1.352       1.761
-==============================================================================
-Omnibus:                        0.741   Durbin-Watson:                   1.945
-Prob(Omnibus):                  0.690   Jarque-Bera (JB):                0.313
-Skew:                          -0.044   Prob(JB):                        0.855
-Kurtosis:                       3.259   Cond. No.                         1.15
-==============================================================================
+<pre><code>########################################
+Bootstrap CI for slope: [1.360, 1.771]
+########################################</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="43">
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>OLS Regression Results</caption>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Dep. Variable:</td>
+<td>y</td>
+<td data-quarto-table-cell-role="th">R-squared:</td>
+<td>0.699</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Model:</td>
+<td>OLS</td>
+<td data-quarto-table-cell-role="th">Adj. R-squared:</td>
+<td>0.696</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">No. Observations:</td>
+<td>100</td>
+<td data-quarto-table-cell-role="th">F-statistic:</td>
+<td>227.5</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Covariance Type:</td>
+<td>nonrobust</td>
+<td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
+<td>2.71e-27</td>
+</tr>
+</tbody>
+</table>
 
-Notes:
-[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
-########################################
-Bootstrap CI for slope: [1.358, 1.760]</code></pre>
+
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td></td>
+<td data-quarto-table-cell-role="th">coef</td>
+<td data-quarto-table-cell-role="th">std err</td>
+<td data-quarto-table-cell-role="th">t</td>
+<td data-quarto-table-cell-role="th">P&gt;|t|</td>
+<td data-quarto-table-cell-role="th">[0.025</td>
+<td data-quarto-table-cell-role="th">0.975]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Intercept</td>
+<td>2.0933</td>
+<td>0.093</td>
+<td>22.569</td>
+<td>0.000</td>
+<td>1.909</td>
+<td>2.277</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">x</td>
+<td>1.5567</td>
+<td>0.103</td>
+<td>15.084</td>
+<td>0.000</td>
+<td>1.352</td>
+<td>1.761</td>
+</tr>
+</tbody>
+</table>
+<br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 </div>
 </div>
 <p>The summary table has lots of extra information you can ignore for now, but the key part is the <code>coef</code> column which contains the point estimates of the regression coefficients, and the <code>[0.025, 0.975]</code> columns which contain the lower and upper bounds of the 95% confidence intervals.</p>
 <p>We also printed the bootstrapped confidence intervals, and you can see that they are very similar to the ones computed by <code>statsmodels</code> using the normality assumption.</p>
 <p>Still confused? Try the following app to visualize what’s going on:</p>
+<div class="column-screen-inset">
 <pre class="shinylive-python" data-engine="python"><code>#| '!! shinylive warning !!': |
 #|   shinylive does not work in self-contained HTML documents.
 #|   Please set `embed-resources: false` in your metadata.
 #| standalone: true
-#| viewerHeight: 500
+#| viewerHeight: 950
 
 from shiny import App, ui, render, reactive
 import seaborn as sns
@@ -954,104 +1018,1076 @@ import numpy as np
 import matplotlib.pyplot as plt
 import statsmodels.formula.api as smf
 
-# Original population
 rng = np.random.default_rng(123)
-N_POP = 500
-x_pop = rng.normal(size=N_POP)
-true_beta = 0.5
-y_pop = true_beta * x_pop + rng.normal(scale=1, size=N_POP)
-population = pd.DataFrame({"x": x_pop, "y": y_pop})
-
-# Fit regression on full population
-pop_model = smf.ols("y ~ x", data=population).fit()
-pop_slope = pop_model.params["x"]
+N_POP = 1000
 
 app_ui = ui.page_fluid(
-    ui.layout_columns(
-        ui.input_slider("n", "Sample Size", min=10, max=500, value=100),
-        ui.input_action_button("resample", "Resample 1x"),
-        ui.input_action_button("resample10", "Resample 10x"),
-        ui.input_action_button("resample100", "Resample 100x"),
-    ),
-    ui.output_plot("scatter_plot"),
-    ui.output_plot("hist_plot"),
+    ui.layout_sidebar(
+        ui.sidebar(
+            ui.input_slider("beta", "True Slope (β)", min=-2, max=2, value=0.5, step=0.1),
+            ui.input_slider("sigma", "Noise SD (σ)", min=0.1, max=2.0, value=1.0, step=0.1),
+            ui.input_slider("n", "Original Sample Size", min=10, max=500, value=100),
+            ui.input_action_button("draw_sample", "Draw Original Sample"),
+            ui.input_action_button("bootstrap1", "Bootstrap 1x", disabled=True),
+            ui.input_action_button("bootstrap10", "Bootstrap 10x", disabled=True),
+            ui.input_action_button("bootstrap100", "Bootstrap 100x", disabled=True),
+            ui.input_action_button("reset", "Reset", disabled=True),
+        ),
+        ui.navset_tab(
+            ui.nav_panel("Scatter and Slopes Histogram",
+                ui.output_plot("scatter_plot"),
+                ui.div(
+                    ui.output_text("count_text"),
+                    style="text-align:center; font-size:16px; margin-top:10px;"
+                ),
+                ui.output_plot("hist_plot"),
+            ),
+            ui.nav_panel("Bootstrapped Regression Lines",
+                ui.output_plot("lines_plot"),
+            ),
+        ),
+    )
 )
 
 def server(input, output, session):
-    current_sample = reactive.value(pd.DataFrame())
+    original_sample = reactive.value(pd.DataFrame())
+    current_bootstrap = reactive.value(pd.DataFrame())
     bootstrap_coefs = reactive.value([])
 
-    def take_sample():
-        sample = population.sample(n=input.n(), replace=True)
-        model = smf.ols("y ~ x", data=sample).fit()
-        bootstrap_coefs.set(bootstrap_coefs() + [model.params["x"]])
-        current_sample.set(sample)
+    # Generate population reactively
+    @reactive.calc
+    def population():
+        x = rng.normal(size=N_POP)
+        y = input.beta() * x + input.sigma() * rng.normal(size=N_POP)
+        return pd.DataFrame({"x": x, "y": y})
+
+    # Helper to enable/disable buttons
+    def set_buttons(enable_bootstrap=False, enable_draw=True, enable_reset=False):
+        session.send_input_message("bootstrap1", {"disabled": not enable_bootstrap})
+        session.send_input_message("bootstrap10", {"disabled": not enable_bootstrap})
+        session.send_input_message("bootstrap100", {"disabled": not enable_bootstrap})
+        session.send_input_message("draw_sample", {"disabled": not enable_draw})
+        session.send_input_message("reset", {"disabled": not enable_reset})
 
     @reactive.effect
-    @reactive.event(input.resample)
-    def resample_once():
-        take_sample()
+    def _init_buttons():
+        set_buttons(enable_bootstrap=False, enable_draw=True, enable_reset=False)
+
+    # Reset sample &amp; bootstrap whenever population changes
+    @reactive.effect
+    @reactive.event(input.beta, input.sigma, input.n)
+    def _reset_on_population_change():
+        original_sample.set(pd.DataFrame())
+        current_bootstrap.set(pd.DataFrame())
+        bootstrap_coefs.set([])
+        set_buttons(enable_bootstrap=False, enable_draw=True, enable_reset=False)
+
+    # Draw original sample
+    @reactive.effect
+    @reactive.event(input.draw_sample)
+    def draw_sample():
+        sample = population().sample(n=input.n(), replace=False)
+        original_sample.set(sample)
+        current_bootstrap.set(pd.DataFrame())
+        bootstrap_coefs.set([])
+        set_buttons(enable_bootstrap=True, enable_draw=False, enable_reset=True)
+
+    def bootstrap_once():
+        sample = original_sample()
+        if sample.empty:
+            return
+        resample = sample.sample(n=len(sample), replace=True)
+        current_bootstrap.set(resample)
+        model = smf.ols("y ~ x", data=resample).fit()
+        bootstrap_coefs.set(bootstrap_coefs() + [(model.params["Intercept"], model.params["x"])])
+
+    # Bootstrap buttons
+    @reactive.effect
+    @reactive.event(input.bootstrap1)
+    def boot1():
+        bootstrap_once()
 
     @reactive.effect
-    @reactive.event(input.resample10)
-    def resample_ten():
+    @reactive.event(input.bootstrap10)
+    def boot10():
         for _ in range(10):
-            take_sample()
+            bootstrap_once()
 
     @reactive.effect
-    @reactive.event(input.resample100)
-    def resample_hundred():
+    @reactive.event(input.bootstrap100)
+    def boot100():
         for _ in range(100):
-            take_sample()
+            bootstrap_once()
 
+    # Reset button
+    @reactive.effect
+    @reactive.event(input.reset)
+    def reset_all():
+        original_sample.set(pd.DataFrame())
+        current_bootstrap.set(pd.DataFrame())
+        bootstrap_coefs.set([])
+        set_buttons(enable_bootstrap=False, enable_draw=True, enable_reset=False)
+
+    # Bootstrap count text
+    @output
+    @render.text
+    def count_text():
+        count = len(bootstrap_coefs())
+        if count == 0:
+            return "No bootstrap samples yet."
+        elif count == 1:
+            return "1 bootstrap sample drawn."
+        else:
+            return f"{count} bootstrap samples drawn."
+
+    # Scatter plot
     @output
     @render.plot
     def scatter_plot():
-        plt.figure(figsize=(6, 4))
-        # Plot population faintly
-        sns.scatterplot(x="x", y="y", data=population, alpha=0.1, color="gray", label="Population")
+        plt.figure(figsize=(7, 4.5))
+        pop = population()
 
-        # Population regression line
-        x_vals = np.linspace(population["x"].min(), population["x"].max(), 100)
+        pop_model = smf.ols("y ~ x", data=pop).fit()
+        x_vals = np.linspace(pop["x"].min(), pop["x"].max(), 100)
         y_vals = pop_model.params["Intercept"] + pop_model.params["x"] * x_vals
-        plt.plot(x_vals, y_vals, color="black", lw=2, linestyle="--", label="Population Line")
+        plt.plot(x_vals, y_vals, color="gray", lw=2, linestyle=":", label="Population line")
 
-        # If we have a current sample, overlay it
-        sample = current_sample()
+        sample = original_sample()
         if not sample.empty:
-            sns.scatterplot(x="x", y="y", data=sample, color="blue", alpha=0.6, label="Bootstrap Sample")
+            sns.scatterplot(x="x", y="y", data=sample, color="black", alpha=0.4, label="Original sample")
             model = smf.ols("y ~ x", data=sample).fit()
-            y_sample = model.params["Intercept"] + model.params["x"] * x_vals
-            plt.plot(x_vals, y_sample, color="red", lw=2, label="Sample Line")
+            y_vals_s = model.params["Intercept"] + model.params["x"] * x_vals
+            plt.plot(x_vals, y_vals_s, color="black", linestyle="--", label="Original line", alpha=0.7, lw=2)
+
+        boot = current_bootstrap()
+        if not boot.empty:
+            sns.scatterplot(x="x", y="y", data=boot, color="blue", alpha=0.7, label="Bootstrap sample")
+            model_b = smf.ols("y ~ x", data=boot).fit()
+            y_vals_b = model_b.params["Intercept"] + model_b.params["x"] * x_vals
+            plt.plot(x_vals, y_vals_b, color="blue", lw=2, label="Bootstrap line")
 
         plt.xlabel("x")
         plt.ylabel("y")
-        plt.title("Population (faint) and Current Bootstrap Sample")
+        plt.title("Population, original sample, and (most recent) bootstrap sample")
         plt.legend()
 
+    # Histogram
     @output
     @render.plot
     def hist_plot():
         coefs = bootstrap_coefs()
+        # unpack (Intercept, slope) tuples
+        plt.figure(figsize=(7, 3.5))
 
-        plt.figure(figsize=(6, 4))
         if coefs:
-            sns.histplot(coefs, bins=20, kde=False, color="lightblue")
-
-            # Vertical lines at quantiles
+            coefs = [coef[1] for coef in coefs]  # extract slopes only
+            sns.histplot(coefs, bins=20, color="lightblue", kde=False)
             q_low, q_high = np.quantile(coefs, [0.025, 0.975])
             plt.axvline(q_low, color="purple", linestyle="--", lw=2, label="2.5% Quantile")
             plt.axvline(q_high, color="purple", linestyle="--", lw=2, label="97.5% Quantile")
+            plt.fill_betweenx(
+                [0, plt.ylim()[1]], q_low, q_high, color="purple", alpha=0.05, label="95% CI"
+            )
 
-        # Vertical line at population slope
-        plt.axvline(pop_slope, color="black", lw=2, label="Observed (Population) β̂")
+        sample = original_sample()
+        if not sample.empty:
+            model_orig = smf.ols("y ~ x", data=sample).fit()
+            obs_slope = model_orig.params["x"]
+            plt.axvline(obs_slope, color="black", lw=2, label=r"Observed $\hat{\beta}$")
 
         plt.xlabel("Bootstrap Slope Estimates")
         plt.ylabel("Frequency")
-        plt.title("Bootstrap Distribution of β̂")
+        plt.title(r"Bootstrap distribution of $\hat{\beta}$")
         plt.legend()
 
+    @output
+    @render.plot
+    def lines_plot():
+        plt.figure(figsize=(7, 5))
+        x_vals = np.linspace(-3, 3, 100)
+
+        # Draw all bootstrap lines
+        for (intercept, slope) in bootstrap_coefs():
+            plt.plot(x_vals, intercept + slope * x_vals, color="blue", alpha=0.1)
+
+        # Draw original sample line
+        sample = original_sample()
+        if not sample.empty:
+            m = smf.ols("y ~ x", data=sample).fit()
+            plt.plot(x_vals, m.params["Intercept"] + m.params["x"] * x_vals,
+                     color="black", lw=2, label="Original Line")
+
+        plt.xlabel("x")
+        plt.ylabel("y")
+        plt.title("Bootstrap Regression Lines")
+        plt.legend()
+
+
 app = App(app_ui, server)</code></pre>
+</div>
+<p>The bootstrap distribution of the estimated slope <span class="math inline">\(\hat{\beta}_1\)</span> gives us confidence intervals for the slope. See the second panel of the app for a visualization of bootstrapped regression lines (slope and intercept). As you draw more bootstrap samples, you’ll see that the regression lines concentrate around the original sample’s regression line, but their distribution gives us a sense of the variability in the regression predictions.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Prediction Intervals">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Prediction Intervals
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>In addition to confidence intervals for the regression coefficients and their associated predictions, one can also try to account for the randomness in the response variable <span class="math inline">\(Y\)</span> itself. That is, in the linear regression model, we assume that the response variable <span class="math inline">\(Y\)</span> is normally distributed around the regression line with some variance <span class="math inline">\(\sigma^2\)</span>.</p>
+<p>In other words, the confidence intervals tell us about the variability of our predictions, but not about the variability of the actual response variable <span class="math inline">\(Y\)</span>. Prediction intervals aim to capture this additional source of variability by providing a range of values within which we expect future observations to fall, given the same values of the predictor variables.</p>
+<p>Details of generating predictions intervals are beyond the scope of this course (for now).</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="multiple-regression" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="multiple-regression">Multiple Regression</h2>
+<p>So far, we have only considered <em>simple linear regression</em>, where we have one predictor variable <span class="math inline">\(X\)</span> and one response variable <span class="math inline">\(Y\)</span>. However, in many real-world scenarios, we have multiple predictor variables that can influence the response variable simultaneously.</p>
+<p>This leads us to <strong>multiple linear regression</strong>, which extends the simple linear regression model to include multiple predictors: <span class="math display">\[ Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \ldots + \beta_p X_p + \epsilon \]</span></p>
+<p>where <span class="math inline">\(X_1, X_2, \ldots, X_p\)</span> are the predictor variables, <span class="math inline">\(\beta_0\)</span> is the intercept, <span class="math inline">\(\beta_1, \ldots, \beta_p\)</span> are the slopes for each predictor, and <span class="math inline">\(\epsilon\)</span> is the error term.</p>
+<p>In multiple regression, we can still use the same principles of hypothesis testing and confidence intervals.</p>
+<p>Let’s start off with a simple example of multiple regression using the <code>statsmodels</code> library.</p>
+<p>We’re going to use a dataset with information about students’ academic performance in secondary school.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The dataset contains various features such as study time, family information, and lifestyle (e.g.&nbsp;how much they go out),and much more. The goal is to predict the final grade of the students in a secondary school course (a numeric value out of 20). There are datasets for two subjects: Mathematics and Portuguese, but we’ll focus on the Mathematics dataset.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Paper: Cortez, P (2008) “Using Data Mining to Predict Secondary School Student Performance”. Dataset: <a href="https://doi.org/10.24432/C5TG7T">https://doi.org/10.24432/C5TG7T</a></p></div></div><div id="65d56e9c" class="cell" data-execution_count="79">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>student_data <span class="op">=</span> pd.read_csv(<span class="st">"../data/student-mat.csv"</span>, sep<span class="op">=</span><span class="st">";"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>student_data.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="79">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">school</th>
+<th data-quarto-table-cell-role="th">sex</th>
+<th data-quarto-table-cell-role="th">age</th>
+<th data-quarto-table-cell-role="th">address</th>
+<th data-quarto-table-cell-role="th">famsize</th>
+<th data-quarto-table-cell-role="th">Pstatus</th>
+<th data-quarto-table-cell-role="th">Medu</th>
+<th data-quarto-table-cell-role="th">Fedu</th>
+<th data-quarto-table-cell-role="th">Mjob</th>
+<th data-quarto-table-cell-role="th">Fjob</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">famrel</th>
+<th data-quarto-table-cell-role="th">freetime</th>
+<th data-quarto-table-cell-role="th">goout</th>
+<th data-quarto-table-cell-role="th">Dalc</th>
+<th data-quarto-table-cell-role="th">Walc</th>
+<th data-quarto-table-cell-role="th">health</th>
+<th data-quarto-table-cell-role="th">absences</th>
+<th data-quarto-table-cell-role="th">G1</th>
+<th data-quarto-table-cell-role="th">G2</th>
+<th data-quarto-table-cell-role="th">G3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>GP</td>
+<td>F</td>
+<td>18</td>
+<td>U</td>
+<td>GT3</td>
+<td>A</td>
+<td>4</td>
+<td>4</td>
+<td>at_home</td>
+<td>teacher</td>
+<td>...</td>
+<td>4</td>
+<td>3</td>
+<td>4</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>6</td>
+<td>5</td>
+<td>6</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>GP</td>
+<td>F</td>
+<td>17</td>
+<td>U</td>
+<td>GT3</td>
+<td>T</td>
+<td>1</td>
+<td>1</td>
+<td>at_home</td>
+<td>other</td>
+<td>...</td>
+<td>5</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>GP</td>
+<td>F</td>
+<td>15</td>
+<td>U</td>
+<td>LE3</td>
+<td>T</td>
+<td>1</td>
+<td>1</td>
+<td>at_home</td>
+<td>other</td>
+<td>...</td>
+<td>4</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>10</td>
+<td>7</td>
+<td>8</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>GP</td>
+<td>F</td>
+<td>15</td>
+<td>U</td>
+<td>GT3</td>
+<td>T</td>
+<td>4</td>
+<td>2</td>
+<td>health</td>
+<td>services</td>
+<td>...</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>5</td>
+<td>2</td>
+<td>15</td>
+<td>14</td>
+<td>15</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>GP</td>
+<td>F</td>
+<td>16</td>
+<td>U</td>
+<td>GT3</td>
+<td>T</td>
+<td>3</td>
+<td>3</td>
+<td>other</td>
+<td>other</td>
+<td>...</td>
+<td>4</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>5</td>
+<td>4</td>
+<td>6</td>
+<td>10</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 33 columns</p>
+</div>
+</div>
+</div>
+<p>Here’s a breakdown of what the columns in the dataset represent:</p>
+<style>
+.scrollable-fixed {
+  max-height: 400px;  /* Fixed height */
+  overflow-y: auto;   /* Vertical scroll */
+  overflow-x: auto;   /* Horizontal scroll */
+  border: 2px solid #ddd;
+  padding: 5px;
+  margin: 20px 0;
+}
+</style>
+<div class="scrollable-fixed">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 33%">
+<col style="width: 57%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Description</th>
+<th>Type / Values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>school</td>
+<td>Student’s school</td>
+<td>GP = Gabriel Pereira, MS = Mousinho da Silveira</td>
+</tr>
+<tr class="even">
+<td>sex</td>
+<td>Student’s sex</td>
+<td>F = female, M = male</td>
+</tr>
+<tr class="odd">
+<td>age</td>
+<td>Student’s age</td>
+<td>Numeric (15–22)</td>
+</tr>
+<tr class="even">
+<td>address</td>
+<td>Home address type</td>
+<td>U = urban, R = rural</td>
+</tr>
+<tr class="odd">
+<td>famsize</td>
+<td>Family size</td>
+<td>LE3 = ≤3, GT3 = &gt;3</td>
+</tr>
+<tr class="even">
+<td>Pstatus</td>
+<td>Parent’s cohabitation status</td>
+<td>T = living together, A = apart</td>
+</tr>
+<tr class="odd">
+<td>Medu</td>
+<td>Mother’s education</td>
+<td>0 = none, 1 = primary, 2 = 5th–9th, 3 = secondary, 4 = higher</td>
+</tr>
+<tr class="even">
+<td>Fedu</td>
+<td>Father’s education</td>
+<td>0 = none, 1 = primary, 2 = 5th–9th, 3 = secondary, 4 = higher</td>
+</tr>
+<tr class="odd">
+<td>Mjob</td>
+<td>Mother’s job</td>
+<td>teacher, health, services, at_home, other</td>
+</tr>
+<tr class="even">
+<td>Fjob</td>
+<td>Father’s job</td>
+<td>teacher, health, services, at_home, other</td>
+</tr>
+<tr class="odd">
+<td>reason</td>
+<td>Reason to choose this school</td>
+<td>home, reputation, course, other</td>
+</tr>
+<tr class="even">
+<td>guardian</td>
+<td>Student’s guardian</td>
+<td>mother, father, other</td>
+</tr>
+<tr class="odd">
+<td>traveltime</td>
+<td>Home-to-school travel time</td>
+<td>1 = &lt;15m, 2 = 15–30m, 3 = 30–60m, 4 = &gt;1h</td>
+</tr>
+<tr class="even">
+<td>studytime</td>
+<td>Weekly study time</td>
+<td>1 = &lt;2h, 2 = 2–5h, 3 = 5–10h, 4 = &gt;10h</td>
+</tr>
+<tr class="odd">
+<td>failures</td>
+<td>Number of past class failures</td>
+<td>n if 1≤n&lt;3, else 4</td>
+</tr>
+<tr class="even">
+<td>schoolsup</td>
+<td>Extra educational support</td>
+<td>yes / no</td>
+</tr>
+<tr class="odd">
+<td>famsup</td>
+<td>Family educational support</td>
+<td>yes / no</td>
+</tr>
+<tr class="even">
+<td>paid</td>
+<td>Extra paid classes in the subject</td>
+<td>yes / no</td>
+</tr>
+<tr class="odd">
+<td>activities</td>
+<td>Extra-curricular activities</td>
+<td>yes / no</td>
+</tr>
+<tr class="even">
+<td>nursery</td>
+<td>Attended nursery school</td>
+<td>yes / no</td>
+</tr>
+<tr class="odd">
+<td>higher</td>
+<td>Wants to take higher education</td>
+<td>yes / no</td>
+</tr>
+<tr class="even">
+<td>internet</td>
+<td>Internet access at home</td>
+<td>yes / no</td>
+</tr>
+<tr class="odd">
+<td>romantic</td>
+<td>With a romantic relationship</td>
+<td>yes / no</td>
+</tr>
+<tr class="even">
+<td>famrel</td>
+<td>Quality of family relationships</td>
+<td>1 = very bad … 5 = excellent</td>
+</tr>
+<tr class="odd">
+<td>freetime</td>
+<td>Free time after school</td>
+<td>1 = very low … 5 = very high</td>
+</tr>
+<tr class="even">
+<td>goout</td>
+<td>Going out with friends</td>
+<td>1 = very low … 5 = very high</td>
+</tr>
+<tr class="odd">
+<td>Dalc</td>
+<td>Workday alcohol consumption</td>
+<td>1 = very low … 5 = very high</td>
+</tr>
+<tr class="even">
+<td>Walc</td>
+<td>Weekend alcohol consumption</td>
+<td>1 = very low … 5 = very high</td>
+</tr>
+<tr class="odd">
+<td>health</td>
+<td>Current health status</td>
+<td>1 = very bad … 5 = very good</td>
+</tr>
+<tr class="even">
+<td>absences</td>
+<td>Number of school absences</td>
+<td>Numeric (0–93)</td>
+</tr>
+<tr class="odd">
+<td>G1</td>
+<td>First period grade</td>
+<td>0–20</td>
+</tr>
+<tr class="even">
+<td>G2</td>
+<td>Second period grade</td>
+<td>0–20</td>
+</tr>
+<tr class="odd">
+<td>G3</td>
+<td>Final grade (target variable)</td>
+<td>0–20</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Let’s pick a model. If we want to predict the final grade <span class="math inline">\(G3\)</span>, then perhaps we can use information about the student’s family history to help us. In particular, one might expect that the education level of the parents might be a good predictor of the student’s performance (educated parents might be more likely to help with homework, have higher expectations, etc.).</p>
+<p>We can fit a multiple regression model with the final grade <span class="math inline">\(G3\)</span> as the response variable and the father’s education level <span class="math inline">\(Fedu\)</span> as a predictor.</p>
+<div id="33e79b4b" class="cell" data-execution_count="97">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> smf.ols(<span class="st">"G3 ~ Fedu"</span>, data<span class="op">=</span>student_data).fit()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>model.summary(slim<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="97">
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>OLS Regression Results</caption>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Dep. Variable:</td>
+<td>G3</td>
+<td data-quarto-table-cell-role="th">R-squared:</td>
+<td>0.023</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Model:</td>
+<td>OLS</td>
+<td data-quarto-table-cell-role="th">Adj. R-squared:</td>
+<td>0.021</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">No. Observations:</td>
+<td>395</td>
+<td data-quarto-table-cell-role="th">F-statistic:</td>
+<td>9.352</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Covariance Type:</td>
+<td>nonrobust</td>
+<td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
+<td>0.00238</td>
+</tr>
+</tbody>
+</table>
+
+
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td></td>
+<td data-quarto-table-cell-role="th">coef</td>
+<td data-quarto-table-cell-role="th">std err</td>
+<td data-quarto-table-cell-role="th">t</td>
+<td data-quarto-table-cell-role="th">P&gt;|t|</td>
+<td data-quarto-table-cell-role="th">[0.025</td>
+<td data-quarto-table-cell-role="th">0.975]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Intercept</td>
+<td>8.7967</td>
+<td>0.576</td>
+<td>15.264</td>
+<td>0.000</td>
+<td>7.664</td>
+<td>9.930</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Fedu</td>
+<td>0.6419</td>
+<td>0.210</td>
+<td>3.058</td>
+<td>0.002</td>
+<td>0.229</td>
+<td>1.055</td>
+</tr>
+</tbody>
+</table>
+<br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</div>
+</div>
+<p>Nice, it looks like a good predictor. Looking at the confidence interval and <span class="math inline">\(p\)</span>-value, we see that it is pretty clear there is a nonzero effect of <code>Fedu</code> on <code>G3</code>. So we’re done, right?</p>
+<p>Wrong! There are many other variables in the dataset that could also influence the final grade. Perhaps most obviously, the mother’s education level <code>Medu</code> could also be important.</p>
+<p>Let’s take a look at how these variables are related to each other. Below we’ll show the correlation matrix between these variables, and then we’ll visualize their relationships using pairwise scatterplots.</p>
+<div id="4a543617" class="cell" data-execution_count="98">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>student_data[[<span class="st">"Fedu"</span>, <span class="st">"Medu"</span>, <span class="st">"G3"</span>]].corr().<span class="bu">apply</span>(<span class="kw">lambda</span> x: x<span class="op">**</span><span class="dv">2</span>).style.background_gradient(cmap<span class="op">=</span><span class="st">"coolwarm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="98">
+<style type="text/css">
+#T_15070_row0_col0, #T_15070_row1_col1, #T_15070_row2_col2 {
+  background-color: #b40426;
+  color: #f1f1f1;
+}
+#T_15070_row0_col1 {
+  background-color: #b2ccfb;
+  color: #000000;
+}
+#T_15070_row0_col2, #T_15070_row2_col0, #T_15070_row2_col1 {
+  background-color: #3b4cc0;
+  color: #f1f1f1;
+}
+#T_15070_row1_col0 {
+  background-color: #b7cff9;
+  color: #000000;
+}
+#T_15070_row1_col2 {
+  background-color: #4257c9;
+  color: #f1f1f1;
+}
+</style>
+
+<table id="T_15070" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th id="T_15070_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Fedu</th>
+<th id="T_15070_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Medu</th>
+<th id="T_15070_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">G3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_15070_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Fedu</td>
+<td id="T_15070_row0_col0" class="data row0 col0">1.000000</td>
+<td id="T_15070_row0_col1" class="data row0 col1">0.388696</td>
+<td id="T_15070_row0_col2" class="data row0 col2">0.023243</td>
+</tr>
+<tr class="even">
+<td id="T_15070_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">Medu</td>
+<td id="T_15070_row1_col0" class="data row1 col0">0.388696</td>
+<td id="T_15070_row1_col1" class="data row1 col1">1.000000</td>
+<td id="T_15070_row1_col2" class="data row1 col2">0.047153</td>
+</tr>
+<tr class="odd">
+<td id="T_15070_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">G3</td>
+<td id="T_15070_row2_col0" class="data row2 col0">0.023243</td>
+<td id="T_15070_row2_col1" class="data row2 col1">0.047153</td>
+<td id="T_15070_row2_col2" class="data row2 col2">1.000000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="34207588" class="cell" data-execution_count="101">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>sns.pairplot(student_data, <span class="bu">vars</span><span class="op">=</span>[<span class="st">"Medu"</span>, <span class="st">"Fedu"</span>, <span class="st">"G3"</span>], kind<span class="op">=</span><span class="st">"reg"</span>, height<span class="op">=</span><span class="dv">3</span>, aspect<span class="op">=</span><span class="fl">1.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-09_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Wow, now that we look at the data, we see that <code>Fedu</code> and <code>Medu</code> are correlated with each other (meaning that students with educated fathers tend to also have educated mothers). And it seems like <code>Medu</code> is even more strongly correlated with the final grade <code>G3</code> than <code>Fedu</code> is.</p>
+<p>All of a sudden this is quite complicated. If a student’s parents are often both educated, then how can we tell which parent is more important for the student’s final grade? We don’t know how to disentangle the effects of <code>Fedu</code> and <code>Medu</code> on <code>G3</code> because they are correlated with each other.</p>
+<p>This problem is called <strong>multicollinearity</strong>. It occurs when two or more predictor variables in a regression model are highly correlated with each other, making it difficult to determine the individual effect of each predictor on the response variable.</p>
+<p>The question we really want to answer is: how much does each predictor contribute to the final grade, after accounting for the other predictors?</p>
+<p>Let’s think about predicting the final grade <code>G3</code> based on the father’s education <code>Fedu</code>, while accounting for the mother’s education <code>Medu</code>.</p>
+<p>First, we can fit a simple linear regression model with <code>Medu</code> as the predictor and <code>G3</code> as the response variable. Whatever is left over from this regression (the residuals) is the part of <code>G3</code> that is not already explained by <code>Medu</code>.</p>
+<p>Then, we fit another regression model to predict <code>Fedu</code> using <code>Medu</code> as the predictor. The residuals from this regression represent the part of <code>Fedu</code> that was not already accounted for by <code>Medu</code>.</p>
+<p>Finally, we can fit a regression model with the residuals of <code>Fedu</code> as the predictor and the residuals of <code>G3</code> as the response variable. The slope of this regression model tells us how much <code>Fedu</code> contributes to <code>G3</code> after accounting for the effect of <code>Medu</code>.</p>
+<p>Let’s see this in action:</p>
+<div id="7e566f80" class="cell" data-execution_count="111">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.formula.api <span class="im">import</span> ols</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> gridspec</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))<span class="op">;</span> gs <span class="op">=</span> gridspec.GridSpec(<span class="dv">3</span>, <span class="dv">2</span>, figure<span class="op">=</span>fig)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Top 2x2 grid</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>ax1, ax2, ax3, ax4 <span class="op">=</span> (fig.add_subplot(gs[<span class="dv">0</span>, <span class="dv">0</span>]), </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                      fig.add_subplot(gs[<span class="dv">0</span>, <span class="dv">1</span>]),</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                      fig.add_subplot(gs[<span class="dv">1</span>, <span class="dv">0</span>]),</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                      fig.add_subplot(gs[<span class="dv">1</span>, <span class="dv">1</span>]))</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>ax5 <span class="op">=</span> fig.add_subplot(gs[<span class="dv">2</span>, :])  <span class="co"># bottom row spanning both columns</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># regress G3 on Fedu, obtaining the residuals</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>residuals_G3 <span class="op">=</span> ols(<span class="st">"G3 ~ Medu"</span>, data<span class="op">=</span>student_data).fit().resid</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the regression of G3 on Medu</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>sns.regplot(x<span class="op">=</span><span class="st">"Medu"</span>, y<span class="op">=</span><span class="st">"G3"</span>, data<span class="op">=</span>student_data, line_kws<span class="op">=</span>{<span class="st">"color"</span>: <span class="st">"red"</span>}, ax<span class="op">=</span>ax1)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">"Regression of G3 on Medu"</span>)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the residuals of the regression</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>sns.residplot(x<span class="op">=</span><span class="st">"Medu"</span>, y<span class="op">=</span><span class="st">"G3"</span>, data<span class="op">=</span>student_data, ax<span class="op">=</span>ax2)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">"Residuals of G3 on Medu"</span>)</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">"G3 - Predicted G3"</span>)</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co"># then regress Fedu on Medu to get the residuals</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>residuals_Fedu <span class="op">=</span> ols(<span class="st">"Fedu ~ Medu"</span>, data<span class="op">=</span>student_data).fit().resid</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the regression of Fedu on Medu</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>sns.regplot(x<span class="op">=</span><span class="st">"Medu"</span>, y<span class="op">=</span><span class="st">"Fedu"</span>, data<span class="op">=</span>student_data, line_kws<span class="op">=</span>{<span class="st">"color"</span>: <span class="st">"red"</span>}, ax<span class="op">=</span>ax3)</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>ax3.set_title(<span class="st">"Regression of Fedu on Medu"</span>)</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the residuals of Fedu on Medu</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>sns.residplot(x<span class="op">=</span><span class="st">"Medu"</span>, y<span class="op">=</span><span class="st">"Fedu"</span>, data<span class="op">=</span>student_data, ax<span class="op">=</span>ax4)</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>ax4.set_title(<span class="st">"Residuals of Fedu on Medu"</span>)</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>ax4.set_ylabel(<span class="st">"Fedu - Predicted Fedu"</span>)</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="co"># finally, regress the residuals of G3 on the residuals of Fedu</span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ols(<span class="st">"residuals_G3 ~ residuals_Fedu"</span>, data<span class="op">=</span>pd.DataFrame({</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">"residuals_G3"</span>: residuals_G3,</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">"residuals_Fedu"</span>: residuals_Fedu</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>})).fit()</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>sns.regplot(x<span class="op">=</span>residuals_Fedu, y<span class="op">=</span>residuals_G3, line_kws<span class="op">=</span>{<span class="st">"color"</span>: <span class="st">"red"</span>}, ax<span class="op">=</span>ax5)</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>ax5.set_title(<span class="st">"Regression of Residuals G3 on Residuals Fedu"</span>)</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="co"># print the summary of the final model</span></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>model.summary(slim<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lecture-09_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="111">
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>OLS Regression Results</caption>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Dep. Variable:</td>
+<td>residuals_G3</td>
+<td data-quarto-table-cell-role="th">R-squared:</td>
+<td>0.001</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Model:</td>
+<td>OLS</td>
+<td data-quarto-table-cell-role="th">Adj. R-squared:</td>
+<td>-0.002</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">No. Observations:</td>
+<td>395</td>
+<td data-quarto-table-cell-role="th">F-statistic:</td>
+<td>0.1968</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Covariance Type:</td>
+<td>nonrobust</td>
+<td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
+<td>0.658</td>
+</tr>
+</tbody>
+</table>
+
+
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td></td>
+<td data-quarto-table-cell-role="th">coef</td>
+<td data-quarto-table-cell-role="th">std err</td>
+<td data-quarto-table-cell-role="th">t</td>
+<td data-quarto-table-cell-role="th">P&gt;|t|</td>
+<td data-quarto-table-cell-role="th">[0.025</td>
+<td data-quarto-table-cell-role="th">0.975]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Intercept</td>
+<td>9.714e-16</td>
+<td>0.225</td>
+<td>4.31e-15</td>
+<td>1.000</td>
+<td>-0.443</td>
+<td>0.443</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">residuals_Fedu</td>
+<td>0.1176</td>
+<td>0.265</td>
+<td>0.444</td>
+<td>0.658</td>
+<td>-0.404</td>
+<td>0.639</td>
+</tr>
+</tbody>
+</table>
+<br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</div>
+</div>
+<p>The point of this approach is to isolate the effect of <code>Fedu</code> on <code>G3</code> while controlling for how <code>Medu</code> influences both <code>Fedu</code> and <code>G3</code>.</p>
+<p>This probably seems a bit cumbersome. Thankfully, this is exactly what multiple regression does for us! We can fit a multiple regression model with both <code>Medu</code> and <code>Fedu</code> as predictors of <code>G3</code>, and the model will automatically account for the correlation between the predictors.</p>
+<p>Below we fit a multiple regression model with <code>Medu</code> and <code>Fedu</code> as predictors of <code>G3</code>, and get exactly the same result for the slope of <code>Fedu</code> as we did with the manual approach above.</p>
+<div id="691b2e1f" class="cell" data-execution_count="115">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ols(<span class="st">"G3 ~ Fedu + Medu"</span>, data<span class="op">=</span>student_data).fit()</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>model.summary(slim<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="115">
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>OLS Regression Results</caption>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Dep. Variable:</td>
+<td>G3</td>
+<td data-quarto-table-cell-role="th">R-squared:</td>
+<td>0.048</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Model:</td>
+<td>OLS</td>
+<td data-quarto-table-cell-role="th">Adj. R-squared:</td>
+<td>0.043</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">No. Observations:</td>
+<td>395</td>
+<td data-quarto-table-cell-role="th">F-statistic:</td>
+<td>9.802</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Covariance Type:</td>
+<td>nonrobust</td>
+<td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
+<td>7.01e-05</td>
+</tr>
+</tbody>
+</table>
+
+
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td></td>
+<td data-quarto-table-cell-role="th">coef</td>
+<td data-quarto-table-cell-role="th">std err</td>
+<td data-quarto-table-cell-role="th">t</td>
+<td data-quarto-table-cell-role="th">P&gt;|t|</td>
+<td data-quarto-table-cell-role="th">[0.025</td>
+<td data-quarto-table-cell-role="th">0.975]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Intercept</td>
+<td>7.8205</td>
+<td>0.648</td>
+<td>12.073</td>
+<td>0.000</td>
+<td>6.547</td>
+<td>9.094</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Fedu</td>
+<td>0.1176</td>
+<td>0.265</td>
+<td>0.443</td>
+<td>0.658</td>
+<td>-0.404</td>
+<td>0.639</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Medu</td>
+<td>0.8359</td>
+<td>0.264</td>
+<td>3.168</td>
+<td>0.002</td>
+<td>0.317</td>
+<td>1.355</td>
+</tr>
+</tbody>
+</table>
+<br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</div>
+</div>
+<p>After fitting the multiple regression model, we can see that the coefficient for <code>Fedu</code> is much smaller than it was in the simple regression model, and the confidence interval overlaps with zero (meaning there may be no effect). The coefficient for <code>Medu</code> is larger, and its confidence interval does not overlap with zero, indicating that it has a significant effect on <code>G3</code>. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;One could make similar statements based on the p-values.</p></div></div><p>So, multiple regression allows us to include multiple predictors in our model and account for their simultaneous effects on the response variable.</p>
+<p>It is important to realize that multiple regression does not <strong>solve</strong> the problem of multicollinearity completely. If the predictors are highly correlated with each other, it can still lead to unstable estimates and difficulties in interpretation. Take an extreme example: what if the parents’ education levels were perfectly correlated (i.e., for every student, if the father has a certain education level, the mother has exactly the same level)? In this case, we would not be able to distinguish the effects of <code>Fedu</code> and <code>Medu</code> on <code>G3</code> at all. There would be absolutely no data to distinguish between them (specifically, the residuals of <code>Fedu</code> on <code>Medu</code> would be zero for all students).</p>
+</section>
+<section id="causality" class="level2">
+<h2 class="anchored" data-anchor-id="causality">Causality</h2>
+<p>So does this mean that we can conclude that the Mother’s education level causes the student’s final grade to increase?</p>
+<p>Not necessarily. For instance, it could be both parents’ education levels and a student’s final grade are influenced by a third variable, such as the family’s socioeconomic status. Meaning, more wealthy families can afford continuing education for their children across generations, and this leads to both higher parental education levels and better student performance (through tutoring and other resources).</p>
+<p>This is the reason for the common adage in statistics: <strong>correlation does not imply causation</strong>. Just because two variables are correlated does not mean that one causes the other.</p>
+<p>There are two main reasons why correlation does not imply causation:</p>
+<ol type="1">
+<li><strong>Confounding Variables</strong>: There may be a third variable that influences both variables, leading to a spurious correlation between them. The above example of parental education and student performance is an example of this. In the regression model we fit earlier, the mother’s education level <code>Medu</code> was a confounding variable that influenced both the father’s education level <code>Fedu</code> and the student’s final grade <code>G3</code>.</li>
+<li><strong>Reverse Causation</strong>: The relationship could be reversed, meaning that the second variable causes the first, rather than the other way around. In our student performance example, it is quite unlikely that the student’s final grade causes the parents’ education levels to change (we know this is not possible), but one could easily fit a regression model that suggests this is the case if we were not careful.</li>
+</ol>
+<p>To drive home this second point, let’s do that:</p>
+<div id="7c86a52a" class="cell" data-execution_count="117">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.formula.api <span class="im">import</span> ols</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ols(<span class="st">"Medu ~ Fedu + G3"</span>, data<span class="op">=</span>student_data).fit()</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>model.summary(slim<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="117">
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>OLS Regression Results</caption>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Dep. Variable:</td>
+<td>Medu</td>
+<td data-quarto-table-cell-role="th">R-squared:</td>
+<td>0.404</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Model:</td>
+<td>OLS</td>
+<td data-quarto-table-cell-role="th">Adj. R-squared:</td>
+<td>0.401</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">No. Observations:</td>
+<td>395</td>
+<td data-quarto-table-cell-role="th">F-statistic:</td>
+<td>132.8</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Covariance Type:</td>
+<td>nonrobust</td>
+<td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
+<td>9.00e-45</td>
+</tr>
+</tbody>
+</table>
+
+
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td></td>
+<td data-quarto-table-cell-role="th">coef</td>
+<td data-quarto-table-cell-role="th">std err</td>
+<td data-quarto-table-cell-role="th">t</td>
+<td data-quarto-table-cell-role="th">P&gt;|t|</td>
+<td data-quarto-table-cell-role="th">[0.025</td>
+<td data-quarto-table-cell-role="th">0.975]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Intercept</td>
+<td>0.9051</td>
+<td>0.136</td>
+<td>6.658</td>
+<td>0.000</td>
+<td>0.638</td>
+<td>1.172</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Fedu</td>
+<td>0.6080</td>
+<td>0.040</td>
+<td>15.319</td>
+<td>0.000</td>
+<td>0.530</td>
+<td>0.686</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">G3</td>
+<td>0.0299</td>
+<td>0.009</td>
+<td>3.168</td>
+<td>0.002</td>
+<td>0.011</td>
+<td>0.048</td>
+</tr>
+</tbody>
+</table>
+<br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</div>
+</div>
+<p>This regression model suggests that the student’s final grade <code>G3</code> causes the mother’s education level <code>Medu</code> to increase. Without inventing a time machine, we know this is not possible.</p>
+<section id="including-confounding-variables-in-regression" class="level3">
+<h3 class="anchored" data-anchor-id="including-confounding-variables-in-regression">Including Confounding Variables in Regression</h3>
+<p>Luckily for us, some of these problems can be mitigated by including confounding variables in our regression model. We saw an example of this earlier when we included both <code>Medu</code> and <code>Fedu</code> as predictors of <code>G3</code>. The problem is that the regression model does not automatically tell us which variable is the cause and which is the effect. It only tells us how the variables are related to each other.</p>
+<p>To determine causality, we need to use additional methods such as randomized controlled trials (RCTs), or more advanced statistical techniques that we’re not going to cover in this course.</p>
+</section>
+<section id="randomized-controlled-trials-rcts" class="level3">
+<h3 class="anchored" data-anchor-id="randomized-controlled-trials-rcts">Randomized Controlled Trials (RCTs)</h3>
+<p>RCTs are considered the gold standard for establishing causality. In an RCT, participants are randomly assigned to either a treatment group (which receives the intervention) or a control group (which does not receive the intervention). This randomization helps to eliminate confounding variables and ensures that any differences in outcomes between the groups can be attributed to the treatment itself.</p>
+<p>Think about it this way: if we randomly assigned students to different levels of parental education (e.g., some students have educated parents, while others do not), then we could directly measure the effect of parental education on student performance without worrying about confounding variables (like how wealthy the family is).</p>
+<p>Unfortunately, RCTs are not always feasible or ethical in practice. For example, we cannot randomly assign students to different families or change their parental education levels. In such cases, we must rely on observational data and statistical techniques to infer causality, while being aware of the limitations and potential biases in our analyses.</p>
 
 
 <script type="pyodide-data">
@@ -1073,6 +2109,7 @@ W10=
 </script>
 </section>
 </section>
+
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">
@@ -1588,6 +2625,15 @@ window._ojs.runtime.interpretFromScriptTags();
     }
   });
   </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../notebooks/lecture-08.html" class="pagination-link" aria-label="Lecture 08: Regression Basics">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Lecture 08: Regression Basics</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
 </div> <!-- /content -->
 
 
