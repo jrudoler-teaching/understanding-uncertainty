@@ -7,6 +7,7 @@ project:
     - "assignments/*.ipynb"
     - "slides/*.ipynb"
 website:
+  google-analytics: "G-C192WMR427"
   title: "Understanding Uncertainty"
   site-url: https://jrudoler-teaching.github.io/understanding-uncertainty/
   site-path: "/understanding-uncertainty/"

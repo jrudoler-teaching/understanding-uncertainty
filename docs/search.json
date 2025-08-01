@@ -594,7 +594,21 @@
     "href": "index.html",
     "title": "understanding-uncertainty",
     "section": "",
-    "text": "This website contains course materials for the Understanding Uncertainty course, which is a part of the US-Israel Academic Bridge Fellowship hosted at the University of Pennsylvania.\n\n\n\nSomething from DALL-E’s imagination"
+    "text": "This website contains course materials for the Understanding Uncertainty course, which is a part of the US-Israel Academic Bridge Fellowship hosted at the University of Pennsylvania."
+  },
+  {
+    "objectID": "index.html#about-the-course",
+    "href": "index.html#about-the-course",
+    "title": "understanding-uncertainty",
+    "section": "About the course",
+    "text": "About the course\nThis course provides an introduction to statistics with an emphasis on building intuition about uncertainty in data analysis and decision-making. The course is structured around thinking critically about data generating processes (i.e. the random, real-world phenomena that produce data) and how to model them computationally."
+  },
+  {
+    "objectID": "index.html#about-the-author",
+    "href": "index.html#about-the-author",
+    "title": "understanding-uncertainty",
+    "section": "About the author",
+    "text": "About the author\nJoey Rudoler is a PhD student in the Department of Statistics and Data Science at the Wharton School of the University of Pennsylvania. His research focuses on statistical aspects of machine learning, in particular theory for deep learning. He has a background in physics and neuroscience, and remains interested in the intersection of statistics, machine learning, and neuroscience."
   },
   {
     "objectID": "about.html",
@@ -615,7 +629,7 @@
     "href": "syllabus.html",
     "title": "Syllabus",
     "section": "",
-    "text": "Course Title: Understanding Uncertainty: An Introduction to Statistics through Data Generating Processes and Computational Simulations\nInstructor: Joey Rudoler\nClassroom: Academic Research Building (ARB), Room 401\nCourse Schedule:\n\nTentative schedule, subject to change.\n\n\nDate\nTopic\nAssignment\n\n\n\n\n7/09\nIntro, Why Statistics? (slides)\nAssignment 0\n\n\n7/10\nProgramming (slides)\nAssignment 1\n\n\n7/11\nProgramming cont.\n\n\n\n7/14\nProbability (slides)\nAssignment 2\n\n\n7/15\nProbability cont.\n\n\n\n7/16\nSampling and simulation (slides)\nAssignment 3\n\n\n7/17\nData Generating Processes and Statistical Models\n\n\n\n7/18\nNo class\n\n\n\n7/21\nHypothesis Testing\n\n\n\n7/22\nConfidence Intervals, bootstrapping\nAssignment 4\n\n\n7/23\nPermutation tests\n\n\n\n7/24\nRegression\n\n\n\n7/25\nNo class (final project meetings)\n\n\n\n7/28\nNo class (DC trip)\n\n\n\n7/29\nRegression cont.\n\n\n\n7/30\nAdvanced Data Visualization\n\n\n\n7/31\nParadoxes and Statistical Gotchas\n\n\n\n8/01\nGuest Lecture / Final Projects\n\n\n\n8/04\nGuest Lecture / Final Projects\n\n\n\n8/05\nGuest Lecture / Final Projects\n\n\n\n8/06\nGuest Lecture / Final Projects\n\n\n\n8/07\nFinal Project Presentations\nFinal Project Guidelines\n\n\n8/08\nWrap-up and course evaluation"
+    "text": "Course Title: Understanding Uncertainty: An Introduction to Statistics through Data Generating Processes and Computational Simulations\nInstructor: Joey Rudoler\nClassroom: Academic Research Building (ARB), Room 401\nCourse Schedule:\n\nTentative schedule, subject to change.\n\n\nDate\nTopic\nAssignment\n\n\n\n\n7/09\nIntro, Why Statistics? (slides)\nAssignment 0\n\n\n7/10\nProgramming (slides)\nAssignment 1\n\n\n7/11\nProgramming cont.\n\n\n\n7/14\nProbability (slides)\nAssignment 2\n\n\n7/15\nProbability cont.\n\n\n\n7/16\nSampling and simulation (slides)\nAssignment 3\n\n\n7/17\nData Generating Processes and Statistical Models\n\n\n\n7/18\nNo class\n\n\n\n7/21\nHypothesis Testing\n\n\n\n7/22\nConfidence Intervals, bootstrapping\nAssignment 4\n\n\n7/23\nPermutation tests\n\n\n\n7/24\nRegression\n\n\n\n7/25\nNo class (final project meetings)\n\n\n\n7/28\nNo class (DC trip)\n\n\n\n7/29\nRegression cont. (Inference for Regression)\n\n\n\n7/30\nRegression cont. (Multiple Regression)\n\n\n\n7/31\nParadoxes and Statistical Gotchas\n\n\n\n8/01\nGuest Lecture (Sports Analytics and Betting)\n\n\n\n8/04\nGuest Lecture / Final Projects\n\n\n\n8/05\nFinal Projects\n\n\n\n8/06\nFinal Projects\n\n\n\n8/07\nFinal Projects\n\n\n\n8/08\nFinal Project Presentations (10:00 AM)\nFinal Project Guidelines"
   },
   {
     "objectID": "notebooks/lecture-01.html",

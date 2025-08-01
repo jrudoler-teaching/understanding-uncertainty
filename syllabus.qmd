@@ -27,14 +27,14 @@ title: "Syllabus"
 | 7/24 | [Regression](notebooks/lecture-08.ipynb) |  |
 | 7/25 | No class (final project meetings)|  |
 | 7/28 | No class (DC trip)| |
-| 7/29 | Regression cont. |  |
-| 7/30 | Advanced Data Visualization |  |
+| 7/29 | Regression cont. (Inference for Regression) |  |
+| 7/30 | Regression cont. (Multiple Regression) |  |
 | 7/31 | Paradoxes and Statistical Gotchas |  |
-| 8/01 | Guest Lecture / Final Projects |  |
+| 8/01 | Guest Lecture (Sports Analytics and Betting) |  |
 | 8/04 | Guest Lecture / Final Projects |  |
-| 8/05 | Guest Lecture / Final Projects |  |
-| 8/06 | Guest Lecture / Final Projects |  |
-| 8/07 | Final Project Presentations | [Final Project Guidelines](assignments/final-project.html) |
-| 8/08 | Wrap-up and course evaluation |  |
+| 8/05 | Final Projects |  |
+| 8/06 | Final Projects |  |
+| 8/07 | Final Projects |  |
+| 8/08 | Final Project Presentations (10:00 AM) | [Final Project Guidelines](assignments/final-project.html) |
 
 : Tentative schedule, subject to change.
