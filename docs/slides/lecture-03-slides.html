@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.7.31">
 
   <meta name="author" content="Joseph Rudoler">
-  <meta name="dcterms.date" content="2025-07-31">
+  <meta name="dcterms.date" content="2026-01-06">
   <title>Understanding Uncertainty – Lecture 03: Sampling and Simulation</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -97,6 +97,7 @@
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-f563837468303362081e247dddd440d0.css">
+  <link rel="stylesheet" href="custom.css">
   <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-C192WMR427"></script>
 
   <script type="text/javascript">
@@ -219,32 +220,53 @@ Joseph Rudoler
 </div>
 </div>
 
-  <p class="date">2025-07-31</p>
+  <p class="date">2026-01-06</p>
 </section>
 <section id="recap" class="slide level2">
 <h2>Recap</h2>
-<p>In the last lecture, we introduced some basic concepts of probability and random variables. We learned about: - Probability - Conditional probability - Independence - Probability functions - Random variables - Expectation (or expected value) - Variance - Probability distributions</p>
+<p>In the last lecture, we introduced some basic concepts of probability and random variables. We learned about:</p>
+<ul>
+<li class="fragment">Probability</li>
+<li class="fragment">Conditional probability</li>
+<li class="fragment">Independence</li>
+<li class="fragment">Probability functions</li>
+<li class="fragment">Random variables</li>
+<li class="fragment">Expectation (or expected value)</li>
+<li class="fragment">Variance</li>
+<li class="fragment">Probability distributions</li>
+</ul>
 <p>Now that we have a good understanding of the basics of probability, we can start to explore how we deal with randomness computationally.</p>
 </section>
 <section id="sampling-from-probability-distributions" class="slide level2">
 <h2>Sampling from probability distributions</h2>
-<!-- Talk about what a sample is, IID sampling, sampling with replacement, sampling without replacement, -->
 <p>A sample is a subset of data drawn from a more general population. That population can be thought of as a probability distribution – this distribution essentially describes how likely you are to observe different values when you sample from it.</p>
 <p>We will quickly review some important concepts related to sampling.</p>
+</section>
+<section id="iid-sampling" class="slide level2">
+<h2>IID sampling</h2>
 <h3 id="independent-and-identically-distributed-iid-sampling">Independent and identically distributed (IID) sampling</h3>
 <p>When we sample from a probability distribution, we often assume that the samples are independent and identically distributed (IID). This means that each sample is drawn from the same distribution and that the samples do not influence each other.</p>
 <p>Coin flips are a good example of IID sampling. If you flip a fair coin multiple times, each flip has the same probability of being heads or tails (this is the “identically distributed” part), and the outcome of one flip does not affect the outcome of another (this is the “independent” part). The same is true for rolling a die!</p>
-<p>We often apply this concept to more complex random processes as well, where we do not have such a clear understanding of the underlying process. For example, if we are sampling the heights of people in a city, we might assume that each person’s height is drawn from the same distribution (the distribution of heights in that city) and that one person’s height does not affect another’s. Whether or not the IID assumption holds in practice is an important question to consider when analyzing data – for example, do you think that the heights of people in a family are independent of each other?</p>
-<h3 id="sampling-with-and-without-replacement">Sampling with and without replacement</h3>
+</section>
+<section id="iid-in-practice" class="slide level2">
+<h2>IID in practice</h2>
+<p>We often apply this concept to more complex random processes as well, where we do not have such a clear understanding of the underlying process. For example, if we are sampling the heights of people in a city, we might assume that each person’s height is drawn from the same distribution (the distribution of heights in that city) and that one person’s height does not affect another’s.</p>
+<p>Whether or not the IID assumption holds in practice is an important question to consider when analyzing data – for example, do you think that the heights of people in a family are independent of each other?</p>
+</section>
+<section id="sampling-with-and-without-replacement" class="slide level2">
+<h2>Sampling with and without replacement</h2>
 <p>Another important concept in sampling is the distinction between sampling with replacement and sampling without replacement.</p>
 <ul>
 <li class="fragment"><p><strong>Sampling with replacement</strong> means that after we draw a sample from the population, we put it back before drawing the next sample. This means that the same object / instance can be selected multiple times.</p></li>
 <li class="fragment"><p><strong>Sampling without replacement</strong> means that once we draw a sample, we do not put it back before drawing the next sample. This means that each individual can only be selected once. This can introduce dependencies between samples, as the population changes after each draw.</p></li>
 </ul>
-<div id="fb2bd7a6" class="cell" data-execution_count="2">
+</section>
+<section id="quiz-sampling" class="slide level2">
+<h2>Quiz: Sampling</h2>
+<div id="168ec6ec" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
-<div id="NFpfRRhlrrtx" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
-#NFpfRRhlrrtx {
+<div id="XjxavBQRfUOj" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
+#XjxavBQRfUOj {
    --jq-multiple-choice-bg: #6f78ffff;
    --jq-mc-button-bg: #fafafa;
    --jq-mc-button-border: #e0e0e0e0;
@@ -465,7 +487,7 @@ Joseph Rudoler
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/javascript">
-var questionsNFpfRRhlrrtx=[{"question": "Is flipping a coin an example of sampling with, or without replacement?", "type": "multiple_choice", "answers": [{"answer": "With replacement", "correct": true}, {"answer": "Without replacement", "correct": false}]}, {"question": "Is dealing a hand in poker an example of sampling with, or without replacement?", "type": "multiple_choice", "answers": [{"answer": "With replacement", "correct": false}, {"answer": "Without replacement", "correct": true}]}];
+var questionsXjxavBQRfUOj=[{"question": "Is flipping a coin an example of sampling with, or without replacement?", "type": "multiple_choice", "answers": [{"answer": "With replacement", "correct": true}, {"answer": "Without replacement", "correct": false}]}, {"question": "Is dealing a hand in poker an example of sampling with, or without replacement?", "type": "multiple_choice", "answers": [{"answer": "With replacement", "correct": false}, {"answer": "Without replacement", "correct": true}]}];
 
 if (typeof Question === 'undefined') {
 // Make a random ID
@@ -1528,8 +1550,8 @@ function make_string(qa, outerqDiv, qDiv, aDiv, id) {
  * Ensures show_questions is called after the container div is in the DOM.
  */
 function try_show() {
-  if (document.getElementById("NFpfRRhlrrtx")) {
-    show_questions(questionsNFpfRRhlrrtx, NFpfRRhlrrtx);
+  if (document.getElementById("XjxavBQRfUOj")) {
+    show_questions(questionsXjxavBQRfUOj, XjxavBQRfUOj);
   } else {
     setTimeout(try_show, 200);
   }
@@ -1561,6 +1583,9 @@ function try_show() {
 </div>
 </div>
 </div>
+</section>
+<section id="random-sampling-in-python" class="slide level2">
+<h2>Random sampling in Python</h2>
 <p>There are built-in functions in many programming languages, including Python, that allow us to sample from common probability distributions. For example, in Python’s NumPy library, we can use <code>numpy.random</code> module to sample from various distributions like uniform, normal, binomial, etc.</p>
 <div title="Normal distribution">
 <div class="callout callout-note callout-titled callout-style-default">
@@ -1577,8 +1602,20 @@ function try_show() {
 </div>
 </div>
 </div>
+</section>
+<section id="sampling-from-a-normal-distribution" class="slide level2">
+<h2>Sampling from a normal distribution</h2>
 <p>For example, to sample 100 values from a normal distribution with mean 0 and standard deviation 1, you can use:</p>
-<div id="238df48c" class="cell" data-execution_count="8">
+<div id="5785032c" class="cell" data-execution_count="3">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="dv">42</span>)  <span class="co"># Create a random number generator with a fixed seed</span></span>
+<span id="cb1-2"><a></a>samples <span class="op">=</span> rng.normal(loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="dv">1</span>, size<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb1-3"><a></a><span class="bu">print</span>(<span class="st">"Samples:</span><span class="ch">\n</span><span class="st">"</span>, samples)</span>
+<span id="cb1-4"><a></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb1-5"><a></a>plt.hist(samples, bins<span class="op">=</span><span class="dv">10</span>, density<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-6"><a></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Samples:
  [ 0.30471708 -1.03998411  0.7504512   0.94056472 -1.95103519 -1.30217951
@@ -1599,10 +1636,29 @@ function try_show() {
   0.66538511 -0.09848548 -0.42329831 -0.07971821 -1.68733443 -1.44711247
  -1.32269961 -0.99724683  0.39977423 -0.90547906]</code></pre>
 </div>
-
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="lecture-03-slides_files/figure-revealjs/cell-4-output-2.png" width="2028" height="1292"></p>
+</figure>
 </div>
-<img data-src="lecture-03-slides_files/figure-revealjs/cell-4-output-2.png" class="r-stretch"><p>If you have a dataset and you want to sample from it, you can use the <code>numpy.random.choice</code> function to randomly select elements from the dataset (with or without replacement). If your dataset is in a pandas DataFrame, you can also use the <code>sample</code> method to randomly select rows from the DataFrame.</p>
-<div id="04efaa32" class="cell" data-execution_count="4">
+</div>
+</div>
+</section>
+<section id="sampling-from-a-dataset" class="slide level2">
+<h2>Sampling from a dataset</h2>
+<p>If you have a dataset and you want to sample from it, you can use the <code>numpy.random.choice</code> function to randomly select elements from the dataset (with or without replacement). If your dataset is in a pandas DataFrame, you can also use the <code>sample</code> method to randomly select rows from the DataFrame.</p>
+<div id="7ffdbb5b" class="cell" data-execution_count="4">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="co"># Sampling without replacement</span></span>
+<span id="cb3-2"><a></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb3-3"><a></a>subsample <span class="op">=</span> rng.choice(samples, size<span class="op">=</span><span class="dv">10</span>, replace<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb3-4"><a></a><span class="bu">print</span>(<span class="st">"Sample:</span><span class="ch">\n</span><span class="st">"</span>, subsample)</span>
+<span id="cb3-5"><a></a></span>
+<span id="cb3-6"><a></a><span class="co"># another way to sample; note RNG can be different in different packages</span></span>
+<span id="cb3-7"><a></a>pd.DataFrame(samples, columns<span class="op">=</span>[<span class="st">"Sample"</span>]).sample(n<span class="op">=</span><span class="dv">10</span>, replace<span class="op">=</span><span class="va">False</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Sample:
  [-1.32269961 -1.13328721 -0.01680116 -1.68286977  0.54315427 -1.68733443
@@ -1678,9 +1734,18 @@ function try_show() {
 </div>
 </div>
 </div>
+</section>
+<section id="custom-distributions" class="slide level2">
+<h2>Custom distributions</h2>
 <p>If you want to sample from a custom distribution, you can also use the <code>numpy.random.choice</code> function to sample from a list of values with specified probabilities.</p>
 <p>Here’s an example of how to sample 100 dice rolls with a rigged die that has a 50% chance of rolling a 6, and a 10% chance of rolling each of the other numbers (1-5):</p>
-<div id="5a06edab" class="cell" data-execution_count="5">
+<div id="4cf0c43f" class="cell" data-execution_count="5">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>possible_rolls <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]</span>
+<span id="cb5-2"><a></a>probabilities <span class="op">=</span> [<span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>]</span>
+<span id="cb5-3"><a></a>rng.choice(possible_rolls, p<span class="op">=</span>probabilities, size<span class="op">=</span><span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>array([4, 6, 6, 6, 5, 3, 6, 1, 6, 6, 6, 4, 6, 6, 6, 2, 5, 1, 2, 6, 6, 6,
        4, 4, 5, 2, 2, 5, 3, 6, 5, 6, 6, 4, 6, 6, 4, 3, 6, 2, 2, 1, 6, 6,
@@ -1689,35 +1754,69 @@ function try_show() {
        2, 6, 6, 6, 3, 6, 6, 6, 5, 3, 1, 6])</code></pre>
 </div>
 </div>
-<h3 id="simulating-more-complex-processes">Simulating more complex processes</h3>
+</section>
+<section id="simulating-more-complex-processes" class="slide level2">
+<h2>Simulating more complex processes</h2>
 <p>Sometimes real-world processes are complex, and the samples we take are not independent. The simplest version of non-independence is sampling without replacement.</p>
 <p>Consider dealing poker hands from a standard deck of cards. When you deal a hand, you draw cards one at a time, and each card drawn affects the next card that can be drawn (because you do not put the card back into the deck).</p>
-<div id="18743e5c" class="cell" data-execution_count="6">
+</section>
+<section id="dealing-cards-example" class="slide level2">
+<h2>Dealing cards example</h2>
+<div id="73c9e147" class="cell" data-execution_count="6">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="co"># Make a deck of cards (Ace is 1, King is 13)</span></span>
+<span id="cb7-2"><a></a>deck <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">14</span>).repeat(<span class="dv">4</span>)  <span class="co"># 4 suits, each with cards 1 to 13</span></span>
+<span id="cb7-3"><a></a><span class="bu">print</span>(<span class="st">"Deck of cards before shuffling:</span><span class="ch">\n</span><span class="st">"</span>, deck)</span>
+<span id="cb7-4"><a></a>deck <span class="op">=</span> np.random.permutation(deck)</span>
+<span id="cb7-5"><a></a><span class="bu">print</span>(<span class="st">"Deck of cards after shuffling:</span><span class="ch">\n</span><span class="st">"</span>, deck)</span>
+<span id="cb7-6"><a></a><span class="co"># deal 2 cards to each of 4 players</span></span>
+<span id="cb7-7"><a></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="dv">21</span>)</span>
+<span id="cb7-8"><a></a><span class="co"># Get flat indices of 8 cards from deck</span></span>
+<span id="cb7-9"><a></a><span class="co"># we want to know exactly which cards are dealt</span></span>
+<span id="cb7-10"><a></a>chosen_indices <span class="op">=</span> rng.choice(<span class="bu">len</span>(deck), size<span class="op">=</span><span class="dv">8</span>, replace<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-11"><a></a>hands <span class="op">=</span> deck[chosen_indices].reshape(<span class="dv">4</span>, <span class="dv">2</span>)</span>
+<span id="cb7-12"><a></a><span class="bu">print</span>(<span class="st">"Hands dealt to players:</span><span class="ch">\n</span><span class="st">"</span>, hands)</span>
+<span id="cb7-13"><a></a><span class="co"># remove the dealt cards from the deck</span></span>
+<span id="cb7-14"><a></a>remaining_deck <span class="op">=</span> np.delete(deck, chosen_indices)</span>
+<span id="cb7-15"><a></a><span class="bu">print</span>(<span class="st">"Remaining cards in the deck:</span><span class="ch">\n</span><span class="st">"</span>, remaining_deck)</span>
+<span id="cb7-16"><a></a>board <span class="op">=</span> np.random.choice(remaining_deck, size<span class="op">=</span><span class="dv">5</span>, replace<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-17"><a></a><span class="bu">print</span>(<span class="st">"Community cards on the board:</span><span class="ch">\n</span><span class="st">"</span>, board)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Deck of cards before shuffling:
  [ 1  1  1  1  2  2  2  2  3  3  3  3  4  4  4  4  5  5  5  5  6  6  6  6
   7  7  7  7  8  8  8  8  9  9  9  9 10 10 10 10 11 11 11 11 12 12 12 12
  13 13 13 13]
 Deck of cards after shuffling:
- [ 3  7 11  8 13  9  1  6  1 12  3  6  9  5 10  9  9  2 10  7  2 11  4  8
-  4 12  6 10  2 12  7  6  3 13  8  4  5  2  3 13  4  1  5  5  8 11 13 11
- 12 10  7  1]
+ [13 12  2 12  4  1  3  6  7 10  2  3  9  5  9 13  9  6  9  1  2 12 11  8
+  7  8  5  7  7 13  4 11 11  1 10  4  3  3  5  6  8  8  5  4  6 11  1 13
+ 10 12  2 10]
 Hands dealt to players:
- [[10 13]
+ [[12  4]
  [ 4  5]
- [ 2 12]
- [ 4 10]]
+ [ 6 13]
+ [11  9]]
 Remaining cards in the deck:
- [ 3  7 11  8  9  1  6  1 12  3  6  9 10  9  9  7  2 11  8  4 12  6 10  2
-  7  6  3 13  8  5  2  3 13  4  1  5  5  8 11 13 11 12  7  1]
+ [13 12  2 12  1  3  6  7 10  2  3  9  9 13  9  1  2 12  8  7  8  5  7  7
+  4 11 11  1 10  3  3  5  6  8  8  5  4  6 11  1 13 10  2 10]
 Community cards on the board:
- [ 2  7 11  7  8]</code></pre>
+ [12 11 13 11 12]</code></pre>
 </div>
 </div>
+</section>
+<section id="multi-step-simulations" class="slide level2">
+<h2>Multi-step simulations</h2>
 <p>But it can get even more complex than that. In many real-world scenarios, the process of generating data involves multiple steps or conditions that affect the outcome.</p>
 <p>In these cases simulation might not be as straightforward as sampling from a single distribution (which takes just one or two lines of code). We then tend to write loops that simulate the process step by step, keeping track of the state of things as we go along.</p>
+</section>
+<section id="busker-example" class="slide level2">
+<h2>Busker example</h2>
 <p>Let’s consider an example of a musician busking for money in Rittenhouse Square. The musician’s earnings might depend on various factors like the weather and and the number of passersby. To keep it simple, let’s assume that the musician earns $3 for every passerby who stops to listen. Of course, not every passerby will stop – let’s pretend every passerby has the same 20% chance of stopping.</p>
 <p>The musician might want to know how much money they can expect to earn in a day of busking. We can simulate this process by generating a random number of passersby and then calculating the earnings based on the stopping probability.</p>
+</section>
+<section id="poisson-distribution" class="slide level2">
+<h2>Poisson distribution</h2>
 <div title="Poisson distribution">
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -1733,7 +1832,40 @@ Community cards on the board:
 </div>
 </div>
 </div>
-<div id="f958f240" class="cell" data-execution_count="7">
+</section>
+<section id="busker-simulation-code" class="slide level2">
+<h2>Busker simulation code</h2>
+<div id="c64a2b94" class="cell" data-execution_count="7">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>n_days <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb9-2"><a></a><span class="co"># simulate whether it rains each day</span></span>
+<span id="cb9-3"><a></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb9-4"><a></a>rain_probabilities <span class="op">=</span> rng.uniform(<span class="fl">0.</span>, <span class="fl">0.7</span>, size<span class="op">=</span>n_days)</span>
+<span id="cb9-5"><a></a></span>
+<span id="cb9-6"><a></a>total_earnings <span class="op">=</span> <span class="dv">0</span> <span class="co"># initialize a variable to keep track of total earnings</span></span>
+<span id="cb9-7"><a></a><span class="cf">for</span> day <span class="kw">in</span> <span class="bu">range</span>(n_days):</span>
+<span id="cb9-8"><a></a>    <span class="co"># For each day, decide if it rains based on the probability</span></span>
+<span id="cb9-9"><a></a>    did_it_rain <span class="op">=</span> rng.binomial(n<span class="op">=</span><span class="dv">1</span>, p<span class="op">=</span>rain_probabilities[day])</span>
+<span id="cb9-10"><a></a>    <span class="bu">print</span>(<span class="ss">f"Day </span><span class="sc">{</span>day <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>rain_probabilities[day]<span class="sc">:.2%}</span><span class="ss"> chance): </span><span class="sc">{</span><span class="st">'Rain'</span> <span class="cf">if</span> did_it_rain <span class="cf">else</span> <span class="st">'No rain'</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-11"><a></a>    <span class="co"># Based on the outcome, the number of passersby changes</span></span>
+<span id="cb9-12"><a></a>    <span class="cf">if</span> did_it_rain:</span>
+<span id="cb9-13"><a></a>        passersby <span class="op">=</span> rng.poisson(lam<span class="op">=</span><span class="dv">50</span>)  <span class="co"># fewer passersby when it rains</span></span>
+<span id="cb9-14"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb9-15"><a></a>        passersby <span class="op">=</span> rng.poisson(lam<span class="op">=</span><span class="dv">200</span>) <span class="co"># more passersby when it doesn't rain</span></span>
+<span id="cb9-16"><a></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\t</span><span class="ss"> Number of passersby: </span><span class="sc">{</span>passersby<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-17"><a></a>    <span class="co"># Simulate the number who stop to listen to the busker</span></span>
+<span id="cb9-18"><a></a>    listeners <span class="op">=</span> rng.binomial(n<span class="op">=</span>passersby, p<span class="op">=</span><span class="fl">0.2</span>)  <span class="co"># 20% of passersby stop</span></span>
+<span id="cb9-19"><a></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\t</span><span class="ss"> Number of listeners: </span><span class="sc">{</span>listeners<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-20"><a></a>    <span class="co"># Compute the busker's daily earnings</span></span>
+<span id="cb9-21"><a></a>    earnings <span class="op">=</span> <span class="dv">3</span> <span class="op">*</span> listeners  <span class="co"># $3 per listener</span></span>
+<span id="cb9-22"><a></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\t</span><span class="ss"> Daily earnings: $</span><span class="sc">{</span>earnings<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-23"><a></a>    <span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">40</span>)</span>
+<span id="cb9-24"><a></a></span>
+<span id="cb9-25"><a></a>    total_earnings <span class="op">+=</span> earnings</span>
+<span id="cb9-26"><a></a></span>
+<span id="cb9-27"><a></a><span class="bu">print</span>(<span class="ss">f"Total earnings over </span><span class="sc">{</span>n_days<span class="sc">}</span><span class="ss"> days: $</span><span class="sc">{</span>total_earnings<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Day 1 (54.18% chance): No rain
      Number of passersby: 211
@@ -1763,94 +1895,50 @@ Day 5 (6.59% chance): No rain
 Total earnings over 5 days: $477</code></pre>
 </div>
 </div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {pyodide} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a></a>#| exercise: average-weekly-busking</span>
-<span id="cb6-2"><a></a>#| caption: Simulate the expected earning of a busker in Rittenhouse Square over the course of a week.</span>
-<span id="cb6-3"><a></a></span>
-<span id="cb6-4"><a></a>import numpy as np</span>
-<span id="cb6-5"><a></a>def busk_one_week(rng, n_days=7):</span>
-<span id="cb6-6"><a></a>    """Simulate the earnings of a busker in Rittenhouse Square over the course of a week.</span>
-<span id="cb6-7"><a></a>    Args:</span>
-<span id="cb6-8"><a></a>        rng: A NumPy random number generator.</span>
-<span id="cb6-9"><a></a>        n_days: The number of days to simulate (default is 7).</span>
-<span id="cb6-10"><a></a>    Returns:</span>
-<span id="cb6-11"><a></a>        total_earnings: The total earnings over the week.</span>
-<span id="cb6-12"><a></a>    """</span>
-<span id="cb6-13"><a></a>    # TODO: </span>
-<span id="cb6-14"><a></a></span>
-<span id="cb6-15"><a></a>n_simulations = 1000</span>
-<span id="cb6-16"><a></a>random_seed = 33</span>
-<span id="cb6-17"><a></a></span>
-<span id="cb6-18"><a></a># TODO: Use the above function to simulate the expected earnings of a busker in Rittenhouse Square over the course of a week. Run the simulation 1000 times and calculate the average earnings over 1000 simulations. Hint: for loops are your friend here!</span>
-<span id="cb6-19"><a></a></span>
-<span id="cb6-20"><a></a>average_earnings = ...</span>
-<span id="cb6-21"><a></a>average_earnings</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="proof solution" data-exercise="average-weekly-busking">
-<p><span class="proof-title"><em>Solution</em>. </span></p>
+</section>
+<section id="exercise-simulate-weekly-earnings" class="slide level2">
+<h2>Exercise: Simulate Weekly Earnings</h2>
+<p><strong>Task</strong>: Simulate the expected earnings of a busker over a week. Run the simulation 1000 times and calculate the average.</p>
+</section>
+<section id="solution" class="slide level2">
+<h2>Solution</h2>
+<div title="Solution">
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Tip</strong></p>
+<p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<p>The key here is to re-use the logic of the weekly busking simulation in a loop that runs 1000 times. Each time we run the simulation, we get a different weekly outcome based on the random number generator. By averaging these outcomes, we can get a good estimate of the expected earnings over a week of busking.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb7-2"><a></a><span class="kw">def</span> busk_one_week(rng, n_days<span class="op">=</span><span class="dv">7</span>):</span>
-<span id="cb7-3"><a></a>    <span class="co">"""Simulate the earnings of a busker in Rittenhouse Square over the course of a week.</span></span>
-<span id="cb7-4"><a></a><span class="co">    Args:</span></span>
-<span id="cb7-5"><a></a><span class="co">        rng: A NumPy random number generator.</span></span>
-<span id="cb7-6"><a></a><span class="co">        n_days: The number of days to simulate (default is 7).</span></span>
-<span id="cb7-7"><a></a><span class="co">    Returns:</span></span>
-<span id="cb7-8"><a></a><span class="co">        total_earnings: The total earnings over the week.</span></span>
-<span id="cb7-9"><a></a><span class="co">    """</span></span>
-<span id="cb7-10"><a></a>    rain_probabilities <span class="op">=</span> rng.uniform(<span class="fl">0.</span>, <span class="fl">0.7</span>, size<span class="op">=</span>n_days)</span>
-<span id="cb7-11"><a></a></span>
-<span id="cb7-12"><a></a>    total_earnings <span class="op">=</span> <span class="dv">0</span> <span class="co"># initialize a variable to keep track of total earnings</span></span>
-<span id="cb7-13"><a></a>    <span class="cf">for</span> day <span class="kw">in</span> <span class="bu">range</span>(n_days):</span>
-<span id="cb7-14"><a></a>        <span class="co"># For each day, decide if it rains based on the probability</span></span>
-<span id="cb7-15"><a></a>        did_it_rain <span class="op">=</span> rng.binomial(n<span class="op">=</span><span class="dv">1</span>, p<span class="op">=</span>rain_probabilities[day])</span>
-<span id="cb7-16"><a></a>        <span class="co"># Based on the outcome, the number of passersby changes</span></span>
-<span id="cb7-17"><a></a>        <span class="cf">if</span> did_it_rain:</span>
-<span id="cb7-18"><a></a>            passersby <span class="op">=</span> rng.poisson(lam<span class="op">=</span><span class="dv">50</span>)  <span class="co"># fewer passersby when it rains</span></span>
-<span id="cb7-19"><a></a>        <span class="cf">else</span>:</span>
-<span id="cb7-20"><a></a>            passersby <span class="op">=</span> rng.poisson(lam<span class="op">=</span><span class="dv">200</span>) <span class="co"># more passersby when it doesn't rain</span></span>
-<span id="cb7-21"><a></a>        <span class="co"># Simulate the number who stop to listen to the busker</span></span>
-<span id="cb7-22"><a></a>        listeners <span class="op">=</span> rng.binomial(n<span class="op">=</span>passersby, p<span class="op">=</span><span class="fl">0.2</span>)  <span class="co"># 20% of passersby stop</span></span>
-<span id="cb7-23"><a></a>        <span class="co"># Compute the busker's daily earnings</span></span>
-<span id="cb7-24"><a></a>        earnings <span class="op">=</span> <span class="dv">3</span> <span class="op">*</span> listeners  <span class="co"># $3 per listener</span></span>
-<span id="cb7-25"><a></a></span>
-<span id="cb7-26"><a></a>        total_earnings <span class="op">+=</span> earnings</span>
-<span id="cb7-27"><a></a></span>
-<span id="cb7-28"><a></a>    <span class="cf">return</span> total_earnings</span>
-<span id="cb7-29"><a></a></span>
-<span id="cb7-30"><a></a>n_simulations <span class="op">=</span> <span class="dv">1000</span></span>
-<span id="cb7-31"><a></a>random_seed <span class="op">=</span> <span class="dv">33</span></span>
-<span id="cb7-32"><a></a></span>
-<span id="cb7-33"><a></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span>random_seed)</span>
-<span id="cb7-34"><a></a></span>
-<span id="cb7-35"><a></a><span class="co"># Use the above function to simulate the expected earnings of a busker in Rittenhouse Square over the course of a week.</span></span>
-<span id="cb7-36"><a></a><span class="co"># Run the simulation 1000 times and calculate the average earnings over 1000 simulations.</span></span>
-<span id="cb7-37"><a></a>earnings_by_week <span class="op">=</span> [busk_one_week(rng) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_simulations)]</span>
-<span id="cb7-38"><a></a>average_earnings <span class="op">=</span> np.mean(earnings_by_week)</span>
-<span id="cb7-39"><a></a>average_earnings</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb11-2"><a></a></span>
+<span id="cb11-3"><a></a><span class="kw">def</span> busk_one_week(rng, n_days<span class="op">=</span><span class="dv">7</span>):</span>
+<span id="cb11-4"><a></a>    <span class="co">"""Simulate weekly earnings of a busker."""</span></span>
+<span id="cb11-5"><a></a>    rain_probabilities <span class="op">=</span> rng.uniform(<span class="fl">0.</span>, <span class="fl">0.7</span>, size<span class="op">=</span>n_days)</span>
+<span id="cb11-6"><a></a>    total_earnings <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb11-7"><a></a>    </span>
+<span id="cb11-8"><a></a>    <span class="cf">for</span> day <span class="kw">in</span> <span class="bu">range</span>(n_days):</span>
+<span id="cb11-9"><a></a>        did_it_rain <span class="op">=</span> rng.binomial(n<span class="op">=</span><span class="dv">1</span>, p<span class="op">=</span>rain_probabilities[day])</span>
+<span id="cb11-10"><a></a>        <span class="cf">if</span> did_it_rain:</span>
+<span id="cb11-11"><a></a>            passersby <span class="op">=</span> rng.poisson(lam<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb11-12"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb11-13"><a></a>            passersby <span class="op">=</span> rng.poisson(lam<span class="op">=</span><span class="dv">200</span>)</span>
+<span id="cb11-14"><a></a>        listeners <span class="op">=</span> rng.binomial(n<span class="op">=</span>passersby, p<span class="op">=</span><span class="fl">0.2</span>)</span>
+<span id="cb11-15"><a></a>        total_earnings <span class="op">+=</span> <span class="dv">3</span> <span class="op">*</span> listeners</span>
+<span id="cb11-16"><a></a>    </span>
+<span id="cb11-17"><a></a>    <span class="cf">return</span> total_earnings</span>
+<span id="cb11-18"><a></a></span>
+<span id="cb11-19"><a></a><span class="co"># Run 1000 simulations</span></span>
+<span id="cb11-20"><a></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="dv">33</span>)</span>
+<span id="cb11-21"><a></a>earnings_by_week <span class="op">=</span> [busk_one_week(rng) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>)]</span>
+<span id="cb11-22"><a></a>average_earnings <span class="op">=</span> np.mean(earnings_by_week)</span>
+<span id="cb11-23"><a></a><span class="bu">print</span>(<span class="ss">f"Average weekly earnings: $</span><span class="sc">{</span>average_earnings<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource {pyodide} number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a></a>#| exercise: average-weekly-busking</span>
-<span id="cb8-2"><a></a>#| check: true</span>
-<span id="cb8-3"><a></a></span>
-<span id="cb8-4"><a></a># Initialize feedback</span>
-<span id="cb8-5"><a></a>feedback = {"correct": True, "message": "Great job!"}</span>
-<span id="cb8-6"><a></a># Check if the average earnings are within a reasonable range</span>
-<span id="cb8-7"><a></a>if not random_seed == 33:</span>
-<span id="cb8-8"><a></a>    feedback["correct"] = False</span>
-<span id="cb8-9"><a></a>    feedback["message"] = "Make sure to use the correct random seed for reproducibility."</span>
-<span id="cb8-10"><a></a>elif not (average_earnings != 89.307):</span>
-<span id="cb8-11"><a></a>    feedback["correct"] = False</span>
-<span id="cb8-12"><a></a>    feedback["message"] = "The average earnings seem off. Check your simulation logic."</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

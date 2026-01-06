@@ -1,0 +1,279 @@
+---
+title: "Lecture 03: Sampling and Simulation"
+date: "now"
+author: "Joseph Rudoler"
+institution: "University of Pennsylvania"
+format: 
+  revealjs:
+    incremental: true
+    smaller: true
+    scrollable: true
+    echo: false
+    chalkboard: true
+    fig-align: center
+    auto-stretch: false
+    css: custom.css
+code-annotations: hover
+execute:
+    warning: false
+---
+
+```{python}
+#| hidden: true
+#| echo: false
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+plt.style.use("../style.mplstyle")
+```
+
+## Recap
+
+In the last lecture, we introduced some basic concepts of probability and random variables. We learned about:
+
+- Probability
+- Conditional probability
+- Independence
+- Probability functions
+- Random variables
+- Expectation (or expected value)
+- Variance
+- Probability distributions
+
+Now that we have a good understanding of the basics of probability, we can start to explore how we deal with randomness computationally. 
+
+## Sampling from probability distributions
+
+A sample is a subset of data drawn from a more general population. That population can be thought of as a probability distribution -- this distribution essentially describes how likely you are to observe different values when you sample from it. 
+
+We will quickly review some important concepts related to sampling.
+
+## IID sampling
+
+### Independent and identically distributed (IID) sampling
+
+When we sample from a probability distribution, we often assume that the samples are independent and identically distributed (IID). This means that each sample is drawn from the same distribution and that the samples do not influence each other.
+
+Coin flips are a good example of IID sampling. If you flip a fair coin multiple times, each flip has the same probability of being heads or tails (this is the "identically distributed" part), and the outcome of one flip does not affect the outcome of another (this is the "independent" part). The same is true for rolling a die! 
+
+## IID in practice
+
+We often apply this concept to more complex random processes as well, where we do not have such a clear understanding of the underlying process. For example, if we are sampling the heights of people in a city, we might assume that each person's height is drawn from the same distribution (the distribution of heights in that city) and that one person's height does not affect another's. 
+
+Whether or not the IID assumption holds in practice is an important question to consider when analyzing data -- for example, do you think that the heights of people in a family are independent of each other?
+
+## Sampling with and without replacement
+
+Another important concept in sampling is the distinction between sampling with replacement and sampling without replacement.
+
+- **Sampling with replacement** means that after we draw a sample from the population, we put it back before drawing the next sample. This means that the same object / instance can be selected multiple times. 
+
+- **Sampling without replacement** means that once we draw a sample, we do not put it back before drawing the next sample. This means that each individual can only be selected once. This can introduce dependencies between samples, as the population changes after each draw.
+
+## Quiz: Sampling
+
+```{python}
+# | echo: false
+from jupyterquiz import display_quiz
+
+sampling_quiz = [
+    {
+        "question": "Is flipping a coin an example of sampling with, or without replacement?",
+        "type": "multiple_choice",
+        "answers": [
+            {"answer": "With replacement", "correct": True},
+            {"answer": "Without replacement", "correct": False},
+        ],
+    },
+    {
+        "question": "Is dealing a hand in poker an example of sampling with, or without replacement?",
+        "type": "multiple_choice",
+        "answers": [
+            {"answer": "With replacement", "correct": False},
+            {"answer": "Without replacement", "correct": True},
+        ],
+    }
+]
+display_quiz(sampling_quiz)
+```
+
+## Simulating a random sample
+
+We can simulate a random process by sampling from a corresponding probability distribution. 
+
+::: {.callout-note}
+Programmatic random sampling is not truly random, but rather "pseudo-random." This means that the numbers generated are determined by an initial value called a "seed". If you use the same seed, you will get the same sequence of random numbers. This is useful for reproducibility in experiments and simulations.
+
+If you don't specify a seed, the random number generator (RNG) will use a default seed that is typically based on the current date and time, which means that you will get different results each time you run the code.
+:::
+
+## Random sampling in Python
+
+There are built-in functions in many programming languages, including Python, that allow us to sample from common probability distributions. For example, in Python's NumPy library, we can use `numpy.random` module to sample from various distributions like uniform, normal, binomial, etc. 
+
+::: {.callout-note title="Normal distribution"}
+The normal distribution is one of the most commonly used probability distributions in statistics. It is useful for modeling lots of real-world data, especially when the data tends to cluster around a mean (or average) value. The normal distribution is defined by two parameters: the mean (average) and the standard deviation (which measures how spread out the data is around the mean).
+:::
+
+## Sampling from a normal distribution
+
+For example, to sample 100 values from a normal distribution with mean 0 and standard deviation 1, you can use:
+
+```{python}
+#| code-fold: show
+#| echo: true
+
+rng = np.random.default_rng(seed=42)  # Create a random number generator with a fixed seed
+samples = rng.normal(loc=0, scale=1, size=100)
+print("Samples:\n", samples)
+plt.figure(figsize=(8, 5))
+plt.hist(samples, bins=10, density=True)
+plt.show()
+```
+
+## Sampling from a dataset
+
+If you have a dataset and you want to sample from it, you can use the `numpy.random.choice` function to randomly select elements from the dataset (with or without replacement). If your dataset is in a pandas DataFrame, you can also use the `sample` method to randomly select rows from the DataFrame.
+
+```{python}
+#| code-fold: show
+#| echo: true
+# Sampling without replacement
+rng = np.random.default_rng(seed=42)
+subsample = rng.choice(samples, size=10, replace=False)
+print("Sample:\n", subsample)
+
+# another way to sample; note RNG can be different in different packages
+pd.DataFrame(samples, columns=["Sample"]).sample(n=10, replace=False, random_state=42)
+```
+
+## Custom distributions
+
+If you want to sample from a custom distribution, you can also use the `numpy.random.choice` function to sample from a list of values with specified probabilities.
+
+Here's an example of how to sample 100 dice rolls with a rigged die that has a 50% chance of rolling a 6, and a 10% chance of rolling each of the other numbers (1-5):
+
+```{python}
+#| code-fold: show
+#| echo: true
+possible_rolls = [1, 2, 3, 4, 5, 6]
+probabilities = [0.1, 0.1, 0.1, 0.1, 0.1, 0.5]
+rng.choice(possible_rolls, p=probabilities, size=100)
+```
+
+## Simulating more complex processes
+
+Sometimes real-world processes are complex, and the samples we take are not independent. The simplest version of non-independence is sampling without replacement. 
+
+Consider dealing poker hands from a standard deck of cards. When you deal a hand, you draw cards one at a time, and each card drawn affects the next card that can be drawn (because you do not put the card back into the deck).
+
+## Dealing cards example
+
+```{python}
+#| code-fold: show
+#| echo: true
+# Make a deck of cards (Ace is 1, King is 13)
+deck = np.arange(1, 14).repeat(4)  # 4 suits, each with cards 1 to 13
+print("Deck of cards before shuffling:\n", deck)
+deck = np.random.permutation(deck)
+print("Deck of cards after shuffling:\n", deck)
+# deal 2 cards to each of 4 players
+rng = np.random.default_rng(seed=21)
+# Get flat indices of 8 cards from deck
+# we want to know exactly which cards are dealt
+chosen_indices = rng.choice(len(deck), size=8, replace=False)
+hands = deck[chosen_indices].reshape(4, 2)
+print("Hands dealt to players:\n", hands)
+# remove the dealt cards from the deck
+remaining_deck = np.delete(deck, chosen_indices)
+print("Remaining cards in the deck:\n", remaining_deck)
+board = np.random.choice(remaining_deck, size=5, replace=False)
+print("Community cards on the board:\n", board)
+```
+
+## Multi-step simulations
+
+But it can get even more complex than that. In many real-world scenarios, the process of generating data involves multiple steps or conditions that affect the outcome.
+
+In these cases simulation might not be as straightforward as sampling from a single distribution (which takes just one or two lines of code). We then tend to write loops that simulate the process step by step, keeping track of the state of things as we go along.
+
+## Busker example
+
+Let's consider an example of a musician busking for money in Rittenhouse Square. The musician's earnings might depend on various factors like the weather and and the number of passersby. To keep it simple, let's assume that the musician earns $3 for every passerby who stops to listen. Of course, not every passerby will stop -- let's pretend every passerby has the same 20% chance of stopping.
+
+The musician might want to know how much money they can expect to earn in a day of busking. We can simulate this process by generating a random number of passersby and then calculating the earnings based on the stopping probability.
+
+## Poisson distribution
+
+:::{.callout-note title="Poisson distribution"}
+The Poisson distribution is commonly used to model the number of events that occur in a fixed interval of time or space, given a known average rate of occurrence. It assumes that the events occur independently and at a constant average rate. In our example, we can use the Poisson distribution to model the number of passersby in a given time period (e.g., one hour of busking).
+:::
+
+## Busker simulation code
+
+```{python}
+#| code-fold: show
+#| echo: true
+n_days = 5
+# simulate whether it rains each day
+rng = np.random.default_rng(seed=42)
+rain_probabilities = rng.uniform(0., 0.7, size=n_days)
+
+total_earnings = 0 # initialize a variable to keep track of total earnings
+for day in range(n_days):
+    # For each day, decide if it rains based on the probability
+    did_it_rain = rng.binomial(n=1, p=rain_probabilities[day])
+    print(f"Day {day + 1} ({rain_probabilities[day]:.2%} chance): {'Rain' if did_it_rain else 'No rain'}")
+    # Based on the outcome, the number of passersby changes
+    if did_it_rain:
+        passersby = rng.poisson(lam=50)  # fewer passersby when it rains
+    else:
+        passersby = rng.poisson(lam=200) # more passersby when it doesn't rain
+    print(f"\t Number of passersby: {passersby}")
+    # Simulate the number who stop to listen to the busker
+    listeners = rng.binomial(n=passersby, p=0.2)  # 20% of passersby stop
+    print(f"\t Number of listeners: {listeners}")
+    # Compute the busker's daily earnings
+    earnings = 3 * listeners  # $3 per listener
+    print(f"\t Daily earnings: ${earnings}")
+    print("-" * 40)
+
+    total_earnings += earnings
+
+print(f"Total earnings over {n_days} days: ${total_earnings}")
+```
+
+## Exercise: Simulate Weekly Earnings
+
+**Task**: Simulate the expected earnings of a busker over a week. Run the simulation 1000 times and calculate the average.
+
+## Solution
+
+:::{.callout-tip title="Solution"}
+```python
+import numpy as np
+
+def busk_one_week(rng, n_days=7):
+    """Simulate weekly earnings of a busker."""
+    rain_probabilities = rng.uniform(0., 0.7, size=n_days)
+    total_earnings = 0
+    
+    for day in range(n_days):
+        did_it_rain = rng.binomial(n=1, p=rain_probabilities[day])
+        if did_it_rain:
+            passersby = rng.poisson(lam=50)
+        else:
+            passersby = rng.poisson(lam=200)
+        listeners = rng.binomial(n=passersby, p=0.2)
+        total_earnings += 3 * listeners
+    
+    return total_earnings
+
+# Run 1000 simulations
+rng = np.random.default_rng(seed=33)
+earnings_by_week = [busk_one_week(rng) for _ in range(1000)]
+average_earnings = np.mean(earnings_by_week)
+print(f"Average weekly earnings: ${average_earnings:.2f}")
+```
+:::
+

@@ -1,0 +1,377 @@
+---
+title: "Lecture 07: Permutation Tests"
+author: "Joseph Rudoler"
+institution: "University of Pennsylvania"
+date: "now"
+format: 
+  revealjs:
+    incremental: true
+    smaller: true
+    scrollable: true
+    echo: false
+    chalkboard: true
+    fig-align: center
+    auto-stretch: false
+    css: custom.css
+code-annotations: hover
+execute:
+    warning: false
+---
+
+```{python}
+#| hidden: true
+#| echo: false
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats
+plt.style.use("../style.mplstyle")
+```
+
+## Recap
+
+**Bootstrap**:
+
+- Resample **with replacement** from data
+- Estimate distribution of any statistic
+- Build confidence intervals
+
+. . .
+
+Today: **Permutation tests** — another powerful resampling method
+
+## Permutation Tests
+
+Like bootstrap, permutation tests are **non-parametric**:
+
+- No assumptions about underlying distribution
+- Rely on resampling
+
+. . .
+
+Key difference: resample **without replacement**
+
+## The Setup
+
+We have two samples $X$ and $Y$.
+
+**Question**: Do they come from different distributions?
+
+. . .
+
+**Null hypothesis ($H_0$)**: Both samples come from the **same** distribution.
+
+## The Logic
+
+If $H_0$ is true:
+
+- $X$ and $Y$ are drawn from the same distribution
+- We can combine them: $Z = X \cup Y$
+- Any random split of $Z$ is just as valid as the original
+
+. . .
+
+**Key insight**: Under $H_0$, the labels (X vs Y) are **exchangeable**!
+
+## Permutation Test Algorithm
+
+1. Compute observed test statistic (e.g., difference in means)
+2. Combine samples: $Z = X \cup Y$
+3. Randomly permute (shuffle) $Z$
+4. Split into new "X" and "Y" of original sizes
+5. Compute test statistic on shuffled data
+6. Repeat steps 3-5 many times
+7. p-value = proportion of permuted stats ≥ observed
+
+## Permutation Test Code
+
+```{python}
+#| echo: true
+#| code-fold: show
+def permutation_test(test_func, x, y, num_permutations=10000, rng=None, one_sided=True):
+    observed_stat = test_func(x, y)
+    combined = np.concatenate([x, y])
+    count = 0
+    if rng is None:
+        rng = np.random.default_rng()
+    
+    for _ in range(num_permutations):
+        permuted = rng.permutation(combined)
+        x_perm = permuted[:len(x)]
+        y_perm = permuted[len(x):]
+        permuted_stat = test_func(x_perm, y_perm)
+        
+        if one_sided:
+            if permuted_stat >= observed_stat:
+                count += 1
+        else:
+            if np.abs(permuted_stat) >= np.abs(observed_stat):
+                count += 1
+    
+    return count / num_permutations
+```
+
+## Application: NBA Scoring
+
+Is SGA a better scorer than Giannis?
+
+```{python}
+sga_df = pd.read_csv("../data/sga-stats-24-25.csv")
+giannis_df = pd.read_csv("../data/giannis-stats-24-25.csv")
+sga_df["player"] = "Shai Gilgeous-Alexander"
+giannis_df["player"] = "Giannis Antetokounmpo"
+compare_df = pd.concat([sga_df, giannis_df], ignore_index=True)
+compare_df = compare_df.replace({"Did Not Dress": np.nan, "Inactive": np.nan, "Did Not Play": np.nan, "": np.nan})
+compare_df.dropna(subset=["PTS"], inplace=True)
+compare_df["PTS"] = compare_df["PTS"].astype(float)
+
+rng = np.random.default_rng(42)
+p_value = permutation_test(
+    lambda x, y: np.mean(x) - np.mean(y),
+    compare_df[compare_df["player"] == "Shai Gilgeous-Alexander"]["PTS"].values,
+    compare_df[compare_df["player"] == "Giannis Antetokounmpo"]["PTS"].values,
+    rng=rng
+)
+print(f"Permutation test p-value: {p_value:.4f}")
+```
+
+## Bootstrap vs Permutation
+
+Both work, but permutation tests are often **more powerful**.
+
+. . .
+
+**Power** = probability of correctly rejecting $H_0$ when it's false
+
+. . .
+
+A more powerful test detects true effects more reliably.
+
+## There Is Really Only One Test!
+
+All statistical tests follow the same pattern:
+
+1. **Compute** a test statistic on observed data
+2. **Choose** a null hypothesis / model
+3. **Generate** null distribution (analytically or by simulation)
+4. **Compare** observed statistic to null distribution → p-value
+
+## Named Tests Are Special Cases
+
+Most "named" tests (t-test, chi-square, ANOVA, etc.) are just:
+
+- Specific test statistics
+- Specific null distributions
+- Often derived analytically (before computers!)
+
+. . .
+
+Simulation-based methods (bootstrap, permutation) are more flexible!
+
+## Example: Two-Sample t-test
+
+The **t-test** compares means of two groups.
+
+. . .
+
+**Assumption**: Errors are normally distributed
+
+. . .
+
+Under this assumption, the test statistic follows a **t-distribution**.
+
+## t-Distribution vs Normal
+
+```{python}
+x = np.linspace(-4, 4, 100)
+fig, ax = plt.subplots(1, 3, figsize=(12, 4))
+
+for i, sample_size in enumerate([2, 10, 30]):
+    df = 2 * sample_size - 2
+    sns.lineplot(x=x, y=stats.t.pdf(x, df=df), label=f"t (df={df})", ax=ax[i], lw=2)
+    sns.lineplot(x=x, y=stats.norm.pdf(x), label="Normal", ax=ax[i], lw=2)
+    ax[i].grid(True, alpha=0.3)
+    ax[i].set_title(f"n = {sample_size}")
+    ax[i].set_xlabel("x")
+    ax[i].set_ylabel("Density")
+    ax[i].legend()
+plt.tight_layout()
+plt.show()
+```
+
+## t-Distribution Properties
+
+- Heavier tails than normal (more extreme values)
+- Converges to normal as sample size increases
+- Degrees of freedom (df) = $n_1 + n_2 - 2$ for two samples
+
+## Comparing Methods
+
+Let's compare:
+
+1. Parametric t-test (using `scipy`)
+2. Manual calculation
+3. Sampling from t-distribution
+4. Permutation test
+
+## The Comparison
+
+```{python}
+#| echo: true
+#| code-fold: show
+rng = np.random.default_rng(43)
+samples_a = rng.uniform(low=-1, high=3, size=10)
+samples_b = rng.uniform(low=-3, high=1, size=10)
+
+# 1. Parametric t-test
+t_result = stats.ttest_ind(samples_a, samples_b, equal_var=True)
+print(f"Parametric t-test p-value: {t_result.pvalue:.6f}")
+
+# 2. Manual t-statistic
+diff_means = np.mean(samples_a) - np.mean(samples_b)
+pooled_var = (np.var(samples_a, ddof=1) + np.var(samples_b, ddof=1))
+pooled_std_error = np.sqrt(pooled_var / len(samples_a))
+t_stat = diff_means / pooled_std_error
+t_abs = np.abs(t_stat)
+df = len(samples_a) + len(samples_b) - 2
+p_value_pdf = 2 * (1 - stats.t.cdf(t_abs, df=df))
+print(f"Manual calculation p-value: {p_value_pdf:.6f}")
+
+# 3. Sampling from t-distribution
+t_samples = rng.standard_t(df=df, size=10000)
+p_value_sim = np.mean(np.abs(t_samples) >= t_abs)
+print(f"Simulated t-distribution p-value: {p_value_sim:.6f}")
+```
+
+## Permutation t-Test
+
+```{python}
+#| echo: true
+#| code-fold: show
+def permutation_test_t(x, y, num_permutations=10000, rng=None):
+    observed_stat = stats.ttest_ind(x, y, equal_var=True).statistic
+    combined = np.concatenate([x, y])
+    if rng is None:
+        rng = np.random.default_rng()
+    
+    permuted_stats = []
+    for _ in range(num_permutations):
+        permuted = rng.permutation(combined)
+        x_perm = permuted[:len(x)]
+        y_perm = permuted[len(x):]
+        permuted_stat = stats.ttest_ind(x_perm, y_perm, equal_var=True).statistic
+        permuted_stats.append(permuted_stat)
+    
+    permuted_stats = np.array(permuted_stats)
+    p_value = np.mean(np.abs(permuted_stats) >= np.abs(observed_stat))
+    return permuted_stats, p_value
+
+permuted_stats, p_value_perm = permutation_test_t(samples_a, samples_b, rng=rng)
+print(f"Permutation test p-value: {p_value_perm:.6f}")
+```
+
+## All Methods Agree!
+
+| Method | p-value |
+|--------|---------|
+| Parametric t-test | 0.0148 |
+| Manual calculation | 0.0148 |
+| Simulated t-distribution | ~0.014 |
+| Permutation test | ~0.016 |
+
+. . .
+
+**They're all the same test**, just computed differently!
+
+## Visualizing the Agreement
+
+```{python}
+x_vals = np.linspace(-4, 4, 100)
+df = len(samples_a) + len(samples_b) - 2
+
+fig, ax = plt.subplots(1, 3, figsize=(12, 4), sharey=True, sharex=True)
+
+# Theoretical t-distribution
+ax[0].plot(x_vals, stats.t.pdf(x_vals, df=df), lw=2, label='t-distribution')
+ax[0].axvline(t_abs, color='red', linestyle='--', lw=2, label='Observed |t|')
+ax[0].fill_between(x_vals, stats.t.pdf(x_vals, df=df), where=np.abs(x_vals) >= t_abs, alpha=0.3, color='red')
+ax[0].set_title('Theoretical t-distribution')
+ax[0].set_xlabel('t-value')
+ax[0].legend(fontsize='small')
+
+# Sampled t-distribution
+sns.histplot(t_samples, bins=30, ax=ax[1], stat="density", color="gray", alpha=0.5)
+ax[1].plot(x_vals, stats.t.pdf(x_vals, df=df), linestyle='--', lw=2, label='t-distribution')
+ax[1].axvline(t_abs, color='red', linestyle='--', lw=2, label='Observed |t|')
+ax[1].set_title('Sampled t-distribution')
+ax[1].set_xlabel('t-value')
+
+# Permutation distribution
+sns.histplot(permuted_stats, bins=30, ax=ax[2], stat="density", color="gray", alpha=0.5)
+ax[2].plot(x_vals, stats.t.pdf(x_vals, df=df), linestyle='--', lw=2, label='t-distribution')
+ax[2].axvline(t_abs, color='red', linestyle='--', lw=2, label='Observed |t|')
+ax[2].set_title('Permutation Statistics')
+ax[2].set_xlabel('t-value')
+
+plt.tight_layout()
+plt.show()
+```
+
+## Why This Matters
+
+The null distributions are nearly identical!
+
+. . .
+
+This is why all the tests give similar p-values.
+
+. . .
+
+**Key insight**: Named tests are just specific implementations of the general hypothesis testing framework.
+
+## When to Use What?
+
+**Parametric tests** (t-test, etc.):
+
+- Fast (no simulation needed)
+- Well-understood mathematically
+- Require distributional assumptions
+
+. . .
+
+**Simulation-based tests** (permutation, bootstrap):
+
+- More flexible
+- No distributional assumptions
+- Computationally intensive
+- Useful for complex statistics
+
+## Summary
+
+**Permutation Tests**
+
+- Shuffle labels under null hypothesis
+- Compare observed statistic to permuted distribution
+- Non-parametric and powerful
+
+. . .
+
+**The Unified Framework**
+
+1. Test statistic
+2. Null distribution (analytical or simulated)
+3. p-value
+
+. . .
+
+All statistical tests are variations of this pattern!
+
+## Next Time
+
+**Linear Regression**
+
+- Predicting outcomes from features
+- Quantifying relationships in data
+- Connecting inference to prediction
+

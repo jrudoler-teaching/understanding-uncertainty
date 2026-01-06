@@ -5,7 +5,7 @@ project:
     - "*.qmd"
     - "notebooks/*.ipynb"
     - "assignments/*.ipynb"
-    - "slides/*.ipynb"
+    - "slides/*.qmd"
 website:
   google-analytics: "G-C192WMR427"
   title: "Understanding Uncertainty"

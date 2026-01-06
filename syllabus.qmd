@@ -19,15 +19,15 @@ title: "Syllabus"
 | 7/14 | [Probability](notebooks/lecture-02.ipynb) ([slides](slides/lecture-02-slides.html))| [Assignment 2](assignments/assignment-02.html) |
 | 7/15 | Probability cont. |  |
 | 7/16 | [Sampling and simulation](notebooks/lecture-03.ipynb) ([slides](slides/lecture-03-slides.html))| [Assignment 3](assignments/assignment-03.html) |
-| 7/17 | [Data Generating Processes and Statistical Models](notebooks/lecture-04.ipynb) |  |
+| 7/17 | [Data Generating Processes and Statistical Models](notebooks/lecture-04.ipynb) ([slides](slides/lecture-04-slides.html)) |  |
 | 7/18 | No class|  |
-| 7/21 | [Hypothesis Testing](notebooks/lecture-05.ipynb) |  |
-| 7/22 | [Confidence Intervals, bootstrapping](notebooks/lecture-06.ipynb) | [Assignment 4](assignments/assignment-04.html) |
-| 7/23 | [Permutation tests](notebooks/lecture-07.ipynb) |  |
-| 7/24 | [Regression](notebooks/lecture-08.ipynb) |  |
+| 7/21 | [Hypothesis Testing](notebooks/lecture-05.ipynb) ([slides](slides/lecture-05-slides.html)) |  |
+| 7/22 | [Confidence Intervals, bootstrapping](notebooks/lecture-06.ipynb) ([slides](slides/lecture-06-slides.html)) | [Assignment 4](assignments/assignment-04.html) |
+| 7/23 | [Permutation tests](notebooks/lecture-07.ipynb) ([slides](slides/lecture-07-slides.html)) |  |
+| 7/24 | [Regression](notebooks/lecture-08.ipynb) ([slides](slides/lecture-08-slides.html)) |  |
 | 7/25 | No class (final project meetings)|  |
 | 7/28 | No class (DC trip)| |
-| 7/29 | Regression cont. (Inference for Regression) |  |
+| 7/29 | [Regression cont. (Inference for Regression)](notebooks/lecture-09.ipynb) ([slides](slides/lecture-09-slides.html)) |  |
 | 7/30 | Regression cont. (Multiple Regression) |  |
 | 7/31 | Paradoxes and Statistical Gotchas |  |
 | 8/01 | Guest Lecture (Sports Analytics and Betting) |  |

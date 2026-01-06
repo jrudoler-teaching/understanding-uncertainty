@@ -1,0 +1,562 @@
+---
+title: "Lecture 01: Programming Basics, Data Structures, and Data Manipulation"
+author: "Joseph Rudoler"
+affiliation: "University of Pennsylvania"
+date: "now"
+format: 
+  revealjs:
+    incremental: true
+    smaller: true
+    scrollable: true
+    echo: true
+    chalkboard: true
+    fig-align: center
+    auto-stretch: false
+    css: custom.css
+code-annotations: hover
+execute:
+    warning: false
+---
+
+```{python}
+#| hidden: true
+#| echo: false
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+plt.style.use("../style.mplstyle")
+```
+
+## Overview
+
+This lecture will be, intentionally, a bit of a whirlwind. That's because with the advent of large language models (LLMs) like ChatGPT, Claude, Gemini, etc. knowing how to program in specific languages like Python is becoming less important. You don't need that much practice or to focus on the syntax of a specific language. 
+
+Instead, the important thing is to understand the core concepts involved in programming, which are largely universal across languages. This high-level understanding will allow you to use LLMs effectively to write code in any language, including Python. If you don't understand the concepts, you won't be able to identify when the LLM is making mistakes or producing suboptimal code.
+
+## Variables
+
+Variables are used to store data in a program. They can hold different types of data, such as numbers, strings (text), lists, and more. 
+
+It is both useful and pretty accurate to think of programmatic variables in the same way you think of algebraic variables in math. You can assign or change the value of a variable, and you can use it in calculations or operations.
+
+## Aside: Functions
+
+:::{.callout-note title="Functions act on variables"}
+Functions in programming are designed to operate on variables. They take input (variables), perform some operations, and return output. Understanding how variables work is crucial for effectively using functions.
+
+We'll explore functions in more detail later ([Functions](#functions-and-functional-programming)), but for now, remember that functions are named blocks of code that manipulate variables to achieve specific tasks.
+
+Some functions are built-in, meaning they are provided by the programming language itself, while others can be defined by the user. Built-in functions in Python include `print()` for displaying output, as well as `type()` for checking the type of a variable.
+:::
+
+## Creating Variables
+
+You can create a variable by assigning it a value using the equals sign (`=`). 
+
+For example, if you create a variable `x` that holds the value `5`, you can use it in calculations like this:
+
+```python
+x = 5
+y = x + 3
+print(y)  # Output: 8
+```
+
+## Variable Types
+
+The following table describes some common variable types:
+
+| Variable Type | Description |
+|------|----------------|
+| Integer (`int`)      | Whole numbers, e.g., `5`, `-3`, `42` |
+| Float (`float`)        | Decimal numbers, e.g., `3.14`, `-0.001`, `2.0` |
+| String (`str`)        | Textual data, e.g., `"Hello, world!"`, `'Python'` |
+| List (`list`)         | Ordered collection of items, e.g., `[1, 2, 3]`, `['a', 'b', 'c']` |
+| Dictionary (`dict`)    | Key-value pairs, e.g., `{'name': 'Alice', 'age': 30}` |
+| Boolean (`bool`)       | True or False values, e.g., `True`, `False` |
+
+## Variables are Objects
+
+In Python, everything is an object. 
+
+- This means that even basic data types like integers and strings are treated as objects with methods and properties. 
+- For example, you can call methods on a string object to manipulate it, like `my_string.upper()` to convert it to uppercase.
+
+See the later section on [Object-Oriented Programming](#object-oriented-programming) for more details.
+
+## Typecasting
+
+Typecasting is the process of converting a variable from one type to another. Not all type conversions are allowed, but some common ones include:
+
+| From Type | To Type | Example |
+|:----|:-----|:-----------------------|
+| Integer   | Float   | `float(5)` → `5.0` |
+| Float     | Integer | `int(3.14)` → `3` |
+| String    | Integer | `int('42')` → `42` |
+| String    | Float   | `float('3.14')` → `3.14` |
+| List      | String  | `''.join(['S', 'h', 'a', 'l', 'o', 'm'])` → `'Shalom'` |
+| String    | List    | `list('Shalom')` → `['S', 'h', 'a', 'l', 'o', 'm']` |
+| Boolean   | Integer | `int(True)` → `1`, `int(False)` → `0` |
+| Integer   | Boolean | `bool(1)` → `True`, `bool(0)` → `False`, `bool(-1)` → `True` |
+
+## Implicit Type Conversions
+
+There are also some implicit type conversions that happen automatically in Python, such as when you perform arithmetic operations between integers and floats. For example:
+
+```{python}
+x = 5        # Integer
+y = 2.0      # Float
+result = x + y  # Implicit conversion to float
+result, type(result)  # result is now a float
+```
+
+## Lists
+
+- We often need to store multiple values together. 
+- The most basic way to achieve this is with a list. 
+- A list is an ordered collection of items that can be of any type, including other lists. 
+  - "Ordered" means that the items have a specific sequence, and you can access them by their position (index) in the list.
+
+In Python, you can create a list using square brackets `[]`. For example:
+
+```{python}
+#| code-fold : false
+my_list = [1, 2, 3, 'apple', 'banana']
+print(my_list[0]) 
+```
+
+## List Indexing
+
+You can access items in a list using their index (a number specifying their position). In Python, **indexing starts at 0**, so `my_list[0]` refers to the first item in the list.
+
+Indexing also works with negative numbers, which count from the end of the list. For example, `my_list[-1]` refers to the last item in the list.
+
+The syntax for retrieving indexes is `my_list[start:end:step]`, where `start` is the index to start from, `end` is the index to stop before, and `step` is the interval between items. If you omit `start`, it defaults to 0; if you omit `end`, it defaults to the end of the list; and if you omit `step`, it defaults to 1.
+
+```{python}
+#| code-fold : show
+print(my_list[:3]) # first three elements
+print(my_list[3:]) # from the fourth element to the end
+print(my_list[::2]) # every other
+print(my_list[::-1])  # reverse the list
+```
+
+## Modifying Lists
+
+You can also modify lists by adding or removing items. For example:
+
+```{python}
+#| code-fold : show
+my_list.append('orange')  # Adds 'orange' to the end of the list
+print(my_list)  # Output: [1, 2, 3, 'apple', 'banana', 'orange']
+```
+
+## Arrays (NumPy)
+
+While lists are flexible, they can be inefficient and unreliable for many numerical operations. Arrays, provided by the core library `numpy`, enforce a single data type and are optimized for numerical computations. They also have lots of built-in functionality for mathematical operations. 
+
+:::{.callout-note title="Packages" collapse="true"}
+There is only so much functionality that can be included in a core programming language. To keep the language simple, many advanced features are provided through external packages.  
+
+Packages are collections of pre-written code that you can import into your program to use their features. When you want to use a package, you typically import it at the beginning of your script. For example, to use NumPy, you would write:
+
+```python
+import numpy as np
+```
+`np` is now what we call an alias, a shorthand for referring to the NumPy package. 
+
+Now any time you want to use a function (we'll discuss functions in detail later) from NumPy, you can do so by prefixing it with `np.`. For example, we'll see how to create a NumPy array below using `np.array()`.
+:::
+
+## Creating Arrays
+
+You can create a NumPy array using the `numpy.array()` command. For example:
+
+```{python}
+#| code-fold : show
+import numpy as np
+my_array = np.array([1, 2, 3, 4, 5])
+print(my_array)  
+```
+
+## Array Operations
+
+You can perform mathematical operations on NumPy arrays, and they will be applied element-wise. For example:
+
+```{python}
+#| code-fold : show
+my_array_squared = my_array ** 2
+print(my_array_squared)  
+```
+
+## Array Type Enforcement
+
+You can't have mixed data types in a NumPy array, so if you try to create an array with both numbers and strings, it will convert everything to strings:
+
+```{python}
+#| code-fold : show
+mixed_array = np.array([1, 'two', 3.0])
+print(mixed_array)  # Output: ['1' 'two' '3.0']
+```
+
+Typecasting works in NumPy arrays as well via the `astype()` method. 
+
+```{python}
+np.array([1, 2, 3, 4.1], dtype=float).astype(int)  # Convert float array to int array
+```
+
+## Advanced indexing
+
+NumPy arrays support complex indexing, allowing you to access and manipulate specific elements or subarrays efficiently.
+
+You can actually use arrays to index other arrays, which is a powerful feature. This allows you to select specific elements based on conditions or patterns. 
+
+```{python}
+my_array = np.arange(1, 11)
+print(my_array) 
+# grab specific elements
+idx = [1, 1, 3, 4]
+print(my_array[idx])
+```
+
+## Boolean indexing
+
+One important feature is boolean indexing, where you can use a boolean array to select elements from another array. This lets you filter data based on conditions. For example:
+
+```{python}
+#| code-fold : show
+my_array = np.arange(1, 11)  # Creates a NumPy array with values from 1 to 10
+print("Original array:", my_array)
+# Create a boolean array where elements are greater than 2
+boolean_mask = my_array > 2
+print("Boolean mask:", boolean_mask)
+# Use the boolean mask to filter the array
+filtered_array = my_array[boolean_mask]
+print("Filtered array:", filtered_array) 
+```
+
+## Dictionaries
+
+Sometimes a list or array is not enough. You may want to store data in a way that allows you to access it by a keyword rather than by an index. For example, I might have a list of people and their ages, but I want to be able to look up a person's age by their name. In this case, I can use a dictionary.
+
+We can create a dictionary using curly braces `{}` and separating keys and values with a colon `:`. Here's an example:
+
+```{python}
+#| code-fold : false
+name_age_dict = {
+    "Alice": 30,
+    "Bob": 25,
+    "Charlie": 35
+}
+```
+
+## Accessing Dictionary Values
+
+In order to access a value in a dictionary, we use the key in square brackets `[]`. Here's how you can do that:
+
+```{python}
+#| code-fold : false
+name_age_dict["Bob"] # this will print Bob's age
+```
+
+## Nested Dictionaries
+
+The "value" in a dictionary can be of any type, including another dictionary or a list. This allows for building up complex data structures that contain named entities and their associated data.
+
+For example, you might have a dictionary that contains different types of data about a person.
+
+```{python}
+#| code-fold : false
+name_age_list_dict = {
+    'Name': ['Alice', 'Bob', 'Charlie'],
+    'Age': [25, 30, 35],
+}
+```
+
+## Dataframes
+
+Most of the time, data scientists work with *tabular data* (data organized in tables with rows and columns). 
+
+Think of the data you typically see in spreadsheets -- rows represent individual records, and columns represent attributes of those records.
+
+In Python, the most common way to work with tabular data is through the `pandas` library, which provides a powerful data structure called a DataFrame.
+
+```{python}
+#| echo: true
+#| code-fold: show
+import pandas as pd
+# Create a DataFrame with sample data
+df = pd.DataFrame({
+    'Name': ['Alice', 'Bob', 'Charlie'],
+    'Age': [25, 30, 35],
+    'Height (cm)': [165, 180, 175],
+    'Weight (kg)': [55.1, 80.5, 70.2],
+    'City': ['New York', 'Los Angeles', 'Chicago']
+})
+df
+```
+
+## DataFrame Column Types
+
+One import thing to realize about DataFrames that each column can have a different data type. For example, one column might contain integers, another might contain strings, and yet another might contain floating-point numbers.
+
+However, all the values in a single column *should* be of the same type. Intuitively: since columns represent attributes, every value in a column should represent the same kind of information. It wouldn't make sense if the "city" column of a DataFrame contained both "New York" (a string) and 42 (an integer).
+
+Note that this rule isn't necessarily enforced by the DataFrame structure itself, but it's a good practice to follow. Otherwise, you might run into issues when performing operations on the DataFrame.
+
+```{python}
+#| code-fold: show
+bad_df = pd.DataFrame({
+    'Name': ['Alice', 'Bob', 'Charlie'],
+    'Age': [25, 30, 'Thirty-Five'],  # Mixed types in the 'Age' column
+})
+
+bad_df["Age"] * 3
+```
+
+## Conditional logic
+
+Conditional logic allows you to make decisions in your code based on certain conditions. This is essential for controlling the flow of your program and executing different actions based on different situations.
+
+. . .
+
+### If-elif-else statements
+
+The most common way to implement conditional logic is through `if`, `elif`, and `else` statements:
+
+| Statement Type | Description |
+|----------------|-------------|
+| `if`           | Checks a condition and executes the block if it's true. |
+| `elif`         | Checks another condition if the previous `if` or `elif` was false. |
+| `else`         | Executes a block if all previous conditions were false. |
+
+## If-elif-else example
+
+Here's an example of how to use these statements:
+
+```python
+age = 25  # Set your age here
+if age < 18:
+    print("You are a minor.")
+elif age < 65:
+    print("You are an adult.")
+elif age >= 120:
+    print("You've done your time, haven't you?")
+else:
+    print("You are a senior citizen.")
+# Output: "You are an adult."
+```
+
+Note that the `elif` and `else` statements are optional. You can have just an `if` statement, which will execute a block of code if the condition is true and skip it if the condition is false.
+
+## Boolean expressions
+
+::: {.callout-tip  title="Boolean expressions" collapse="true"}
+Boolean expressions are conditions that evaluate to either `True` or `False`. They are often used in `if` statements to control the flow of the program. Common operators for creating Boolean expressions include:
+
+| Operator | Description |
+|----------|-------------|
+| `==`     | Equal to    |
+| `!=`     | Not equal to|
+| `<`      | Less than   |
+| `<=`     | Less than or equal to |
+| `>`      | Greater than |
+| `>=`     | Greater than or equal to |
+| `and` , `&`   | Logical AND  |
+| `or`, `|`     | Logical OR   |
+| `not` , `~`   | Logical NOT  |
+:::
+
+## Loops
+
+Loops are special constructs that allow you to repeat a block of code multiple times in sequence. They are useful when you want to perform the same operation on multiple items, such as iterating over a list or processing each row in a DataFrame.
+
+The two most common types of loops are `for` loops and `while` loops.
+
+## For Loops
+
+A `for` loop iterates over a sequence (like a list or a string) and executes a block of code for each item in that sequence. Here's an example:
+
+```python
+my_list = [1, 2, 3, 4, 5]
+for item in my_list:
+    print(item)
+```
+This will print each item in `my_list` one by one.
+
+## Useful Python functions: range() and enumerate()
+
+:::{.callout-note title="Useful Python functions: range() and enumerate()"}
+In Python, the `range()` function generates a sequence of numbers, which is often used in `for` loops. For example, `range(5)` generates the numbers 0 to 4.
+
+The `enumerate()` function is useful when you need both the index and the value of items in a list. It returns pairs of (index, value) for each item in the list. For example:
+
+```python
+my_list = ['a', 'b', 'c']
+for index, value in enumerate(my_list):
+    print(f"Index: {index}, Value: {value}")
+```
+:::
+
+## While Loops
+
+A `while` loop continues to execute a block of code as long as a specified condition is true. Here's an example:
+
+```python
+count = 0
+while count < 5:
+    print(count)
+    count += 1 # Increment the count
+```
+This will print the numbers 0 to 4, incrementing `count` by 1 each time until the condition `count < 5` is no longer true.
+
+## Functions and functional programming
+
+Functions are reusable blocks of code that perform a specific task. They allow you to organize your code into logical sections, making it easier to read, maintain, and reuse.
+
+They work like functions in math: you can pass inputs (arguments) to a function, and it will return an output (result).
+
+You can define a function in Python using the `def` keyword, followed by the function name and parentheses containing any parameters.
+
+## Function example
+
+```python
+def add_numbers(a, b):
+    """Adds two numbers and returns the result."""
+    return a + b
+result = add_numbers(3, 5)
+print(result)  # Output: 8
+```
+
+Functions can also have default values for parameters, which allows you to call them with fewer arguments than defined. For example:
+
+```python
+def greet(name="World"):
+    """Greets the specified name or 'World' by default."""
+    return f"Hello, {name}!"
+print(greet())          # Output: Hello, World!
+print(greet("Alice"))  # Output: Hello, Alice!
+```
+
+## Functional programming
+
+**Functional programming** is a style of programming that treats computer programs as the evaluation of mathematical functions. It is alternatively called **value-oriented programming**[^1] because the output of a program is just the value(s) it produces as a function of its inputs.
+
+[^1]: Technically there is a difference between functional programming and value-oriented programming that programming-language nerds care about, but for our purposes, they are the same thing.
+
+Probably the core principle of functional programming is to avoid changing state and mutable data. This means that once a value is created, it should not be changed. Instead, you create new values based on existing ones.
+
+## Avoiding side effects
+
+That means means that functions should not have side effects -- they use data passed to them and return a new value without modifying the input data. This makes it easier to reason about code, as you can understand what a function does just by looking at its inputs and outputs.
+
+For example, consider the following two functions for squaring a number:
+
+```{python}
+#| code-fold: show
+import numpy as np
+
+def square_functional(input):
+    """Returns the square of an array"""
+    return input ** 2
+
+def square_side_effect(input):
+    """Returns the square of an array with a side effect"""
+    input[0] = -1
+    return input ** 2  # This is a side effect, modifying the first element of input
+
+a = np.array([1, 3, 5])
+b = square_functional(a)  # b will be 25, a remains 5
+print(f"Functional: a = {a}, b = {b}")
+c = square_side_effect(a)  # c will be 25, a will still be 5
+print(f"Side Effect: a = {a}, c = {c}")
+```
+
+## Side effects (cont.)
+
+There are somewhat complicated rules about what objects can be modified in place and what cannot (sometimes Python allows it, sometimes it doesn't), but the general rule is that you should avoid modifying objects in place unless you have a good reason to do so. The main reason is that you might inadvertently change the value of an object that is being used elsewhere in your code, leading to bugs that are hard to track down. Instead, create new objects based on existing ones.
+
+## Object-Oriented Programming
+
+While you can write programs in Python using just functions, the language is really designed for object-oriented programming (OOP). 
+OOP is a style of programming built around the concept of "objects", which are specific instances of classes.
+
+A class is like a template for creating new objects. It defines the properties (attributes) and behaviors (methods) that the objects created from the class will have.
+
+To define a class in Python, you use the `class` keyword followed by the class name. 
+Every class should have an `__init__` method, which is a special method that initializes the object when it is created.
+
+## Class example
+
+Here's a simple example of a class:
+
+```{python}
+#| code-fold: show
+class Date():
+    """A simple class to represent a date"""
+
+    # This is the constructor method, called when an instance is created like Date(2025, 5, 6)
+    def __init__(self, year, month, day):
+        self.year = year
+        self.month = month
+        self.day = day
+
+    def __str__(self):
+        # defined what print() should do
+        # formats the date as YYYY-MM-DD
+        return f"{self.year:04d}-{self.month:02d}-{self.day:02d}"
+    
+    # here is a method that checks if the date is in summer
+    def is_summer(self):
+        """Check if the date is in summer (June, July, August)"""
+        return self.month in [6, 7, 8]
+
+# Create an instance of the Date class
+date_instance = Date(2025, 5, 6)
+
+print(date_instance)  # Output: 2025-05-06
+print(date_instance.is_summer())  # Output: False
+```
+
+## OOP advantages
+
+Object-oriented programming has a number of advantages, but many of them are really just about organizing code in a way that makes it easier to understand, reuse, and maintain. 
+
+One of the key features of OOP is **inheritance**, which allows you to create new classes based on existing ones. This means you can define a base class with common attributes and methods, and then create subclasses that inherit from it and add or override functionality.
+
+## Inheritance example
+
+For example, you might inherit from the base class `Date` to create a subclass `HolidayDate` that adds specific attributes or methods related to holidays:
+
+```python
+class Date:
+    def __init__(self, year, month, day):
+        self.year = year
+        self.month = month
+        self.day = day
+
+    def __str__(self):
+        return f"{self.year}-{self.month:02d}-{self.day:02d}"
+
+class HolidayDate(Date):
+    def __init__(self, year, month, day, holiday_name):
+        super().__init__(year, month, day)
+        self.holiday_name = holiday_name  # Add new attribute
+
+    def print_holiday(self):
+        print(f"{self.holiday_name} is on {self}.")
+
+channukah = HolidayDate(2025, 12, 7, "Channukah")
+print(channukah)  # Output: 2025-12-07
+channukah.print_holiday()  # Output: Channukah is on 2025-12-07.
+```
+
+## OOP in data science
+
+This allows you to create specialized versions of a class without duplicating code, making your codebase cleaner and easier to maintain.
+
+For the purposes of statistics and data science, classes are mostly useful because they allow you to create custom data structures that can hold both data and methods for manipulating that data. We have already seen this in the context of DataFrames -- the `pandas` library defines a DataFrame class that has methods for manipulating tabular data. By defining and using DataFrame objects, you get access to a wide range of functionality for working with data without having to implement it yourself. For example, you can filter rows, group data, and perform aggregations (like `mean`, `sum`, etc.) using methods defined in the DataFrame class.
+
+## Summary
+
+In this lecture we covered some of the core programming concepts that are important to understand when working with Python or any other programming language. In today's assignment, you will practice these concepts by writing Python code to solve some problems.
+

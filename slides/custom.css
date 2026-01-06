@@ -1,0 +1,26 @@
+/* Prevent figures from being stretched in RevealJS */
+.reveal .slide-background-content {
+  background-size: contain;
+}
+
+.reveal section img {
+  max-height: 70vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.reveal .r-stretch {
+  max-height: 70vh;
+}
+
+/* Ensure figures maintain aspect ratio */
+.reveal figure img,
+.reveal .cell-output img,
+.reveal .cell-output-display img {
+  max-height: 65vh;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain;
+}
+

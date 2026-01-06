@@ -1,0 +1,423 @@
+---
+title: "Lecture 08: Linear Regression"
+author: "Joseph Rudoler"
+institution: "University of Pennsylvania"
+date: "now"
+format: 
+  revealjs:
+    incremental: true
+    smaller: true
+    scrollable: true
+    echo: false
+    chalkboard: true
+    fig-align: center
+    auto-stretch: false
+    css: custom.css
+code-annotations: hover
+execute:
+    warning: false
+---
+
+```{python}
+#| hidden: true
+#| echo: false
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats
+from statsmodels.formula.api import ols
+plt.style.use("../style.mplstyle")
+```
+
+## From Inference to Prediction
+
+So far we've focused on **inference**:
+
+- Estimating parameters
+- Testing hypotheses
+- Quantifying uncertainty
+
+. . .
+
+Now: **Prediction** — using data to forecast outcomes
+
+## Predictions from Patterns
+
+How do we make predictions?
+
+- Look for **patterns** in data
+- Use patterns to make informed guesses
+
+. . .
+
+**Why not just memorize?**
+
+- Memorization doesn't generalize
+- We need predictions for new, unseen data
+
+## The Galton Dataset
+
+Classic dataset: heights of parents and children
+
+```{python}
+galton = pd.read_csv("../data/galton-stata11.tsv", sep="\t", 
+                     dtype={"male": bool, "female": bool, "gender": "category", "family": "category"})
+galton.head()
+```
+
+## The Simplest Prediction
+
+**Task**: Predict height of a new child (no other information)
+
+. . .
+
+**Solution**: Use the average height!
+
+```{python}
+mean_height = galton["height"].mean()
+print(f"Mean height: {mean_height:.2f} inches")
+```
+
+## Distribution of Heights
+
+```{python}
+plt.figure(figsize=(9, 4))
+sns.histplot(galton["height"], stat="proportion", bins=30)
+plt.xlabel("Height (inches)")
+plt.ylabel("Proportion")
+plt.title("Distribution of Children's Heights")
+plt.axvline(mean_height, color="red", linestyle="--", lw=2, label=f"Mean: {mean_height:.1f}")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+## Can We Do Better?
+
+What if we have **more information**?
+
+- Child's sex
+- Parents' heights
+
+. . .
+
+If these are related to height, they should inform our prediction!
+
+## Child Height vs Parent Height
+
+```{python}
+fig, ax = plt.subplots(1, 2, figsize=(11, 4), sharey=True, sharex=True)
+
+sns.scatterplot(data=galton, x="father", y="height", ax=ax[0], alpha=0.5)
+ax[0].set_xlabel("Father's Height (inches)")
+ax[0].set_ylabel("Child's Height (inches)")
+ax[0].set_title("Child vs Father")
+ax[0].axhline(mean_height, color="blue", linestyle="--", label="Mean Child Height")
+ax[0].legend()
+
+sns.scatterplot(data=galton, x="mother", y="height", ax=ax[1], alpha=0.5)
+ax[1].set_xlabel("Mother's Height (inches)")
+ax[1].set_ylabel("Child's Height (inches)")
+ax[1].set_title("Child vs Mother")
+ax[1].axhline(mean_height, color="blue", linestyle="--", label="Mean Child Height")
+ax[1].legend()
+plt.tight_layout()
+plt.show()
+```
+
+## The Pattern
+
+Taller parents → taller children (generally)
+
+. . .
+
+But **how much** taller?
+
+. . .
+
+We need to **quantify** this relationship.
+
+## Combining Parent Heights
+
+Problem: Father and mother heights are on different scales
+
+. . .
+
+**Solution**: Standardize (z-score) heights
+
+$$z = \frac{\text{height} - \text{mean}}{\text{std dev}}$$
+
+. . .
+
+Then combine: **midparent height** = average of z-scores
+
+## Standardization
+
+```{python}
+# Calculate means and stds
+mother_heights = galton[["mother", "family"]].drop_duplicates()["mother"].values
+female_child_heights = galton[galton["gender"] == "F"]["height"].values
+female_heights = np.concatenate([mother_heights, female_child_heights])
+
+father_heights = galton[["father", "family"]].drop_duplicates()["father"].values
+male_child_heights = galton[galton["gender"] == "M"]["height"].values
+male_heights = np.concatenate([father_heights, male_child_heights])
+
+female_mean, female_std = female_heights.mean(), female_heights.std(ddof=1)
+male_mean, male_std = male_heights.mean(), male_heights.std(ddof=1)
+
+galton["mother_z"] = (galton["mother"] - female_mean) / female_std
+galton["father_z"] = (galton["father"] - male_mean) / male_std
+galton["midparent"] = (galton["mother_z"] + galton["father_z"]) / 2
+```
+
+## Child Height vs Midparent Height
+
+```{python}
+fig, ax = plt.subplots(figsize=(8, 5))
+sns.scatterplot(data=galton, x="midparent", y="height", alpha=0.5)
+plt.xlabel("Midparent Height (Z-score)")
+plt.ylabel("Child's Height (inches)")
+plt.axvline(0, color="red", linestyle="--", alpha=0.5)
+plt.axhline(mean_height, color="blue", linestyle="--", label="Mean Child Height")
+plt.title("Child vs Midparent Height")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+## Linear Regression
+
+Model the relationship as a **line**:
+
+$$\text{predicted height} = \text{slope} \times \text{midparent} + \text{intercept}$$
+
+. . .
+
+**Ordinary Least Squares (OLS)**: Find the line that minimizes squared errors
+
+$$\text{minimize } \sum_i (\text{predicted}_i - \text{actual}_i)^2$$
+
+## Why Squared Errors?
+
+1. No cancellation of positive/negative errors
+2. Larger errors are penalized more heavily
+3. Mathematically convenient (differentiable)
+
+## Fitting the Model
+
+```{python}
+#| echo: true
+#| code-fold: show
+model = ols("height ~ midparent", data=galton).fit()
+predicted_heights = model.predict(galton["midparent"]).values
+print(f"Intercept: {model.params['Intercept']:.2f}")
+print(f"Slope: {model.params['midparent']:.2f}")
+```
+
+## Visualizing the Fit
+
+```{python}
+fig, ax = plt.subplots(figsize=(9, 5))
+sns.scatterplot(data=galton, x="midparent", y="height", alpha=0.3)
+sns.lineplot(x=galton["midparent"], y=predicted_heights, color="red", lw=2, label="Fitted Line")
+ax.set_xlabel("Midparent Height (Z-score)")
+ax.set_ylabel("Child's Height (inches)")
+ax.set_title("Linear Regression: Child vs Midparent Height")
+ax.legend()
+plt.tight_layout()
+plt.show()
+```
+
+## Interpreting the Slope
+
+**Slope ≈ 1.7**
+
+. . .
+
+Interpretation: For every 1 standard deviation increase in midparent height, predicted child height increases by **1.7 inches**.
+
+## Prediction Errors (Residuals)
+
+```{python}
+errors = galton["height"] - predicted_heights
+
+fig, ax = plt.subplots(figsize=(9, 4))
+sns.histplot(x=errors, alpha=0.5, stat="probability", ax=ax)
+ax.set_xlabel("Prediction Error (inches)")
+ax.axvline(0, color="gray", linestyle="--")
+ax.set_title("Distribution of Prediction Errors")
+plt.tight_layout()
+plt.show()
+```
+
+## Evaluating Predictions
+
+```{python}
+#| echo: true
+#| code-fold: show
+print(f"Mean error: {np.mean(errors):.2e}")
+print(f"Root Mean Squared Error: {np.sqrt(np.mean(errors**2)):.2f} inches")
+
+# Compare to naive prediction
+naive_rmse = np.sqrt(np.mean((galton["height"] - mean_height) ** 2))
+print(f"Naive RMSE (just use mean): {naive_rmse:.2f} inches")
+```
+
+. . .
+
+Using parent info improves predictions! (3.39 vs 3.58 inches)
+
+## The Probabilistic View
+
+Notice: residuals are approximately **normal**!
+
+. . .
+
+This motivates the probabilistic regression model:
+
+$$Y \sim \mathcal{N}(\beta_0 + \beta_1 X, \sigma^2)$$
+
+. . .
+
+The response $Y$ is a random variable with:
+
+- Mean that depends on $X$
+- Inherent variability $\sigma^2$
+
+## Uncertainty in Regression
+
+Because $Y$ is random:
+
+- Different samples → different estimates of $\beta_0$, $\beta_1$
+- Need to quantify uncertainty (next lecture!)
+
+## Correlation
+
+**Correlation coefficient** ($r$): measures linear relationship strength
+
+. . .
+
+| Value | Interpretation |
+|-------|----------------|
+| $r = 1$ | Perfect positive correlation |
+| $r = -1$ | Perfect negative correlation |
+| $r = 0$ | No linear relationship |
+
+## Correlation = Standardized Slope
+
+**Key insight**: When both variables are standardized, the slope **equals** the correlation!
+
+$$r = \text{slope when } X \text{ and } Y \text{ are z-scored}$$
+
+## Demonstration
+
+```{python}
+rng = np.random.default_rng(42)
+x_shared = 20 * rng.normal(size=100) + 7
+
+y_1 = 2.5 * x_shared + 10 + rng.normal(size=100, loc=0, scale=15)
+y_2 = -3 * x_shared + 15 + rng.normal(size=100, loc=0, scale=30)
+
+data = pd.DataFrame({
+    "x": x_shared,
+    "y_1": y_1,
+    "y_2": y_2,
+})
+
+fig, ax = plt.subplots(2, 2, figsize=(10, 8))
+
+# Original scale
+sns.regplot(data=data, x="x", y="y_1", ax=ax[0, 0], ci=None, line_kws={"color": "red"})
+model1 = ols("y_1 ~ x", data=data).fit()
+r1, _ = stats.pearsonr(data["x"], data["y_1"])
+ax[0, 0].annotate(f"Slope: {model1.params['x']:.2f}\nR: {r1:.2f}", xy=(0.05, 0.85), 
+                   xycoords="axes fraction", fontsize=11)
+ax[0, 0].set_title("Original Scale")
+
+# Standardized
+sns.regplot(x=stats.zscore(data["x"]), y=stats.zscore(data["y_1"]), ax=ax[0, 1], ci=None, line_kws={"color": "red"})
+ax[0, 1].annotate(f"Slope = R = {r1:.2f}", xy=(0.05, 0.85), xycoords="axes fraction", fontsize=11)
+ax[0, 1].set_title("Standardized (Z-scored)")
+ax[0, 1].set_xlabel("X (z-score)")
+ax[0, 1].set_ylabel("Y (z-score)")
+
+# Second example
+sns.regplot(data=data, x="x", y="y_2", ax=ax[1, 0], ci=None, line_kws={"color": "red"})
+model2 = ols("y_2 ~ x", data=data).fit()
+r2, _ = stats.pearsonr(data["x"], data["y_2"])
+ax[1, 0].annotate(f"Slope: {model2.params['x']:.2f}\nR: {r2:.2f}", xy=(0.05, 0.85), 
+                   xycoords="axes fraction", fontsize=11)
+
+sns.regplot(x=stats.zscore(data["x"]), y=stats.zscore(data["y_2"]), ax=ax[1, 1], ci=None, line_kws={"color": "red"})
+ax[1, 1].annotate(f"Slope = R = {r2:.2f}", xy=(0.05, 0.85), xycoords="axes fraction", fontsize=11)
+ax[1, 1].set_xlabel("X (z-score)")
+ax[1, 1].set_ylabel("Y (z-score)")
+
+plt.tight_layout()
+plt.show()
+```
+
+## Galton Data: Correlation
+
+```{python}
+galton["midparent_z"] = stats.zscore(galton["midparent"])
+galton["child_z"] = stats.zscore(galton["height"])
+
+model_z = ols("child_z ~ midparent_z", data=galton).fit()
+
+fig, ax = plt.subplots(1, 2, figsize=(11, 4))
+
+# Original
+sns.scatterplot(data=galton, x="midparent", y="height", ax=ax[0], alpha=0.3)
+sns.lineplot(x=galton["midparent"], y=predicted_heights, color="red", lw=2, ax=ax[0])
+ax[0].annotate(f"Slope: {model.params['midparent']:.2f}\nR: {np.sqrt(model.rsquared):.2f}", 
+               xy=(0.05, 0.85), xycoords="axes fraction", fontsize=11)
+ax[0].set_xlabel("Midparent Height")
+ax[0].set_ylabel("Child Height (inches)")
+ax[0].set_title("Original Scale")
+
+# Standardized
+sns.scatterplot(data=galton, x="midparent_z", y="child_z", ax=ax[1], alpha=0.3)
+sns.lineplot(x=galton["midparent_z"], y=model_z.predict(galton["midparent_z"]), color="red", lw=2, ax=ax[1])
+ax[1].annotate(f"Slope = R = {model_z.params['midparent_z']:.2f}", 
+               xy=(0.05, 0.85), xycoords="axes fraction", fontsize=11)
+ax[1].set_xlabel("Midparent Height (z-score)")
+ax[1].set_ylabel("Child Height (z-score)")
+ax[1].set_title("Standardized")
+
+plt.tight_layout()
+plt.show()
+```
+
+## Summary
+
+**Linear Regression**
+
+- Model relationships as linear equations
+- OLS finds the best-fitting line
+- Slope quantifies the relationship
+
+. . .
+
+**Correlation**
+
+- Measures linear relationship strength
+- Equals slope when variables are standardized
+
+. . .
+
+**Probabilistic Interpretation**
+
+- $Y$ is a random variable
+- Regression estimates expected value given $X$
+
+## Next Time
+
+**Regression Inference and Multiple Regression**
+
+- Hypothesis tests for regression coefficients
+- Confidence intervals for predictions
+- Multiple predictors simultaneously
+

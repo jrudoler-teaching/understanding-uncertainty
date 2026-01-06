@@ -1,0 +1,508 @@
+---
+title: "Lecture 06: Confidence Intervals and Bootstrapping"
+author: "Joseph Rudoler"
+institution: "University of Pennsylvania"
+date: "now"
+format: 
+  revealjs:
+    incremental: true
+    smaller: true
+    scrollable: true
+    echo: false
+    chalkboard: true
+    fig-align: center
+    auto-stretch: false
+    css: custom.css
+code-annotations: hover
+execute:
+    warning: false
+---
+
+```{python}
+#| hidden: true
+#| echo: false
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats
+plt.style.use("../style.mplstyle")
+```
+
+## Recap
+
+- **Hypothesis testing**: quantify evidence against $H_0$ with p-values
+- **p-value**: probability of observing data as extreme as ours, under $H_0$
+
+. . .
+
+Today: A different way to quantify uncertainty — **confidence intervals**
+
+## Confidence Intervals
+
+Instead of asking "is $\mu = 0$?", ask:
+
+**"What is a plausible range of values for $\mu$?"**
+
+. . .
+
+A **confidence interval** gives a range $[L, U]$ that likely contains the true parameter:
+
+$$\mathbb{P}(\theta \in [L, U]) = 1 - \alpha$$
+
+## Important Distinction
+
+The parameter $\theta$ is **fixed** (but unknown)!
+
+. . .
+
+What varies is the **sample** we draw.
+
+- Different samples → different confidence intervals
+- Some CIs contain $\theta$, some don't
+- $(1-\alpha)$% of all CIs will contain $\theta$
+
+## CI When Distribution is Known
+
+By the **Central Limit Theorem**, sample mean $\bar{X}$ is approximately normal.
+
+. . .
+
+We know:
+
+1. $\bar{X}$ is unbiased: $\mathbb{E}[\bar{X}] = \mu$
+2. Variance: $\text{Var}(\bar{X}) = \sigma^2/n$
+3. Distribution is symmetric
+
+## Visualizing the Sampling Distribution
+
+```{python}
+fig, ax = plt.subplots(figsize=(9, 4))
+x = np.linspace(-3, 3, 100)
+pdf = stats.norm.pdf(x, loc=0, scale=1)
+ax.plot(x, pdf, lw=2)
+ax.fill_between(x, pdf, alpha=0.1, color="blue")
+ax.set_title(r"Sample Mean $\bar{X}$ Distribution")
+ax.set_xlabel("Sample Mean")
+ax.set_ylabel("Probability Density")
+ax.set_xticks(np.arange(-3, 4, 1))
+ax.set_xticklabels([r"$\mu-3\frac{\sigma}{\sqrt{n}}$", r"$\mu-2\frac{\sigma}{\sqrt{n}}$",
+                    r"$\mu-\frac{\sigma}{\sqrt{n}}$", r"$\mu$", r"$\mu+\frac{\sigma}{\sqrt{n}}$",
+                    r"$\mu+2\frac{\sigma}{\sqrt{n}}$", r"$\mu+3\frac{\sigma}{\sqrt{n}}$"])
+ax.grid(True, linestyle="--", axis='x', alpha=0.5)
+plt.tight_layout()
+plt.show()
+```
+
+## Probability Within $z$ Standard Errors
+
+| $z$ | Probability within $\pm z$ SE |
+|-----|-------------------------------|
+| 1   | 68.3%                         |
+| 2   | 95.4%                         |
+| 3   | 99.7%                         |
+
+. . .
+
+For a 95% CI, use $z_{0.025} \approx 1.96$
+
+## Formula for CI
+
+$$\left[\bar{X} - z_{\alpha/2}\frac{\sigma}{\sqrt{n}}, \bar{X} + z_{\alpha/2}\frac{\sigma}{\sqrt{n}}\right]$$
+
+. . .
+
+This requires knowing (or estimating) $\sigma$!
+
+## The Problem
+
+What if we don't know the distribution of our data?
+
+- CLT helps for means, but needs large $n$
+- What about other statistics (median, variance)?
+
+. . .
+
+**Solution**: Use the data itself to estimate uncertainty!
+
+## Resampling Methods
+
+Key insight: If sample is large enough, it **approximates** the population.
+
+. . .
+
+So we can **sub-sample** from our data to understand variability!
+
+## Samples Approach Population
+
+```{python}
+rng = np.random.default_rng(42)
+fig, ax = plt.subplots(1, 3, figsize=(11, 4))
+for i, n_samples in enumerate([10, 100, 1000]):
+    sample = rng.normal(loc=0, scale=1, size=n_samples)
+    ax[i].hist(sample, bins=30, density=True, alpha=0.5, color='blue')
+    ax[i].set_title(f"Sample of {n_samples} from N(0, 1)")
+    ax[i].set_xlabel("Value")
+    ax[i].set_ylabel("Density")
+plt.tight_layout()
+plt.show()
+```
+
+## Resampling from the Sample
+
+```{python}
+rng = np.random.default_rng(42)
+fig, ax = plt.subplots(1, 3, figsize=(11, 4))
+for i, n_samples in enumerate([10, 100, 1000]):
+    sample = rng.normal(loc=0, scale=1, size=n_samples)
+    resample = rng.choice(sample, size=10000, replace=True)
+    sns.histplot(resample, bins=30, stat="probability", alpha=0.5, color='green', label='Resampled', ax=ax[i])
+    sns.histplot(sample, bins=30, stat="probability", alpha=0.3, color='blue', label='Original', ax=ax[i])
+    ax[i].set_title(f"Resample from {n_samples} samples")
+    ax[i].set_xlabel("Value")
+    ax[i].set_ylabel("Probability")
+ax[2].legend()
+plt.tight_layout()
+plt.show()
+```
+
+## Bootstrapping
+
+**Bootstrap** = repeatedly resample **with replacement** from your data
+
+. . .
+
+**Algorithm**:
+
+1. Given dataset of size $n$, draw sample of size $n$ with replacement
+2. Compute statistic (mean, median, etc.) on bootstrap sample
+3. Repeat many times (e.g., 1000)
+4. Use distribution of statistics for inference
+
+## Why Sample With Replacement?
+
+We want **independent** samples from our proxy population.
+
+. . .
+
+Without replacement: we'd get the same sample back every time!
+
+(Only $n$ datapoints, so sampling $n$ without replacement = original sample)
+
+## Bootstrap Example
+
+```{python}
+#| echo: true
+#| code-fold: show
+rng = np.random.default_rng(42)
+sample_size = 1000
+n_bootstraps = 1000
+
+original_sample = rng.normal(loc=3.2, scale=1.5, size=sample_size)
+
+bootstrapped_means = []
+bootstrapped_std = []
+for _ in range(n_bootstraps):
+    resample = rng.choice(original_sample, size=sample_size, replace=True)
+    bootstrapped_means.append(np.mean(resample))
+    bootstrapped_std.append(np.std(resample, ddof=1))
+
+print(f"True mean: 3.2, Bootstrap mean: {np.mean(bootstrapped_means):.2f}")
+print(f"True std: 1.5, Bootstrap std: {np.mean(bootstrapped_std):.2f}")
+```
+
+## Bootstrap Distributions
+
+```{python}
+bootstrapped_means = np.array(bootstrapped_means)
+bootstrapped_std = np.array(bootstrapped_std)
+
+fig, ax = plt.subplots(1, 2, figsize=(11, 4))
+sns.histplot(bootstrapped_means, bins=30, stat="probability", alpha=0.5, color='green', ax=ax[0])
+ax[0].axvline(np.mean(bootstrapped_means), color='red', linestyle='--', label='Bootstrap Mean')
+ax[0].axvline(3.2, color='blue', linestyle='--', label='True Mean')
+ax[0].legend()
+ax[0].set_title("Bootstrap Distribution of Means")
+ax[0].set_xlabel("Mean Value")
+
+sns.histplot(bootstrapped_std, bins=30, stat="probability", alpha=0.5, color='orange', ax=ax[1])
+ax[1].axvline(np.mean(bootstrapped_std), color='red', linestyle='--', label='Bootstrap Std')
+ax[1].axvline(1.5, color='blue', linestyle='--', label='True Std')
+ax[1].legend()
+ax[1].set_title("Bootstrap Distribution of Std Devs")
+ax[1].set_xlabel("Std Dev Value")
+plt.tight_layout()
+plt.show()
+```
+
+## Bootstrap Confidence Intervals
+
+The magic: use **percentiles** of bootstrap distribution!
+
+. . .
+
+For 95% CI:
+
+- Lower bound = 2.5th percentile
+- Upper bound = 97.5th percentile
+
+## Bootstrap CI Example
+
+```{python}
+#| echo: true
+#| code-fold: show
+lower_bound_mean = np.percentile(bootstrapped_means, 2.5)
+upper_bound_mean = np.percentile(bootstrapped_means, 97.5)
+print(f"95% CI for Mean: ({lower_bound_mean:.3f}, {upper_bound_mean:.3f})")
+print(f"True mean: 3.2")
+
+lower_bound_std = np.percentile(bootstrapped_std, 2.5)
+upper_bound_std = np.percentile(bootstrapped_std, 97.5)
+print(f"95% CI for Std: ({lower_bound_std:.3f}, {upper_bound_std:.3f})")
+print(f"True std: 1.5")
+```
+
+## CI Visualization
+
+```{python}
+fig, ax = plt.subplots(1, 2, figsize=(11, 4))
+
+sns.histplot(bootstrapped_means, bins=30, stat="probability", alpha=0.5, color='green', ax=ax[0])
+ax[0].axvline(lower_bound_mean, color='purple', linestyle='--', lw=2, label='2.5th percentile')
+ax[0].axvline(upper_bound_mean, color='purple', linestyle='--', lw=2, label='97.5th percentile')
+ax[0].axvline(3.2, color='red', linestyle='-', lw=2, label='True mean')
+ax[0].legend()
+ax[0].set_title("95% CI for Mean")
+ax[0].set_xlabel("Mean Value")
+
+sns.histplot(bootstrapped_std, bins=30, stat="probability", alpha=0.5, color='orange', ax=ax[1])
+ax[1].axvline(lower_bound_std, color='purple', linestyle='--', lw=2, label='2.5th percentile')
+ax[1].axvline(upper_bound_std, color='purple', linestyle='--', lw=2, label='97.5th percentile')
+ax[1].axvline(1.5, color='red', linestyle='-', lw=2, label='True std')
+ax[1].legend()
+ax[1].set_title("95% CI for Std Dev")
+ax[1].set_xlabel("Std Dev Value")
+plt.tight_layout()
+plt.show()
+```
+
+## What Does a 95% CI Mean?
+
+The **uncertainty** comes from **sampling**, not the parameter!
+
+. . .
+
+If we repeatedly:
+
+1. Draw a new sample from the population
+2. Compute a 95% CI
+
+. . .
+
+Then **95% of those CIs** will contain the true parameter.
+
+## Demonstrating CI Coverage
+
+```{python}
+def bootstrap_mean_ci(sample, n_iterations=1000, alpha=0.05, rng=None):
+    if rng is None:
+        rng = np.random.default_rng()
+    n = len(sample)
+    means = []
+    for _ in range(n_iterations):
+        resample = rng.choice(sample, size=n, replace=True)
+        means.append(np.mean(resample))
+    lower_bound = np.percentile(means, 100 * alpha / 2)
+    upper_bound = np.percentile(means, 100 * (1 - alpha / 2))
+    return lower_bound, upper_bound
+
+rng = np.random.default_rng(42)
+n_sims = 1000
+sample_size = 1000
+ci_list = []
+violating_ci_idx = []
+
+for i in range(n_sims):
+    sample = rng.normal(loc=3.2, scale=1.5, size=sample_size)
+    lower_bound, upper_bound = bootstrap_mean_ci(sample, n_iterations=1000, alpha=0.05, rng=rng)
+    ci_list.append((i, lower_bound, upper_bound))
+    if not (3.2 >= lower_bound and 3.2 <= upper_bound):
+        violating_ci_idx.append(i)
+
+print(f"Proportion of CIs that MISS the true mean: {len(violating_ci_idx) / n_sims:.4f}")
+print(f"(Expected: ~0.05)")
+```
+
+## Visualizing CI Coverage
+
+```{python}
+fig, ax = plt.subplots(figsize=(10, 5))
+for i in range(min(violating_ci_idx[5] + 1, 50)):
+    alpha_val = 1.0 if i in violating_ci_idx else 0.2
+    lower_bound, upper_bound = ci_list[i][1], ci_list[i][2]
+    ax.plot([i, i], [lower_bound, upper_bound], color="gray", alpha=alpha_val, linewidth=2)
+    ax.scatter(i, lower_bound, color="blue", alpha=alpha_val, s=20, zorder=3)
+    ax.scatter(i, upper_bound, color="green", alpha=alpha_val, s=20, zorder=3)
+
+ax.axhline(3.2, color="red", linestyle="--", lw=2, label="True Mean (3.2)")
+ax.set_title("Bootstrap CIs (highlighted = miss true mean)")
+ax.set_xlabel("Sample Index")
+ax.set_ylabel("Confidence Interval")
+ax.legend()
+plt.show()
+```
+
+## Application: NBA Scoring
+
+Let's compare SGA and Giannis with bootstrap CIs!
+
+```{python}
+sga_df = pd.read_csv("../data/sga-stats-24-25.csv")
+giannis_df = pd.read_csv("../data/giannis-stats-24-25.csv")
+sga_df["player"] = "Shai Gilgeous-Alexander"
+giannis_df["player"] = "Giannis Antetokounmpo"
+compare_df = pd.concat([sga_df, giannis_df], ignore_index=True)
+compare_df = compare_df.replace({"Did Not Dress": np.nan, "Inactive": np.nan, "Did Not Play": np.nan, "": np.nan})
+compare_df.dropna(subset=["PTS"], inplace=True)
+compare_df["PTS"] = compare_df["PTS"].astype(float)
+
+sga_lower, sga_upper = bootstrap_mean_ci(
+    compare_df[compare_df["player"] == "Shai Gilgeous-Alexander"]["PTS"].values,
+    n_iterations=1000, alpha=0.05, rng=np.random.default_rng(42))
+giannis_lower, giannis_upper = bootstrap_mean_ci(
+    compare_df[compare_df["player"] == "Giannis Antetokounmpo"]["PTS"].values,
+    n_iterations=1000, alpha=0.05, rng=np.random.default_rng(42))
+
+print(f"SGA 95% CI: ({sga_lower:.2f}, {sga_upper:.2f})")
+print(f"Giannis 95% CI: ({giannis_lower:.2f}, {giannis_upper:.2f})")
+```
+
+## Overlapping CIs
+
+SGA's CI doesn't contain Giannis's point estimate, but...
+
+. . .
+
+**The CIs overlap!**
+
+. . .
+
+This means we should account for **both players'** variability when comparing them.
+
+## Better Comparison: Difference of Means
+
+```{python}
+def bootstrap_mean_dist(sample, n_iterations=1000, rng=None):
+    if rng is None:
+        rng = np.random.default_rng()
+    n = len(sample)
+    means = []
+    for _ in range(n_iterations):
+        resample = rng.choice(sample, size=n, replace=True)
+        means.append(np.mean(resample))
+    return np.array(means)
+
+sga_dist = bootstrap_mean_dist(
+    compare_df[compare_df["player"] == "Shai Gilgeous-Alexander"]["PTS"].values,
+    n_iterations=1000, rng=np.random.default_rng(42))
+giannis_dist = bootstrap_mean_dist(
+    compare_df[compare_df["player"] == "Giannis Antetokounmpo"]["PTS"].values,
+    n_iterations=1000, rng=np.random.default_rng(42))
+
+p_value = np.mean(giannis_dist >= sga_dist)
+print(f"P(Giannis >= SGA): {p_value:.4f}")
+```
+
+## Bootstrap Distributions Comparison
+
+```{python}
+fig, ax = plt.subplots(2, 1, figsize=(10, 7))
+sns.histplot(sga_dist, bins=30, stat="probability", alpha=0.5, color='blue', label='SGA', ax=ax[0])
+sns.histplot(giannis_dist, bins=30, stat="probability", alpha=0.5, color='green', label='Giannis', ax=ax[0])
+ax[0].axvline(np.mean(sga_dist), color='blue', linestyle='--', lw=2)
+ax[0].axvline(np.mean(giannis_dist), color='green', linestyle='--', lw=2)
+ax[0].set_title("Bootstrap Scoring Average Distributions")
+ax[0].set_xlabel("Scoring Average")
+ax[0].legend()
+
+diff_dist = sga_dist - giannis_dist
+sns.histplot(diff_dist, bins=30, stat="probability", alpha=0.5, ax=ax[1])
+ax[1].axvline(0, color='purple', linestyle='--', lw=2, label='No difference')
+ax[1].fill_betweenx(y=[0, ax[1].get_ylim()[1]], x1=ax[1].get_xlim()[0], x2=0, alpha=0.1, color='red')
+ax[1].set_title("Bootstrap Difference (SGA - Giannis)")
+ax[1].set_xlabel("Difference in Scoring Average")
+ax[1].legend()
+plt.tight_layout()
+plt.show()
+```
+
+## Bootstrap Under the Null
+
+For a proper hypothesis test, combine both players' data:
+
+```{python}
+#| echo: true
+#| code-fold: show
+np.random.seed(42)
+n_games_sga = len(compare_df[compare_df["player"] == "Shai Gilgeous-Alexander"])
+n_games_giannis = len(compare_df[compare_df["player"] == "Giannis Antetokounmpo"])
+observed_diff = (compare_df[compare_df["player"] == "Shai Gilgeous-Alexander"]["PTS"].mean()
+                - compare_df[compare_df["player"] == "Giannis Antetokounmpo"]["PTS"].mean())
+
+n_bootstraps = 1000
+bootstrapped_diffs = []
+for _ in range(n_bootstraps):
+    sga_sample = compare_df["PTS"].sample(n=n_games_sga, replace=True)
+    giannis_sample = compare_df["PTS"].sample(n=n_games_giannis, replace=True)
+    diff = sga_sample.mean() - giannis_sample.mean()
+    bootstrapped_diffs.append(diff)
+
+p_value = np.mean(np.array(bootstrapped_diffs) >= observed_diff)
+print(f"Observed difference: {observed_diff:.2f}")
+print(f"Bootstrap p-value: {p_value:.4f}")
+```
+
+## Key Insight
+
+Original p-value (last lecture): ~0.004
+
+Bootstrap p-value (accounting for both variabilities): ~0.04
+
+. . .
+
+**An order of magnitude difference!**
+
+. . .
+
+Properly accounting for uncertainty matters!
+
+## Summary
+
+**Confidence Intervals**
+
+- Give a range of plausible values for parameters
+- 95% CI means 95% of such CIs contain the true value
+
+. . .
+
+**Bootstrapping**
+
+- Resample with replacement from your data
+- Estimate any statistic's distribution
+- No distributional assumptions needed!
+
+. . .
+
+**Application**
+
+- Bootstrap CIs are easy to compute
+- Can test hypotheses by comparing distributions
+
+## Next Time
+
+**Permutation Tests**
+
+- Another simulation-based method
+- Powerful and widely applicable
+- The "one test" unifying framework
+

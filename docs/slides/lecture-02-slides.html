@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.7.31">
 
   <meta name="author" content="Joseph Rudoler">
-  <meta name="dcterms.date" content="2025-07-31">
+  <meta name="dcterms.date" content="2026-01-06">
   <title>Understanding Uncertainty – Lecture 02: Probability and Random Variables</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -97,6 +97,7 @@
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-f563837468303362081e247dddd440d0.css">
+  <link rel="stylesheet" href="custom.css">
   <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-C192WMR427"></script>
 
   <script type="text/javascript">
@@ -219,7 +220,7 @@ Joseph Rudoler
 </div>
 </div>
 
-  <p class="date">2025-07-31</p>
+  <p class="date">2026-01-06</p>
 </section>
 <section class="slide level2">
 
@@ -237,9 +238,9 @@ Joseph Rudoler
 <p>Most of you are probably familiar with the basic intuition of <strong>probability</strong>: essentially it measures how likely an event is to occur.</p>
 <div class="fragment">
 <p>In mathematical terms, the probability <span class="math inline">\(\P\)</span> of an event <span class="math inline">\(A\)</span> is defined as:</p>
-<p><span class="math display">\[\begin{align*}
-\P(A) &amp;= \frac{\text{ \# of outcomes where } A \text{ occurs}}{\text{ total \# of outcomes}} \\
-\end{align*}\]</span></p>
+<p><span class="math display">\[
+\P(A) = \frac{\text{ \# of outcomes where } A \text{ occurs}}{\text{ total \# of outcomes}}
+\]</span></p>
 </div>
 <div class="fragment">
 <p>By definition this quantity:</p>
@@ -253,28 +254,26 @@ Joseph Rudoler
 <h2>Example: Coin Flip</h2>
 <p>The classical example of probability is flipping a coin. When you flip a fair coin, there are two possible outcomes: heads (<span class="math inline">\(H\)</span>) and tails (<span class="math inline">\(T\)</span>).</p>
 <p>If we let <span class="math inline">\(A\)</span> be the event that the coin lands on heads, then we can compute the probability of <span class="math inline">\(A\)</span> as follows:</p>
-<p><span class="math display">\[\begin{align*}
-\P(\text{H}) &amp;= \frac{\text{ \# of heads}}{\text{ total \# of outcomes}} \\
-      &amp;= \frac{1}{2} \\
-\end{align*}\]</span></p>
+<p><span class="math display">\[
+\P(\text{H}) = \frac{\text{ \# of heads}}{\text{ total \# of outcomes}} = \frac{1}{2}
+\]</span></p>
 <p>This matches our intuition that a fair coin has a 50% chance of landing on heads.</p>
 </section>
 <section id="properties-of-probability-sum-to-1" class="slide level2">
 <h2>Properties of Probability: Sum to 1</h2>
 <p>An important property of probabilities is that the sum of the probabilities of all possible outcomes must equal 1. This is like say “there’s a 100% chance that <em>something</em> will happen”.</p>
 <div class="fragment">
-<p>In our coin flip example, we have two possible outcomes: heads and tails. If the coin flip is not heads, it must be tails. In other words, the events <span class="math inline">\(H\)</span> and <span class="math inline">\(T\)</span> cover 100% of the possible outcomes. So we can write: <span class="math display">\[\begin{align*}
-\P(H) + \P(T) &amp;= 1 \\
-\frac{1}{2} + \frac{1}{2} &amp;= 1
-\end{align*}\]</span></p>
+<p>In our coin flip example, we have two possible outcomes: heads and tails. If the coin flip is not heads, it must be tails. In other words, the events <span class="math inline">\(H\)</span> and <span class="math inline">\(T\)</span> cover 100% of the possible outcomes. So we can write: <span class="math display">\[
+\P(H) + \P(T) = 1 \quad \Rightarrow \quad \frac{1}{2} + \frac{1}{2} = 1
+\]</span></p>
 </div>
 <div class="fragment">
 <p>When we know the events we are interested in make up all of the possible outcomes, we can use this property to compute probabilities.</p>
 </div>
 <div class="fragment">
-<p>For example, for any event <span class="math inline">\(A\)</span>, the event either happens or it doesn’t. So we can compute the probability of the event not occurring as: <span class="math display">\[\begin{align*}
-\P(\text{not}~ A) &amp;= 1 - \P(A)
-\end{align*}\]</span></p>
+<p>For example, for any event <span class="math inline">\(A\)</span>, the event either happens or it doesn’t. So we can compute the probability of the event not occurring as: <span class="math display">\[
+\P(\text{not}~ A) = 1 - \P(A)
+\]</span></p>
 </div>
 </section>
 <section id="probability-of-multiple-events" class="slide level2">
@@ -291,11 +290,9 @@ Joseph Rudoler
 <p>If we let <span class="math inline">\(B\)</span> be the event that at least one coin lands on heads, we can compute the probability of <span class="math inline">\(B\)</span> as follows:</p>
 </div>
 <div class="fragment">
-<p><span class="math display">\[\begin{align*}
-\P(B) &amp;= \frac{\text{ \# of outcomes with at least one head}}{\text{ total \# of outcomes}} \\
-      &amp;= \frac{|\{HH, HT, TH\}|}{|\{HH, HT, TH, TT\}|} \\
-      &amp;= \frac{3}{4} \\
-\end{align*}\]</span></p>
+<p><span class="math display">\[
+\P(B) = \frac{\text{ \# of outcomes with at least one head}}{\text{ total \# of outcomes}} = \frac{|\{HH, HT, TH\}|}{|\{HH, HT, TH, TT\}|} = \frac{3}{4}
+\]</span></p>
 </div>
 </section>
 <section id="probability-of-multiple-events-and-vs-or" class="slide level2">
@@ -322,18 +319,15 @@ Joseph Rudoler
 <p>So we could also write <span class="math inline">\(\P(H_1 \cap H_2)\)</span> for the probability of both flips being heads, and <span class="math inline">\(\P(H_1 \cup H_2)\)</span> for the probability of at least one flip being heads.</p>
 <p>Technically, this is set notation where <span class="math inline">\(\cap\)</span> means intersection (the event where both <span class="math inline">\(H_1\)</span> and <span class="math inline">\(H_2\)</span> occur), while <span class="math inline">\(\cup\)</span> means union (the event where either <span class="math inline">\(H_1\)</span> or <span class="math inline">\(H_2\)</span> occurs).</p>
 </section>
-<section id="rules-for-multiple-events" class="slide level2">
-<h2>Rules for multiple events</h2>
-<p>There are some important rules for calculating probabilities of multiple events. In particular, if you have two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, the following rules hold:</p>
-<ul>
-<li class="fragment"><p><strong>Addition rule</strong>: For any two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, the probability of either <span class="math inline">\(A\)</span> or <span class="math inline">\(B\)</span> occurring is given by: <span class="math display">\[
+<section id="addition-rule" class="slide level2">
+<h2>Addition rule</h2>
+<p>For any two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, the probability of either <span class="math inline">\(A\)</span> or <span class="math inline">\(B\)</span> occurring is given by: <span class="math display">\[
 \P(A \cup B) = \P(A) + \P(B) - \P(A \cap B)
 \]</span> This last term, <span class="math inline">\(\P(A \cap B)\)</span>, is necessary to avoid double counting the outcomes where both <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> occur.</p>
-<p>Note that if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are mutually exclusive (i.e., they cannot both occur at the same time), then <span class="math inline">\(\P(A \cap B) = 0\)</span>, and the formula simplifies to: <span class="math display">\[  \P(A \cup B) = \P(A) + \P(B)\]</span></p></li>
-</ul>
+<p>Note that if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are mutually exclusive (i.e., they cannot both occur at the same time), then <span class="math inline">\(\P(A \cap B) = 0\)</span>, and the formula simplifies to: <span class="math display">\[  \P(A \cup B) = \P(A) + \P(B)\]</span></p>
 </section>
-<section id="rules-for-multiple-events-1" class="slide level2">
-<h2>Rules for multiple events</h2>
+<section id="visualizing-sets-of-events" class="slide level2">
+<h2>Visualizing sets of events</h2>
 <div title="Visualizing sets of events">
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
@@ -350,12 +344,12 @@ Joseph Rudoler
 </div>
 </div>
 </section>
-<section id="rules-for-multiple-events-2" class="slide level2">
-<h2>Rules for multiple events</h2>
-<ul>
-<li class="fragment"><strong>Multiplication rule</strong>: For any two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, the probability of both <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> occurring is given by: <span class="math display">\[\P(A \cap B) = \P(A) \cdot \P(B | A)\]</span> where <span class="math inline">\(\P(B | A)\)</span> is the conditional probability of <span class="math inline">\(B\)</span> given that <span class="math inline">\(A\)</span> has occurred. This means you first consider the outcomes where <span class="math inline">\(A\)</span> occurs, and then look at the probability of <span class="math inline">\(B\)</span> within that subset.</li>
-</ul>
-<div class="fragment">
+<section id="multiplication-rule" class="slide level2">
+<h2>Multiplication rule</h2>
+<p>For any two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, the probability of both <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> occurring is given by: <span class="math display">\[\P(A \cap B) = \P(A) \cdot \P(B | A)\]</span> where <span class="math inline">\(\P(B | A)\)</span> is the conditional probability of <span class="math inline">\(B\)</span> given that <span class="math inline">\(A\)</span> has occurred. This means you first consider the outcomes where <span class="math inline">\(A\)</span> occurs, and then look at the probability of <span class="math inline">\(B\)</span> within that subset.</p>
+</section>
+<section id="conditional-probability" class="slide level2">
+<h2>Conditional probability</h2>
 <div title="Conditional probability">
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
@@ -372,19 +366,19 @@ Joseph Rudoler
 <li class="fragment">For example, you might expect that it is more likely I will buy ice cream if it is hot outside. In this case, the event <span class="math inline">\(A\)</span> is “it is hot outside”, and the event <span class="math inline">\(B\)</span> is “I buy ice cream”.</li>
 <li class="fragment">The conditional probability <span class="math inline">\(\P(B | A)\)</span> would be higher than <span class="math inline">\(\P(B)\)</span> on a typical day.</li>
 </ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="conditional-probability-example" class="slide level2">
+<h2>Conditional probability example</h2>
 <p>Let’s think about this in the context of our coin flips. If we know that the first flip is heads (<span class="math inline">\(H_1\)</span>), then only two outcomes are possible (<span class="math inline">\(HH\)</span> and <span class="math inline">\(HT\)</span>) instead of four (<span class="math inline">\(HH\)</span>, <span class="math inline">\(HT\)</span>, <span class="math inline">\(TH\)</span>, <span class="math inline">\(TT\)</span>).</p>
 <ul>
-<li class="fragment">The conditional probability <span class="math inline">\(\P(H_2 | H_1)\)</span>, which is the probability of the second flip being heads given that the first flip was heads, is: <span class="math display">\[\begin{align*}
-\P(H_2 | H_1) &amp;= \frac{\text{ \# of outcomes where } H_2 \text{ occurs and } H_1 \text{ has occurred}}{\text{ total \# of outcomes where } H_1 \text{ has occurred}} \\
-&amp;= \frac{|\{HH\}|}{|\{HH, HT\}|} \\
-&amp;= \frac{1}{2} \\
-\end{align*}\]</span></li>
+<li class="fragment">The conditional probability <span class="math inline">\(\P(H_2 | H_1)\)</span>, which is the probability of the second flip being heads given that the first flip was heads, is: <span class="math display">\[
+\P(H_2 | H_1) = \frac{\text{ \# of outcomes where } H_2 \text{ occurs and } H_1 \text{ has occurred}}{\text{ total \# of outcomes where } H_1 \text{ has occurred}} = \frac{|\{HH\}|}{|\{HH, HT\}|} = \frac{1}{2}
+\]</span></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-</div>
 <div class="fragment">
 <p>The multiplication rule helps us calculate the probability of multiple events happening, as long as we know how one event affects the other (i.e., the conditional probability).</p>
 </div>
@@ -392,10 +386,10 @@ Joseph Rudoler
 <section id="problem-drawing-cards" class="slide level2">
 <h2>Problem: Drawing Cards</h2>
 <p>Consider a deck of cards (52 cards total, 13 of each suit). I might ask you, “What is the probability of drawing a club on the first draw and a club on the second draw? (Assuming you do not replace the first card.)”</p>
-<div id="6aef992a" class="cell" data-execution_count="2">
+<div id="884587bc" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
-<div id="FUBDYjgPuwjl" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
-#FUBDYjgPuwjl {
+<div id="PlFQnJQqNBJC" data-shufflequestions="False" data-shuffleanswers="True" data-preserveresponses="false" data-numquestions="1000000" data-maxwidth="600" style="border-radius: 10px; text-align: left"><style>
+#PlFQnJQqNBJC {
    --jq-multiple-choice-bg: #6f78ffff;
    --jq-mc-button-bg: #fafafa;
    --jq-mc-button-border: #e0e0e0e0;
@@ -616,7 +610,7 @@ Joseph Rudoler
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/javascript">
-var questionsFUBDYjgPuwjl=[{"question": "What is the conditional probability of drawing a club on the second draw given that the first card drawn was a club?", "type": "multiple_choice", "answers": [{"answer": "1/52", "correct": false}, {"answer": "1/4", "correct": false}, {"answer": "12/51", "correct": true}, {"answer": "13/52", "correct": false}]}, {"question": "What is the probability of drawing a club on the first draw and a club on the second draw? (Assuming you do not replace the first card.)", "type": "numeric", "precision": 4, "answers": [{"type": "range", "range": [0.055, 0.062], "correct": true, "feedback": "Correct! The probability is 13/52 * 12/51 = 1/4 * 12/51 = .0588"}, {"type": "default", "feedback": "Incorrect. Consider the multiplication rule!"}]}];
+var questionsPlFQnJQqNBJC=[{"question": "What is the conditional probability of drawing a club on the second draw given that the first card drawn was a club?", "type": "multiple_choice", "answers": [{"answer": "1/52", "correct": false}, {"answer": "1/4", "correct": false}, {"answer": "12/51", "correct": true}, {"answer": "13/52", "correct": false}]}, {"question": "What is the probability of drawing a club on the first draw and a club on the second draw? (Assuming you do not replace the first card.)", "type": "numeric", "precision": 4, "answers": [{"type": "range", "range": [0.055, 0.062], "correct": true, "feedback": "Correct! The probability is 13/52 * 12/51 = 1/4 * 12/51 = .0588"}, {"type": "default", "feedback": "Incorrect. Consider the multiplication rule!"}]}];
 
 if (typeof Question === 'undefined') {
 // Make a random ID
@@ -1679,8 +1673,8 @@ function make_string(qa, outerqDiv, qDiv, aDiv, id) {
  * Ensures show_questions is called after the container div is in the DOM.
  */
 function try_show() {
-  if (document.getElementById("FUBDYjgPuwjl")) {
-    show_questions(questionsFUBDYjgPuwjl, FUBDYjgPuwjl);
+  if (document.getElementById("PlFQnJQqNBJC")) {
+    show_questions(questionsPlFQnJQqNBJC, PlFQnJQqNBJC);
   } else {
     setTimeout(try_show, 200);
   }
@@ -1711,14 +1705,15 @@ function try_show() {
 <p>This means that for independent events, the multiplication rule simplifies to:<br>
 <span class="math display">\[\P(A \cap B) = \P(A) \cdot \P(B)\]</span></p>
 </div>
-<div class="fragment">
+</section>
+<section id="independence-example" class="slide level2">
+<h2>Independence example</h2>
 <p>Our coin flip example illustrates this nicely.</p>
 <ul>
 <li class="fragment">If we flip a fair coin twice, the outcome of the first flip does not affect the outcome of the second flip.</li>
 <li class="fragment">Therefore, the two events (the first flip being heads and the second flip being heads) are independent.</li>
 </ul>
 <p>So the probability of both flips being heads is simply</p>
-</div>
 <div class="fragment">
 <p><span class="math display">\[\P(H_1 \cap H_2) = \P(H_1) \cdot \P(H_2) = \frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}\]</span></p>
 </div>
@@ -1732,7 +1727,9 @@ function try_show() {
 <li class="fragment">The probability of getting a head on the first flip is <span class="math inline">\(\frac{1}{2}\)</span>, and the probability of getting tails on the 4 other flips is also <span class="math inline">\(\frac{1}{2}\)</span> each.</li>
 <li class="fragment">Because the flips are independent, we can multiply these probabilities together to get the probability of this specific sequence of flips: <span class="math display">\[\P(H_1 \cap T_2 \cap T_3 \ldots \cap T_{5}) = \frac{1}{2} \cdot \left(\frac{1}{2}\right)^4 = \frac{1}{2^{5}}\]</span></li>
 </ul>
-<div class="fragment">
+</section>
+<section id="complicated-counting-cont." class="slide level2">
+<h2>Complicated counting (cont.)</h2>
 <p>Are we done? As it stands, this is the probability of getting heads on the first flip and tails on all other flips.</p>
 <ul>
 <li class="fragment">But there are many other sequences that would also meet the conditions of getting “exactly one head”
@@ -1741,7 +1738,6 @@ function try_show() {
 </ul></li>
 <li class="fragment">In fact, there are exactly 5 different sequences that would meet the conditions of getting exactly one head in 5 flips. So we need to multiply our previous result by the number of sequences that meet the conditions: <span class="math display">\[\P(\text{exactly one head in 5 flips}) = 5 \cdot \frac{1}{2^{5}} = \frac{5}{32} \approx .16\]</span></li>
 </ul>
-</div>
 </section>
 <section id="counting-outcomes" class="slide level2">
 <h2>Counting Outcomes</h2>
@@ -1760,9 +1756,10 @@ function try_show() {
 \]</span></p>
 <p>It is clear here that there are 5 possible “slots” where we can place a head.</p>
 </div>
-<div class="fragment">
+</section>
+<section id="choosing-2-heads-from-5-flips" class="slide level2">
+<h2>Choosing 2 heads from 5 flips</h2>
 <p>What if we want to know the number of ways to choose 2 flips to be heads out of 5 flips? Naturally the logic above still applies, and the 5 flips we counted above are still all valid placements for one of the two heads. Now we just need to consider the second head.</p>
-</div>
 <div class="fragment">
 <p>Let’s take the first row from above, where the first flip is heads. Given that the first flip is heads, how many ways can we choose a second flip to also be heads? The second flip can be any of the remaining 4 flips, so there are 4 possible choices. <span class="math display">\[
 \begin{align*}
@@ -1773,7 +1770,9 @@ function try_show() {
 \end{align*}
 \]</span></p>
 </div>
-<div class="fragment">
+</section>
+<section id="counting-continued" class="slide level2">
+<h2>Counting continued</h2>
 <p>Now let’s consider the second row, where the second flip is heads. Given that the second flip is heads, how many ways can we choose a first flip to also be heads? The first flip can be any of the remaining 4 flips, so there are again 4 possible choices.</p>
 <p><span class="math display">\[
 \begin{align*}
@@ -1783,7 +1782,6 @@ function try_show() {
 \text{Flip 2 and 5 are heads} &amp;= \{0, 1, 0, 0, 1\}
 \end{align*}
 \]</span></p>
-</div>
 <div class="fragment">
 <p>You would continue this process for the third, fourth, and fifth flips. So for each of the 5 flips, you can choose any of the remaining 4 flips to be heads.</p>
 <p>This gives us a total of <span class="math inline">\(5 \cdot 4 = 20\)</span> ways to choose 2 flips to be heads out of 5 flips.</p>
@@ -1791,13 +1789,14 @@ function try_show() {
 <div class="fragment">
 <p>But wait! We already counted the combination of flips 2 and 1 earlier (just in a different order – where flip 1 was heads first).</p>
 </div>
-<div class="fragment">
+</section>
+<section id="permutations-vs-combinations" class="slide level2">
+<h2>Permutations vs Combinations</h2>
 <p>This illustrates the key distinction between combinations and permutations. A <strong>permutation</strong> is an arrangement of items or events in a specific order.</p>
 <ul>
 <li class="fragment">Every possible combination of heads can be arranged in different ways, leading to different sequences of flips.</li>
 <li class="fragment">If you are only interested in counting combinations, listing out all of the possible arrangements like we did above leads to double counting.</li>
 </ul>
-</div>
 <div class="fragment">
 <p>Counting all of the possible permutations of a sequence is straightforward. Using the logic above, you just assign “slots” in a sequence to each of the items you are arranging.</p>
 </div>
@@ -1806,12 +1805,13 @@ function try_show() {
 n! = n \cdot (n-1) \cdot (n-2) \cdots 2 \cdot 1
 \]</span></p>
 </div>
-<div class="fragment">
+</section>
+<section id="combination-formula" class="slide level2">
+<h2>Combination formula</h2>
 <p>Now, if we want to count combinations instead of permutations, we start with the number of permutations and then discount to account for the fact that the order does not matter.</p>
 <p>Namely, the number of combinations of <span class="math inline">\(k\)</span> items from a set of <span class="math inline">\(n\)</span> items is given by the formula: <span class="math display">\[
 \binom{n}{k} = \frac{n!}{k! \cdot (n-k)!}
 \]</span></p>
-</div>
 <div class="fragment">
 <p>This formula:</p>
 <ul>
@@ -1820,11 +1820,12 @@ n! = n \cdot (n-1) \cdot (n-2) \cdots 2 \cdot 1
 <li class="fragment">divides by the number of ways to arrange the remaining <span class="math inline">\(n-k\)</span> items (which is <span class="math inline">\((n-k)!\)</span>).</li>
 </ul>
 </div>
-<div class="fragment">
+</section>
+<section id="combination-example" class="slide level2">
+<h2>Combination example</h2>
 <p>In our example, we have <span class="math inline">\(n = 5\)</span> (the number of flips) and <span class="math inline">\(k = 2\)</span> (the number of heads). So the number of combinations of 2 heads from 5 flips is: <span class="math display">\[
 \binom{5}{2} = \frac{5!}{2! \cdot (5-2)!} = \frac{5!}{2! \cdot 3!} = \frac{5 \cdot 4 \cdot 3!}{2 \cdot 1 \cdot 3!} = \frac{5 \cdot 4}{2 \cdot 1} = 10
 \]</span></p>
-</div>
 </section>
 <section id="end-of-part-1" class="slide level2">
 <h2>End of Part 1</h2>
@@ -1845,7 +1846,9 @@ f(x) = \begin{cases}
 \]</span> where <span class="math inline">\(x\)</span> is the outcome of the coin flip (0 for heads, 1 for tails).</li>
 </ul>
 </div>
-<div class="fragment">
+</section>
+<section id="probability-functions-are-concise" class="slide level2">
+<h2>Probability functions are concise</h2>
 <div title="Functions map inputs to outputs">
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
@@ -1861,19 +1864,17 @@ f(x) = \begin{cases}
 </div>
 </div>
 </div>
-</div>
-<div class="fragment">
 <p>This might seem a bit redundant because we’re just presenting the same information in a new format.</p>
 <p>But probability functions are much more concise!</p>
-</div>
-<div class="fragment">
+</section>
+<section id="die-roll-example" class="slide level2">
+<h2>Die roll example</h2>
 <p>For example, if we have a die with six sides, we can define a probability function <span class="math inline">\(f\)</span> as follows: <span class="math display">\[
 f(x) = \begin{cases}
     \frac{1}{6} &amp; \text{if } x = 1, 2, 3, 4, 5, 6 \\
     0 &amp; \text{otherwise}
 \end{cases}
 \]</span></p>
-</div>
 <div class="fragment">
 <p>But we can also use the same function to describe the probability of rolling a die with any number of sides. For example, if we have a die with <span class="math inline">\(k\)</span> sides, we can define a probability function <span class="math inline">\(f\)</span> as follows:</p>
 <p><span class="math display">\[
@@ -1882,24 +1883,18 @@ f(x) = \begin{cases}
     0 &amp; \text{otherwise}
 \end{cases}
 \]</span> This is much more concise than writing out the probability for each possible outcome, and it allows us to easily generalize to any number of sides.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {python} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a></span>
-<span id="cb1-2"><a></a># Define your function below</span>
-<span id="cb1-3"><a></a>def f(x, k):</span>
-<span id="cb1-4"><a></a>    # your code here</span>
-<span id="cb1-5"><a></a>    pass</span>
+</div>
+</section>
+<section id="python-implementation" class="slide level2">
+<h2>Python implementation</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="kw">def</span> f(x, k):</span>
+<span id="cb1-2"><a></a>    <span class="cf">if</span> <span class="dv">1</span> <span class="op">&lt;=</span> x <span class="op">&lt;=</span> k:</span>
+<span id="cb1-3"><a></a>        <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> k</span>
+<span id="cb1-4"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb1-5"><a></a>        <span class="cf">return</span> <span class="dv">0</span></span>
 <span id="cb1-6"><a></a></span>
-<span id="cb1-7"><a></a># Example usage:</span>
-<span id="cb1-8"><a></a># print(f(1, 5))  # Expected output: 0.2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="fragment">
-<p>Solution:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {python} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a></a></span>
-<span id="cb2-2"><a></a>def f(x, k):</span>
-<span id="cb2-3"><a></a>    if 1 &lt;= x &lt;= k:</span>
-<span id="cb2-4"><a></a>        return 1 / k</span>
-<span id="cb2-5"><a></a>    else:</span>
-<span id="cb2-6"><a></a>        return 0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<span id="cb1-7"><a></a><span class="co"># Example usage:</span></span>
+<span id="cb1-8"><a></a><span class="bu">print</span>(f(<span class="dv">1</span>, <span class="dv">6</span>))  <span class="co"># Expected output: 0.166...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="random-variables" class="slide level2">
 <h2>Random Variables</h2>
@@ -1925,7 +1920,9 @@ f(x) = \P (X = x) = \begin{cases}
     0 &amp; \text{otherwise}
 \end{cases}
 \]</span></p>
-<div class="fragment">
+</section>
+<section id="bernoulli-random-variable" class="slide level2">
+<h2>Bernoulli random variable</h2>
 <div title="Bernoulli random variable">
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -1941,15 +1938,15 @@ f(x) = \P (X = x) = \begin{cases}
 </div>
 </div>
 </div>
-</div>
-<div class="fragment">
+</section>
+<section id="continuous-random-variables" class="slide level2">
+<h2>Continuous random variables</h2>
 <p>As mentioned above, we can also think about random variables with continuous values. For example, let <span class="math inline">\(Y\)</span> be a random variable that represents the height of a person in centimeters. Let’s assume that every person’s height is equally likely to be between 150 cm and 200 cm (this is not true of course). The probability function for <span class="math inline">\(Y\)</span> would be: <span class="math display">\[
 f(y) = \P (Y = y) = \begin{cases}
     \frac{1}{50} &amp; \text{if } 150 \leq y \leq 200 \\
     0 &amp; \text{otherwise}
 \end{cases}
 \]</span></p>
-</div>
 <div class="fragment">
 <div title="Uniform random variable">
 <div class="callout callout-note callout-titled callout-style-default">
@@ -1991,32 +1988,38 @@ f(y) = \P (Y = y) = \begin{cases}
 <h2>Visualizing Random Variables and Distributions</h2>
 <p>Let’s say we have a random variable <span class="math inline">\(X\)</span>, but we don’t know the exact probability function. Instead, we have a set of observed data points <span class="math inline">\(\{x_1, x_2, \ldots, x_n\}\)</span> that we believe are individual realizations of <span class="math inline">\(X\)</span>. In other words, we have a sample of data that we think is representative of the underlying random variable.</p>
 <p>How can we visualize this data to understand the distribution of <span class="math inline">\(X\)</span>? The simplest solution is to just plot how many times each value occurs in the data. We can use a <strong>bar chart</strong> to visualize the counts of each value.</p>
-<div id="a44145c5" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb3-2"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb3-3"><a></a></span>
-<span id="cb3-4"><a></a>x <span class="op">=</span> np.array([<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>])</span>
-<span id="cb3-5"><a></a></span>
-<span id="cb3-6"><a></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
-<span id="cb3-7"><a></a>plt.hist(x, bins<span class="op">=</span>np.arange(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">2.5</span>, <span class="dv">1</span>), density<span class="op">=</span><span class="va">False</span>, align<span class="op">=</span><span class="st">"mid"</span>, rwidth<span class="op">=</span><span class="fl">0.8</span>)</span>
-<span id="cb3-8"><a></a>plt.xticks([<span class="dv">0</span>, <span class="dv">1</span>])</span>
-<span id="cb3-9"><a></a>plt.xlabel(<span class="st">'Value'</span>)</span>
-<span id="cb3-10"><a></a>plt.ylabel(<span class="st">'Frequency'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="48e80460" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-2"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-3"><a></a></span>
+<span id="cb2-4"><a></a>x <span class="op">=</span> np.array([<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>])</span>
+<span id="cb2-5"><a></a></span>
+<span id="cb2-6"><a></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb2-7"><a></a>plt.hist(x, bins<span class="op">=</span>np.arange(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">2.5</span>, <span class="dv">1</span>), density<span class="op">=</span><span class="va">False</span>, align<span class="op">=</span><span class="st">"mid"</span>, rwidth<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb2-8"><a></a>plt.xticks([<span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb2-9"><a></a>plt.xlabel(<span class="st">'Value'</span>)</span>
+<span id="cb2-10"><a></a>plt.ylabel(<span class="st">'Frequency'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <pre><code>Text(0, 0.5, 'Frequency')</code></pre>
 </div>
-
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="lecture-02-slides_files/figure-revealjs/cell-4-output-2.png" width="2093" height="1357"></p>
+</figure>
 </div>
-<img data-src="lecture-02-slides_files/figure-revealjs/cell-4-output-2.png" class="r-stretch"></section>
+</div>
+</div>
+</section>
 <section id="example-dice-rolls" class="slide level2">
 <h2>Example: Dice Rolls</h2>
 <p>Consider a bunch of dice rolls. If we roll a die 100 times, we would expect to see each number appear roughly a similar number of times.</p>
 <p>If we plot the frequencies of each roll, we should see a discrete uniform distribution, where each number from 1 to 6 has approximately the same height. Let’s check it out:</p>
-<div id="9cb54ef4" class="cell" data-execution_count="5">
+<div id="5884b070" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-stdout">
 <pre><code>Total number of dice rolls: 1000</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -2086,19 +2089,19 @@ f(y) = \P (Y = y) = \begin{cases}
 </div>
 </div>
 </div>
-<div class="fragment">
-<p>Now the plot:</p>
-<div id="12164adf" class="cell" data-execution_count="6">
+</section>
+<section id="dice-rolls-plot" class="slide level2">
+<h2>Dice Rolls Plot</h2>
+<div id="07de87c7" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="lecture-02-slides_files/figure-revealjs/cell-7-output-1.png"></p>
+<p><img data-src="lecture-02-slides_files/figure-revealjs/cell-6-output-1.png" width="2157" height="1428"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Notice that when the <span class="math inline">\(y\)</span>-axis represents probabilities, the heights of the bars sum to 1. This is because the total probability of all possible outcomes must equal 1!</p>
-</div>
 </section>
 <section id="histograms-for-continuous-random-variables" class="slide level2">
 <h2>Histograms for Continuous Random Variables</h2>
@@ -2114,17 +2117,22 @@ f(y) = \P (Y = y) = \begin{cases}
 <li class="fragment">if the height of the bar is the proportion, then the area of the bar represents the probability of the random variable falling within that bin.</li>
 </ul>
 </div>
-<div class="fragment">
+</section>
+<section id="airbnb-prices-histogram" class="slide level2">
+<h2>Airbnb prices histogram</h2>
 <p>The prices of Airbnb listings from back in the first lecture are a good example of a continuous random variable. The resolution (cents) is so small that basically every price is unique. So we cannot just count the number of occurrences of each price. Instead, we can create a histogram to visualize the distribution of prices across bins.</p>
-<div id="afaccda7" class="cell" data-execution_count="7">
+<div id="a007a595" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="lecture-02-slides_files/figure-revealjs/cell-8-output-1.png"></p>
+<p><img data-src="lecture-02-slides_files/figure-revealjs/cell-7-output-1.png" width="2157" height="1428"></p>
 </figure>
 </div>
 </div>
 </div>
+</section>
+<section id="area-under-a-probability-distribution" class="slide level2">
+<h2>Area under a probability distribution</h2>
 <div title="Area under a probability distribution">
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
@@ -2138,7 +2146,6 @@ f(y) = \P (Y = y) = \begin{cases}
 <p>At the beginning of this lecture, we said that the probability of all possible outcomes must sum up to 1. This is true for both discrete and continuous random variables. For discrete random variables, the sum of the probabilities of all possible outcomes equals 1. For continuous random variables, the area under the probability density function (PDF) must equal 1.</p>
 <p>For discrete: <span class="math display">\[ \sum_{x} f(x) = 1 \]</span> For continuous: <span class="math display">\[ \int_{-\infty}^{\infty} f(x) \, dx = 1 \]</span></p>
 <p>We can use the same idea to compute the probability of a continuous random variable falling within a certain range. For example, if we want to know the probability that a continuous random variable <span class="math inline">\(X\)</span> falls between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, we can compute the area under the PDF from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span>: <span class="math display">\[ \P(a \leq X \leq b) = \int_{a}^{b} f(x) \, dx \]</span></p>
-</div>
 </div>
 </div>
 </div>
@@ -2157,10 +2164,17 @@ f(y) = \P (Y = y) = \begin{cases}
 <li class="fragment">You might win hundreds of dollars on one game, but this does not mean you will win that much every time you play.</li>
 </ul>
 </div>
-<div class="fragment">
-<p>Instead, <strong>think about what would happen if we repeated the random process many times and took the average.</strong> - Values that occur more frequently will tend to have a larger impact on the average, while values that occur less frequently will have a smaller impact. - For example, at a casino roulette table perhaps you place a bet that has a 10% chance of winning. You might bet $1 and win $10 ($9 net profit) on one game, but if you lose $1 on the next 9 games you’re not making money in the long run. Even though $9 profit sounds great, the fact that it happens so infrequently (and you lose $1 90% of the time) means that your average profit is actually zero.</p>
-</div>
-<div class="fragment">
+</section>
+<section id="thinking-about-averages" class="slide level2">
+<h2>Thinking about averages</h2>
+<p>Instead, <strong>think about what would happen if we repeated the random process many times and took the average.</strong></p>
+<ul>
+<li class="fragment">Values that occur more frequently will tend to have a larger impact on the average, while values that occur less frequently will have a smaller impact.</li>
+<li class="fragment">For example, at a casino roulette table perhaps you place a bet that has a 10% chance of winning. You might bet $1 and win $10 ($9 net profit) on one game, but if you lose $1 on the next 9 games you’re not making money in the long run. Even though $9 profit sounds great, the fact that it happens so infrequently (and you lose $1 90% of the time) means that your average profit is actually zero.</li>
+</ul>
+</section>
+<section id="gambling-warning" class="slide level2">
+<h2>Gambling warning</h2>
 <div title="Gambling warning: the house always wins">
 <div class="callout callout-warning callout-titled callout-style-default">
 <div class="callout-body">
@@ -2177,7 +2191,6 @@ f(y) = \P (Y = y) = \begin{cases}
 </div>
 </div>
 </div>
-</div>
 </section>
 <section id="expectation-formal-definition" class="slide level2">
 <h2>Expectation (formal definition)</h2>
@@ -2187,9 +2200,10 @@ f(y) = \P (Y = y) = \begin{cases}
 \]</span> where <span class="math inline">\(f(x)\)</span> is the probability function of <span class="math inline">\(X\)</span>. For continuous random variables, the sum is replaced with an integral: <span class="math display">\[
 \mathbb{E}[X] = \int_{-\infty}^{\infty} x \cdot f(x) \, dx
 \]</span></p>
-<div class="fragment">
+</section>
+<section id="expectation-as-weighted-average" class="slide level2">
+<h2>Expectation as weighted average</h2>
 <p>The way to think about this is that the expectation is a weighted average of all possible values of <span class="math inline">\(X\)</span>, where the weights are the probabilities of each value.</p>
-</div>
 <div class="fragment">
 <p>So in our roulette example, you can either lose $1 (with 90% probability) or win $9 (with 10% probability). The expectation would be: <span class="math display">\[
 \begin{align*}
@@ -2200,7 +2214,9 @@ f(y) = \P (Y = y) = \begin{cases}
 \end{align*}
 \]</span></p>
 </div>
-<div class="fragment">
+</section>
+<section id="sample-mean" class="slide level2">
+<h2>Sample mean</h2>
 <p>This is also the same as what you get if you just take the average of the outcomes. Say we play roulette 10 times, and we win $10 on one game and lose $1 on the other 9 games. The average outcome is: <span class="math display">\[
 \begin{align*}
 \frac{1}{10} \left( -1 \cdot 9 + 9 \cdot 1 \right) &amp;= -1 \cdot 0.9 + 9 \cdot 0.1 \\
@@ -2208,7 +2224,6 @@ f(y) = \P (Y = y) = \begin{cases}
 &amp;= 0
 \end{align*}
 \]</span></p>
-</div>
 <div class="fragment">
 <p>So for a finite dataset, or set of outcomes, we can estimate the expected value by taking the average of the outcomes. This is often written as <span class="math inline">\(\bar{X}\)</span>, and referred to as the sample mean. <span class="math display">\[
 \mathbb{E}[X] \approx \bar{X} = \frac{1}{n} \sum_{i=1}^{n} x_i
@@ -2224,13 +2239,16 @@ f(y) = \P (Y = y) = \begin{cases}
 </div>
 <div class="fragment">
 <p>Of course, the outcome of each game is not zero. Sometimes you win, sometimes you lose, and the amount you win or lose changes drastically depending on how much you bet.</p>
-<div id="69ab7544" class="cell" data-execution_count="8">
+</div>
+</section>
+<section id="roulette-winnings-visualization" class="slide level2">
+<h2>Roulette winnings visualization</h2>
+<div id="1d830a9b" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="lecture-02-slides_files/figure-revealjs/cell-9-output-1.png"></p>
+<p><img data-src="lecture-02-slides_files/figure-revealjs/cell-8-output-1.png" width="2655" height="1659"></p>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -2248,57 +2266,37 @@ f(y) = \P (Y = y) = \begin{cases}
 <div class="fragment">
 <p>We need a statistic that captures the typical <em>distance</em> between the values of the random variable and the average value.</p>
 </div>
-<div class="fragment">
-<div title="Why distance from the average?">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Why distance from the average?</strong></p>
-</div>
-<div class="callout-content">
-<p>Let’s imagine for a moment that there was a casino (a very poorly run casino) that let you place bets that win no matter what – the only question is how much you win. Let’s take an example where the payouts still differ by $10: you get $5 if you “lose” and $15 if you “win”.</p>
-<p>In this case, the expected value is: <span class="math display">\[
-\mathbb{E}[X] = \sum_{x
-} x \cdot f(x) = 5 \cdot 0.9 + 15 \cdot 0.1 = 4.5 + 1.5 = 6
-\]</span> So you can expect to win $6 per game on average.</p>
-<p>The amount that the winnings vary, though is exactly the same as the original roulette game. How can we replicate this notion mathematically?</p>
-<p>The answer is simple: we subtract the average from each value of <span class="math inline">\(X\)</span>: <span class="math display">\[X' = X - \mathbb{E}[X]\]</span> This gives us a new random variable <span class="math inline">\(X'\)</span> that represents the distance from the average. Notice that this new random variable has an average of zero, just like the original roulette game.</p>
-<p><span class="math display">\[\mathbb{E}[X'] = \sum_{x} (x - \mathbb{E}[X]) \cdot f(x) = ((5-6) \cdot 0.9 + (15-6) \cdot 0.1 = (-1) \cdot 0.9 + (9) \cdot 0.1 = -0.9 + 0.9 = 0\]</span></p>
-<p>or more generally: <span class="math display">\[\mathbb{E}[X'] = \mathbb{E}[X - \mathbb{E}[X]] = \mathbb{E}[X] - \mathbb{E}[X] = 0\]</span></p>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
+</section>
+<section id="computing-distance-from-average" class="slide level2">
+<h2>Computing distance from average</h2>
 <p>So let’s compute exactly that - the distance from the average. The formula for distance between two vectors <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> is: <span class="math display">\[
 d^2 = \sum_{i} (x_i - y_i)^2
 \]</span> where <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> are the elements of the two vectors.</p>
 <ul>
 <li class="fragment">This is like the Pythagorean Theorem for computing the length of athe hypotenuse of a triange (<span class="math inline">\(a^2 + b^2 = c^2\)</span>).</li>
 </ul>
-</div>
 <div class="fragment">
 <p>In our case, we want to compute the distance between the values of the random variable <span class="math inline">\(X\)</span> and the average value <span class="math inline">\(\mathbb{E}[X]\)</span>. <span class="math display">\[
 d^2 = \sum_x (x - \mathbb{E}[X])^2
 \]</span></p>
+</div>
+</section>
+<section id="average-distance" class="slide level2">
+<h2>Average distance</h2>
 <p>Now we’re getting somewhere! However, this is adding up all of the squared distances – that means that the more values we have, the larger the distance will be.</p>
 <p>This is not quite right – instead we want to compute the average distance from the mean in order to get a sense of how spread out the values <em>typically</em> are.</p>
-</div>
 <div class="fragment">
 <p>So we need to divide by the number of values: <span class="math display">\[
 d^2_\text{avg} = \frac{1}{n} \sum_x (x - \mathbb{E}[X])^2
 \]</span></p>
 <p>Something should feel familiar about this expression. Recall that the average is related to the expectation.</p>
 </div>
-<div class="fragment">
+</section>
+<section id="variance-formula" class="slide level2">
+<h2>Variance formula</h2>
 <p>If we replace the average with the expectation, we get the formula for the <strong>variance</strong> of a random variable <span class="math inline">\(X\)</span>: <span class="math display">\[
 \text{Var}(X) = \sigma^2(X) = \mathbb{E}[(X - \mathbb{E}[X])^2] = \sum_x (x - \mathbb{E}[X])^2 \cdot f(x)
 \]</span></p>
-</div>
 <div class="fragment">
 <p>The variance tells us how spread out the values of a random variable are around the average.</p>
 <ul>
@@ -2306,9 +2304,10 @@ d^2_\text{avg} = \frac{1}{n} \sum_x (x - \mathbb{E}[X])^2
 <li class="fragment">a smaller variance means that the values are closer to the average.</li>
 </ul>
 </div>
-<div class="fragment">
+</section>
+<section id="standard-deviation" class="slide level2">
+<h2>Standard deviation</h2>
 <p>The variance is a useful statistic, but it is not in the same units as the original random variable. For example, if <span class="math inline">\(X\)</span> represents the amount of money you win or lose in dollars, then the variance is in dollars squared. This can make it difficult to interpret.</p>
-</div>
 <div class="fragment">
 <p>So we often take the square root of the variance to get the <strong>standard deviation</strong>: <span class="math display">\[
 \text{SD}(X) = \sigma(X) = \sqrt{\text{Var}(X)} = \sqrt{\mathbb{E}[(X - \mathbb{E}[X])^2]}
@@ -2319,7 +2318,9 @@ d^2_\text{avg} = \frac{1}{n} \sum_x (x - \mathbb{E}[X])^2
 \hat{\sigma}(X) = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (x_i - \bar{X})^2}
 \]</span></p>
 </div>
-<div class="fragment">
+</section>
+<section id="sample-variance-vs.-population-variance" class="slide level2">
+<h2>Sample variance vs.&nbsp;population variance</h2>
 <div title="Sample variance vs. population variance">
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -2333,10 +2334,7 @@ d^2_\text{avg} = \frac{1}{n} \sum_x (x - \mathbb{E}[X])^2
 <p>Technically, the formula above is an imperfect estimate of the population standard deviation. It’s in general a little bit too small, because the sample mean <span class="math inline">\(\bar{X}\)</span> does not perfectly represent the population mean <span class="math inline">\(\mathbb{E}[X]\)</span>. We can correct for this by dividing by <span class="math inline">\(n-1\)</span> instead of <span class="math inline">\(n\)</span>: <span class="math display">\[
 \hat{\sigma}(X) = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{X})^2}
 \]</span> This is called the <strong>sample standard deviation</strong>.</p>
-<p>Why is the initial estimate too small? In a small dataset, the sample mean “overfits” the data, meaning it is closer to the individual data points than the true population mean. Let’s think about this in terms of coin flips. If we flip a coin once, the sample mean is either <span class="math inline">\(\hat{X}=0\)</span> or 1, depending on whether we got heads or tails. But the true population mean is <span class="math inline">\(\mathbb{E}[X]=\frac{1}{2}\)</span>. If we compute the standard deviation using the original formula, the distance from the sample mean is exactly 0! So the standard deviation is also 0 (either <span class="math inline">\((1-1)^2\)</span> or <span class="math inline">\((0-0)^2\)</span>).</p>
-<p>By contrast, the true (population) standard deviation is <span class="math inline">\(\sigma(X) = \sqrt{\mathbb{E}[(X - \mathbb{E}[X])^2]} = \sqrt{\frac{1}{4}} = \frac{1}{2}\)</span>, which is larger than the estimate using the sample mean.</p>
-<p>This <strong>bias</strong> in computing the standard deviation gets smaller as the sample size <span class="math inline">\(n\)</span> increases, so for large datasets the difference is negligible. In smaller datasets, though, it is important to use the <span class="math inline">\(n-1\)</span> correction to get a more accurate estimate of the population standard deviation.</p>
-</div>
+<p>Why is the initial estimate too small? In a small dataset, the sample mean “overfits” the data, meaning it is closer to the individual data points than the true population mean.</p>
 </div>
 </div>
 </div>
@@ -2345,21 +2343,18 @@ d^2_\text{avg} = \frac{1}{n} \sum_x (x - \mathbb{E}[X])^2
 <section id="common-probability-distributions" class="slide level2">
 <h2>Common probability distributions</h2>
 <p>Certain probability distributions are very common, and their corresponding probability functions are well-known. It is not necessary to memorize these distributions, but it is useful to be familiar with them and their properties.</p>
-<!-- Table of common probability distributions: -->
 <table class="caption-top">
 <colgroup>
+<col style="width: 29%">
+<col style="width: 12%">
+<col style="width: 25%">
+<col style="width: 12%">
 <col style="width: 20%">
-<col style="width: 8%">
-<col style="width: 31%">
-<col style="width: 17%">
-<col style="width: 8%">
-<col style="width: 14%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Distribution</th>
 <th>Type</th>
-<th>Probability Function</th>
 <th>Parameters</th>
 <th>Mean</th>
 <th>Variance</th>
@@ -2369,7 +2364,6 @@ d^2_\text{avg} = \frac{1}{n} \sum_x (x - \mathbb{E}[X])^2
 <tr class="odd">
 <td>Bernoulli</td>
 <td>Discrete</td>
-<td><span class="math inline">\(f(x) = p^x (1-p)^{1-x}\)</span></td>
 <td><span class="math inline">\(p \in [0, 1]\)</span></td>
 <td><span class="math inline">\(p\)</span></td>
 <td><span class="math inline">\(p(1-p)\)</span></td>
@@ -2377,7 +2371,6 @@ d^2_\text{avg} = \frac{1}{n} \sum_x (x - \mathbb{E}[X])^2
 <tr class="even">
 <td>Binomial</td>
 <td>Discrete</td>
-<td><span class="math inline">\(f(x) = \binom{n}{x} p^x (1-p)^{n-x}\)</span></td>
 <td><span class="math inline">\(n \in \mathbb{N}, p \in [0, 1]\)</span></td>
 <td><span class="math inline">\(np\)</span></td>
 <td><span class="math inline">\(np(1-p)\)</span></td>
@@ -2385,7 +2378,6 @@ d^2_\text{avg} = \frac{1}{n} \sum_x (x - \mathbb{E}[X])^2
 <tr class="odd">
 <td>Poisson</td>
 <td>Discrete</td>
-<td><span class="math inline">\(f(x) = \frac{\lambda^x e^{-\lambda}}{x!}\)</span></td>
 <td><span class="math inline">\(\lambda &gt; 0\)</span></td>
 <td><span class="math inline">\(\lambda\)</span></td>
 <td><span class="math inline">\(\lambda\)</span></td>
@@ -2393,7 +2385,6 @@ d^2_\text{avg} = \frac{1}{n} \sum_x (x - \mathbb{E}[X])^2
 <tr class="even">
 <td>Uniform</td>
 <td>Continuous</td>
-<td><span class="math inline">\(f(x) = \frac{1}{b-a}\)</span></td>
 <td><span class="math inline">\(a &lt; b\)</span></td>
 <td><span class="math inline">\(\frac{a+b}{2}\)</span></td>
 <td><span class="math inline">\(\frac{(b-a)^2}{12}\)</span></td>
@@ -2401,7 +2392,6 @@ d^2_\text{avg} = \frac{1}{n} \sum_x (x - \mathbb{E}[X])^2
 <tr class="odd">
 <td>Normal</td>
 <td>Continuous</td>
-<td><span class="math inline">\(f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}\)</span></td>
 <td><span class="math inline">\(\mu \in \mathbb{R}, \sigma &gt; 0\)</span></td>
 <td><span class="math inline">\(\mu\)</span></td>
 <td><span class="math inline">\(\sigma^2\)</span></td>
@@ -2409,16 +2399,25 @@ d^2_\text{avg} = \frac{1}{n} \sum_x (x - \mathbb{E}[X])^2
 <tr class="even">
 <td>Exponential</td>
 <td>Continuous</td>
-<td><span class="math inline">\(f(x) = \lambda e^{-\lambda x}\)</span></td>
 <td><span class="math inline">\(\lambda &gt; 0\)</span></td>
 <td><span class="math inline">\(\frac{1}{\lambda}\)</span></td>
 <td><span class="math inline">\(\frac{1}{\lambda^2}\)</span></td>
 </tr>
 </tbody>
 </table>
-<p>The plots below show the probability functions for each of these distributions.</p>
-
-<img data-src="lecture-02-slides_files/figure-revealjs/cell-10-output-1.png" class="r-stretch"></section>
+</section>
+<section id="visualizing-distributions" class="slide level2">
+<h2>Visualizing distributions</h2>
+<div id="f73b4fde" class="cell" data-execution_count="8">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="lecture-02-slides_files/figure-revealjs/cell-9-output-1.png" width="3552" height="3552"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
 <section id="summary" class="slide level2">
 <h2>Summary</h2>
 <p>This lecture introduced many important concepts from probability theory that will be useful throughout the course. Probability gives us a mathematical language and toolkit for reasoning about uncertainty and randomness in data, by thinking about possible outcomes and their likelihoods.</p>

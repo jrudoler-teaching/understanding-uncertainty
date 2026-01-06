@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.7.31">
 
   <meta name="author" content="Joseph Rudoler">
-  <meta name="dcterms.date" content="2025-07-31">
+  <meta name="dcterms.date" content="2026-01-06">
   <title>Understanding Uncertainty – Lecture 01: Programming Basics, Data Structures, and Data Manipulation</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -97,6 +97,7 @@
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-f563837468303362081e247dddd440d0.css">
+  <link rel="stylesheet" href="custom.css">
   <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-C192WMR427"></script>
 
   <script type="text/javascript">
@@ -219,10 +220,10 @@ Joseph Rudoler
 </div>
 </div>
 
-  <p class="date">2025-07-31</p>
+  <p class="date">2026-01-06</p>
 </section>
-<section class="slide level2">
-
+<section id="overview" class="slide level2">
+<h2>Overview</h2>
 <p>This lecture will be, intentionally, a bit of a whirlwind. That’s because with the advent of large language models (LLMs) like ChatGPT, Claude, Gemini, etc. knowing how to program in specific languages like Python is becoming less important. You don’t need that much practice or to focus on the syntax of a specific language.</p>
 <p>Instead, the important thing is to understand the core concepts involved in programming, which are largely universal across languages. This high-level understanding will allow you to use LLMs effectively to write code in any language, including Python. If you don’t understand the concepts, you won’t be able to identify when the LLM is making mistakes or producing suboptimal code.</p>
 </section>
@@ -373,7 +374,7 @@ Joseph Rudoler
 <section id="implicit-type-conversions" class="slide level2">
 <h2>Implicit Type Conversions</h2>
 <p>There are also some implicit type conversions that happen automatically in Python, such as when you perform arithmetic operations between integers and floats. For example:</p>
-<div id="00159f37" class="cell" data-execution_count="2">
+<div id="957fbd0e" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>x <span class="op">=</span> <span class="dv">5</span>        <span class="co"># Integer</span></span>
 <span id="cb2-2"><a></a>y <span class="op">=</span> <span class="fl">2.0</span>      <span class="co"># Float</span></span>
 <span id="cb2-3"><a></a>result <span class="op">=</span> x <span class="op">+</span> y  <span class="co"># Implicit conversion to float</span></span>
@@ -394,17 +395,20 @@ Joseph Rudoler
 </ul></li>
 </ul>
 <p>In Python, you can create a list using square brackets <code>[]</code>. For example:</p>
-<div id="1661badc" class="cell">
+<div id="ff1ede12" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>my_list <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="st">'apple'</span>, <span class="st">'banana'</span>]</span>
 <span id="cb4-2"><a></a><span class="bu">print</span>(my_list[<span class="dv">0</span>]) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1</code></pre>
 </div>
 </div>
+</section>
+<section id="list-indexing" class="slide level2">
+<h2>List Indexing</h2>
 <p>You can access items in a list using their index (a number specifying their position). In Python, <strong>indexing starts at 0</strong>, so <code>my_list[0]</code> refers to the first item in the list.</p>
 <p>Indexing also works with negative numbers, which count from the end of the list. For example, <code>my_list[-1]</code> refers to the last item in the list.</p>
 <p>The syntax for retrieving indexes is <code>my_list[start:end:step]</code>, where <code>start</code> is the index to start from, <code>end</code> is the index to stop before, and <code>step</code> is the interval between items. If you omit <code>start</code>, it defaults to 0; if you omit <code>end</code>, it defaults to the end of the list; and if you omit <code>step</code>, it defaults to 1.</p>
-<div id="2d99f152" class="cell" data-execution_count="4">
+<div id="2e7a4a89" class="cell" data-execution_count="4">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="bu">print</span>(my_list[:<span class="dv">3</span>]) <span class="co"># first three elements</span></span>
@@ -419,8 +423,11 @@ Joseph Rudoler
 ['banana', 'apple', 3, 2, 1]</code></pre>
 </div>
 </div>
+</section>
+<section id="modifying-lists" class="slide level2">
+<h2>Modifying Lists</h2>
 <p>You can also modify lists by adding or removing items. For example:</p>
-<div id="b55abc47" class="cell" data-execution_count="5">
+<div id="42db7267" class="cell" data-execution_count="5">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a>my_list.append(<span class="st">'orange'</span>)  <span class="co"># Adds 'orange' to the end of the list</span></span>
@@ -453,8 +460,11 @@ Joseph Rudoler
 </div>
 </div>
 </div>
+</section>
+<section id="creating-arrays" class="slide level2">
+<h2>Creating Arrays</h2>
 <p>You can create a NumPy array using the <code>numpy.array()</code> command. For example:</p>
-<div id="51ec0e37" class="cell" data-execution_count="6">
+<div id="a62c460b" class="cell" data-execution_count="6">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -465,8 +475,11 @@ Joseph Rudoler
 <pre><code>[1 2 3 4 5]</code></pre>
 </div>
 </div>
+</section>
+<section id="array-operations" class="slide level2">
+<h2>Array Operations</h2>
 <p>You can perform mathematical operations on NumPy arrays, and they will be applied element-wise. For example:</p>
-<div id="36a379a8" class="cell" data-execution_count="7">
+<div id="db466430" class="cell" data-execution_count="7">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>my_array_squared <span class="op">=</span> my_array <span class="op">**</span> <span class="dv">2</span></span>
@@ -476,8 +489,11 @@ Joseph Rudoler
 <pre><code>[ 1  4  9 16 25]</code></pre>
 </div>
 </div>
+</section>
+<section id="array-type-enforcement" class="slide level2">
+<h2>Array Type Enforcement</h2>
 <p>You can’t have mixed data types in a NumPy array, so if you try to create an array with both numbers and strings, it will convert everything to strings:</p>
-<div id="ea2c39e1" class="cell" data-execution_count="8">
+<div id="cff67329" class="cell" data-execution_count="8">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>mixed_array <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="st">'two'</span>, <span class="fl">3.0</span>])</span>
@@ -488,9 +504,9 @@ Joseph Rudoler
 </div>
 </div>
 <p>Typecasting works in NumPy arrays as well via the <code>astype()</code> method.</p>
-<div id="68e6e980" class="cell" data-execution_count="19">
+<div id="2b828ec5" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a>np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="fl">4.1</span>], dtype<span class="op">=</span><span class="bu">float</span>).astype(<span class="bu">int</span>)  <span class="co"># Convert float array to int array</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="19">
+<div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>array([1, 2, 3, 4])</code></pre>
 </div>
 </div>
@@ -499,7 +515,7 @@ Joseph Rudoler
 <h2>Advanced indexing</h2>
 <p>NumPy arrays support complex indexing, allowing you to access and manipulate specific elements or subarrays efficiently.</p>
 <p>You can actually use arrays to index other arrays, which is a powerful feature. This allows you to select specific elements based on conditions or patterns.</p>
-<div id="541ea89f" class="cell" data-execution_count="9">
+<div id="507a8a7c" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a>my_array <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">11</span>)</span>
 <span id="cb19-2"><a></a><span class="bu">print</span>(my_array) </span>
 <span id="cb19-3"><a></a><span class="co"># grab specific elements</span></span>
@@ -510,8 +526,11 @@ Joseph Rudoler
 [2 2 4 5]</code></pre>
 </div>
 </div>
+</section>
+<section id="boolean-indexing" class="slide level2">
+<h2>Boolean indexing</h2>
 <p>One important feature is boolean indexing, where you can use a boolean array to select elements from another array. This lets you filter data based on conditions. For example:</p>
-<div id="f50cbc95" class="cell" data-execution_count="10">
+<div id="e16f7e73" class="cell" data-execution_count="11">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a>my_array <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">11</span>)  <span class="co"># Creates a NumPy array with values from 1 to 10</span></span>
@@ -534,23 +553,29 @@ Filtered array: [ 3  4  5  6  7  8  9 10]</code></pre>
 <h2>Dictionaries</h2>
 <p>Sometimes a list or array is not enough. You may want to store data in a way that allows you to access it by a keyword rather than by an index. For example, I might have a list of people and their ages, but I want to be able to look up a person’s age by their name. In this case, I can use a dictionary.</p>
 <p>We can create a dictionary using curly braces <code>{}</code> and separating keys and values with a colon <code>:</code>. Here’s an example:</p>
-<div id="fc0359bb" class="cell" data-execution_count="11">
+<div id="818a0356" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a>name_age_dict <span class="op">=</span> {</span>
 <span id="cb23-2"><a></a>    <span class="st">"Alice"</span>: <span class="dv">30</span>,</span>
 <span id="cb23-3"><a></a>    <span class="st">"Bob"</span>: <span class="dv">25</span>,</span>
 <span id="cb23-4"><a></a>    <span class="st">"Charlie"</span>: <span class="dv">35</span></span>
 <span id="cb23-5"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="accessing-dictionary-values" class="slide level2">
+<h2>Accessing Dictionary Values</h2>
 <p>In order to access a value in a dictionary, we use the key in square brackets <code>[]</code>. Here’s how you can do that:</p>
-<div id="e11c054b" class="cell" data-execution_count="12">
+<div id="4f182172" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a>name_age_dict[<span class="st">"Bob"</span>] <span class="co"># this will print Bob's age</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>25</code></pre>
 </div>
 </div>
+</section>
+<section id="nested-dictionaries" class="slide level2">
+<h2>Nested Dictionaries</h2>
 <p>The “value” in a dictionary can be of any type, including another dictionary or a list. This allows for building up complex data structures that contain named entities and their associated data.</p>
 <p>For example, you might have a dictionary that contains different types of data about a person.</p>
-<div id="b27a0e38" class="cell" data-execution_count="13">
+<div id="c06bb2c6" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a></a>name_age_list_dict <span class="op">=</span> {</span>
 <span id="cb26-2"><a></a>    <span class="st">'Name'</span>: [<span class="st">'Alice'</span>, <span class="st">'Bob'</span>, <span class="st">'Charlie'</span>],</span>
 <span id="cb26-3"><a></a>    <span class="st">'Age'</span>: [<span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">35</span>],</span>
@@ -562,7 +587,7 @@ Filtered array: [ 3  4  5  6  7  8  9 10]</code></pre>
 <p>Most of the time, data scientists work with <em>tabular data</em> (data organized in tables with rows and columns).</p>
 <p>Think of the data you typically see in spreadsheets – rows represent individual records, and columns represent attributes of those records.</p>
 <p>In Python, the most common way to work with tabular data is through the <code>pandas</code> library, which provides a powerful data structure called a DataFrame.</p>
-<div id="fd061ba4" class="cell" data-execution_count="14">
+<div id="ae3f0bb0" class="cell" data-execution_count="15">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -576,7 +601,7 @@ Filtered array: [ 3  4  5  6  7  8  9 10]</code></pre>
 <span id="cb27-9"><a></a>})</span>
 <span id="cb27-10"><a></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="15">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -634,10 +659,13 @@ Filtered array: [ 3  4  5  6  7  8  9 10]</code></pre>
 </div>
 </div>
 </div>
+</section>
+<section id="dataframe-column-types" class="slide level2">
+<h2>DataFrame Column Types</h2>
 <p>One import thing to realize about DataFrames that each column can have a different data type. For example, one column might contain integers, another might contain strings, and yet another might contain floating-point numbers.</p>
 <p>However, all the values in a single column <em>should</em> be of the same type. Intuitively: since columns represent attributes, every value in a column should represent the same kind of information. It wouldn’t make sense if the “city” column of a DataFrame contained both “New York” (a string) and 42 (an integer).</p>
 <p>Note that this rule isn’t necessarily enforced by the DataFrame structure itself, but it’s a good practice to follow. Otherwise, you might run into issues when performing operations on the DataFrame.</p>
-<div id="48a75679" class="cell" data-execution_count="15">
+<div id="ff5da205" class="cell" data-execution_count="16">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a></a>bad_df <span class="op">=</span> pd.DataFrame({</span>
@@ -647,7 +675,7 @@ Filtered array: [ 3  4  5  6  7  8  9 10]</code></pre>
 <span id="cb28-5"><a></a></span>
 <span id="cb28-6"><a></a>bad_df[<span class="st">"Age"</span>] <span class="op">*</span> <span class="dv">3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="15">
+<div class="cell-output cell-output-display" data-execution_count="16">
 <pre><code>0                                   75
 1                                   90
 2    Thirty-FiveThirty-FiveThirty-Five
@@ -687,17 +715,25 @@ Name: Age, dtype: object</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Here’s an example of how to use these statements. Play around with the code below to see how it works. You can change the value of <code>age</code> to see how the output changes based on different conditions.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode numberSource {pyodide} number-lines code-with-copy"><code class="sourceCode"><span id="cb30-1"><a></a>age = #TODO: Set your age here</span>
-<span id="cb30-2"><a></a>if age &lt; 18:</span>
-<span id="cb30-3"><a></a>    print("You are a minor.")</span>
-<span id="cb30-4"><a></a>elif age &lt; 65:</span>
-<span id="cb30-5"><a></a>    print("You are an adult.")</span>
-<span id="cb30-6"><a></a>elif age &gt;= 120:</span>
-<span id="cb30-7"><a></a>    print("You've done your time, haven't you?")</span>
-<span id="cb30-8"><a></a>else:</span>
-<span id="cb30-9"><a></a>    print("You are a senior citizen.")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="if-elif-else-example" class="slide level2">
+<h2>If-elif-else example</h2>
+<p>Here’s an example of how to use these statements:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a></a>age <span class="op">=</span> <span class="dv">25</span>  <span class="co"># Set your age here</span></span>
+<span id="cb30-2"><a></a><span class="cf">if</span> age <span class="op">&lt;</span> <span class="dv">18</span>:</span>
+<span id="cb30-3"><a></a>    <span class="bu">print</span>(<span class="st">"You are a minor."</span>)</span>
+<span id="cb30-4"><a></a><span class="cf">elif</span> age <span class="op">&lt;</span> <span class="dv">65</span>:</span>
+<span id="cb30-5"><a></a>    <span class="bu">print</span>(<span class="st">"You are an adult."</span>)</span>
+<span id="cb30-6"><a></a><span class="cf">elif</span> age <span class="op">&gt;=</span> <span class="dv">120</span>:</span>
+<span id="cb30-7"><a></a>    <span class="bu">print</span>(<span class="st">"You've done your time, haven't you?"</span>)</span>
+<span id="cb30-8"><a></a><span class="cf">else</span>:</span>
+<span id="cb30-9"><a></a>    <span class="bu">print</span>(<span class="st">"You are a senior citizen."</span>)</span>
+<span id="cb30-10"><a></a><span class="co"># Output: "You are an adult."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Note that the <code>elif</code> and <code>else</code> statements are optional. You can have just an <code>if</code> statement, which will execute a block of code if the condition is true and skip it if the condition is false.</p>
+</section>
+<section id="boolean-expressions" class="slide level2">
+<h2>Boolean expressions</h2>
 <div title="Boolean expressions">
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
@@ -759,18 +795,22 @@ Name: Age, dtype: object</code></pre>
 </div>
 </div>
 </div>
-</div>
 </section>
 <section id="loops" class="slide level2">
 <h2>Loops</h2>
 <p>Loops are special constructs that allow you to repeat a block of code multiple times in sequence. They are useful when you want to perform the same operation on multiple items, such as iterating over a list or processing each row in a DataFrame.</p>
 <p>The two most common types of loops are <code>for</code> loops and <code>while</code> loops.</p>
-<h3 id="for-loops">For Loops</h3>
+</section>
+<section id="for-loops" class="slide level2">
+<h2>For Loops</h2>
 <p>A <code>for</code> loop iterates over a sequence (like a list or a string) and executes a block of code for each item in that sequence. Here’s an example:</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a></a>my_list <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>]</span>
 <span id="cb31-2"><a></a><span class="cf">for</span> item <span class="kw">in</span> my_list:</span>
 <span id="cb31-3"><a></a>    <span class="bu">print</span>(item)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This will print each item in <code>my_list</code> one by one.</p>
+</section>
+<section id="useful-python-functions-range-and-enumerate" class="slide level2">
+<h2>Useful Python functions: range() and enumerate()</h2>
 <div title="Useful Python functions: range() and enumerate()">
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -781,7 +821,8 @@ Name: Age, dtype: object</code></pre>
 <p><strong>Useful Python functions: range() and enumerate()</strong></p>
 </div>
 <div class="callout-content">
-<p>In Python, the <code>range()</code> function generates a sequence of numbers, which is often used in <code>for</code> loops. For example, <code>range(5)</code> generates the numbers 0 to 4. The <code>enumerate()</code> function is useful when you need both the index and the value of items in a list. It returns pairs of (index, value) for each item in the list. For example:</p>
+<p>In Python, the <code>range()</code> function generates a sequence of numbers, which is often used in <code>for</code> loops. For example, <code>range(5)</code> generates the numbers 0 to 4.</p>
+<p>The <code>enumerate()</code> function is useful when you need both the index and the value of items in a list. It returns pairs of (index, value) for each item in the list. For example:</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a></a>my_list <span class="op">=</span> [<span class="st">'a'</span>, <span class="st">'b'</span>, <span class="st">'c'</span>]</span>
 <span id="cb32-2"><a></a><span class="cf">for</span> index, value <span class="kw">in</span> <span class="bu">enumerate</span>(my_list):</span>
 <span id="cb32-3"><a></a>    <span class="bu">print</span>(<span class="ss">f"Index: </span><span class="sc">{</span>index<span class="sc">}</span><span class="ss">, Value: </span><span class="sc">{</span>value<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -789,7 +830,9 @@ Name: Age, dtype: object</code></pre>
 </div>
 </div>
 </div>
-<h3 id="while-loops">While Loops</h3>
+</section>
+<section id="while-loops" class="slide level2">
+<h2>While Loops</h2>
 <p>A <code>while</code> loop continues to execute a block of code as long as a specified condition is true. Here’s an example:</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a></a>count <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb33-2"><a></a><span class="cf">while</span> count <span class="op">&lt;</span> <span class="dv">5</span>:</span>
@@ -797,10 +840,14 @@ Name: Age, dtype: object</code></pre>
 <span id="cb33-4"><a></a>    count <span class="op">+=</span> <span class="dv">1</span> <span class="co"># Increment the count</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This will print the numbers 0 to 4, incrementing <code>count</code> by 1 each time until the condition <code>count &lt; 5</code> is no longer true.</p>
 </section>
-<section id="functions-and-functional-programming" class="slide level2 scrollable">
+<section id="functions-and-functional-programming" class="slide level2">
 <h2>Functions and functional programming</h2>
 <p>Functions are reusable blocks of code that perform a specific task. They allow you to organize your code into logical sections, making it easier to read, maintain, and reuse.</p>
-<p>They work like functions in math: you can pass inputs (arguments) to a function, and it will return an output (result). You can define a function in Python using the <code>def</code> keyword, followed by the function name and parentheses containing any parameters. Here’s an example:</p>
+<p>They work like functions in math: you can pass inputs (arguments) to a function, and it will return an output (result).</p>
+<p>You can define a function in Python using the <code>def</code> keyword, followed by the function name and parentheses containing any parameters.</p>
+</section>
+<section id="function-example" class="slide level2">
+<h2>Function example</h2>
 <div class="sourceCode" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a></a><span class="kw">def</span> add_numbers(a, b):</span>
 <span id="cb34-2"><a></a>    <span class="co">"""Adds two numbers and returns the result."""</span></span>
 <span id="cb34-3"><a></a>    <span class="cf">return</span> a <span class="op">+</span> b</span>
@@ -812,11 +859,17 @@ Name: Age, dtype: object</code></pre>
 <span id="cb35-3"><a></a>    <span class="cf">return</span> <span class="ss">f"Hello, </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">!"</span></span>
 <span id="cb35-4"><a></a><span class="bu">print</span>(greet())          <span class="co"># Output: Hello, World!</span></span>
 <span id="cb35-5"><a></a><span class="bu">print</span>(greet(<span class="st">"Alice"</span>))  <span class="co"># Output: Hello, Alice!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="functional-programming" class="slide level2 scrollable">
+<h2>Functional programming</h2>
 <p><strong>Functional programming</strong> is a style of programming that treats computer programs as the evaluation of mathematical functions. It is alternatively called <strong>value-oriented programming</strong><sup>1</sup> because the output of a program is just the value(s) it produces as a function of its inputs.</p>
 <p>Probably the core principle of functional programming is to avoid changing state and mutable data. This means that once a value is created, it should not be changed. Instead, you create new values based on existing ones.</p>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>Technically there is a difference between functional programming and value-oriented programming that programming-language nerds care about, but for our purposes, they are the same thing.</p></li></ol></aside></section>
+<section id="avoiding-side-effects" class="slide level2">
+<h2>Avoiding side effects</h2>
 <p>That means means that functions should not have side effects – they use data passed to them and return a new value without modifying the input data. This makes it easier to reason about code, as you can understand what a function does just by looking at its inputs and outputs.</p>
 <p>For example, consider the following two functions for squaring a number:</p>
-<div id="40b82d51" class="cell" data-execution_count="16">
+<div id="a0da8a55" class="cell" data-execution_count="17">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -841,15 +894,21 @@ Name: Age, dtype: object</code></pre>
 Side Effect: a = [-1  3  5], c = [ 1  9 25]</code></pre>
 </div>
 </div>
+</section>
+<section id="side-effects-cont." class="slide level2">
+<h2>Side effects (cont.)</h2>
 <p>There are somewhat complicated rules about what objects can be modified in place and what cannot (sometimes Python allows it, sometimes it doesn’t), but the general rule is that you should avoid modifying objects in place unless you have a good reason to do so. The main reason is that you might inadvertently change the value of an object that is being used elsewhere in your code, leading to bugs that are hard to track down. Instead, create new objects based on existing ones.</p>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>Technically there is a difference between functional programming and value-oriented programming that programming-language nerds care about, but for our purposes, they are the same thing.</p></li></ol></aside></section>
+</section>
 <section id="object-oriented-programming" class="slide level2">
 <h2>Object-Oriented Programming</h2>
 <p>While you can write programs in Python using just functions, the language is really designed for object-oriented programming (OOP). OOP is a style of programming built around the concept of “objects”, which are specific instances of classes.</p>
-<p>A class is like a template for creating new objects. It defines the properties (attributes) and \ behaviors (methods) that the objects created from the class will have.</p>
+<p>A class is like a template for creating new objects. It defines the properties (attributes) and behaviors (methods) that the objects created from the class will have.</p>
 <p>To define a class in Python, you use the <code>class</code> keyword followed by the class name. Every class should have an <code>__init__</code> method, which is a special method that initializes the object when it is created.</p>
+</section>
+<section id="class-example" class="slide level2">
+<h2>Class example</h2>
 <p>Here’s a simple example of a class:</p>
-<div id="92cd78f8" class="cell" data-execution_count="17">
+<div id="69ef2ccd" class="cell" data-execution_count="18">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a></a><span class="kw">class</span> Date():</span>
@@ -882,41 +941,38 @@ Side Effect: a = [-1  3  5], c = [ 1  9 25]</code></pre>
 False</code></pre>
 </div>
 </div>
+</section>
+<section id="oop-advantages" class="slide level2">
+<h2>OOP advantages</h2>
 <p>Object-oriented programming has a number of advantages, but many of them are really just about organizing code in a way that makes it easier to understand, reuse, and maintain.</p>
 <p>One of the key features of OOP is <strong>inheritance</strong>, which allows you to create new classes based on existing ones. This means you can define a base class with common attributes and methods, and then create subclasses that inherit from it and add or override functionality.</p>
+</section>
+<section id="inheritance-example" class="slide level2">
+<h2>Inheritance example</h2>
 <p>For example, you might inherit from the base class <code>Date</code> to create a subclass <code>HolidayDate</code> that adds specific attributes or methods related to holidays:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode numberSource {pyodide} number-lines code-with-copy"><code class="sourceCode"><span id="cb40-1"><a></a>#| setup: true</span>
-<span id="cb40-2"><a></a>#| exercise: holiday_date</span>
-<span id="cb40-3"><a></a>class Date:</span>
-<span id="cb40-4"><a></a>    def __init__(self, year, month, day):</span>
-<span id="cb40-5"><a></a>        self.year = year</span>
-<span id="cb40-6"><a></a>        self.month = month</span>
-<span id="cb40-7"><a></a>        self.day = day</span>
-<span id="cb40-8"><a></a></span>
-<span id="cb40-9"><a></a>    def __str__(self):</span>
-<span id="cb40-10"><a></a>        return f"{self.year}-{self.month:02d}-{self.day:02d}"</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb41"><pre class="sourceCode numberSource {pyodide} number-lines code-with-copy"><code class="sourceCode"><span id="cb41-1"><a></a>#| exercise: holiday_date</span>
-<span id="cb41-2"><a></a>class HolidayDate(Date):</span>
-<span id="cb41-3"><a></a>    def __init__(self, year, month, day, holiday_name):</span>
-<span id="cb41-4"><a></a>        super().__init__(year, month, day)</span>
-<span id="cb41-5"><a></a>        # TODO: Add a new attribute for the holiday name</span>
-<span id="cb41-6"><a></a></span>
-<span id="cb41-7"><a></a>    def print_holiday(self):</span>
-<span id="cb41-8"><a></a>        # TODO: Print the date and the holiday name</span>
-<span id="cb41-9"><a></a></span>
-<span id="cb41-10"><a></a>channukah = HolidayDate(2025, 12, 7, "Channukah")</span>
-<span id="cb41-11"><a></a>print(channukah)  # Output: 2025-12-07</span>
-<span id="cb41-12"><a></a>channukah.print_holiday()  # Output: Channukah is on 2025-12-07.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="proof solution" data-exercise="holiday_date">
-<p><span class="proof-title"><em>Solution</em>. </span></p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode numberSource {python} number-lines code-with-copy"><code class="sourceCode"><span id="cb42-1"><a></a>class HolidayDate(Date):</span>
-<span id="cb42-2"><a></a>    def __init__(self, year, month, day, holiday_name):</span>
-<span id="cb42-3"><a></a>        super().__init__(year, month, day)</span>
-<span id="cb42-4"><a></a>        self.holiday_name = holiday_name</span>
-<span id="cb42-5"><a></a></span>
-<span id="cb42-6"><a></a>    def print_holiday(self):</span>
-<span id="cb42-7"><a></a>        print(f"{self.holiday_name} is on {self}.")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a></a><span class="kw">class</span> Date:</span>
+<span id="cb40-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, year, month, day):</span>
+<span id="cb40-3"><a></a>        <span class="va">self</span>.year <span class="op">=</span> year</span>
+<span id="cb40-4"><a></a>        <span class="va">self</span>.month <span class="op">=</span> month</span>
+<span id="cb40-5"><a></a>        <span class="va">self</span>.day <span class="op">=</span> day</span>
+<span id="cb40-6"><a></a></span>
+<span id="cb40-7"><a></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
+<span id="cb40-8"><a></a>        <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>year<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>month<span class="sc">:02d}</span><span class="ss">-</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>day<span class="sc">:02d}</span><span class="ss">"</span></span>
+<span id="cb40-9"><a></a></span>
+<span id="cb40-10"><a></a><span class="kw">class</span> HolidayDate(Date):</span>
+<span id="cb40-11"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, year, month, day, holiday_name):</span>
+<span id="cb40-12"><a></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(year, month, day)</span>
+<span id="cb40-13"><a></a>        <span class="va">self</span>.holiday_name <span class="op">=</span> holiday_name  <span class="co"># Add new attribute</span></span>
+<span id="cb40-14"><a></a></span>
+<span id="cb40-15"><a></a>    <span class="kw">def</span> print_holiday(<span class="va">self</span>):</span>
+<span id="cb40-16"><a></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>holiday_name<span class="sc">}</span><span class="ss"> is on </span><span class="sc">{</span><span class="va">self</span><span class="sc">}</span><span class="ss">."</span>)</span>
+<span id="cb40-17"><a></a></span>
+<span id="cb40-18"><a></a>channukah <span class="op">=</span> HolidayDate(<span class="dv">2025</span>, <span class="dv">12</span>, <span class="dv">7</span>, <span class="st">"Channukah"</span>)</span>
+<span id="cb40-19"><a></a><span class="bu">print</span>(channukah)  <span class="co"># Output: 2025-12-07</span></span>
+<span id="cb40-20"><a></a>channukah.print_holiday()  <span class="co"># Output: Channukah is on 2025-12-07.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="oop-in-data-science" class="slide level2">
+<h2>OOP in data science</h2>
 <p>This allows you to create specialized versions of a class without duplicating code, making your codebase cleaner and easier to maintain.</p>
 <p>For the purposes of statistics and data science, classes are mostly useful because they allow you to create custom data structures that can hold both data and methods for manipulating that data. We have already seen this in the context of DataFrames – the <code>pandas</code> library defines a DataFrame class that has methods for manipulating tabular data. By defining and using DataFrame objects, you get access to a wide range of functionality for working with data without having to implement it yourself. For example, you can filter rows, group data, and perform aggregations (like <code>mean</code>, <code>sum</code>, etc.) using methods defined in the DataFrame class.</p>
 </section>

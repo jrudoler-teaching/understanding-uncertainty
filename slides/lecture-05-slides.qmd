@@ -1,0 +1,453 @@
+---
+title: "Lecture 05: Hypothesis Testing"
+author: "Joseph Rudoler"
+institution: "University of Pennsylvania"
+date: "now"
+format: 
+  revealjs:
+    incremental: true
+    smaller: true
+    scrollable: true
+    echo: false
+    chalkboard: true
+    fig-align: center
+    auto-stretch: false
+    css: custom.css
+code-annotations: hover
+execute:
+    warning: false
+---
+
+```{python}
+#| hidden: true
+#| echo: false
+import numpy as np
+import scipy.stats as stats
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+plt.style.use("../style.mplstyle")
+```
+
+## Recap
+
+- All data comes from a **data generating process** (DGP)
+- Statistical models describe the probability distribution of data
+- **LLN**: Sample means converge to true means
+- **CLT**: Sample means become normally distributed
+
+. . .
+
+Today: How to use these ideas to **test claims** about data
+
+## The Role of Inference
+
+Drawing general conclusions (about a population) from specific observations (a sample)
+
+. . .
+
+Now that we have the building blocks, we can start making **statistical inferences**.
+
+## The Burden of Proof
+
+How can we use statistics to "prove" something?
+
+. . .
+
+People often cite data as evidence:
+
+- "Unemployment is lower than 4 years ago"
+- "Player X has the highest scoring average"
+
+. . .
+
+These statements can sound iron-clad, but they often:
+
+- Ignore complexity and uncertainty
+- Cherry-pick supporting data
+- Hide how data was collected/analyzed
+
+## Example: Unemployment Data
+
+A politician claims their policies reduced unemployment.
+
+Evidence: "Unemployment rate is lower than 4 years ago"
+
+## Unemployment: Short View
+
+```{python}
+import datetime
+data = pd.read_csv("../data/unemployment-data-cleaned.csv", parse_dates=["date"])
+wide_data = data.pivot(index="date", columns="series_name", values="value")
+
+fig, ax = plt.subplots(figsize=(10, 5))
+sns.lineplot(data=wide_data, x="date", y="seas-unemployment-all")
+plt.xticks(rotation=45)
+plt.title("US Unemployment Rate Over Time")
+plt.xlabel("Date")
+plt.ylabel("Unemployment Rate (%)")
+plt.xlim(datetime.date(2021, 5, 1), datetime.date(2025, 5, 1))
+plt.ylim(0, 8)
+plt.tight_layout()
+plt.show()
+```
+
+## Unemployment: The Bigger Picture
+
+```{python}
+fig, ax = plt.subplots(figsize=(10, 5))
+sns.lineplot(data=wide_data, x="date", y="seas-unemployment-all", ax=ax)
+ax.fill_betweenx(ax.get_ylim(), datetime.datetime(2021, 5, 1), datetime.datetime(2025, 5, 1),
+                 color="gray", alpha=0.1, label="4 year window")
+ax.axvline(datetime.datetime(2020, 3, 1), color="red", alpha=0.4, linestyle="--", label="COVID-19 Onset")
+ax.set_xlim(datetime.datetime(2000, 1, 1), None)
+ax.set_ylabel("Unemployment Rate (%)")
+ax.set_xlabel("Year")
+ax.legend()
+plt.tight_layout()
+plt.show()
+```
+
+## What the Data Really Shows
+
+The politician's claim is misleading:
+
+- Unemployment **spiked** in 2020 (COVID-19 pandemic)
+- By 2021, it wasn't back to pre-pandemic levels
+- The "decrease" is recovery, not policy success
+
+. . .
+
+**Key lesson**: Always be skeptical about data presented as evidence
+
+## Sources of Uncertainty
+
+1. **Alternative explanations**: External factors (pandemic) vs. claimed cause (policy)
+2. **Sampling variability**: Data is collected from samples, not whole populations
+3. **Cherry-picking**: Different time periods → different conclusions
+
+. . .
+
+How do we know if a change is real or just random fluctuation?
+
+## The Burden of Proof
+
+The person making the claim must provide evidence.
+
+. . .
+
+In statistics, "beyond reasonable doubt" means:
+
+- Alternative explanations are so unlikely
+- A reasonable person would ignore them
+- But this is always a subjective judgment!
+
+## Formalizing Hypotheses
+
+Make claims specific and testable:
+
+. . .
+
+**Null hypothesis ($H_0$)**
+
+- The status quo or baseline assumption
+- Often a statement of "no effect" or "no difference"
+
+. . .
+
+**Alternative hypothesis ($H_1$)**
+
+- The claim we want to test
+- Logical complement of $H_0$ (true when $H_0$ is false)
+
+## The p-value
+
+**Definition**: The probability of observing data at least as extreme as what we observed, *assuming $H_0$ is true*.
+
+. . .
+
+If $p$ is very small:
+
+- Data is unlikely under $H_0$
+- We **reject** $H_0$ in favor of $H_1$
+
+## Visualizing the p-value
+
+```{python}
+x = np.linspace(-4, 4, 1000)
+observed = 2.1
+null_pdf = stats.norm.pdf(x, loc=0, scale=1)
+
+fig, ax = plt.subplots(figsize=(10, 5))
+ax.plot(x, null_pdf, label=r"Normal Distribution under $H_0$", lw=2)
+ax.axvline(observed, color="red", linestyle="--", label=f"Observed: {observed}")
+ax.axvline(-observed, color="red", linestyle="--", label=f"Observed: {-observed}")
+ax.fill_between(x, null_pdf, where=(x >= observed)|(x <= -observed), alpha=0.4, color='red', label='p-value area')
+ax.set_title("p-value = Area Under Curve in Tails")
+ax.set_xlabel("x")
+ax.set_ylabel("Probability Density")
+ax.legend()
+plt.show()
+```
+
+## Statistical Significance
+
+The p-value is compared to a threshold $\alpha$ (your risk tolerance)
+
+. . .
+
+- If $p < \alpha$: result is **statistically significant**
+- If $p \geq \alpha$: result is **not statistically significant**
+
+. . .
+
+Common choice: $\alpha = 0.05$ (5% chance of wrongly rejecting $H_0$)
+
+. . .
+
+**Better practice**: Report the actual p-value, not just "significant" or "not"
+
+## Important Notes
+
+- $H_0$ and $H_1$ must be **mutually exclusive** (one true → other false)
+- $H_0$ and $H_1$ must be **exhaustive** (one must be true)
+
+. . .
+
+Hypothesis testing does NOT provide absolute certainty:
+
+- Failing to reject $H_0$ ≠ $H_0$ is true
+- Rejecting $H_0$ ≠ $H_1$ is definitely true
+
+## Worked Example: The Rigged Coin
+
+Your roommate accuses you of using a rigged coin.
+
+- You always choose tails
+- Result: 3 heads, 7 tails in 10 flips
+
+. . .
+
+Can we test this claim?
+
+## Setting Up the Hypotheses
+
+- **$H_0$ (null)**: The coin is fair ($p \geq 0.5$)
+- **$H_1$ (alternative)**: The coin is rigged toward tails ($p < 0.5$)
+
+. . .
+
+This is a **one-sided test** — we only care if the coin favors tails.
+
+## Simulating the Null Distribution
+
+Strategy: Simulate flipping a fair coin many times, see how often we get results as extreme as observed.
+
+. . .
+
+This gives us a **sampling distribution** under $H_0$.
+
+## Simulation Code
+
+```{python}
+#| echo: true
+#| code-fold: show
+rng = np.random.default_rng(56)
+n_sims = 10000
+n_flips = 10
+prob_heads = 0.5
+proportions = []
+
+for i in range(n_sims):
+    flips = rng.binomial(n=n_flips, p=prob_heads)
+    proportions.append(flips / n_flips)
+
+proportions = np.array(proportions)
+p_value = np.mean(proportions <= 0.3)  # proportion ≤ observed
+print(f"p-value: {p_value:.4f}")
+```
+
+## Visualizing the Result
+
+```{python}
+fig, ax = plt.subplots(figsize=(10, 5))
+sns.histplot(proportions, bins=10, stat="proportion", ax=ax)
+ax.axvline(0.3, color="red", linestyle="--", lw=2, label="Observed: 0.3")
+ax.set_xlabel("Proportion of Heads")
+ax.set_ylabel("Proportion of Simulations")
+ax.set_title("Sampling Distribution Under $H_0$")
+ax.legend()
+plt.show()
+```
+
+## Conclusion
+
+p-value ≈ 0.17 (17%)
+
+. . .
+
+**Interpretation**: Getting 3 heads in 10 flips happens ~17% of the time with a fair coin.
+
+. . .
+
+**Verdict**: Not enough evidence to support the roommate's claim!
+
+## A More Complex Example: NBA MVP
+
+"Shai Gilgeous-Alexander (SGA) is the best scorer in the NBA"
+
+. . .
+
+This is too vague to test! Let's make it specific:
+
+- Focus on **points per game (PPG)**
+- Compare to next-best scorer (Giannis Antetokounmpo)
+
+## Formalizing the Hypothesis
+
+**Assumptions**:
+
+- Each player's scoring follows a distribution with mean $\mu$
+- By CLT, the average PPG is approximately normal
+
+. . .
+
+**Hypotheses**:
+
+- $H_0$: $\mu_{\text{SGA}} \leq \mu_{\text{Giannis}}$
+- $H_1$: $\mu_{\text{SGA}} > \mu_{\text{Giannis}}$
+
+## The Data
+
+```{python}
+sga_df = pd.read_csv("../data/sga-stats-24-25.csv")
+giannis_df = pd.read_csv("../data/giannis-stats-24-25.csv")
+sga_df["player"] = "Shai Gilgeous-Alexander"
+giannis_df["player"] = "Giannis Antetokounmpo"
+compare_df = pd.concat([sga_df, giannis_df], ignore_index=True)
+compare_df = compare_df.replace({"Did Not Dress": np.nan, "Inactive": np.nan, "Did Not Play": np.nan, "": np.nan})
+compare_df.dropna(subset=["PTS"], inplace=True)
+compare_df["PTS"] = compare_df["PTS"].astype(float)
+
+shai_sample_mean = compare_df.query("player == 'Shai Gilgeous-Alexander'")["PTS"].mean()
+shai_sample_std = compare_df.query("player == 'Shai Gilgeous-Alexander'")["PTS"].std()
+giannis_sample_mean = compare_df.query("player == 'Giannis Antetokounmpo'")["PTS"].mean()
+
+print(f"SGA: {shai_sample_mean:.2f} PPG (SD: {shai_sample_std:.2f})")
+print(f"Giannis: {giannis_sample_mean:.2f} PPG")
+```
+
+## Scoring Distributions
+
+```{python}
+fig, ax = plt.subplots(figsize=(10, 5))
+sns.histplot(data=compare_df, x="PTS", hue="player", stat="density", common_norm=False, bins=20, ax=ax)
+ax.axvline(shai_sample_mean, color="blue", linestyle="--", label=f"SGA: {shai_sample_mean:.2f}")
+ax.axvline(giannis_sample_mean, color="orange", linestyle="--", label=f"Giannis: {giannis_sample_mean:.2f}")
+ax.set_title("Distribution of Points Per Game")
+ax.set_xlabel("Points Per Game (PPG)")
+plt.show()
+```
+
+## Using the CLT
+
+Under $H_0$: SGA's true scoring rate = Giannis's observed PPG (30.4)
+
+. . .
+
+**Question**: What's the probability SGA scores ≥32.7 PPG if his true ability is 30.4?
+
+```{python}
+shai_n_games = compare_df.query("player == 'Shai Gilgeous-Alexander'")["PTS"].count()
+p_value_clt = 1 - stats.norm.cdf(x=32.7, loc=30.4, scale=shai_sample_std/np.sqrt(shai_n_games))
+print(f"p-value from CLT: {p_value_clt:.6f}")
+```
+
+## Visualizing the Null Distribution
+
+```{python}
+x = np.linspace(27, 35, 1000)
+null_pdf = stats.norm.pdf(x, loc=30.4, scale=shai_sample_std/np.sqrt(shai_n_games))
+
+fig, ax = plt.subplots(figsize=(10, 5))
+ax.plot(x, null_pdf, label=r"Normal Distribution under $H_0$", lw=2)
+ax.axvline(32.7, color="red", linestyle="--", lw=2, label="Observed PPG: 32.7")
+ax.fill_between(x, null_pdf, where=(x >= 32.7), alpha=0.4, color='red', label="p-value area")
+ax.set_title("PPG Distribution Under Null Hypothesis")
+ax.set_xlabel("Points Per Game (PPG)")
+ax.set_ylabel("Probability Density")
+ax.legend()
+plt.show()
+```
+
+## Simulation Approach
+
+We can also simulate without assuming normality!
+
+```{python}
+#| echo: true
+#| code-fold: show
+rng = np.random.default_rng(42)
+n_sims = 5000
+shai_simulated_ppg = []
+
+for _ in range(n_sims):
+    low_minus_high = np.sqrt(12 * shai_sample_std**2)
+    simulated_scores = rng.uniform(low=30.4 - low_minus_high/2,
+                                   high=30.4 + low_minus_high/2, size=76)
+    simulated_ppg = np.mean(simulated_scores)
+    shai_simulated_ppg.append(simulated_ppg)
+
+p_value_simulated = np.mean(np.array(shai_simulated_ppg) >= 32.7)
+print(f"p-value from simulation: {p_value_simulated:.4f}")
+```
+
+## Both Methods Agree!
+
+- CLT p-value: ~0.004
+- Simulation p-value: ~0.004
+
+. . .
+
+**Conclusion**: Very unlikely SGA would score 32.7 PPG if his true ability was only 30.4 PPG.
+
+## Errors in Hypothesis Testing
+
+Two types of errors:
+
+| | Reject $H_0$ | Don't Reject $H_0$ |
+|---|---|---|
+| **$H_0$ true** | Type I (false positive) | ✓ Correct |
+| **$H_0$ false** | ✓ Correct | Type II (false negative) |
+
+. . .
+
+- **Type I error rate** = $\alpha$ (our significance threshold)
+- **Type II error rate** = $\beta$
+
+## Summary
+
+**Hypothesis Testing Framework**
+
+1. Define null and alternative hypotheses
+2. Collect data
+3. Compute test statistic
+4. Find p-value (probability of data under $H_0$)
+5. Compare to significance threshold $\alpha$
+
+. . .
+
+**Key Points**
+
+- p-values quantify evidence against $H_0$
+- Simulation can generate sampling distributions
+- Always report p-values, not just "significant/not"
+
+## Next Time
+
+**Confidence Intervals and Bootstrapping**
+
+- Quantifying uncertainty differently
+- Resampling methods
+- No assumptions about distributions needed!
+

@@ -1,0 +1,416 @@
+---
+title: "Lecture 09: Regression Inference and Multiple Regression"
+author: "Joseph Rudoler"
+institution: "University of Pennsylvania"
+date: "now"
+format: 
+  revealjs:
+    incremental: true
+    smaller: true
+    scrollable: true
+    echo: false
+    chalkboard: true
+    fig-align: center
+    auto-stretch: false
+    css: custom.css
+code-annotations: hover
+execute:
+    warning: false
+---
+
+```{python}
+#| hidden: true
+#| echo: false
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats
+import statsmodels.formula.api as smf
+plt.style.use("../style.mplstyle")
+```
+
+## Recap: Linear Regression
+
+$$Y = \beta_0 + \beta_1 X + \epsilon$$
+
+- $\beta_0$: intercept
+- $\beta_1$: slope
+- $\epsilon$: error term (random noise)
+
+. . .
+
+We use data to **estimate** $\hat{\beta}_0$ and $\hat{\beta}_1$
+
+## Sampling Variability in Regression
+
+Different samples → different estimates of $\beta$
+
+. . .
+
+This is the same **sampling variability** we've discussed throughout the course!
+
+## Hypothesis Testing in Regression
+
+Common question: Is there a relationship between $X$ and $Y$?
+
+. . .
+
+**Hypotheses**:
+
+- $H_0$: $\beta_1 = 0$ (no relationship)
+- $H_1$: $\beta_1 \neq 0$ (there is a relationship)
+
+## Simulating the Null Distribution
+
+How can we generate $\hat{\beta}_1$ values under $H_0$?
+
+. . .
+
+**Permutation test**: Shuffle $Y$ values to break the $X$-$Y$ relationship
+
+## Permutation Test for Regression
+
+```{python}
+#| echo: true
+#| code-fold: show
+def permutation_test_regression(data, x_col, y_col, n_permutations=1000, rng=None):
+    if rng is None:
+        rng = np.random.default_rng()
+    
+    # Observed slope
+    model = smf.ols(f'{y_col} ~ {x_col}', data=data).fit()
+    observed_beta = model.params[x_col]
+    
+    # Permutation distribution
+    perm_betas = []
+    for _ in range(n_permutations):
+        y_perm = rng.permutation(data[y_col])
+        perm_model = smf.ols(f'{y_col} ~ {x_col}', 
+                              data=data.assign(**{y_col: y_perm})).fit()
+        perm_betas.append(perm_model.params[x_col])
+    
+    perm_betas = np.array(perm_betas)
+    p_value = np.mean(np.abs(perm_betas) >= np.abs(observed_beta))
+    
+    return observed_beta, perm_betas, p_value
+```
+
+## Example
+
+```{python}
+rng = np.random.default_rng(42)
+n = 100
+x = rng.normal(size=n)
+y = 0.5 * x + 0.5 * rng.normal(size=n)
+data = pd.DataFrame({'x': x, 'y': y})
+
+observed_beta, perm_betas, p_value = permutation_test_regression(
+    data, 'x', 'y', n_permutations=1000, rng=rng)
+
+print(f"Observed slope: {observed_beta:.4f}")
+print(f"Permutation p-value: {p_value:.4f}")
+```
+
+## Permutation vs Parametric
+
+```{python}
+model = smf.ols('y ~ x', data=data).fit()
+
+fig, ax = plt.subplots(1, 2, figsize=(11, 4))
+
+# Permutation distribution
+sns.histplot(perm_betas, bins=30, stat="density", alpha=0.5, ax=ax[0])
+ax[0].axvline(observed_beta, color='red', linestyle='--', lw=2, label=f'Observed: {observed_beta:.3f}')
+ax[0].axvline(0, color='gray', linestyle='--', alpha=0.5)
+ax[0].set_title('Permutation Null Distribution')
+ax[0].set_xlabel('Slope')
+ax[0].legend()
+
+# Scatter with fit
+sns.scatterplot(data=data, x='x', y='y', alpha=0.5, ax=ax[1])
+sns.lineplot(x=data['x'], y=model.predict(data['x']), color='red', lw=2, ax=ax[1])
+ax[1].set_title(f'Data (p-value: {p_value:.4f})')
+ax[1].set_xlabel('X')
+ax[1].set_ylabel('Y')
+
+plt.tight_layout()
+plt.show()
+```
+
+## Parametric Results Match!
+
+```{python}
+print(model.summary(slim=True))
+```
+
+## Confidence Intervals for Regression
+
+Use **bootstrap** to estimate CI for slope:
+
+```{python}
+#| echo: true
+#| code-fold: show
+def bootstrap_regression_ci(data, x_col, y_col, n_bootstraps=1000, alpha=0.05, rng=None):
+    if rng is None:
+        rng = np.random.default_rng()
+    
+    n = len(data)
+    coefs = []
+    for _ in range(n_bootstraps):
+        sample = data.sample(n, replace=True)
+        model = smf.ols(f"{y_col} ~ {x_col}", data=sample).fit()
+        coefs.append(model.params[x_col])
+    
+    coefs = np.array(coefs)
+    lower = np.percentile(coefs, 100 * alpha / 2)
+    upper = np.percentile(coefs, 100 * (1 - alpha / 2))
+    return coefs, lower, upper
+```
+
+## Bootstrap CI Example
+
+```{python}
+rng = np.random.default_rng(123)
+x = rng.normal(size=100)
+y = 1.5 * x + 2 + rng.normal(size=100)
+data = pd.DataFrame({"x": x, "y": y})
+
+bootstrap_coefs, lower, upper = bootstrap_regression_ci(data, "x", "y", n_bootstraps=1000, rng=rng)
+
+print(f"Bootstrap 95% CI for slope: [{lower:.3f}, {upper:.3f}]")
+print(f"True slope: 1.5")
+
+model = smf.ols("y ~ x", data=data).fit()
+print(f"\nParametric 95% CI: [{model.conf_int().loc['x', 0]:.3f}, {model.conf_int().loc['x', 1]:.3f}]")
+```
+
+## Bootstrap Distribution
+
+```{python}
+fig, ax = plt.subplots(figsize=(9, 4))
+sns.histplot(bootstrap_coefs, bins=30, stat="density", alpha=0.5)
+ax.axvline(lower, color='purple', linestyle='--', lw=2, label=f'2.5%: {lower:.3f}')
+ax.axvline(upper, color='purple', linestyle='--', lw=2, label=f'97.5%: {upper:.3f}')
+ax.axvline(1.5, color='red', linestyle='-', lw=2, label='True: 1.5')
+ax.axvline(model.params['x'], color='blue', linestyle='--', lw=2, label=f'Observed: {model.params["x"]:.3f}')
+ax.set_title('Bootstrap Distribution of Slope')
+ax.set_xlabel('Slope')
+ax.legend()
+plt.tight_layout()
+plt.show()
+```
+
+## Multiple Regression
+
+What if we have **multiple predictors**?
+
+$$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_p X_p + \epsilon$$
+
+. . .
+
+This is **multiple linear regression**
+
+## Example: Student Performance
+
+Predicting student grades from various factors:
+
+- Parent education
+- Study time
+- Family relationships
+- And more...
+
+## The Data
+
+```{python}
+student_data = pd.read_csv("../data/student-mat.csv", sep=";")
+student_data[['Medu', 'Fedu', 'studytime', 'G3']].head()
+```
+
+## Simple Regression: Father's Education
+
+```{python}
+model = smf.ols("G3 ~ Fedu", data=student_data).fit()
+print(model.summary(slim=True))
+```
+
+## But Wait...
+
+What about **mother's education**?
+
+. . .
+
+Let's look at how these variables relate:
+
+```{python}
+student_data[["Fedu", "Medu", "G3"]].corr().round(3)
+```
+
+## The Problem: Multicollinearity
+
+Father's and mother's education are **correlated**!
+
+- Students with educated fathers often have educated mothers
+- Hard to separate individual effects
+
+```{python}
+fig, ax = plt.subplots(figsize=(6, 5))
+sns.scatterplot(data=student_data, x="Medu", y="Fedu", alpha=0.5)
+ax.set_xlabel("Mother's Education")
+ax.set_ylabel("Father's Education")
+ax.set_title("Parent Education Levels")
+plt.tight_layout()
+plt.show()
+```
+
+## Multiple Regression to the Rescue
+
+Include **both** predictors:
+
+```{python}
+model = smf.ols("G3 ~ Fedu + Medu", data=student_data).fit()
+print(model.summary(slim=True))
+```
+
+## Interpretation
+
+**Before** (Fedu only): significant effect
+
+**After** (Fedu + Medu): Fedu effect shrinks, Medu dominates
+
+. . .
+
+Multiple regression **controls for** other variables!
+
+## What Multiple Regression Does
+
+For `Fedu` coefficient:
+
+1. Predict `G3` from `Medu` → get residuals (part of G3 not explained by Medu)
+2. Predict `Fedu` from `Medu` → get residuals (part of Fedu not explained by Medu)  
+3. Regress G3 residuals on Fedu residuals
+
+. . .
+
+The coefficient shows Fedu's effect **after accounting for Medu**
+
+## Visualizing the Process
+
+```{python}
+#| fig-width: 10
+#| fig-height: 8
+from matplotlib import gridspec
+
+fig = plt.figure(figsize=(10, 7))
+gs = gridspec.GridSpec(3, 2, figure=fig)
+ax1, ax2, ax3, ax4 = (fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[0, 1]),
+                       fig.add_subplot(gs[1, 0]), fig.add_subplot(gs[1, 1]))
+ax5 = fig.add_subplot(gs[2, :])
+
+# Step 1: Regress G3 on Medu
+residuals_G3 = smf.ols("G3 ~ Medu", data=student_data).fit().resid
+sns.regplot(x="Medu", y="G3", data=student_data, line_kws={"color": "red"}, ax=ax1, scatter_kws={"alpha": 0.3})
+ax1.set_title("1. G3 ~ Medu")
+
+sns.residplot(x="Medu", y="G3", data=student_data, ax=ax2, scatter_kws={"alpha": 0.3})
+ax2.set_title("2. Residuals of G3")
+ax2.set_ylabel("G3 - Predicted G3")
+
+# Step 2: Regress Fedu on Medu
+residuals_Fedu = smf.ols("Fedu ~ Medu", data=student_data).fit().resid
+sns.regplot(x="Medu", y="Fedu", data=student_data, line_kws={"color": "red"}, ax=ax3, scatter_kws={"alpha": 0.3})
+ax3.set_title("3. Fedu ~ Medu")
+
+sns.residplot(x="Medu", y="Fedu", data=student_data, ax=ax4, scatter_kws={"alpha": 0.3})
+ax4.set_title("4. Residuals of Fedu")
+ax4.set_ylabel("Fedu - Predicted Fedu")
+
+# Step 3: Regress residuals
+sns.regplot(x=residuals_Fedu, y=residuals_G3, line_kws={"color": "red"}, ax=ax5, scatter_kws={"alpha": 0.3})
+ax5.set_title("5. G3 residuals ~ Fedu residuals")
+ax5.set_xlabel("Fedu Residuals")
+ax5.set_ylabel("G3 Residuals")
+
+plt.tight_layout()
+plt.show()
+```
+
+## Causality Warning!
+
+Correlation (even in regression) ≠ Causation
+
+. . .
+
+Two main issues:
+
+1. **Confounding variables**: A third variable causes both X and Y
+2. **Reverse causation**: Y might cause X, not vice versa
+
+## Confounding Example
+
+Does mother's education **cause** better grades?
+
+. . .
+
+Or do they share a common cause (e.g., family wealth)?
+
+- Wealth → can afford education for mom
+- Wealth → can afford tutoring for student
+
+## The "Reverse" Regression
+
+What if we regress Medu on G3?
+
+```{python}
+model = smf.ols("Medu ~ Fedu + G3", data=student_data).fit()
+print(model.summary(slim=True))
+```
+
+. . .
+
+This suggests G3 "causes" Medu — obviously wrong!
+
+## Solutions for Causality
+
+1. **Include confounders** in the model (if you can measure them)
+2. **Randomized controlled trials** (gold standard)
+3. **Advanced causal inference methods** (beyond this course)
+
+## Summary
+
+**Regression Inference**
+
+- Use permutation tests or bootstrap for hypothesis testing
+- Same principles as before, applied to regression
+
+. . .
+
+**Multiple Regression**
+
+- Include multiple predictors simultaneously
+- Controls for confounding between predictors
+
+. . .
+
+**Causality**
+
+- Regression shows association, not causation
+- Need additional assumptions or experimental design
+
+## Course Summary
+
+We've covered a complete statistical toolkit:
+
+1. **Probability** — foundation for reasoning about uncertainty
+2. **Sampling & Simulation** — generating data from models
+3. **Statistical Models** — DGPs, LLN, CLT
+4. **Hypothesis Testing** — p-values, significance
+5. **Confidence Intervals** — quantifying uncertainty
+6. **Bootstrapping** — no distributional assumptions
+7. **Permutation Tests** — the universal test
+8. **Regression** — prediction and inference
+
+. . .
+
+**Key theme**: Quantifying and communicating uncertainty!
+
